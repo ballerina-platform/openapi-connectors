@@ -1,0 +1,14 @@
+id: pandadoc
+displayName: PandaDoc
+type: OpenAPI
+version: 4.3.0
+description: This is a generated connector from [PandaDoc API version 4.3.0](https://developers.pandadoc.com/reference/about) OpenAPI Specification.  PandaDoc API spans a broad range of functionality to help you build incredible documents automation experiences inside your product. PandaDoc API is organized around REST. Our API has predictable resource-oriented URLs and uses standard HTTP response codes, authentication, and verbs.
+idlPath: /pandadoc/4.3.0/openapi.yaml
+thumbnailPath: /pandadoc/4.3.0/icon.png
+documentationPath: /pandadoc/4.3.0/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: https://api.pandadoc.com
+    description: Public API

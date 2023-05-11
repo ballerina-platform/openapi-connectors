@@ -1,0 +1,11 @@
+id: saps4hana.itcm.uom
+displayName: SAPS4HANA ITCM Unit of Measure
+type: OpenAPI
+version: 1.0.0
+description: This is the [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.  The unit of measure service allows you to load units of measure for various purposes in SAPS4HANA Intelligent Trade Claims Management.
+idlPath: /saps4hana.itcm.uom/1.0.0/openapi.yaml
+thumbnailPath: /saps4hana.itcm.uom/1.0.0/icon.png
+documentationPath: /saps4hana.itcm.uom/1.0.0/readme.md
+keywords:
+  - BusinessManagement/ERP
+  - Cost/Paid

@@ -1,0 +1,18 @@
+id: plaid
+displayName: Plaid
+type: OpenAPI
+version: 2020-09-14_1.26.1
+description: This is the [Plaid API 2020-09-14 version](https://plaid.com/docs/api/) OpenAPI specification.  The Plaid REST API. Plaid provides a way for you to seamlessly link your bank accounts for over 3,000 different financial services.
+idlPath: /plaid/2020-09-14_1.26.1/openapi.yaml
+thumbnailPath: /plaid/2020-09-14_1.26.1/icon.png
+documentationPath: /plaid/2020-09-14_1.26.1/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://production.plaid.com
+    description: Production
+  - url: https://development.plaid.com
+    description: Development
+  - url: https://sandbox.plaid.com
+    description: Sandbox

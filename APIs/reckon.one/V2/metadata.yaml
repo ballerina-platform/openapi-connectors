@@ -1,0 +1,13 @@
+id: reckon.one
+displayName: Reckon One
+type: OpenAPI
+version: V2
+description: This is the [Reckon One API v2](https://developer.reckon.com/api-details#api=reckon-one-api-v2) OpenAPI specification.
+idlPath: /reckon.one/V2/openapi.yaml
+thumbnailPath: /reckon.one/V2/icon.png
+documentationPath: /reckon.one/V2/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://api-v2.reckonone.com/

@@ -1,0 +1,13 @@
+id: instagram.bussiness
+displayName: Instagram For Bussiness
+type: OpenAPI
+version: v12.0
+description: This is the [Instagram Graph API v12.0](https://developers.facebook.com/docs/instagram-api) OpenAPI specification.  Instagram is a free photo-sharing application that enables its users to take photos, apply filters, and share them on social networks. The Instagram Graph API is a collection of Facebook Graph API endpoints that allow apps to access data in Instagram Professional accounts (both Business and Creator accounts).
+idlPath: /instagram.bussiness/v12.0/openapi.yaml
+thumbnailPath: /instagram.bussiness/v12.0/icon.png
+documentationPath: /instagram.bussiness/v12.0/readme.md
+keywords:
+  - Marketing/SocialMediaAccounts
+  - Cost/Free
+endpoint:
+  - url: https://graph.instagram.com/

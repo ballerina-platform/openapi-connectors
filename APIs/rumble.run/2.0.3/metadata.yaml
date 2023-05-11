@@ -1,0 +1,14 @@
+id: rumble.run
+displayName: Rumble Run
+type: OpenAPI
+version: 2.0.3
+description: This is the [Rumble API v1](https://www.rumble.run/docs/) OpenAPI specification.
+idlPath: /rumble.run/2.0.3/openapi.yaml
+thumbnailPath: /rumble.run/2.0.3/icon.png
+documentationPath: /rumble.run/2.0.3/readme.md
+keywords:
+  - ITOperations/ServerMonitoring
+  - Cost/Freemium
+endpoint:
+  - url: https://console.rumble.run/api/v1.0
+    description: Rumble Console

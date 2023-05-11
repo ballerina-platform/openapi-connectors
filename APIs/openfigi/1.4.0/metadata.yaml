@@ -1,0 +1,14 @@
+id: openfigi
+displayName: OpenFIGI
+type: OpenAPI
+version: 1.4.0
+description: This is the [OpenFIGI API v3](https://www.openfigi.com/api) OpenAPI Specification. OpenFIGI API provides capability to access multiple tools for identifying, mapping and requesting a free and open symbology dataset.  This user friendly platform provides the ultimate understanding for how a unique identifier combined with accurate,  associated metadata can eliminate redundant mapping processes, streamline the trade workflow and reduce operational risk.
+idlPath: /openfigi/1.4.0/openapi.yaml
+thumbnailPath: /openfigi/1.4.0/icon.png
+documentationPath: /openfigi/1.4.0/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Free
+endpoint:
+  - url: https://api.openfigi.com/v3
+    description: Production Tier

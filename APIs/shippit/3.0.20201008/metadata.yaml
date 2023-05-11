@@ -1,0 +1,16 @@
+id: shippit
+displayName: ShipStation
+type: OpenAPI
+version: 3.0.20201008
+description: This is the [Shippit API v3.0.20201008](https://developer.shippit.com) OpenAPI specification.
+idlPath: /shippit/3.0.20201008/openapi.yaml
+thumbnailPath: /shippit/3.0.20201008/icon.png
+documentationPath: /shippit/3.0.20201008/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid
+endpoint:
+  - url: https://app.staging.shippit.com/api/3
+    description: Shippit API Staging
+  - url: https://app.shippit.com/api/3
+    description: Shippit API Production

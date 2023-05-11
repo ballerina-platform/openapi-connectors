@@ -1,0 +1,17 @@
+id: microsoft.dynamics365businesscentral
+displayName: Microsoft Dynamics 365 Business Central
+type: OpenAPI
+version: 1.0.0
+description: This is the [Microsoft Dynamics 365 Business Central API v1.0](https://dynamics.microsoft.com/en-us/business-central/overview/) OpenAPI specification. (v1.0) Business Central Standard APIs
+idlPath: /microsoft.dynamics365businesscentral/1.0.0/openapi.yaml
+thumbnailPath: /microsoft.dynamics365businesscentral/1.0.0/icon.png
+documentationPath: /microsoft.dynamics365businesscentral/1.0.0/readme.md
+keywords:
+  - BusinessManagement/ERP
+  - Cost/Paid
+  - Vendor/Microsoft
+endpoint:
+ - url: https://api.businesscentral.dynamics.com/v2.0/sandbox/api/v1.0
+   description: (v1.0) "Sandbox"
+ - url: https://api.businesscentral.dynamics.com/v2.0/production/api/v1.0
+   description: (v1.0) "Production"

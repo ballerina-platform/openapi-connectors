@@ -1,0 +1,16 @@
+id: fraudlabspro.smsverification
+displayName: FraudLabs Pro SMS Verification
+type: OpenAPI
+version: "1.0"
+description: This is the [FraudLabsPro SMS Verification API v1.0](https://www.fraudlabspro.com/developer/api/send-verification) OpenAPI specification. 'Send an SMS with verification code and a custom message for authentication purpose.  It helps merchants to minimize chargebacks and fraud for various kinds of payment method, such as credit card, paypal, cod and so on.  Please visit https://www.fraudlabspro.com to learn more.'
+idlPath: /fraudlabspro.smsverification/1.0/openapi.yaml
+thumbnailPath: /fraudlabspro.smsverification/1.0/icon.png
+documentationPath: /fraudlabspro.smsverification/1.0/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium
+endpoint:
+  - url: https://api.fraudlabspro.com
+    description: Send an SMS with verification code and a custom message for authentication purpose.
+  - url: 'https://api.fraudlabspro.com'
+    description: Verify that an OTP sent by the Send SMS Verification API is valid.

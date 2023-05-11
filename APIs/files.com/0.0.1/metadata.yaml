@@ -1,0 +1,11 @@
+id: files.com
+displayName: files.com
+type: OpenAPI
+version: 0.0.1
+description: This is the [Files.com API v1.0](https://www.files.com/) OpenAPI specification. Welcome to the Files.com API. Our REST API are designed for people who require the highest level of integration between Files.com and their own application, website, or database.
+idlPath: /files.com/0.0.1/openapi.yaml
+thumbnailPath: /files.com/0.0.1/icon.png
+documentationPath: /files.com/0.0.1/readme.md
+keywords:
+  - Content&Files/FileManagement&Storage
+  - Cost/Paid

@@ -1,0 +1,13 @@
+id: interzoid.globalpageload
+displayName: Interzoid Global Page Load Performance
+type: OpenAPI
+version: 1.0.0
+description: This is the [Interzoid Global Page Load Performance API v1.0.0](https://interzoid.com/services/globalpageload) OpenAPI specification. This API provides a timed, browser-simulated page load function (or a measured API call) from the specified geography using a server from that geography. For additional help getting started with the API,  visit [Interzoid Global Page Load Performance API](https://interzoid.com/services/globalpageload)
+idlPath: /interzoid.globalpageload/1.0.0/openapi.yaml
+thumbnailPath: /interzoid.globalpageload/1.0.0/icon.png
+documentationPath: /interzoid.globalpageload/1.0.0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+endpoint:
+  - url: https://api.interzoid.com

@@ -1,0 +1,13 @@
+id: googleapis.cloudpubsub
+type: OpenAPI
+version: v1
+description: v1
+idlPath: /googleapis.cloudpubsub/v1/openapi.yaml
+thumbnailPath: /googleapis.cloudpubsub/v1/icon.png
+documentationPath: /googleapis.cloudpubsub/v1/readme.md
+keywords:
+  - ITOperations/DataIngestion
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://pubsub.googleapis.com/

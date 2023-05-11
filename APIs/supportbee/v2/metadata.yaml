@@ -1,0 +1,11 @@
+id: supportbee
+displayName: SupportBee
+type: OpenAPI
+version: v2
+description: This is the [SupportBee API v1](https://supportbee.com/api) OpenAPI specification.
+idlPath: /supportbee/v2/openapi.yaml
+thumbnailPath: /supportbee/v2/icon.png
+documentationPath: /supportbee/v2/readme.md
+keywords:
+  - Support/CustomerSupport
+  - Cost/Paid

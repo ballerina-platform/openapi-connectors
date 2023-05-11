@@ -1,0 +1,13 @@
+id: interzoid.weatherzip
+displayName: Interzoid Weather by Zip Code
+type: OpenAPI
+version: 1.0.0
+description: This is the [Interzoid Weather by Zip Code API v1.0.0] (https://interzoid.com/services/getweatherzip) OpenAPI specification. This API provides current weather information for US Cities, including temperatures,  wind speeds, wind direction, relative humidity, and visibility. For additional help getting started with the API,  visit [Interzoid Weather by Zip Code API](https://interzoid.com/services/getweatherzip).
+idlPath: /interzoid.weatherzip/1.0.0/openapi.yaml
+thumbnailPath: /interzoid.weatherzip/1.0.0/icon.png
+documentationPath: /interzoid.weatherzip/1.0.0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+endpoint:
+  - url: https://api.interzoid.com

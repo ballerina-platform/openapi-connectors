@@ -1,0 +1,11 @@
+id: adp.paystatements
+displayName: ADP Pay Statements
+type: OpenAPI
+version: 2.0.0
+description: This is the [ADP Pay Statements API v1](https://developers.adp.com/articles/api/pay-statements-v1-api) OpenAPI specification.
+idlPath: /adp.paystatements/2.0.0/openapi.yaml
+thumbnailPath: /adp.paystatements/2.0.0/icon.png
+documentationPath: /adp.paystatements/2.0.0/readme.md
+keywords:
+  - HumanResources/HRMS
+  - Cost/Paid

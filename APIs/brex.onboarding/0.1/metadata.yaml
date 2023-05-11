@@ -1,0 +1,16 @@
+id: brex.onboarding
+displayName: brex.onboarding 
+type: OpenAPI
+version: "0.1"
+description: This is the [Brex Onboarding API v0.1](https://developer.brex.com/openapi/onboarding_api/) OpenAPI specification.  Onboarding APIs allows partners to refer their customers to Brex to streamline the process of creating new accounts  for these customers. By submitting information for referrals, it removes the need for customers to enter in this information again.
+idlPath: /brex.onboarding/0.1/openapi.yaml
+thumbnailPath: /brex.onboarding/0.1/icon.png
+documentationPath: /brex.onboarding/0.1/readme.md
+keywords:
+  - Sales&CRM/ContactManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://platform.staging.brexapps.com
+    description: 'Staging API (Note: this is not sandbox)'
+  - url: https://platform.brexapis.com
+    description: Production servers

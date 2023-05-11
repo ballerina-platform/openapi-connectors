@@ -1,0 +1,13 @@
+id: googleapis.cloudscheduler
+type: OpenAPI
+version: v1
+description: v1
+idlPath: /googleapis.cloudscheduler/v1/openapi.yaml
+thumbnailPath: /googleapis.cloudscheduler/v1/icon.png
+documentationPath: /googleapis.cloudscheduler/v1/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://cloudscheduler.googleapis.com/

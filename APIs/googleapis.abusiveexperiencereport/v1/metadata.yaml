@@ -1,0 +1,14 @@
+id: googleapis.abusiveexperiencereport
+displayName: Google Abusive Experience
+type: OpenAPI
+version: v1
+description: This is the [Google Abusive Experience Report API v1](https://developers.google.com/abusive-experience-report/) OpenAPI specification.
+idlPath: /googleapis.abusiveexperiencereport/v1/openapi.yaml
+thumbnailPath: /googleapis.abusiveexperiencereport/v1/icon.png
+documentationPath: /googleapis.abusiveexperiencereport/v1/readme.md
+keywords:
+  - BusinessIntelligence/Reporting
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://abusiveexperiencereport.googleapis.com/

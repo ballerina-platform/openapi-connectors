@@ -1,0 +1,11 @@
+id: zendesk.voice
+displayName: Zendesk Voice
+type: OpenAPI
+version: v2
+description: This is the [Zendesk Talk API v2](https://developer.zendesk.com/api-reference/voice/talk-api/introduction/) OpenAPI specification. Zendesk Talk API in conjunction with the Support API to work with Talk agents, groups, and tickets.
+idlPath: /zendesk.voice/v2/openapi.yaml
+thumbnailPath: /zendesk.voice/v2/icon.png
+documentationPath: /zendesk.voice/v2/readme.md
+keywords:
+  - Support/CustomerSupport
+  - Cost/Freemium

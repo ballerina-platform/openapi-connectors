@@ -1,0 +1,13 @@
+id: geonames
+displayName: Geonames
+type: OpenAPI
+version: 1.0.0
+description: This is the [Geonames API](https://www.geonames.org/export/JSON-webservices.html) OpenAPI specification. Geonames is a geographical database where users can retrieve geo location information.
+idlPath: /geonames/1.0.0/openapi.yaml
+thumbnailPath: /geonames/1.0.0/icon.png
+documentationPath: /geonames/1.0.0/readme.md
+keywords:
+  - ITOperations/GeographicInformationSystems
+  - Cost/Freemium
+endpoint:
+  - url: http://api.geonames.org/

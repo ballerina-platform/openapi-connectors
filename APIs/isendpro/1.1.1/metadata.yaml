@@ -1,0 +1,14 @@
+id: isendpro
+displayName: iSendPro
+type: OpenAPI
+version: 1.1.1
+description: This is the [iSendPro v1.1.1](https://www.isendpro.com/docs/?type=7) OpenAPI specification.
+idlPath: /isendpro/1.1.1/openapi.yaml
+thumbnailPath: /isendpro/1.1.1/icon.png
+documentationPath: /isendpro/1.1.1/readme.md
+keywords:
+  - Communication/Call&SMS
+  - Cost/Paid
+endpoint:
+  - url: https://apirest.isendpro.com/cgi-bin
+  - url: http://apirest.isendpro.com/cgi-bin

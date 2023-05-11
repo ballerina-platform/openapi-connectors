@@ -1,0 +1,11 @@
+id: saps4hana.externaltaxcalculation.taxquote
+displayName: SAPS4HANA Tax Determination and Calculation
+type: OpenAPI
+version: 1.0.0
+description: This is the [SAP S/4HANA Integration with External Tax Calculation Engine API- Tax Determination and Calculation via Integration Flow API v1.0.0](https://api.sap.com/api/taxquote/overview) OpenAPI specification.  Your external tax engine sends tax calculation results to the SAP S/4HANA Cloud system via communication scenario SAP_COM_0249. This API is consumed by the [SAP S/4HANA Integration with External Tax Calculation Engines Integration Package](https://api.sap.com/package/SAPS4HANAIntegrationwithExternalTaxCalculationEngines) endpoint.
+idlPath: /saps4hana.externaltaxcalculation.taxquote/1.0.0/openapi.yaml
+thumbnailPath: /saps4hana.externaltaxcalculation.taxquote/1.0.0/icon.png
+documentationPath: /saps4hana.externaltaxcalculation.taxquote/1.0.0/readme.md
+keywords:
+  - BusinessManagement/ERP
+  - Cost/Paid

@@ -1,0 +1,14 @@
+id: api2pdf
+displayName: Api2Pdf
+type: OpenAPI
+version: 1.0.0
+description: This is the [Api2Pdf](https://www.api2pdf.com/) OpenAPI Specification. Api2Pdf is a powerful PDF generation API with no rate limits or file size constraints.  Api2Pdf runs on AWS Lambda, a serverless architecture powered by Amazon to scale to millions of requests while being up to 90% cheaper than alternatives.  **Supports wkhtmltopdf, Headless Chrome, LibreOffice, and PDF Merge.** You can also generate barcodes with ZXING (Zebra Crossing).
+idlPath: /api2pdf/1.0.0/openapi.yaml
+thumbnailPath: /api2pdf/1.0.0/icon.png
+documentationPath: /api2pdf/1.0.0/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: https://v2.api2pdf.com/
+    description: Api2Pdf.com API

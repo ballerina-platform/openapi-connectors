@@ -1,0 +1,11 @@
+id: commercetools.cartsordershoppinglists
+displayName: Commercetools Carts Orders Shopping Lists
+type: OpenAPI
+version: v1
+description: This is the [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.  The commercetools Platform HTTP API offers an interface for programmatic access to operations related to carts, orders and shopping lists.
+idlPath: /commercetools.cartsordershoppinglists/v1/openapi.yaml
+thumbnailPath: /commercetools.cartsordershoppinglists/v1/icon.png
+documentationPath: /commercetools.cartsordershoppinglists/v1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

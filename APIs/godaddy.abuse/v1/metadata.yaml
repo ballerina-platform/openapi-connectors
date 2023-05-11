@@ -1,0 +1,13 @@
+id: godaddy.abuse
+displayName: GoDaddy Abuse
+type: OpenAPI
+version: v1
+description: This is the [GoDaddy Certificates API v1](https://developer.godaddy.com/doc/endpoint/certificates) OpenAPI specification. <strong>GoDaddy Abuse API Terms of Use:</strong><p>GoDaddy’s Abuse API is provided to simplify and standardize the abuse reporting experience.
+idlPath: /godaddy.abuse/v1/openapi.yaml
+thumbnailPath: /godaddy.abuse/v1/icon.png
+documentationPath: /godaddy.abuse/v1/readme.md
+keywords:
+  - BusinessIntelligence/Reporting
+  - Cost/Paid
+endpoint:
+  - url: https://api.ote-godaddy.com/

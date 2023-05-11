@@ -1,0 +1,14 @@
+id: pocketsmith
+displayName: PocketSmith
+type: OpenAPI
+version: "2.0"
+description: This is the [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification. The public PocketSmith API. It's a powerful interface for online money management with cash flow forecasts as well as superb historical tracking.
+idlPath: /pocketsmith/2.0/openapi.yaml
+thumbnailPath: /pocketsmith/2.0/icon.png
+documentationPath: /pocketsmith/2.0/readme.md
+keywords:
+  - Finance/AssetManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.pocketsmith.com/v2
+    description: Production

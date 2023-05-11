@@ -1,0 +1,4955 @@
+openapi: 3.0.1
+info:
+  title: Thinkific Admin API
+  description:
+    Thinkific's public API can be used to integrate your application with your Thinkific site.
+  termsOfService: https://www.thinkific.com/legal/
+  contact:
+    email: developers@thinkific.com
+  version: v1
+  x-ballerina-display:
+    label: Thinkific
+    iconPath: "icon.png"
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    For private apps login to your Thinkific account and obtain API Key and Subdomain using the guide [here](https://developers.thinkific.com/api/api-key-auth/)
+    For public apps create a Thinkific Partner Account and register an App to access the credentials. Follow the guide [here](https://developers.thinkific.com/api/authorization/) for more details. 
+externalDocs:
+  description: Find out more about Thinkifc's API
+  url: http://developers.thinkific.com/api/api-documentation/
+servers:
+  - url: https://api.thinkific.com/api/public/v1
+security:
+  - OAuthAccessToken: []
+  - ApiKey: []
+    ApiKeySubdomain: []
+tags:
+  - name: Bundles
+    description: Bundle operations
+  - name: Categories
+    description: Categories operations
+  - name: Category Memberships
+    description: Category Memberships operations
+  - name: Chapters
+    description: Chapters operations
+  - name: Contents
+    description: Contents operations
+  - name: Coupons
+    description: Coupons operations
+  - name: Courses
+    description: Courses operations
+  - name: Course Reviews
+    description: Course Reviews operations
+  - name: Custom Profile Field Definitions
+    description: Custom Profile Field Definitions
+  - name: Enrollments
+    description: Enrollments operations
+  - name: External Orders
+    description: Please note that any External Orders created through the API do not appear on the orders report or dashboard in your Thinkific site. Using the External Orders endpoints will simply store the information in our database.
+  - name: Groups
+    description: Groups operations
+  - name: Group Analysts
+    description: Group Analyst operations
+  - name: Group Users
+    description: Group Users operations
+  - name: Instructors
+    description: Instructors operations
+  - name: Orders
+    description: Orders operations
+  - name: Product Publish Request
+    description: Product Publish Request operations
+  - name: Products
+    description: Products operations
+  - name: Promotions
+    description: Promotions operations
+  - name: Site Scripts
+    description: Site Scripts operations [Scope Required](https://developers.thinkific.com/building-apps/site-scripts/#oauth-scope)
+  - name: Users
+    description: Users operations
+paths:
+  /bundles/{id}:
+    get:
+      tags:
+        - Bundles
+      summary: List a bundle
+      description: Retrieves the Bundle identified by the provided id
+      operationId: getBundleByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Bundle in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Bundle Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BundleResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Record not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /bundles/{id}/courses:
+    get:
+      tags:
+        - Bundles
+      summary: List Courses by bundle ID
+      operationId: listCoursesByBundleId
+      description:
+        Retrieves the Courses within the Bundle identified by the provided
+        id
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Bundle in the form of an integer
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Courses Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCoursesResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /bundles/{id}/enrollments:
+    get:
+      tags:
+        - Bundles
+      summary: List a enrollments in a bundle
+      description: Retrieves all the enrollments in the bundle identified by the provided id
+      operationId: getBundleEnrollments
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Bundle in the form of an integer
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+        - name: query[user_id]
+          in: query
+          description: Search Bundle Enrollments by User ID.
+          schema:
+            type: number
+          example: 123
+        - name: query[email]
+          in: query
+          description: Search Bundle Enrollments by User email
+          schema:
+            type: string
+          example: user@example.com
+        - name: query[completed]
+          in: query
+          description: Filter for only completed Bundle Enrollments when set to true.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[expired]
+          in: query
+          description: Filter for only expired Bundle Enrollments when set to true.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[created_after]
+          in: query
+          description: Filter for only Enrollments created after the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[created_before]
+          in: query
+          description: Filter for only Enrollments created before the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[created_on]
+          in: query
+          description: Filter for only Enrollments created on the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[created_on_or_after]
+          in: query
+          description: Filter for only Enrollments created on or after the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[created_on_or_before]
+          in: query
+          description: Filter for only Enrollments created on or before the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[updated_after]
+          in: query
+          description: Filter for only Enrollments updated after the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[updated_before]
+          in: query
+          description: Filter for only Enrollments updated before the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[updated_on]
+          in: query
+          description: Filter for only Enrollments updated on the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[updated_on_or_after]
+          in: query
+          description: Filter for only Enrollments created on or after the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+        - name: query[updated_on_or_before]
+          in: query
+          description: Filter for only Enrollments updated on or before the date specified.
+          schema:
+            type: string
+            format: date-time
+          example: '2021-04-27'
+
+      responses:
+        200:
+          description: Bundle Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEnrollmentsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Bundles
+      summary: Create an Enrollment in a Bundle of Courses
+      description: This endpoint enrolls a User in a Bundle and each of the Courses contained within the Bundle
+      operationId: createEnrollmentInBundle
+      parameters:
+        - name: id
+          description: ID of the bundle in a form of integer
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: New enrollment attributes
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: number
+                activated_at:
+                  type: string
+                  description: The date/time at which the Enrollment is to be activated. If not provided, the Enrollment will only provide access to free preview content within the Courses. Provide full access to courses by setting this value to the current date/time.
+                  format: date-time
+                expiry_date:
+                  type: string
+                  description: The date/time at which the Enrollment should be expired. If not provided, the Enrollment does not expire.
+                  format: date-time
+              required: [user_id]
+            example:
+              user_id: 1
+              activated_at: '2015-08-26T03:33:33.723Z'
+              expiry_date: '2016-08-26T03:33:33.723Z'
+      responses:
+        201:
+          description: Enrollments created synchronously
+        202:
+          description: Enrollments created asynchronously
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  user_id:
+                    - can't be blank
+    put:
+      tags:
+        - Bundles
+      summary: Update Enrollments in a Bundle
+      description: This endpoint updates a Userâ€™s Enrollment in a Bundle and each of the Courses contained within the Bundle.
+      operationId: updateEnrollmentsInBundle
+      parameters:
+        - name: id
+          description: ID of the bundle in a form of integer
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: New enrollment attributes
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: number
+                activated_at:
+                  type: string
+                  description: The date/time at which the Enrollment is to be activated. If not provided, the Enrollment will only provide access to free preview content within the Courses. Provide full access to courses by setting this value to the current date/time.
+                  format: date-time
+                expiry_date:
+                  type: string
+                  description: The date/time at which the Enrollment should be expired. If not provided, the Enrollment does not expire.
+                  format: date-time
+              required: [user_id]
+            example:
+              user_id: 1
+              activated_at: '2015-08-26T03:33:33.723Z'
+              expiry_date: '2016-08-26T03:33:33.723Z'
+      responses:
+        204:
+          description: Enrollments Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unprocessable entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  user_id:
+                    - can't be blank
+  /chapters/{id}:
+    get:
+      tags:
+        - Chapters
+      summary: Get Chapters
+      description: Returns a chapter
+      operationId: getChapterByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Chapter in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Chapters response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChapterResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /chapters/{id}/contents:
+    get:
+      tags:
+        - Chapters
+      summary: Get Contents by Chapter id
+      description:
+        Retrieves the Contents within the Chapter identified by the provided
+        id
+      operationId: getContentsByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Chapter in the form of an integer
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Chapters response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetContentsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /collections:
+    get:
+      tags:
+        - Categories
+      summary: Get Collections
+      description:
+        'Retrieves a list of Collections **NOTE: This endpoint will be
+        renamed to /categories in future API versions.**'
+      operationId: getCollections
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Collections response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCollectionsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Categories
+      summary: Create a new Category
+      description: Creates a new Category
+      operationId: crateCollection
+      requestBody:
+        description: New collections attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRequest'
+        required: false
+      responses:
+        201:
+          description: Collection response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: ' Unprocessable Entity'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+            UnprocessableEntity:
+              example:
+                errors:
+                  name:
+                    - can't be blank
+      x-codegen-request-body-name: body
+  /collections/{id}:
+    get:
+      tags:
+        - Categories
+      summary: Get Collections by Id
+      description: Retrieves a Collection
+      operationId: GetCollectionbyID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Category in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Collection response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+    put:
+      tags:
+        - Categories
+      summary: Update collection by ID
+      description: Updates the Category identified by the provided id
+      operationId: updateCollectioByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Category in the form of an integer
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Collections attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRequest'
+        required: false
+      responses:
+        204:
+          description: Collection Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  name:
+                    - value too long for type character
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - Categories
+      summary: Delete collection by ID
+      description: Deletes the Category identified by the provided id
+      operationId: deleteCollectionByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Category in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        204:
+          description: Collection deleted
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /collections/{id}/products:
+    get:
+      tags:
+        - Categories
+      summary: Get products by Collections id
+      description:
+        Retrieves Products within the Category identified by the provided
+        id
+      operationId: getProductsbyID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Chapter in the form of an integer
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Products response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  # /collection_memberships/{id}:
+  #   post:
+  #     tags:
+  #       - Category Memberships
+  #     summary: Add Product to Category
+  #     description: Create one or more Products to a Category
+  #     operationId: addProductsToCategory
+  #     parameters:
+  #       - name: id
+  #         in: path
+  #         description: ID of the Category in the form of an integer
+  #         required: true
+  #         style: simple
+  #         explode: false
+  #         schema:
+  #           type: number
+  #     requestBody:
+  #       description:
+  #         An array of the IDs of the Products that should be added to the
+  #         Category as integers.
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/MembershipsRequest'
+  #       required: true
+  #     responses:
+  #       201:
+  #         description: Products added to category
+  #       403:
+  #         $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  #       404:
+  #         description: Not Found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/ErrorNotFound'
+  #     x-codegen-request-body-name: body
+    # delete:
+    #   tags:
+    #     - Category Memberships
+    #   summary: Delete  Products by ID
+    #   description: Delete one or more Products from a Category.
+    #   operationId: deleteProductsByID
+    #   parameters:
+    #     - name: id
+    #       in: path
+    #       description: ID of the Category in the form of an integer
+    #       required: true
+    #       style: simple
+    #       explode: false
+    #       schema:
+    #         type: number
+    #   requestBody:
+    #     description:
+    #       An array of the IDs of the Products that should be added to the
+    #       Category as integers.
+    #     content:
+    #       application/json:
+    #         schema:
+    #           $ref: '#/components/schemas/MembershipsRequest'
+    #     required: true
+    #   responses:
+    #     204:
+    #       description: Products removed from category
+    #     403:
+    #       $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    #     404:
+    #       description: Not Found
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/ErrorNotFound'
+  /coupons:
+    get:
+      tags:
+        - Coupons
+      summary: Get Coupons
+      description: Retrieve a list of all Coupons
+      operationId: getCoupons
+      parameters:
+        - name: promotion_id
+          in: query
+          description:
+            The ID of the Promotion for which to get the Coupons in the form
+            of an integer.
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Coupon Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCouponResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Coupons
+      summary: Create a Coupon
+      description: Create a Coupon
+      operationId: createCoupon
+      parameters:
+        - name: promotion_id
+          in: query
+          description: ID of the Promotion to add the Coupon to in the form of an integer.
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: New Coupon attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCouponRequest'
+        required: true
+      responses:
+        201:
+          description: Create Coupon Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+            UnprocessableEntity:
+              example:
+                errors:
+                  code:
+                    - Can't be blank
+      x-codegen-request-body-name: body
+  /coupons/bulk_create:
+    post:
+      tags:
+        - Coupons
+      summary: Bulk Create Coupons
+      description: Bulk Create Coupons
+      operationId: bulkCreateCoupons
+      parameters:
+        - name: promotion_id
+          in: query
+          description: The ID of the Promotion for which to bulk create the Coupons.
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: New Coupon attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkCreateCouponRequest'
+        required: true
+      responses:
+        201:
+          description: Create Coupon Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBulkCouponResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+      x-codegen-request-body-name: body
+  /coupons/{id}:
+    get:
+      tags:
+        - Coupons
+      summary: Get a Coupon by ID
+      description: Retrieve a Coupon
+      operationId: getCouponByID
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the Coupon in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Coupon Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CouponResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+    put:
+      tags:
+        - Coupons
+      summary: Update a Coupon
+      description: Update an existing Coupon
+      operationId: updateCoupon
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the Coupon in the form of an integer.
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Update an existing coupon
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCoupon'
+        required: true
+      responses:
+        204:
+          description: Coupon Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+            UnprocessableEntity:
+              example:
+                errors:
+                  code:
+                    - Can't be blank
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - Coupons
+      summary: Delete Coupon by ID
+      description: Deletes a coupon identified by the provided id
+      operationId: deleteCouponByID
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the Coupon in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        204:
+          description: Coupon Deleted
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /contents/{id}:
+    get:
+      tags:
+        - Contents
+      summary: Get Contents by Id
+      description: Retrieves a Content
+      operationId: getContentByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Content in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Content response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: Get Courses
+      description: Retrieve a list of Courses
+      operationId: getCourses
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Courses Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCoursesResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /courses/{id}:
+    get:
+      tags:
+        - Courses
+      summary: Get courses by ID
+      description: Returns the Course identified by the provided id.
+      operationId: getCourseByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Course in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Courses response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /courses/{id}/chapters:
+    get:
+      tags:
+        - Courses
+      summary: Get Chapters by Course ID
+      description: Returns the Chapter of the course identified by the provided id.
+      operationId: getChapterOfCourseByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Chapter in the form of an integer.
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Chapter of a course response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetChaptersResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /custom_profile_field_definitions:
+    get:
+      tags:
+        - Custom Profile Field Definitions
+      summary: Get Custom profile field definition
+      description: Retrieve a list of Custom Profile Field Definitions
+      operationId: getCustomProfileFields
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Custom Profile Field Definitions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCustomProfileFieldDefinitions'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /enrollments:
+    get:
+      tags:
+        - Enrollments
+      summary: Get Enrollments
+      description: Returns a list of enrollments
+      operationId: getEnrollments
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+        - name: query[user_id]
+          in: query
+          description: Search Enrollments by User ID.
+          schema:
+            type: number
+        - name: query[course_id]
+          in: query
+          description: Search Enrollments by Course ID.
+          schema:
+            type: number
+        - name: query[email]
+          in: query
+          description: Search Enrollments by User email.
+          schema:
+            type: string
+        - name: query[free_trial]
+          in: query
+          description: Filter for only Free Trial Enrollments when set to true.
+          schema:
+            type: boolean
+        - name: query[full]
+          in: query
+          description: Filter for only full Enrollments when set to true.
+          schema:
+            type: boolean
+        - name: query[completed]
+          in: query
+          description: Filter for only completed Enrollments when set to true.
+          schema:
+            type: boolean
+        - name: query[expired]
+          in: query
+          description: Filter for only expired Enrollments when set to true.
+          schema:
+            type: boolean
+        - name: query[created_on]
+          in: query
+          description: Filter for only Enrollments created on the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[created_before]
+          in: query
+          description: Filter for only Enrollments created before the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[created_on_or_before]
+          in: query
+          description: Filter for only Enrollments created on or before the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[created_after]
+          in: query
+          description: Filter for only Enrollments created after the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[created_on_or_after]
+          in: query
+          description: Filter for only Enrollments created on or after the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[updated_on]
+          in: query
+          description: Filter for only Enrollments updated on the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[updated_before]
+          in: query
+          description: Filter for only Enrollments updated before the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[updated_on_or_before]
+          in: query
+          description: Filter for only Enrollments updated on or before the date specified.
+          schema:
+            type: string
+            format: date-time
+        - name: query[updated_after]
+          in: query
+          description: Filter for only Enrollments updated after the date specified.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        200:
+          description: Enrollments response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEnrollmentsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Enrollments
+      summary: Create enrollment
+      description: Creates a new Enrollment for specified student in specified course
+      operationId: createEnrollment
+      requestBody:
+        description: New enrollment attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEnrollmentRequest'
+        required: true
+      responses:
+        201:
+          description: Enrollment response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  - Course could not be found.
+                  - User could not be found.
+      x-codegen-request-body-name: body
+  /enrollments/{id}:
+    get:
+      tags:
+        - Enrollments
+      summary: Get enrollments by ID
+      description: Returns the Enrollment identified by the provided id.
+      operationId: getEnrollmentsByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Enrollment in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Enrollment response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnrollmentResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+    put:
+      tags:
+        - Enrollments
+      summary: Update enrollment
+      description: Updates a Enrollment for specified student in specified course
+      operationId: updateEnrollment
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Enrollment in the form of an integer.
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: New enrollment attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEnrollmentRequest'
+        required: true
+      responses:
+        204:
+          description: Enrollment Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        422:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  - Course could not be found.
+                  - User could not be found.
+      x-codegen-request-body-name: body
+  /external_orders:
+    post:
+      tags:
+        - External Orders
+      summary: Create a new external order
+      description: Please note that any External Orders created through the API do not appear on the orders report or dashboard in your Thinkific site. Using the External Orders endpoints will simply store the information in our database.
+      operationId: createExternalOrder
+      requestBody:
+        description: External Order request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalOrderRequest'
+      responses:
+        201:
+          description: External Order created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 1
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /external_orders/{id}/transactions/refund:
+    post:
+      tags:
+        - External Orders
+      summary: refund transaction
+      description: This endpoint will create a new transaction refund for the External Order.
+      operationId: createTransactionRefund
+      requestBody:
+        description: Transaction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalOrderTransaction'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: External Order ID as integer
+          schema:
+            type: number
+      responses:
+        200:
+          description: Transaction created
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /external_orders/{id}/transactions/purchase:
+    post:
+      tags:
+        - External Orders
+      summary: purchase transaction
+      description: This endpoint will create a new transaction purchase for the External Order.
+      operationId: createTransactionPurchase
+      requestBody:
+        description: Transaction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalOrderTransaction'
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: External Order ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Transaction created
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /groups:
+    get:
+      tags:
+        - Groups
+      summary: Get Groups
+      description: Retrieves a list of groups
+      operationId: getGroups
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Groups response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGroupsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Groups
+      summary: Create Group
+      description: Creates a group
+      operationId: createGroup
+      requestBody:
+        description: Group
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupRequest'
+      responses:
+        200:
+          description: Group response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  name:
+                    - can't be blank
+  /groups/{id}:
+    get:
+      tags:
+        - Groups
+      summary: Get Group
+      description: Retrieves a specific group
+      operationId: getGroup
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the Group to fetch.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Group response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+              example:
+                error:
+                  - Record not found.
+  /groups/{group_id}/analysts:
+    get:
+      tags:
+        - Groups
+      summary: Get Group Analysts
+      description: Retrieves a list of group analysts
+      operationId: getGroupAnalysts
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the Group in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Groups response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetGroupAnalystsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unable to process request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  - user_ids: 'Invalid user IDs: 1'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+              example:
+                error:
+                  - group_id: 'Could not find group with ID 1.'
+    post:
+      tags:
+        - Groups
+      summary: Assign Analysts to a Group
+      description: Assign Group Analysts to a group. Users need to be assigned the Group Analyst (group_analyst) role.
+      operationId: postGroupAnalysts
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the Group in the form of an integer.
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Group Analyst
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupAddAnalystRequest'
+      responses:
+        201:
+          description: Group Analyst response
+          content: {}
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unable to process request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  group_analysts: 'User IDs missing group_analysts role:: 1, 2'
+                  user_id: 'Invalid user IDs: 3, 4'
+                  group_id: 'Invalid group ID: 1'
+  /groups/{group_id}/analysts/{user_id}:
+    delete:
+      tags:
+        - Groups
+      summary: Delete Analyst
+      description: Remove an analyst from a group
+      operationId: removeAnalystFromGroup
+      parameters:
+        - name: group_id
+          in: path
+          description: ID of the Group in the form of an integer.
+          required: true
+          schema:
+            type: number
+        - name: user_id
+          in: path
+          description: ID of the User in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        204:
+          description: Group Analyst response
+          content: {}
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Unable to process request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+              example:
+                error:
+                  user_id:
+                    - 'Could not find user with ID 1.'
+                  group_id:
+                    - 'Could not find group with ID 1.'
+  /group_analysts/{user_id}/groups:
+    post:
+      tags:
+        - Group Analysts
+      summary: Add Analyst to Groups
+      description: Assign Group Analyst to groups. User need to be assigned the Group Analyst (group_analyst) role.
+      operationId: addGroupToAnalyst
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the User in the form of an integer.
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Group Analyst
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupAnalystsAddGroupRequest'
+      responses:
+        201:
+          description: Group Analyst response
+          content: {}
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unable to process request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  group_analysts: 'User IDs missing group_analysts role: 1'
+                  group_id: 'Invalid group IDs: 1, 2'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+              example:
+                error:
+                  user_id:
+                    - 'Could not find user with ID 1.'
+  /group_analysts/{user_id}/groups/{group_id}:
+    delete:
+      tags:
+        - Group Analysts
+      summary: Delete Analyst
+      description: Remove an analyst from a group
+      operationId: removeGroupFromAnalyst
+      parameters:
+        - name: user_id
+          in: path
+          description: ID of the User in the form of an integer.
+          required: true
+          schema:
+            type: number
+        - name: group_id
+          in: path
+          description: ID of the Group in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        204:
+          description: Group Analyst response
+          content: {}
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unable to process request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  group_id:
+                    - 'Could not find group with ID 1.'
+        404:
+          description: Unable to process request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+              example:
+                error:
+                  user_id:
+                    - 'Could not find user with ID 1.'
+                  group_id:
+                    - 'Could not find group with ID 1.'
+  /instructors:
+    get:
+      tags:
+        - Instructors
+      summary: Get Instructors
+      description: Retrieve a list of Instructors
+      operationId: getInstructors
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Instructors response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetInstructorsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Instructors
+      summary: Create instructor
+      description: 'Creates a new Instructor '
+      operationId: createInstructor
+      requestBody:
+        description: New instructor attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorRequest'
+        required: true
+      responses:
+        201:
+          description: Instructor response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  last_name:
+                    - can't be blank
+      x-codegen-request-body-name: body
+  /instructors/{id}:
+    get:
+      tags:
+        - Instructors
+      summary: Get Instructor by ID
+      description: Returns the Instructor identified by the provided id.
+      operationId: getInstructorByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Instructor in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Instructor response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstructorResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+    put:
+      tags:
+        - Instructors
+      summary: Update instructor
+      description: Updates the Instructor identified by the provided id
+      operationId: updateInstructor
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Instructor in the form of an integer
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: New instructor attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorRequest'
+        required: true
+      responses:
+        204:
+          description: Instructor Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        422:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  - Instructor could not be found
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - Instructors
+      summary: Delete instructor
+      description: Delete the Instructor identified by the provided id
+      operationId: deleteInstructorByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Instructor in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        204:
+          description: Instructor deleted
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /orders:
+    get:
+      tags:
+        - Orders
+      summary: Get Orders
+      description: Retrieve a list of Orders
+      operationId: getOrders
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Orders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrdersResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /orders/{id}:
+    get:
+      tags:
+        - Orders
+      summary: Get orders by ID
+      description: Returns the orders identified by the provided id.
+      operationId: getOrderByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Orders in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Orders response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /group_users:
+    post:
+      tags:
+        - Group Users
+      summary: Create a User to existing Groups
+      description: Create an existing User to existing Groups
+      operationId: createGroupUsers
+      requestBody:
+        description: Group Users attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGroupUsersRequest'
+        required: true
+      responses:
+        201:
+          description: Group Users response
+          content: {}
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  - Invalid group_names
+      x-codegen-request-body-name: body
+  /product_publish_requests:
+    get:
+      tags:
+        - Product Publish Request
+      summary: Get List of product publish requests
+      description: Returns a list of Product Publish Requests.
+      operationId: getProductPublishRequests
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Product Publish Requests response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductPublishResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /product_publish_requests/{id}:
+    get:
+      tags:
+        - Product Publish Request
+      summary: Get product publish request by ID
+      description:
+        Returns the Product Publish Request identified by the provided
+        id.
+      operationId: getProductPublishRequestByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Product Publish Request in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Product Publish Request success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPublishRequest'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /product_publish_requests/{id}/approve:
+    post:
+      tags:
+        - Product Publish Request
+      summary: Approves Product Publish Request
+      operationId: approveProductPublishRequest
+      description:
+        Approves the Product Publish Request identified by the provided
+        id.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Product Publish Request in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Product Publish Request approved
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /product_publish_requests/{id}/deny:
+    post:
+      tags:
+        - Product Publish Request
+      summary: Denies Product Publish Request
+      description: Denies the Product Publish Request identified by the provided id.
+      operationId: denyProductPublishRequest
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Product Publish Request in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Product Publish Request denied
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /products:
+    get:
+      tags:
+        - Products
+      summary: List products
+      operationId: getProducts
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Products response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get product by ID
+      description: Returns the Product identified by the provided id.
+      operationId: getProductByID
+      parameters:
+        - name: id
+          in: path
+          description: Id of the product in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Products response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /products/{id}/related:
+    get:
+      tags:
+        - Products
+      summary: Get related products
+      description:
+        Returns a list of products that are related to the Product identified
+        by the provided id.
+      operationId: getRelatedProductByProductID
+      parameters:
+        - name: id
+          in: path
+          description: Id of the product in the form of an integer
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Products response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /promotions:
+    get:
+      tags:
+        - Promotions
+      summary: List promotions
+      operationId: getPromotions
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Promotions response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPromotionsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Promotions
+      summary: Create a new promotion
+      operationId: createPromotion
+      requestBody:
+        description: New Promotion parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionRequest'
+        required: false
+      responses:
+        201:
+          description: Promotions response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  name:
+                    - can't be blank
+      x-codegen-request-body-name: body
+  /promotions/{id}:
+    get:
+      tags:
+        - Promotions
+      summary: Get promotion by provided ID
+      operationId: getPromotionByID
+      parameters:
+        - name: id
+          in: path
+          description: Id of the promotion in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: Promotions response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+    put:
+      tags:
+        - Promotions
+      summary: Update promotion by provided ID
+      operationId: updatePromotionByID
+      parameters:
+        - name: id
+          in: path
+          description: Id of the promotion in the form of an integer
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Promotion attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromotionRequest'
+        required: false
+      responses:
+        204:
+          description: Promotion Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        422:
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  name:
+                    - can't be blank
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - Promotions
+      summary: Delete promotion by provided ID
+      operationId: deletePromotionByID
+      parameters:
+        - name: id
+          in: path
+          description: Id of the promotion in the form of an integer
+          required: true
+          schema:
+            type: number
+      responses:
+        204:
+          description: Promotions deleted
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /promotions/by_coupon:
+    get:
+      tags:
+        - Promotions
+      summary: Get Promotion associated with the provided Coupon code.
+      description: Find a Promotion by Coupon Code and Product
+      operationId: getPromotionByCouponCode
+      parameters:
+        - name: product_id
+          in: query
+          description: The id of the Product to which the promotion applies.
+          required: true
+          schema:
+            type: number
+        - name: coupon_code
+          in: query
+          description: The Coupon code to be used as search criteria.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Promotions response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PromotionResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /course_reviews:
+    get:
+      tags:
+        - Course Reviews
+      summary: Get Course Reviews
+      description: Retrieve a list of Course Reviews
+      operationId: getCourseReviews
+      parameters:
+        - name: course_id
+          in: query
+          description: ID of the Course in the form of an integer.
+          required: true
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: The page within the collection to fetch.
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned.
+          schema:
+            type: number
+            default: 25.0
+        - name: approved
+          in: query
+          description: If true, returns only approved Course Reviews.
+          schema:
+            type: boolean
+      responses:
+        200:
+          description: CourseReviews
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCourseReviewsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Course Reviews
+      summary: Create a course review
+      description: Create a course review
+      operationId: createCourseReview
+      parameters:
+        - name: course_id
+          in: query
+          description: ID of the Course for which the review needs to be created for.
+          required: true
+          schema:
+            type: number
+      requestBody:
+        description: Course Review Attributes
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCourseReviewRequest'
+        required: true
+      responses:
+        201:
+          description: Course Review Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseReviewResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        422:
+          description: UnprocessableEntity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  user_id:
+                    - can't be blank
+      x-codegen-request-body-name: body
+  /course_reviews/{id}:
+    get:
+      tags:
+        - Course Reviews
+      summary: Get Course Reviews By ID
+      description: Retrieve a Course Review identified by the provided id.
+      operationId: getCourseReviewByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Course Review in the form of an integer.
+          required: true
+          schema:
+            type: number
+      responses:
+        200:
+          description: CourseReviewByID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseReviewResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+  /users:
+    get:
+      tags:
+        - Users
+      summary: List Users
+      description: Retrieve a list of users
+      operationId: getUsers
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+        - name: query[email]
+          in: query
+          description: Search Users by email.
+          schema:
+            type: string
+        - name: query[role]
+          in: query
+          description: Search Users by role.
+          schema:
+            type: string
+        - name: query[external_source]
+          in: query
+          description: Search Users by external source.
+          schema:
+            type: string
+        - name: query[custom_profile_field_label]
+          in: query
+          description: Search by custom profile field label (must be combined with custom_profile_field_value)
+          schema:
+            type: string
+        - name: query[custom_profile_field_value]
+          in: query
+          description: Search by custom profile field value (must be combined with custom_profile_field_label)
+          schema:
+            type: string
+        - name: query[group_id]
+          in: query
+          description: Search by group id.
+          schema:
+            type: number
+      responses:
+        200:
+          description: Users response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsersResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+    post:
+      tags:
+        - Users
+      summary: Create user
+      description: Create a new user
+      operationId: createUser
+      requestBody:
+        description: Create user request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+        required: true
+      responses:
+        201:
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        422:
+          description: UnprocessableEntity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  first_name:
+                    - can't be blank
+      x-codegen-request-body-name: body
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: List Users by ID
+      description: Retrieves a User identified by the provided id
+      operationId: getUserByID
+      parameters:
+        - name: id
+          in: path
+          description: Accepts a Thinkific generated ID (in the form of an integer), or an External ID (as a string) when accompanied by the "provider" parameter.
+          required: true
+          schema:
+            type: string
+        - name: provider
+          in: query
+          description: Provider from which the user's External Id is associated (Required if using External Id as id parameter)
+          required: false
+          schema:
+            type: string
+            enum:
+              - 'SSO'
+              - 'OPENID_CONNECT'
+            description: Provider that creates the user and with which the External Id is associated.
+            example: SSO
+      responses:
+        200:
+          description: User Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+    put:
+      tags:
+        - Users
+      summary: Update user by ID
+      description: Updates the user specified by the provided id
+      operationId: updateUserByID
+      parameters:
+        - name: id
+          in: path
+          description: Accepts a Thinkific generated ID (in the form of an integer), or an External ID (as a string) when accompanied by the "provider" parameter.
+          required: true
+          schema:
+            type: string
+        - name: provider
+          in: query
+          description: Provider from which the user's External Id is associated (Required if using External Id as id parameter)
+          required: false
+          schema:
+            type: string
+            enum:
+              - 'SSO'
+              - 'OPENID_CONNECT'
+            description: Provider that creates the user and with which the External Id is associated.
+            example: SSO
+      requestBody:
+        description: User details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+        required: true
+      responses:
+        204:
+          description: User Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenAppsNotAvailableResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        422:
+          description: UnprocessableEntity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntityError'
+              example:
+                errors:
+                  first_name:
+                    - can't be blank
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - Users
+      summary: Delete user by ID
+      description: Deletes a User identified by the provided id
+      operationId: deleteUserByID
+      parameters:
+        - name: id
+          in: path
+          description: Accepts a Thinkific generated ID (in the form of an integer), or an External ID (as a string) when accompanied by the "provider" parameter.
+          required: true
+          schema:
+            type: string
+        - name: provider
+          in: query
+          description: Provider from which the user's External Id is associated (Required if using External Id as id parameter)
+          required: false
+          schema:
+            type: string
+            enum:
+              - 'SSO'
+              - 'OPENID_CONNECT'
+            description: Provider that creates the user and with which the External Id is associated.
+            example: SSO
+      responses:
+        204:
+          description: User Deleted
+        404:
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+
+  /site_scripts:
+    get:
+      tags:
+        - Site Scripts
+      summary: List Site Scripts
+      description: Retrieve a list of site scripts
+      operationId: getSiteScripts
+      parameters:
+        - name: page
+          in: query
+          description: The page within the collection to fetch
+          schema:
+            type: number
+            default: 1.0
+        - name: limit
+          in: query
+          description: The number of items to be returned
+          schema:
+            type: number
+            default: 25.0
+      responses:
+        200:
+          description: Site Scripts response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSiteScriptsResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenInsufficientScopeResponse'
+    post:
+      tags:
+        - Site Scripts
+      summary: Create Site Script
+      description: Create a new Site Script
+      operationId: createSiteScript
+      requestBody:
+        description: |
+          Create Site Script request body
+
+          To create Site Scripts, either the `src` or `content` attribute must be provided. Only one should be specified.
+
+          When using the `src` attribute, the top-level domain of the URL should match the top-level domain of the App URL. When using the `content` attribute, the header `HMAC-SHA256-SIGNATURE` generated using the app's secret and content must be included in the request.
+
+          Use the drop down menu to view examples with `src` or `content` attribute
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteScriptRequest'
+            examples:
+              CreateSiteScriptWithContentRequest:
+                $ref: '#/components/examples/SiteScriptWithContentRequest'
+              CreateSiteScriptWithSrcRequest:
+                $ref: '#/components/examples/SiteScriptWithSrcRequest'
+        required: true
+      responses:
+        201:
+          description: Site Script created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteScriptResponse'
+              examples:
+                CreateSiteScriptWithContentResponse:
+                  $ref: '#/components/examples/SiteScriptWithContentResponse'
+                CreateSiteScriptWithSrcResponse:
+                  $ref: '#/components/examples/SiteScriptWithSrcResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenInsufficientScopeResponse'
+      x-codegen-request-body-name: body
+
+  /site_scripts/{id}:
+    get:
+      tags:
+        - Site Scripts
+      summary: Get Site Script by ID
+      description: Retrieves a Site Script identified by the provided ID
+      operationId: getSiteScriptByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Site Script in the form of a string
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Site Script Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteScriptResponse'
+              examples:
+                GetSiteScriptWithContentResponse:
+                  $ref: '#/components/examples/SiteScriptWithContentResponse'
+                GetSiteScriptWithSrcResponse:
+                  $ref: '#/components/examples/SiteScriptWithSrcResponse'
+        403:
+          $ref: '#/components/responses/ErrorForbiddenInsufficientScopeResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+    put:
+      tags:
+        - Site Scripts
+      summary: Update Site Script by ID
+      description: Updates the Site Script specified by the provided ID
+      operationId: updateSiteScriptByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Site Script in the form of a string
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: |
+          Update Site Script request body
+
+          When updating Site Scripts, only one of `src` or `content` should be specified.
+
+          When using the `src` attribute, the top-level domain of the URL should match the top-level domain of the app.
+          When using the `content` attribute, the header `HMAC-SHA256-SIGNATURE` generated using the app's secret and content must be included in the request.
+
+          Use the dropdown menu to view examples with `src` or `content` attribute.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SiteScriptRequest'
+            examples:
+              UpdateSiteScriptWithContentRequest:
+                $ref: '#/components/examples/SiteScriptWithContentRequest'
+              UpdateSiteScriptWithSrcRequest:
+                $ref: '#/components/examples/SiteScriptWithSrcRequest'
+        required: true
+      responses:
+        204:
+          description: Site Script Updated
+        403:
+          $ref: '#/components/responses/ErrorForbiddenInsufficientScopeResponse'
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+
+    delete:
+      tags:
+        - Site Scripts
+      summary: Delete Site Script by ID
+      description: Deletes a Site Script identified by the provided ID
+      operationId: deleteSiteScriptByID
+      parameters:
+        - name: id
+          in: path
+          description: ID of the Site Script in the form of a string
+          required: true
+          schema:
+            type: string
+      responses:
+        204:
+          description: Site Script Deleted
+        403:
+          $ref: '#/components/responses/ErrorForbiddenInsufficientScopeResponse'
+        404:
+          description: NotFound
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+
+components:
+  schemas:
+    BundleResponse:
+      required:
+        - id
+        - name
+        - course_ids
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Bundle
+          example: 1.0
+        name:
+          type: string
+          description: The name of the Bundle
+          example: A Bundle
+        description:
+          type: string
+          description: The description on the Bundle
+          example: The Bundle description
+        tagline:
+          type: string
+          description: The tagline for the Bundle (Deprecated)
+          example: Bundle tagline
+        banner_image_url:
+          type: string
+          description: Deprecated - use 'bundle_card_image_url'* - The banner image url for the Bundle.
+          example: http://example.com/image.jpg
+        course_ids:
+          type: array
+          items:
+            type: number
+            description: The IDs of the Courses in the Bundle
+        bundle_card_image_url:
+          type: string
+          description: The card image url for the Bundle
+          example: http://example.com/image.jpg
+    GetChaptersResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChapterResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    ChapterResponse:
+      required:
+        - content_ids
+        - id
+        - name
+        - position
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Chapter as an integer
+          example: 1.0
+        name:
+          type: string
+          description: The name of the Chapter
+          example: Chapter 1
+        position:
+          type: number
+          description: The position of the Chapter within the Course
+          example: 1.0
+        description:
+          type: string
+          description: The description of the Chapter
+          example: The first Chapter
+        duration_in_seconds:
+          type: number
+          description:
+            The duration of the Chapter in seconds. This is the sum of
+            the length of the video lessons in the Chapter
+          example: 60.0
+        content_ids:
+          type: array
+          example:
+            - 1
+            - 2
+            - 3
+          items:
+            type: number
+            description: The IDs of the Contents within the Chapter
+    GetCollectionsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CollectionResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    CollectionResponse:
+      required:
+        - created_at
+        - default
+        - description
+        - id
+        - name
+        - product_ids
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Category as an integer
+          example: 1.0
+        name:
+          type: string
+          description: The name of the Category
+          example: All Courses
+        description:
+          type: string
+          description: The description of the Category
+          example: All the Courses in the Site
+        slug:
+          type: string
+          description: courses (string, required) - The slug of the Category
+          example: all
+        created_at:
+          type: string
+          description: The date and time when the Category was created
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        product_ids:
+          type: array
+          example:
+            - 1
+            - 2
+          items:
+            type: number
+            description: The IDs of the Products contained within the Category
+        default:
+          type: boolean
+          description: A boolean indicating whether the Category is the default
+          example: true
+    CollectionRequest:
+      required:
+        - description
+        - name
+        - slug
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the Category
+          example: My Category
+        description:
+          type: string
+          description: The description of the Category
+          example: This is a description of my category
+        slug:
+          type: string
+          description: The slug of the Category.
+          example: my-category
+    GetContentsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContentResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    ContentResponse:
+      required:
+        - chapter_id
+        - contentable_type
+        - free
+        - id
+        - name
+        - position
+        - take_url
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Content as an integer
+          example: 1.0
+        name:
+          type: string
+          description: The name of the Content
+          example: Video Lesson
+        position:
+          type: number
+          description: The position of the Content within a Chapter.
+          example: 1.0
+        chapter_id:
+          type: number
+          description: The ID of the Chapter that the Content is in as an integer
+          example: 1.0
+        contentable_type:
+          type: string
+          enum:
+            - 'Assignment'
+            - 'Audio'
+            - 'Download'
+            - 'BrilliumExam'
+            - 'Disqus'
+            - 'HtmlItem'
+            - 'Iframe'
+            - 'LiveLesson'
+            - 'Lesson'
+            - 'Pdf'
+            - 'Presentation'
+            - 'Quiz'
+            - 'Survey'
+          description: The type of the Content
+          example: Lesson
+        free:
+          type: boolean
+          description: A boolean indicating whether the Content is free
+          example: false
+        take_url:
+          type: string
+          description: The url of the Content in the Course Player
+          example: http://somesite.thinkific.com/courses/take/xxx/yyy
+    GetCourseReviewsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseReviewResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    CourseReviewResponse:
+      required:
+        - approved
+        - course_id
+        - id
+        - rating
+        - review_text
+        - title
+        - user_id
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Course Review as an integer.
+          example: 1.0
+        rating:
+          type: number
+          description: The rating, out of 5, of the Course Review.
+          example: 4.0
+        title:
+          type: string
+          description: The Course Review title.
+          example: My Review
+        review_text:
+          type: string
+          description: The body of the Course Review.
+          example: It was great!
+        user_id:
+          type: number
+          description: The ID of the User writing the Course Review as an integer.
+          example: 1.0
+        course_id:
+          type: number
+          description: The ID of the Course being reviewed as an integer.
+          example: 1.0
+        approved:
+          type: boolean
+          description: A boolean indicating whether the Course Review has been approved.
+          example: true
+        created_at:
+          type: string
+          description: The date and time the Course Review was created.
+          format: date-time
+          example: '2017-04-30T01:00:00Z'
+    CreateCourseReviewRequest:
+      required:
+        - approved
+        - rating
+        - review_text
+        - title
+        - user_id
+      type: object
+      properties:
+        rating:
+          type: number
+          description: The rating, out of 5, of the Course Review.
+          example: 4.0
+        title:
+          type: string
+          description: The Course Review title.
+          example: My Review
+        review_text:
+          type: string
+          description: The body of the Course Review.
+          example: It was great!
+        user_id:
+          type: number
+          description: The ID of the User writing the Course Review as an integer.
+          example: 1.0
+        approved:
+          type: boolean
+          description: A boolean indicating whether the Course Review has been approved.
+          example: true
+    MembershipsRequest:
+      required:
+        - product_ids
+      type: object
+      properties:
+        product_ids:
+          type: array
+          example:
+            - 1
+            - 2
+          items:
+            type: number
+            description:
+              An array of the IDs of the Products that should be added
+              to the Category as integers
+    UpdateCoupon:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Coupon code.
+          example: ABCD
+        note:
+          type: string
+          description:
+            'A note associated with the Coupon. NOTE: this will be deprecated
+            in future versions of the API.'
+          example: Black Friday Coupon
+        quantity_used:
+          type: string
+          description: The number of times the Coupon has been used.
+          example: '4'
+        quantity:
+          type: number
+          description:
+            The number of times the Coupon can be used. If this value if
+            not set, the Coupon can be used an unlimited number of times.
+          example: 10.0
+    CreateBulkCouponResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CouponResponse'
+    BulkCreateCouponRequest:
+      type: object
+      properties:
+        bulk_quantity_per_coupon:
+          type: number
+          description:
+            The number of times each of the autogenerated Coupons can be
+            used. Defaults to allowing unlimited use.
+          example: 10.0
+        bulk_coupon_code_length:
+          type: number
+          description: The length of the Coupon code. The minimum length is 6.
+          example: 10.0
+        bulk_quantity:
+          type: number
+          description: The number of unique Coupons to create. Maximum value is 1000.
+          example: 100.0
+    CreateCouponRequest:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Coupon code.
+          example: ABCD
+        note:
+          type: string
+          description:
+            'A note associated with the Coupon. NOTE: this will be deprecated
+            in future versions of the API.'
+          example: Black Friday Coupon
+        quantity:
+          type: number
+          description:
+            The number of times the Coupon can be used. If this value if
+            not set, the Coupon can be used an unlimited number of times.
+          example: 10.0
+    GetCouponResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CouponResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    CouponResponse:
+      required:
+        - code
+        - created_at
+        - id
+        - note
+        - promotion_id
+        - quantity
+        - quantity_used
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Coupon as an integer.
+          example: 1.0
+        code:
+          type: string
+          description: The Coupon code.
+          example: abc123
+        note:
+          type: string
+          description:
+            'A note associated with the Coupon. NOTE: this will be deprecated
+            in future versions of the API.'
+          example: A note
+        quantity_used:
+          type: number
+          description: The number of times the Coupon has been used.
+          example: 4.0
+        quantity:
+          type: number
+          description:
+            The number of times the Coupon can be used. If this value if
+            not set, the Coupon can be used an unlimited number of times.
+          example: 10.0
+        promotion_id:
+          type: number
+          description: The ID of the associated Promotion as an integer.
+          example: 12.0
+        created_at:
+          type: string
+          description: The data and time the Coupon was created.
+          format: date-time
+          example: '2017-04-30T01:00:00Z'
+    GetCoursesResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    CourseResponse:
+      required:
+        - chapter_ids
+        - id
+        - instructor_id
+        - name
+        - product_id
+        - reviews_enabled
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the course
+          example: 1.0
+        name:
+          type: string
+          description: The name of the course
+          example: My Course
+        slug:
+          type: string
+          description: URL-friendly version of the course name. Used to construct URL for course Landing Pages & Course Player.
+          example: my-course
+        subtitle:
+          type: string
+          description: Deprecated - Used in legacy themes to display the subtitle of the Course.
+          example: My Course Subtitle
+        product_id:
+          type: number
+          description: The Course's Product ID
+        description:
+          type: string
+          description:
+            The description of the Course(V2 themes currently don't have
+            that info)
+          example: Course description
+        course_card_text:
+          type: string
+          description: Deprecated - use 'description'.* - Used in legacy themes to populate the text for a Course card.
+          example: my course
+        intro_video_youtube:
+          type: string
+          description: Deprecated - Used in legacy themes to designate an intro video from Youtube.
+          example: youtube01
+        contact_information:
+          type: string
+          description: Deprecated - The contact information of the Course.
+          example: Contact info
+        keywords:
+          type: string
+          description: The keywords of the Course
+          example: course,learn,great
+        duration:
+          type: string
+          description: Deprecated - Used in legacy themes to display the duration of the Course.
+          example: '22'
+        banner_image_url:
+          type: string
+          description: Deprecated - use 'course_card_image_url'* - The landing page banner image url of the Course.
+          example: http://example.com/banner.jpg
+        course_card_image_url:
+          type: string
+          description: The card image url of the Course
+          example: http://example.com/card.jpg
+        intro_video_wistia_identifier:
+          type: string
+          description: Deprecated - Used in legacy themes to designate an intro video from Wistia.
+          example: wistia0123
+        administrator_user_ids:
+          type: array
+          example:
+            - 1
+            - 2
+          items:
+            type: number
+            description: The IDs of the Users that can administer the Course as integers
+        chapter_ids:
+          type: array
+          example:
+            - 1
+            - 2
+          items:
+            type: number
+            description: The IDs of the Chapters in the Course as integers
+        reviews_enabled:
+          type: boolean
+          description: A boolean indicating whether reviews are enabled for the Course
+          example: false
+        user_id:
+          type: number
+          description: The ID of the User that created the Course
+          example: 1.0
+        instructor_id:
+          type: number
+          description: The ID of the Instructor of the Course
+          example: 1.0
+    GetCustomProfileFieldDefinitions:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomProfileFieldDefinitionsResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    CustomProfileFieldDefinitionsResponse:
+      required:
+        - field_type
+        - id
+        - label
+        - required
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Custom Profile Field Definition as an integer.
+          example: 1.0
+        label:
+          type: string
+          description: The label of the Custom Profile Field Definition.
+          example: Phone
+        field_type:
+          type: string
+          description: The Course's Product ID as an integer.
+          example: '1'
+        required:
+          type: boolean
+          description:
+            A boolean indicating whether the Custom Profile Field Definition
+            is required.
+          example: true
+    GetEnrollmentsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnrollmentResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    EnrollmentResponse:
+      required:
+        - activated_at
+        - completed
+        - completed_at
+        - course_id
+        - course_name
+        - expired
+        - expiry_date
+        - id
+        - is_free_trial
+        - percentage_completed
+        - started_at
+        - updated_at
+        - user_email
+        - user_id
+        - user_name
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Enrollment as an integer.
+          example: 1.0
+        user_email:
+          type: string
+          description: The email of the User owning the Enrollment.
+          example: bob@example.com
+        user_name:
+          type: string
+          description: The full name of the User owning the Enrollment.
+          example: Bob Smith
+        user_id:
+          type: number
+          description: The ID of the User owning the Enrollment as an integer.
+          example: 1.0
+        course_name:
+          type: string
+          description: The name of the Course.
+          example: My Course
+        course_id:
+          type: number
+          description: The ID of the Course as an integer.
+          example: 1.0
+        percentage_completed:
+          type: number
+          description:
+            The percentage complete of the Enrollment. A number between
+            0.0 and 1.0. For example, to represent a percentage complete of 75%, this
+            value would be 0.75.
+          example: 1.0
+        expired:
+          type: boolean
+          description: A boolean indicating whether the Enrollment is expired.
+          example: false
+        is_free_trial:
+          type: boolean
+          description: A boolean indicating whether the Enrollment is a free trial.
+          example: false
+        completed:
+          type: boolean
+          description: A boolean indicating whether the Enrollment is complete.
+          example: true
+        started_at:
+          type: string
+          description: The date/time that the Enrollment started.
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        activated_at:
+          type: string
+          description: The date/time that the Enrollment was activated.
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        completed_at:
+          type: string
+          description: The date/time that the Enrollment was completed.
+          format: date-time
+          example: '2018-01-31T01:01:00Z'
+        updated_at:
+          type: string
+          description: The date/time that the Enrollment was updated last.
+          format: date-time
+          example: '2018-01-31T01:01:00Z'
+        expiry_date:
+          type: string
+          description: The date/time that the Enrollment expires.
+          format: date-time
+          example: '2019-01-01T01:01:00Z'
+    CreateEnrollmentRequest:
+      type: object
+      properties:
+        course_id:
+          type: number
+          description: The ID of the Course as an integer.
+          example: 1.0
+        user_id:
+          type: number
+          description: The ID of the User owning the Enrollment as an integer.
+          example: 1.0
+        activated_at:
+          type: string
+          description:
+            The date/time at which the Enrollment is activated. If not
+            provided, the Enrollment is a free trial.
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        expiry_date:
+          type: string
+          description:
+            The date/time at which the Enrollment expired. If not provided,
+            the Enrollment does not expire.
+          format: date-time
+          example: '2019-01-01T01:01:00Z'
+    UpdateEnrollmentRequest:
+      type: object
+      properties:
+        activated_at:
+          type: string
+          description:
+            The date/time at which the Enrollment is activated. If not
+            provided, the Enrollment is a free trial.
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        expiry_date:
+          type: string
+          description:
+            The date/time at which the Enrollment expired. If not provided,
+            the Enrollment does not expire.
+          format: date-time
+          example: '2019-01-01T01:01:00Z'
+    ExternalOrderRequest:
+      type: object
+      description: External Order Request
+      required:
+        - payment_provider
+        - user_id
+        - product_id
+        - order_type
+      properties:
+        payment_provider:
+          type: string
+          description: An identifier to external provider
+          example: ExternalProvider
+        user_id:
+          type: number
+          example: 1
+          description: The ID of the user as an integer
+        product_id:
+          example: 1
+          type: number
+          description: The ID of the product as an integer
+        order_type:
+          type: string
+          enum: ['one-time', 'subscription', 'payment-plan']
+          example: one-time
+          description: type of the order
+        transaction:
+          $ref: '#/components/schemas/ExternalOrderTransaction'
+    ExternalOrderTransaction:
+      description: External Order Transaction
+      type: object
+      required:
+        - amount
+        - currency
+      properties:
+        amount:
+          example: 10000
+          type: number
+          description: the order amount in currency's smallest unit
+        currency:
+          type: string
+          example: USD
+          description: the order currency
+        reference:
+          example: 123abc
+          type: string
+          description: reference number provided by external payment provider
+        action:
+          example: purchase
+          type: string
+          description: Action of the transaction
+
+    GetInstructorsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstructorResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    InstructorResponse:
+      required:
+        - created_at
+        - first_name
+        - id
+        - last_name
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Instructor as an integer.
+          example: 1.0
+        user_id:
+          type: number
+          description: The ID of the User owning the Instructor
+          example: 12.0
+        title:
+          type: string
+          description: The title of the Instructor
+          example: Mr.
+        first_name:
+          type: string
+          description: The first name of the Instructor.
+          example: My Course
+        last_name:
+          type: string
+          description: The last name of the Instructor.
+          example: My Course
+        bio:
+          type: string
+          description: The bio of the Instructor
+          example: Bob Jones is an instructor of note.
+        slug:
+          type: string
+          description:
+            'The slug of the Instructor NOTE: This will be removed in future
+            API versions'
+          example: bob
+        avatar_url:
+          type: string
+          description: The fully-qualified url of the Instructor's avatar
+          example: https://example.com/avatar.png
+        email:
+          type: string
+          description: The email of the Instructor
+          example: bob_jones@example.com
+        created_at:
+          type: string
+          description: The date/time that the Instructor was created.
+    InstructorRequest:
+      required:
+        - first_name
+        - last_name
+        - slug
+      type: object
+      properties:
+        user_id:
+          type: number
+          description: The ID of the User owning the Instructor
+          example: 12.0
+        title:
+          type: string
+          description: The title of the Instructor
+          example: Mr.
+        first_name:
+          type: string
+          description: The first name of the Instructor
+          example: Bob
+        last_name:
+          type: string
+          description: The last name of the Instructor
+          example: Jones
+        bio:
+          type: string
+          description: The bio of the Instructor
+          example: Bob Jones is an instructor of note.
+        slug:
+          type: string
+          description:
+            'The slug of the Instructor NOTE: This will be removed in future
+            API versions'
+          example: bob
+        avatar_url:
+          type: string
+          description: The fully-qualified url of the Instructor's avatar
+          example: https://example.com/avatar.png
+        email:
+          type: string
+          description: The email of the Instructor
+          example: bob_jones@example.com
+    GetGroupsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    GroupResponse:
+      required:
+        - id
+        - created_at
+        - name
+        - token
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Group
+          example: 1
+        name:
+          type: string
+          description: The name of the Group
+          example: New Group 1
+        token:
+          type: string
+          description: The 8-character unique identifier for the Group
+          example: c2395613
+        created_at:
+          type: string
+          description: The date/time the Group was created
+          format: date-time
+          example: '2019-01-01T01:01:00Z'
+    GroupRequest:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the Group
+          example: New Group 1
+    GroupAddAnalystRequest:
+      required:
+        - user_ids
+      type: object
+      properties:
+        user_ids:
+          type: array
+          description: The list of User IDs to add as analysts to the Group
+          example:
+            - 1
+            - 2
+          items:
+            type: number
+    GetGroupAnalystsResponse:
+      required:
+        - group_analysts
+      type: object
+      properties:
+        group_analysts:
+          type: array
+          description: The list of User IDs to add as analysts to the Group
+          example:
+            - 1
+            - 2
+          items:
+            type: number
+    GroupAnalystsAddGroupRequest:
+      required:
+        - group_ids
+      type: object
+      properties:
+        group_ids:
+          type: array
+          description: The list of Group IDs to add the analyst
+          example:
+            - 1
+            - 2
+          items:
+            type: number
+    GetOrdersResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    OrderResponse:
+      required:
+        - amount_cents
+        - amount_dollars
+        - id
+        - product_id
+        - product_name
+        - status
+        - subscription
+        - user_email
+        - user_id
+        - user_name
+      type: object
+      properties:
+        user_id:
+          type: number
+          description: The ID of the User owning the Order as an integer.
+          example: 1.0
+        user_email:
+          type: string
+          description: The Email ID of the User.
+          example: bob@example.com
+        user_name:
+          type: string
+          description: The full name of the User owning the Order.
+          example: Bob Smith
+        product_name:
+          type: string
+          description: The name of the Product purchased.
+          example: My Course
+        product_id:
+          type: number
+          description: The ID of the Product purchased as an integer.
+          example: 1.0
+        amount_dollars:
+          type: number
+          description: The Order amount in dollars.
+          example: 20.0
+        amount_cents:
+          type: number
+          description: The Order amount in cents.
+          example: 2000.0
+        subscription:
+          type: boolean
+          description: A boolean indicating whether the Order was for a subscription.
+          example: false
+        coupon_code:
+          type: string
+          description: The Coupon code used on the Order.
+          example: abc123
+        coupon_id:
+          type: number
+          description: The ID of the Coupon used on the Order as an integer.
+          example: 1
+        items:
+          type: array
+          description: Products included in the Order.
+          items:
+            $ref: '#/components/schemas/Item'
+        affiliate_referral_code:
+          type: string
+          description: The Affiliate referral code used on the Order.
+          example: exexex
+        status:
+          type: string
+          description: The order status.
+          example: complete
+        created at:
+          type: string
+          description: The date/time that the Order was created.
+        id:
+          type: number
+          description: The ID of the Order as an integer.
+          example: 1.0
+    CreateGroupUsersRequest:
+      required:
+        - group_names
+        - user_id
+      type: object
+      properties:
+        user_id:
+          type: number
+          description: The ID of the User to add to Groups
+          example: 3251643.0
+        group_names:
+          type: array
+          description: The list of Group names to add selected User to
+          example:
+            - New Group 1
+            - New Group 2
+          items:
+            type: string
+    ProductPublishRequest:
+      required:
+        - product_id
+        - requesting_user_id
+        - status
+      type: object
+      properties:
+        product_id:
+          type: number
+          description: The ID pf the Product as an integer.
+          example: 1.0
+        status:
+          type: string
+          description:
+            The approval status of the Product Publish Request. Can be
+            either 'approved' or 'denied'.
+          example: approved
+        response_text:
+          type: string
+          description: The text of the response provided by the approver.
+          example: Wow! Great course!
+        requesting_user_id:
+          type: number
+          description: The ID of the requesting User as an integer.
+          example: 2.0
+        responding_user_id:
+          type: number
+          description: The ID of the responding User as an integer.
+        completed_at:
+          type: string
+          description: The date/time the Product Publish Request was completed.
+        created_at:
+          type: string
+          description: The date/time the Product Publish Request was created.
+        updated_at:
+          type: string
+          description: The date/time the Product Publish Request was last updated.
+    GetProductPublishResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Product as an integer.
+          example: 6.0
+        created_at:
+          type: string
+          description: The date and time that the Product was created.
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        productable_id:
+          type: number
+          description: The ID of the Course or Bundle that is represented by the Product.
+          example: 6.0
+        productable_type:
+          type: string
+          description: The type of item that the Product represents.
+          example: Course
+        price:
+          type: number
+          description:
+            'The price of the Product. ** NOTE: price will be deprecated
+            in future versions of the API **'
+          example: 10.99
+        position:
+          type: number
+          description: The position of the Product within the site. Used for ordering.
+          example: 1.0
+        status:
+          type: string
+          description: The status of the Product. Can be either 'published' or 'draft'.
+          example: published
+        name:
+          type: string
+          description: The name of the Product.
+          example: My Course
+        private:
+          type: boolean
+          description:
+            A boolean indicating whether the Product is private. When private,
+            a Product cannot be purchased. A user must be enrolled manually.
+          example: false
+        hidden:
+          type: boolean
+          description:
+            A boolean indicating whether the Product is hidden. When hidden,
+            the Product will not appear on any site pages. It's landing page will
+            be still be accessible via a link, however.
+          example: false
+        subscription:
+          type: boolean
+          description:
+            'A boolean indicating whether the Product is a subscription
+            or not. '
+          example: false
+        days_until_expiry:
+          type: number
+          description:
+            If access to a Product can end, this value controls how many
+            days access is granted for from the date of enrollment.
+          example: 365.0
+        has_certificate:
+          type: boolean
+          description: A boolean indicating whether the Product has a certificate.
+          example: false
+        keywords:
+          type: string
+          description: Keywords associated with the Product.
+          example: some key words
+        seo_title:
+          type: string
+          description: The SEO title of the Product.
+          example: Product Title
+        seo_description:
+          type: string
+          description: The SEO description of the Product.
+          example: Description
+        collection_ids:
+          type: array
+          description:
+            The IDs of the Categories to which this Product belongs as
+            integers.
+          example:
+            - 2
+            - 3
+            - 5
+          items:
+            type: number
+        related_product_ids:
+          type: array
+          description: The IDs of any related Products as integers.
+          example:
+            - 16
+            - 22
+          items:
+            type: number
+        description:
+          type: string
+          example: Product Description
+          description: The description of the product (course or bundle)
+        card_image_url:
+          type: string
+          example: http://example.com/card.jpg
+          description: The card image URL for the product.
+        slug:
+          type: string
+          description: The slug of the product
+          example: new-product
+        product_prices:
+          type: array
+          description: The Product Price objects for the Product.
+          items:
+            $ref: '#/components/schemas/ProductPriceResponse'
+    ProductPriceResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Product Price as an integer.
+          example: 4.0
+        is_primary:
+          type: boolean
+          description: A boolean indicating whether the Product Price is the default.
+          example: true
+          default: false
+        payment_type:
+          type: string
+          description: The type of payment. Must be one of 'free', 'one-time', 'subscription', or 'payment-plan'.
+          enum: ['free', 'one-time', 'subscription', 'payment-plan']
+          example: subscription
+        label:
+          type: string
+          description: The description for the Product Price. This value is required when is_primary is false.
+          example: null
+          default: null
+        price:
+          type: string
+          description: The amount in dollars to be charged.
+          example: '10.0'
+        days_until_expiry:
+          type: string
+          description: The number of days, after purchase, that a student will be enrolled in the course.
+          example: null
+        pay_button_text:
+          type: string
+          description: This text that is displayed on the Buy Button on the course card and the course landing page.
+          example: null
+        number_of_payments:
+          type: string
+          description: The number of recurring payments for a Product Price with payment_type of 'payment-plan'.
+          example: null
+        interval:
+          type: string
+          description: The billing frequency. Must be one of 'month' or 'year'.
+          enum: ['month', 'year']
+          example: 'month'
+        interval_count:
+          type: string
+          description: The number of intervals between billings. For example, if interval is 'month' and interval_count is '1', the billing frequency is once every month.
+          example: '1'
+        trial_interval:
+          type: string
+          description: The interval for the trial period. Must be one of 'day' or 'month'.
+          enum: ['day', 'month']
+          example: null
+        trial_interval_count:
+          type: string
+          description: The number of intervals for the trial period. For example, if trial_interval is 'month' and trial_interval_count is '6', the free trial will end (and regular payments will begin) in 6 months.
+          example: null
+        custom_first_price:
+          type: string
+          description: Students pay this amount for the first payment period of the subscription.
+          example: null
+        price_name:
+          type: string
+          description: The name of the Product Price. If is_primary is true, returns the name of the product, otherwise returns "{Product name} - {Product Price label}".
+          example: Learn Jiu Jitsu
+        currency:
+          type: string
+          description: The three-letter ISO currency code of the Product Price. Must be a supported currency.
+          example: usd
+          default: usd
+    GetProductsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    GetPromotionsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PromotionResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    PromotionResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: The ID of the Promotion as an integer.
+          example: 1.0
+        name:
+          type: string
+          description: The name of the Promotion.
+          example: A Promo
+        description:
+          type: string
+          description: A description for the Promotion.
+          example: The promo description
+        starts_at:
+          type: string
+          description: The date and time when the Promotion begins.
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        expires_at:
+          type: string
+          description: The date and time when the Promotion ends.
+          format: date-time
+          example: '2018-01-31T01:01:00Z'
+        discount_type:
+          type: string
+          description: The type of discount. Must be either 'fixed' or 'percentage'.
+          enum: ['fixed', 'percentage']
+          example: fixed
+        amount:
+          type: number
+          description:
+            The amount of the discount. If 'fixed', must be a dollar value.
+            If 'percentage', must be a number greater than 0 and less than or equal
+            to 100.
+          example: 10.0
+        coupon_ids:
+          type: array
+          description: The coupon ids related to the promotion.
+          example:
+            - 1
+            - 2
+            - 3
+          items:
+            type: number
+        duration:
+          type: number
+          description:
+            The duration for which the Promotion is applied. ** This value
+            only applies to Promotions set on Products that are set as subscriptions
+            or Payment Plans. **
+          example: 3.0
+    PromotionRequest:
+      required:
+        - amount
+        - discount_type
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the Promotion.
+          example: A Promo
+        description:
+          type: string
+          description: A description for the Promotion.
+          example: The promo description
+        starts_at:
+          type: string
+          description: The date and time when the Promotion begins.
+          format: date-time
+          example: '2018-01-01T01:01:00Z'
+        expires_at:
+          type: string
+          description: The date and time when the Promotion ends.
+          format: date-time
+          example: '2018-01-31T01:01:00Z'
+        discount_type:
+          type: string
+          description: The type of discount. Must be either 'fixed' or 'percentage'.
+          enum: ['fixed', 'percentage']
+          example: fixed
+        amount:
+          type: number
+          description:
+            The amount of the discount. If 'fixed', must be a dollar value.
+            If 'percentage', must be a number greater than 0 and less than or equal
+            to 100.
+          example: 10.0
+        product_ids:
+          type: array
+          description:
+            The Products to apply the Promotion to. If none are specified,
+            the Promotion is applicable to all Products.
+          items:
+            type: number
+        coupon_ids:
+          type: array
+          description: The coupon ids related to the promotion.
+          example:
+            - 1
+            - 2
+            - 3
+          items:
+            type: number
+        duration:
+          type: number
+          description:
+            The duration for which the Promotion is applied. ** This value
+            only applies to Promotions set on Products that are set as subscriptions
+            or Payment Plans. **
+          example: 3.0
+    GetUsersResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserResponse'
+        meta:
+          $ref: '#/components/schemas/Meta'
+    UserResponse:
+      type: object
+      properties:
+        id:
+          type: number
+          description: User's ID
+          example: 1.0
+        created_at:
+          type: string
+          description: User's created date
+          format: date-time
+          example: '2018-07-12T23:19:00.154Z'
+        first_name:
+          type: string
+          description: The first name of the User.
+          example: Bob
+        last_name:
+          type: string
+          description: The last name of the User.
+          example: Smith
+        full_name:
+          type: string
+          description: The email of the User.
+          example: Bob Smith
+        company:
+          type: string
+          description: The company of the User.
+          example: The user's company
+        email:
+          type: string
+          description: User's email
+          format: email
+          example: bob@example.com
+        roles:
+          type: array
+          description:
+            'Any specific roles that the User should be placed in. Possible
+            roles are: affiliate, course_admin, group_analyst, site_admin.'
+          example:
+            - affiliate
+          items:
+            type: string
+            enum: ['affiliate', 'course_admin', 'group_analyst', 'site_admin']
+        avatar_url:
+          type: string
+          description: The fully-qualified avatar url of the User.
+          example: https://example.com/avatar/123
+        bio:
+          type: string
+          description: The bio of the User.
+          example: User's bio
+        headline:
+          type: string
+          description: The headline/title of the User.
+          example: User's headline
+        affiliate_code:
+          type: string
+          description:
+            The affiliate code of the User. ** Required only if the User
+            is an affiliate. **
+          example: abc123
+        external_source:
+          type: string
+          description: User's external source
+        affiliate_commission:
+          type: number
+          description:
+            The affiliate commission % of the User. ** Required only if
+            the User is an affiliate. This should be greater than 0 and less than
+            or equal to 100. **
+          example: 20.0
+        affiliate_commission_type:
+          type: string
+          description:
+            The affiliate payout type, it can be either % (percentage,
+            default) or $ (fixed amount). ** Required only if the User is an affiliate.
+            **
+          example: '%'
+        affiliate_payout_email:
+          type: string
+          description:
+            The email of the User. ** Required only if the user is an affiliate.
+            Used to pay the User out. **
+          example: bob@example.com
+        administered_course_ids:
+          type: array
+          description: User's administered course ids
+          items:
+            type: number
+            example: [10, 20, 30]
+        custom_profile_fields:
+          type: array
+          description: Custom profile fields for the User.
+          items:
+            $ref: '#/components/schemas/CustomProfileField'
+    Item:
+      type: object
+      properties:
+        product_id:
+          type: number
+          description: Product ID
+          example: 1.0
+        product_name:
+          type: string
+          description: Product name
+          example: My Course
+        amount_dollars:
+          type: number
+          description: Product price in dollars
+          example: 20
+        amount_cents:
+          type: number
+          description: Product price in cents
+          example: 2000
+    CustomProfileField:
+      type: object
+      properties:
+        id:
+          type: number
+          description: Custom profile field ID
+          example: 1.0
+        value:
+          type: string
+          description: Custom profile field value
+          example: 887 909 9999
+        label:
+          type: string
+          description: Custom profile field label
+          example: Phone
+        custom_profile_field_definition_id:
+          type: number
+          description: Custom profile field definition ID
+          example: 1.0
+    CreateUserRequest:
+      required:
+        - email
+        - first_name
+        - last_name
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: "User's first name "
+          example: Bob
+        last_name:
+          type: string
+          description: User's last name
+          example: Smith
+        email:
+          type: string
+          description: User's email
+          format: email
+          example: bob@example.com
+        password:
+          minLength: 6
+          type: string
+          description: The password of the User. If not included, the Express Sign In Link becomes activated for the User.
+          example: password
+        roles:
+          type: array
+          description: User's roles
+          example:
+            - affiliate
+          items:
+            type: string
+            enum: ['affiliate', 'course_admin', 'group_analyst', 'site_admin']
+        bio:
+          type: string
+          description: User's bio
+          example: The user's bio
+        company:
+          type: string
+          description: User's Company Name
+          example: The user's company
+        headline:
+          type: string
+          description: User's headline
+          example: The user's job title
+        affiliate_code:
+          type: string
+          description: User's affiliate code
+          example: abc123
+        affiliate_commission:
+          type: number
+          description:
+            Required only if the User is an affiliate. This should be greater
+            than 0 and less than or equal to 100 if the type is percentage or lower
+            than 9999.99 if is a fixed type.
+          example: 20.0
+        affiliate_commission_type:
+          type: string
+          description:
+            The affiliate payout type, it can be either % (percentage,
+            default) or $ (fixed amount). Required only if the User is an affiliate.
+          example: '%'
+        affiliate_payout_email:
+          type: string
+          description:
+            The email of the User. Required only if the user is an affiliate.
+            Used to pay the User out.
+          example: bob@example.com
+        custom_profile_fields:
+          type: array
+          description: Custom profile fields for the User.
+          items:
+            $ref: '#/components/schemas/CustomProfileFieldRequest'
+        skip_custom_fields_validation:
+          type: boolean
+          description: Option to skip required custom profile fields validation.
+          default: false
+        send_welcome_email:
+          type: boolean
+          description: Option to send the Site Welcome email to the User.
+          default: false
+        external_id:
+          type: string
+          description:
+            Optional identifier of the user in an external system. Typically
+            used in conjunction with Thinkific's SSO. For further information on this,
+            please read [this](https://help.thinkific.com/support/solutions/articles/221622-sso-automatically-sign-in-from-your-own-website)
+    CustomProfileFieldRequest:
+      required:
+        - custom_profile_field_definition_id
+      type: object
+      properties:
+        value:
+          type: string
+          description: Custom profile field value
+          example: 887 909 9999
+        custom_profile_field_definition_id:
+          type: number
+          description: Custom profile field definition id
+          example: 1.0
+    UpdateUserRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: "User's first name "
+          example: Bob
+        last_name:
+          type: string
+          description: User's last name
+          example: Smith
+        email:
+          type: string
+          description: User's email
+          format: email
+          example: bob@example.com
+        password:
+          minLength: 6
+          type: string
+          description: The password of the User.
+          example: password
+        roles:
+          type: array
+          description: User's roles
+          example:
+            - affiliate
+          items:
+            type: string
+            enum: ['affiliate', 'course_admin', 'group_analyst', 'site_admin']
+        avatar_url:
+          type: string
+          description: The fully-qualified avatar url of the User.
+          example: https://example.com/avatar/123
+        bio:
+          type: string
+          description: User's bio
+          example: The user's bio
+        company:
+          type: string
+          description: User's Company Name
+          example: The user's company
+        headline:
+          type: string
+          description: User's headline
+          example: The user's job title
+        external_source:
+          type: string
+          description: User's external source
+          example: The external source that the user was created from
+        affiliate_code:
+          type: string
+          description: User's affiliate code
+          example: abc123
+        affiliate_commission:
+          type: number
+          description:
+            Required only if the User is an affiliate. This should be greater
+            than 0 and less than or equal to 100 if the type is percentage or lower
+            than 9999.99 if is a fixed type.
+          example: 20.0
+        affiliate_commission_type:
+          type: string
+          description:
+            The affiliate payout type, it can be either % (percentage,
+            default) or $ (fixed amount). Required only if the User is an affiliate.
+          example: '%'
+        affiliate_payout_email:
+          type: string
+          description:
+            The email of the User. Required only if the user is an affiliate.
+            Used to pay the User out.
+          example: bob@example.com
+        custom_profile_fields:
+          type: array
+          description: Custom profile fields for the User.
+          items:
+            $ref: '#/components/schemas/CustomProfileField'
+    Meta:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    Pagination:
+      type: object
+      properties:
+        current_page:
+          type: number
+          description: Current page number
+          example: 1.0
+        next_page:
+          type: number
+          description: Next page number
+          example: 2.0
+        prev_page:
+          type: number
+          description: Previous page number
+        total_pages:
+          type: number
+          description: Number of total pages
+          example: 10.0
+        total_items:
+          type: number
+          description: Number of total items
+          example: 250.0
+        entries_info:
+          type: string
+          description: Entries info
+          example: 1-10 of 10
+      description: Pagination metadata
+    UnprocessableEntityError:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    ValidationError:
+      type: object
+      properties:
+        field_name:
+          type: string
+          description: validation error
+    ErrorNotFound:
+      type: object
+      properties:
+        error:
+          type: string
+          description: item not found error
+      example:
+        error: Record not found.
+    ErrorForbiddenAppsNotAvailable:
+      type: object
+      properties:
+        error:
+          type: string
+          description: access forbidden
+      example:
+        error: Access to Apps is not available on your plan. Upgrade to gain access
+    ErrorForbiddenInsufficientScope:
+      type: object
+      properties:
+        error:
+          type: string
+          description: access forbidden
+      example:
+        error: Access token has insufficient scope.
+    ErrorBadRequest:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Malformed request error
+      example:
+        error: Parameter ID is required.
+    SiteScriptRequest:
+      required:
+        - name
+        - description
+        - page_scopes
+        - category
+      properties:
+        src:
+          type: string
+          description: A URL that points to where the script is hosted. Required if `content` is not provided. Note the TLD of the src url must match the app's url.
+          format: uri
+          example: 'https://your-site.com/site-script.js'
+        content:
+          type: string
+          description: A string containing HTML/Javascript. Required if `src` is not provided. When providing the script using content, the header HMAC-SHA256-SIGNATURE is also require to be sent. Generate the signature using the app's client secret and the value.
+          example: "console.log('Hello! This is a Site Script')"
+        name:
+          type: string
+          description: A short and user-friendly string to identify the script.
+          example: "MyApp's Tracking Script"
+        description:
+          type: string
+          description: A user-friendly explanation of the script's purpose and what it does.
+          example: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+        page_scopes:
+          type: array
+          description: |
+            An array of page and domain identifiers that the Site Script should be injected onto. `page_scopes` can contain identifiers that are groupings of pages and/or the pages themselves.
+
+            The majority of the page identifiers correspond to Liquid pages. For more details, take a look at our [Liquid API docs](https://developers.thinkific.com/themes/liquid-api/pages/).
+
+            Groupings and Page Identifiers:
+
+            | Page Grouping | Page Identifiers Included |
+            | ------- | --------|
+            | landing_pages   | home_landing_page, course_landing_page, collections_landing_page, bundle_landing_page, coming_soon_page, page_template (used for custom pages)   |
+            | checkout   | checkout_thankyou_page   |
+            | learning_experience   | student_dashboard, course_player   |
+            | all   | all page identifiers listed above   |
+          example:
+            - landing_pages
+            - course_player
+          items:
+            type: string
+            enum:
+              - landing_pages
+              - checkout
+              - learning_experience
+              - all
+              - home_landing_page
+              - course_landing_page
+              - collections_landing_page
+              - bundle_landing_page
+              - coming_soon_page
+              - page_template
+              - checkout_thankyou_page
+              - student_dashboard
+              - course_player
+        location:
+          type: string
+          description: 'Where in the HTML the script should be injected. Accepted values are: head or footer'
+          example: footer
+          enum:
+            - 'head'
+            - 'footer'
+          default: footer
+        load_method:
+          type: string
+          description: 'How the Site Script will be loaded into the page. Accepted values are: async, defer, and default'
+          example: async
+          enum:
+            - 'async'
+            - 'defer'
+            - 'default'
+          default: async
+        category:
+          type: string
+          description: 'Describes the purpose of the script. Accepted values are: functional, analytics, marketing'
+          example: marketing
+          enum:
+            - 'functional'
+            - 'analytics'
+            - 'marketing'
+    SiteScriptResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Site Script's ID.
+          example: '01A6BCDEF19GHIJ7K4LMNOP87Q'
+        content:
+          type: string
+          description: A string containing HTML/Javascript. Required if `src` is not provided.
+          example: "console.log('Hello! This is a Site Script')"
+        src:
+          type: string
+          description: A URL that points to where the script is hosted. Required if `content` is not provided.
+          format: uri
+          example: 'https://your-site.com/site-script.js'
+        name:
+          type: string
+          description: A short and user-friendly string to identify the script.
+          example: "MyApp's Tracking Script"
+        description:
+          type: string
+          description: A user-friendly explanation of the script's purpose and what it does.
+          example: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+        page_scopes:
+          type: array
+          description: |
+            An array of page and domain identifiers that the Site Script should be injected onto. `page_scopes` can contain identifiers that are groupings of pages and/or the pages themselves.
+
+            The majority of the page identifiers correspond to Liquid pages. For more details, take a look at our [Liquid API docs](https://developers.thinkific.com/themes/liquid-api/pages/).
+
+            Groupings and Page Identifiers:
+
+            | Page Grouping | Page Identifiers Included |
+            | ------- | --------|
+            | landing_pages   | home_landing_page, course_landing_page, collections_landing_page, bundle_landing_page, coming_soon_page, page_template (used for custom pages)   |
+            | checkout   | checkout_thankyou_page   |
+            | learning_experience   | student_dashboard, course_player   |
+            | all   | all page identifiers listed above   |
+          example:
+            - landing_pages
+            - course_player
+          items:
+            type: string
+            enum:
+              - landing_pages
+              - checkout
+              - learning_experience
+              - all
+              - home_landing_page
+              - course_landing_page
+              - collections_landing_page
+              - bundle_landing_page
+              - coming_soon_page
+              - page_template
+              - checkout_thankyou_page
+              - student_dashboard
+              - course_player
+        location:
+          type: string
+          description: 'Where in the HTML the script should be injected. Accepted values are: head or footer'
+          example: footer
+          enum:
+            - 'head'
+            - 'footer'
+        load_method:
+          type: string
+          description: 'How the Site Script will be loaded into the page. Accepted values are: async, defer, and default'
+          example: async
+          enum:
+            - 'async'
+            - 'defer'
+            - 'default'
+        category:
+          type: string
+          description: 'Describes the purpose of the script. Accepted values are: functional, analytics, marketing'
+          example: marketing
+          enum:
+            - 'functional'
+            - 'analytics'
+            - 'marketing'
+        created_at:
+          type: string
+          description: Site Script's created date
+          format: date-time
+          example: '2018-07-12T23:19:00.154Z'
+        updated_at:
+          type: string
+          description: Site Script's updated date
+          format: date-time
+          example: '2018-07-12T23:19:00.154Z'
+    GetSiteScriptsResponse:
+      required:
+        - items
+        - meta
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SiteScriptResponse'
+          example:
+            - id: '123e4567-e89b-12d3-a456-426614174000'
+              src: 'https://your-site.com/site-script.js'
+              name: "MyApp's Tracking Script"
+              description: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+              page_scopes: [landing_pages, course_player]
+              location: footer
+              load_method: async
+              category: marketing
+            - id: '123e4567-e89b-12d3-a456-426614174999'
+              content: "console.log('Hello! This is a Site Script')"
+              name: "MyApp's Tracking Script"
+              description: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+              page_scopes: [landing_pages, course_player]
+              location: footer
+              load_method: async
+              category: marketing
+        meta:
+          $ref: '#/components/schemas/Meta'
+  securitySchemes:
+    OAuthAccessToken:
+      type: http
+      scheme: bearer
+    ApiKey:
+      type: apiKey
+      in: header
+      name: X-Auth-API-Key
+      description: Used together with ApiKeySubdomain
+    ApiKeySubdomain:
+      type: apiKey
+      in: header
+      name: X-Auth-Subdomain
+      description: Used together with ApiKey
+  responses:
+    ErrorForbiddenAppsNotAvailableResponse:
+      description: Access Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorForbiddenAppsNotAvailable'
+    ErrorForbiddenInsufficientScopeResponse:
+      description: Access Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorForbiddenInsufficientScope'
+  examples:
+    SiteScriptWithContentRequest:
+      summary: 'Site Script with content'
+      value:
+        content: "console.log('Hello! This is a Site Script')"
+        name: "MyApp's Tracking Script"
+        description: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+        page_scopes: [landing_pages, course_player]
+        location: footer
+        load_method: async
+        category: marketing
+    SiteScriptWithSrcRequest:
+      summary: 'Site Script with src'
+      value:
+        src: 'https://your-site.com/site-script.js'
+        name: "MyApp's Tracking Script"
+        description: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+        page_scopes: [landing_pages, course_player]
+        location: footer
+        load_method: async
+        category: marketing
+    SiteScriptWithContentResponse:
+      summary: 'Site Script with content'
+      value:
+        site_script:
+          id: '123e4567-e89b-12d3-a456-426614174999'
+          content: "console.log('Hello! This is a Site Script')"
+          name: "MyApp's Tracking Script"
+          description: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+          page_scopes: [landing_pages, course_player]
+          location: footer
+          load_method: async
+          category: marketing
+    SiteScriptWithSrcResponse:
+      summary: 'Site Script with src'
+      value:
+        site_script:
+          id: '123e4567-e89b-12d3-a456-426614174000'
+          src: 'https://your-site.com/site-script.js'
+          name: "MyApp's Tracking Script"
+          description: "MyApp's Tracking Script runs on your site's landing pages and tracks information about your user's visits. MyApp uses this data in our reporting tools so you can better understand your customers."
+          page_scopes: [landing_pages, course_player]
+          location: footer
+          load_method: async
+          category: marketing

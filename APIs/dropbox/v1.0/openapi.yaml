@@ -1,0 +1,1485 @@
+openapi: 3.0.1
+info:
+  title: Dropbox Client
+  version: v1.0
+  description: >
+    This is a generated connector for [Dropbox API v2](https://www.dropbox.com/developers/documentation/http/overview) OpenAPI specification. 
+    Dropbox is a modern workspace designed to reduce busywork-so you can focus on the things that matter. Sign in and put your creative energy to work.  
+  x-ballerina-init-description: 
+    The connector initialization requires setting the API credentials.
+    Create an [Dropbox account](https://www.dropbox.com/) and obtain tokens by following [this guide](https://www.dropbox.com/developers/documentation/http/documentation).
+  x-ballerina-display:
+    label: Dropbox
+    iconPath: "icon.png" 
+tags: []
+paths:
+  /files/copy_v2:
+    post:
+      tags:
+        - "Files"
+      summary: Copy a file or folder to a different location in the user's Dropbox. 
+      description: |
+        Copy a file or folder to a different location in the user's Dropbox.
+
+        If the source path is a folder all its contents will be copied.
+        scope**: files.content.write
+      operationId: Copy File or Folder
+      parameters:
+        - in: header
+          description: The specified `team_member_id` which refer to a team administrator.
+          name: Dropbox-API-Select-Admin
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments for relocation.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelocationArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelocationResult'
+
+  /files/create_folder_v2:
+    post:
+      tags:
+        - "Files"
+      summary: Create a folder at a given path.
+      description: Create a folder at a given path.
+      operationId: Create Folder
+      parameters:
+        - in: header
+          description: The specified `team_member_id` which refer to a team administrator.
+          name: Dropbox-API-Select-Admin
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments for folder creation.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFolderArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateFolderResult'
+  
+  /files/delete_v2:
+    post:
+      tags:
+        - "Files"
+      summary: Delete the file or folder at a given path.
+      description: |
+        Delete the file or folder at a given path.
+
+        If the path is a folder, all its contents will be deleted too.
+        A successful response indicates that the file or folder was deleted. 
+        The returned metadata will be the corresponding :type:`FileMetadata` or :type:`FolderMetadata` for the item at 
+        time of deletion, and not a :type:`DeletedMetadata` object.
+      operationId: Delete File or Folder
+      parameters:
+        - in: header
+          description: The specified `team_member_id` which refer to a team administrator.
+          name: Dropbox-API-Select-Admin
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments for deletion.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResult'
+
+  /files/move_v2:
+    post:
+      tags:
+        - "Files"
+      summary: Move a file or folder to a different location in the user's Dropbox.
+      description: |
+        Move a file or folder to a different location in the user's Dropbox.
+
+        If the source path is a folder all its contents will be moved.
+      operationId: Move File or Folder
+      parameters:
+        - in: header
+          description: The specified `team_member_id` which refer to a team administrator.
+          name: Dropbox-API-Select-Admin
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments for move.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelocationArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelocationResult'
+
+  /files/restore:
+    post:
+      tags:
+        - "Files"
+      summary: Restore a file to a specific revision.
+      description: Restore a file to a specific revision.
+      operationId: Restore Files
+      parameters:
+        - in: header
+          description: The specified `team_member_id` which refer to a team administrator.
+          name: Dropbox-API-Select-Admin
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments for restore.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestoreArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileMetadata'
+
+  /sharing/create_shared_link_with_settings:
+    post:
+      tags:
+        - "Sharing"
+      summary: Create Shared Link With Settings
+      description: |
+        Create a shared link with custom settings. 
+          
+        If no settings are given then the default visibility is :field:`RequestedVisibility.public` (The resolved
+        visibility, though, may depend on other aspects such as team and shared folder settings).
+      operationId: Create Shared Link With Settings
+      parameters:
+        - in: header
+          description: The specified `team_member_id` which refer to a team administrator.
+          name: Dropbox-API-Select-Admin
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments for create a Dropbox link.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSharedLinkWithSettingsArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharedLinkMetadata'
+
+  /files/get_temporary_link:
+    post:
+      tags:
+        - "Files"
+      summary: Get a temporary link to stream content of a file.
+      description: Get a temporary link to stream content of a file. This link will
+        expire in four hours and afterwards you will get 410 Gone. Content-Type of
+        the link is determined automatically by the file's mime type.
+      operationId: Get Temporary Link
+      requestBody:
+        description: Arguments to get temporary link.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTemporaryLinkArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTemporaryLinkResult'
+
+  /files/get_metadata:
+    post:
+      tags:
+        - "Files"
+      summary: Returns the metadata for a file or folder.
+      description: |
+        Returns the metadata for a file or folder.
+        **Note:** Metadata for the root folder is unsupported.
+      operationId: Get File Or Folder Metadata
+      parameters:
+        - in: header
+          description: The specified `team_member_id`.
+          name: Dropbox-API-Select-User
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments to get metadata.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMetadataArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileMetadata' 
+
+  /files/list_revisions:
+    post:
+      tags:
+        - "Files"
+      summary: Returns revisions for files based on a file path or a file id.
+      description: |
+        Returns revisions for files based on a file path or a file id. 
+        
+        The file path or file id is identified from the latest file entry at the given file path or id. 
+        This end point allows your app to query either by file path or file id by setting the mode parameter appropriately.
+        In the ListRevisionsMode.path (default) mode, all revisions at the same file path as the latest file entry are returned. 
+        If revisions with the same file id are desired, then mode must be set to ListRevisionsMode.id. 
+        The ListRevisionsMode.id mode is useful to retrieve revisions for a given file across moves or renames. 
+      operationId: List Revisions
+      parameters:
+        - in: header
+          description: The specified `team_member_id`.
+          name: Dropbox-API-Select-User
+          schema:
+            type: string
+          required: false
+      requestBody:
+        description: Arguments to list revisions.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListRevisionsArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListRevisionsResult'
+
+  /files/search_v2:
+    post:
+      tags:
+        - "Files"
+      summary: Searches for files and folders.
+      description: |
+        Searches for files and folders.
+
+        **Note:**  `search:2` along with `search/continue:2` can only be used to retrieve a maximum of 10,000 matches.
+        Recent changes may not immediately be reflected in search results due to a short delay in indexing. 
+        Duplicate results may be returned across pages. Some results may not be returned.      
+      operationId: Search Files
+      requestBody:
+        description: Arguments to search.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchArg'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResult'
+
+  # /files/upload:
+  #   post:
+  #     tags:
+  #       - "Files"
+  #     summary: Create a new file with the contents provided in the request.
+  #     description: |
+  #       Create a new file with the contents provided in the request.
+
+  #       **Note:** that this endpoint is part of the properties API alpha and is slightly different from :route:`upload`.
+  #       Do not use this to upload a file larger than 150 MB. Instead, create an upload session with :route:`upload_session/start`.
+  #     operationId: Upload Files
+  #     parameters:
+  #       - in: header
+  #         description: The specified `team_member_id` which refer to a team administrator.
+  #         name: Dropbox-API-Select-Admin
+  #         schema:
+  #           type: string
+  #         required: false
+  #       - in: query
+  #         description: The content upload arguments.
+  #         name: arg
+  #         schema:
+  #           $ref: '#/components/schemas/CommitInfoWithProperties'
+  #         required: true
+  #     requestBody:
+  #       description: Commit information with properties.
+  #       content:
+  #         application/octet-stream:
+  #           schema:
+  #             type: string
+  #             format: binary
+  #     responses:
+  #       200:
+  #         description: Success
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FileMetadata'
+
+  /files/download:
+    post:
+      tags:
+        - "Files"
+      summary: Download a file from a user's Dropbox.
+      description: Download a file from a user's Dropbox.
+      operationId: Download Files
+      parameters:
+        - in: header
+          description: The specified `team_member_id`.
+          name: Dropbox-API-Select-User
+          schema:
+            type: string
+          required: false
+        - in: header
+          description: Download arguments.
+          name: Dropbox-API-Arg
+          explode: false
+          schema:
+            type: object
+            $ref: '#/components/schemas/DownloadArg'
+          required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileMetadata'
+
+components:
+  schemas:
+    CreateSharedLinkWithSettingsArg:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The path to be shared by the shared link.
+        settings:
+          $ref: '#/components/schemas/SharedLinkSettings'
+      description: Shared links with errors arguments.
+
+    CreateFolderArg:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path in the user's Dropbox to create.
+        autorename:
+          type: boolean
+          description: If there's a conflict, have the Dropbox server try to autorename the folder to avoid the conflict.
+      description: Arguments to create a folder.
+    CreateFolderResult:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/FolderMetadata'
+      description: Metadata of the created folder.
+
+    CommitInfoWithProperties:
+      type: object
+      properties:
+        autorename:
+          type: boolean
+          description: |
+              If there's a conflict, as determined by mode, have the Dropbox server try to autorename the file to avoid conflict. 
+              The default for this field is False.
+        mute:
+          type: boolean
+          description: |
+            If true, this tells the clients that this modification shouldn't result in a user notification.
+
+            Normally, users are made aware of any file modifications in their Dropbox account via notifications in the client software. 
+            The default for this field is False. 
+        client_modified:
+          type: string
+          description: |
+            The value to store as the client_modified timestamp. 
+          
+            Dropbox automatically records the time at which the file was written to the Dropbox servers. 
+            It can also record an additional timestamp, provided by Dropbox desktop clients, mobile clients, and API 
+            apps of when the file was actually created or modified. This field is optional. 
+        mode:
+          $ref: '#/components/schemas/WriteMode'
+        path:
+          type: string
+          description: Path in the user's Dropbox to save the file.
+        property_groups:
+          type: array
+          description: List of custom properties to add to file.
+          items:
+            $ref: '#/components/schemas/PropertyGroup'
+        strict_conflict:
+          type: boolean
+          description: |
+            Be more strict about how each WriteMode detects conflict. 
+            
+            For example, always return a conflict error when mode = WriteMode.update and the given "rev" doesn't match the 
+            existing file's "rev", even if the existing file has been deleted. This also forces a conflict even when the 
+            target path refers to a file with identical contents. The default for this field is False. 
+      description: Commit information.
+    DeleteArg:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path in the user's Dropbox to delete.
+        parent_rev:
+          type: string
+          description: |
+            Perform delete if given "rev" matches the existing file's latest "rev". This field is optional. 
+          
+            This field does not support deleting a folder. 
+      description: Delete arguments.
+
+    DeletedMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The last component of the path (including extension). This never contains a slash.
+        path_lower:
+          type: string
+          description: | 
+            The lowercased full path in the user's Dropbox.
+
+            This always starts with a slash. 
+            This field will be null if the file or folder is not mounted. This field is optional. 
+        path_display:
+          type: string
+          description: |
+            The cased path to be used for display purposes only. This field is optional. 
+
+            In rare instances the casing will not correctly match the user's filesystem, but this behavior will match 
+            the path provided in the Core API v1, and at least the last path component will have the correct casing. 
+            Changes to only the casing of paths won't be returned by list_folder/continue. This field will be null if 
+            the file or folder is not mounted. 
+        id:
+          type: string
+          description: A unique identifier for the file or folder.      
+      description: Indicates that there used to be a file or folder at this path, but it no longer exists.
+
+    DeleteResult:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/DeletedMetadata'
+      description: Delete result.
+    Dimensions:
+      type: object
+      properties:
+        width:
+          type: integer
+          description: Width of the photo/video.
+        height:
+          type: integer
+          description: Height of the photo/video.
+      description: Dimensions for a photo or video.
+    ExportMetadata:
+      type: object
+      properties:
+        export_as:
+          type: string
+          description: Format to which the file can be exported to. This field is optional
+        export_options:
+          type: array
+          description: |
+            Additional formats to which the file can be exported. This field is optional. 
+          
+            These values can be specified as the export_format in /files/export. 
+          items:
+            type: string
+      description: Export information for a file.
+
+    DownloadArg:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The path of the file to download.
+      description: Download arguments.
+
+    FileMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: |
+            The last component of the path (including extension). 
+
+            This never contains a slash.
+        property_groups:
+          type: array
+          description: Additional information if the file has custom properties with the property template specified.
+          items:
+            $ref: '#/components/schemas/PropertyGroup'
+        rev:
+          type: string
+          description: |
+            A unique identifier for the current revision of a file. 
+
+            This field is the same rev as elsewhere in the API and can be used to detect changes and avoid conflicts.
+        client_modified:
+          type: string
+          description: |
+            For files, this is the modification time set by the desktop client when the file was added to Dropbox. 
+
+            Since this time is not verified (the Dropbox server stores whatever the desktop client sends up), this
+            should only be used for display purposes (such as sorting) and not, for
+            example, to determine if a file has changed or not.
+        symlink_info:
+          $ref: '#/components/schemas/SymlinkInfo'
+        path_display:
+          type: string
+          description: |
+            The cased path to be used for display purposes only. 
+
+            In rare instances the casing will not correctly match the user's filesystem, but this behavior will match 
+            the path provided in the Core API v1, and at least the last path component will have the correct casing. 
+            Changes to only the casing of paths won't be returned by :route:`list_folder/continue`.
+            This field will be null if the file or folder is not mounted.
+        has_explicit_shared_members:
+          type: boolean
+          description: |
+            This flag will only be present if include_has_explicit_shared_members  is true in :route:`list_folder` or :route:`get_metadata`. 
+
+            If this  flag is present, it will be true if this file has any explicit shared  members. This is different 
+            from sharing_info in that this could be true  in the case where a file has explicit members but is not 
+            contained within a shared folder.
+        path_lower:
+          type: string
+          description: |
+            The lowercased full path in the user's Dropbox.
+
+            This always starts with a slash. This field will be null if the file or folder is not mounted.
+        server_modified:
+          type: string
+          description: The last time the file was modified on Dropbox.
+        sharing_info:
+          $ref: '#/components/schemas/FileSharingInfo'
+        media_info:
+          $ref: '#/components/schemas/MediaInfo'
+        content_hash:
+          type: string
+          description: |
+            A hash of the file content. This field can be used to verify data integrity. 
+
+            For more information see our :link:`Content hash /developers/reference/content-hash` page.
+        id:
+          type: string
+          description: A unique identifier for the file.
+        size:
+          type: integer
+          description: The file size in bytes.
+        is_downloadable:
+          type: boolean
+          description: |
+            If true, file can be downloaded directly; else the file must be exported.
+
+            The default for this field is `true`
+        export_info:
+            $ref: '#/components/schemas/ExportMetadata'
+        file_lock_info:
+            $ref: '#/components/schemas/FileLockMetadata'
+      description: Metadata for a file.
+
+    FileLinkMetadata:
+      allOf:
+        - $ref: '#/components/schemas/FolderLinkMetadata'
+        - type: object
+          properties:
+            client_modified:
+              type: string
+              description: |
+                The modification time set by the desktop client when the file was added to Dropbox. 
+              
+                Since this time is not verified (the Dropbox server stores whatever the desktop client sends up), 
+                this should only be used for display purposes (such as sorting) and not, for example, to determine if a 
+                file has changed or not. 
+            server_modified:
+              type: string
+              description: The last time the file was modified on Dropbox. 
+            rev:
+              type: string
+              description: A unique identifier for the current revision of a file. This field is the same rev as elsewhere 
+                in the API and can be used to detect changes and avoid conflicts.
+            size:
+              type: integer
+              description: The file size in bytes. 
+      description: File link metadata.
+
+    FileLockMetadata:
+      type: object
+      properties:
+        is_lockholder: 
+          type: boolean
+          description: True if caller holds the file lock. This field is optional.
+        lockholder_name:
+          type: string
+          description: The display name of the lock holder. This field is optional.
+        lockholder_account_id:
+          type: string
+          description:  The account ID of the lock holder if known. This field is optional. 
+        created:
+          type: string
+          description: The timestamp of the lock was created. This field is optional. 
+      description: If present, the metadata associated with the file's current lock. This field is optional.
+
+    FileSharingInfo:
+      type: object
+      properties:
+        read_only:
+          type: boolean
+          description: True if the file or folder is inside a read-only shared folder.
+        parent_shared_folder_id:
+          type: string
+          description: ID of shared folder that holds this file.
+        modified_by:
+          type: string
+          description: |
+            The last user who modified the file.
+
+            This field will be null if the user's account has been deleted.
+      description: Sharing info for a file which is contained by a shared folder.
+
+    FileStatus:
+      type: string
+      description: Restricts search to the given file status. The default for this union is active.
+      enum:
+        - active
+        - deleted
+
+    FileCategory:
+      type: string
+      description: Restricts search to only the file categories specified. Only supported for active file search.
+      enum:
+        - image
+        - document
+        - pdf
+        - spreadsheet
+        - presentation
+        - audio
+        - video
+        - folder
+        - paper
+        - others
+
+    FolderLinkMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The linked file name (including extension). This never contains
+            a slash.
+        url:
+          type: string
+          description: URL of the shared link.
+        expires:
+          type: string
+          description: Expiration time, if set. By default the link won't expire. This field is optional. 
+        path_lower:
+          type: string
+          description: |
+            The lowercased full path in the user's Dropbox. This always starts with a slash. This field is optional. 
+          
+            This field will only be present only if the linked file is in the authenticated user's dropbox. 
+        content_owner_team_info:
+          $ref: '#/components/schemas/Team'
+        link_permissions:
+          $ref: '#/components/schemas/LinkPermissions'
+        team_member_info:
+          $ref: '#/components/schemas/TeamMemberInfo'
+        id:
+          type: string
+          description: A unique identifier for the linked file.
+      description: Folder link metadata.
+
+    FolderMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: |
+            The last component of the path (including extension). 
+          
+            This never contains a slash.
+        path_display:
+          type: string
+          description: |
+            The cased path to be used for display purposes only. 
+
+            In rare instances the casing will not correctly match the user's filesystem, but this behavior will match 
+            the path provided in the Core API v1, and at least the last path component will have the correct casing. 
+            Changes to only the casing of paths won't be returned by :route:`list_folder/continue`.
+            This field will be null if the file or folder is not mounted.
+        path_lower:
+          type: string
+          description: |
+            The lowercased full path in the user's Dropbox. 
+
+            This always starts with a slash. 
+            This field will be null if the file or folder is not mounted.
+        sharing_info:
+          $ref: '#/components/schemas/FolderSharingInfo'
+        property_groups:
+          type: array
+          description: |
+            Additional information if the file has custom properties with the property template specified.
+
+            **Note:** Only properties associated with user-owned templates, not team-owned templates, can be attached 
+            to folders.
+          items:
+            $ref: '#/components/schemas/PropertyGroup'
+        id:
+          type: string
+          description: A unique identifier for the folder.
+      description: Metadata for a folder.
+
+    FolderSharingInfo:
+      type: object
+      properties:
+        read_only:
+          type: boolean
+          description: True if the file or folder is inside a read-only shared folder.
+        parent_shared_folder_id:
+          type: string
+          description: Set if the folder is contained by a shared folder.
+        traverse_only:
+          type: boolean
+          description: |
+            Specifies that the folder can only be traversed.
+
+            The user can only see a limited subset of the contents of this folder because they don't have read access to 
+            this folder. They do, however, have access to some sub folder.
+        shared_folder_id:
+          type: string
+          description: If this folder is a shared folder mount point, the ID of the shared folder mounted at this location.
+        no_access:
+          type: boolean
+          description: Specifies that the folder cannot be accessed by the user.
+      description: Sharing info for a folder which is contained in a shared folder or is a shared folder mount point.
+
+    GetMetadataArg:
+      type: object
+      properties:
+        include_property_groups:
+          $ref: '#/components/schemas/TemplateFilterBase'
+        include_has_explicit_shared_members:
+          type: boolean
+          description: If true, the results will include a flag for each file indicating whether or not that file has 
+            any explicit members. The default for this field is False.
+        include_deleted:
+          type: boolean
+          description: If true, DeletedMetadata will be returned for deleted file or folder, otherwise 
+            LookupError.not_found will be returned. The default for this field is False.
+        include_media_info:
+          type: boolean
+          description: If true, FileMetadata.media_info is set for photo and video. The default for this field is False. 
+        path:
+          type: string
+          description: The path of a file or folder on Dropbox.
+      description: Metadata arguments.
+
+    GetTemporaryLinkArg:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The path to the file you want a temporary link to.
+      description: Themporary link arguments.
+
+    GetTemporaryLinkResult:
+      type: object
+      properties:
+        link:
+          type: string
+          description: The temporary link which can be used to stream content the file.
+        metadata:
+          $ref: '#/components/schemas/FileMetadata'
+      description: Temporary link result. 
+
+    GpsCoordinates:
+      type: object
+      properties:
+        latitude:
+          type: integer
+          description: Latitude of the GPS coordinates.
+        longitude:
+          type: integer
+          description: Longitude of the GPS coordinates.
+      description: GPS coordinates for a photo or video.
+
+    LinkAccessLevel:
+      type: object
+      properties:
+        .tag:
+          description: Type of LinkAudience
+          type: string
+          enum:
+            - public
+            - team
+            - no_one
+      description: |
+        The access level that the link will grant to its users. This field is optional.
+        
+        A link can grant additional rights to a user beyond their current access level. For example, if a user was 
+        invited as a viewer to a file, and then opens a link with `link_access_level` set to `editor`, then they will 
+        gain editor privileges. The `link_access_level` is a property of the link, and does not depend on who is calling 
+        this API. In particular, `link_access_level` does not take into account the API caller's current permissions to the content. 
+
+    LinkAudience:
+      type: object
+      properties:
+        .tag:
+          description: Type of LinkAudience
+          type: string
+          enum:
+            - public
+            - team
+            - no_one
+      description: The type of audience who can benefit from the access level specified by the `link_access_level` field. This field is optional.
+
+    LinkAudienceDisallowedReason:
+      type: object
+      properties:
+        .tag:
+          description: Type of LinkAudience
+          type: string
+          enum:
+            - delete_and_recreate
+            - restricted_by_shared_folder
+            - restricted_by_team
+            - user_not_on_team
+            - user_account_type
+            - permission_denied
+      description: If allowed is false, this will provide the reason that the user is not permitted to set the visibility to this policy. This field is optional.
+
+    LinkAudienceOption:
+      type: object
+      properties:
+        audience: 
+          $ref: '#/components/schemas/LinkAudience'
+        allowed: 
+          type: boolean
+          description: Whether the user calling this API can select this audience option
+        disallowed_reason:
+          $ref: '#/components/schemas/LinkAudienceDisallowedReason'
+      description: Link audience options the user might be able to set as the new audience.
+
+    LinkPermissions:
+      type: object
+      properties:
+        requested_visibility:
+          $ref: '#/components/schemas/RequestedVisibility'
+        resolved_visibility:
+          $ref: '#/components/schemas/ResolvedVisibility'
+        can_revoke:
+          type: boolean
+          description: Whether the caller can revoke the shared link.
+        revoke_failure_reason:
+          $ref: '#/components/schemas/SharedLinkAccessFailureReason'
+        visibility_policies:
+          type: array
+          items:
+            $ref: '#/components/schemas/VisibilityPolicy'
+          description: A list of policies that the user might be able to set for the visibility.
+        can_set_expiry:
+          type: boolean
+          description: Whether the user can set the expiry settings of the link. This refers to the ability to create a new expiry and modify an existing expiry. 
+        can_remove_expiry:
+          type: boolean
+          description: Whether the user can remove the expiry of the link. 
+        allow_download:
+          type: boolean
+          description: Whether the link can be downloaded or not. 
+        can_allow_download:
+          type: boolean
+          description: Whether the user can allow downloads via the link. This refers to the ability to remove a no-download restriction on the link.
+        can_disallow_download:
+          type: boolean
+          description: Whether the user can disallow downloads via the link. This refers to the ability to impose a no-download restriction on the link. 
+        effective_audience:
+          $ref: '#/components/schemas/LinkAudience'
+        link_access_level:
+          $ref: '#/components/schemas/LinkAccessLevel'
+        audience_options:
+          type: array
+          description: A list of link audience options the user might be able to set as the new audience. This field is optional.
+          items:
+            $ref: '#/components/schemas/LinkAudienceOption'
+        can_set_password:
+          type: boolean
+          description: Whether the user can set a password for the link. This field is optional. 
+        can_remove_password:
+          type: boolean
+          description: Whether the user can remove the password of the link. This field is optional. 
+        require_password:
+          type: boolean
+          description: Whether the user is required to provide a password to view the link. This field is optional. 
+        can_use_extended_sharing_controls:
+          type: boolean
+          description: Whether the user can use extended sharing controls, based on their account type. This field is optional. 
+      description: The link's access permissions.
+
+    ListRevisionsArg:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The path to the file you want to see the revisions of.
+        limit:
+          type: integer
+          description: The maximum number of revision entries returned. The default for this field is 10.
+        mode:
+          $ref: '#/components/schemas/ListRevisionsMode'
+      description: Revision arguments.
+
+    ListRevisionsMode:
+      type: object
+      properties:
+        .tag:
+          description: Type of ListRevisionsMode
+          type: string
+          enum:
+            - path
+            - id
+      description: Determines the behavior of the API in listing the revisions for a given file path or id. The default for this union is path.
+
+    ListRevisionsResult:
+      type: object
+      properties:
+        is_deleted:
+          type: boolean
+          description: If the file identified by the latest revision in the response is either deleted or moved.
+        server_deleted:
+          type: string
+          description: The time of deletion if the file was deleted. This field is optional. 
+        entries:
+          type: array
+          description: The revisions for the file. Only revisions that are not deleted
+            will show up here.
+          items:
+            $ref: '#/components/schemas/FileMetadata'
+      description: List revision result.
+
+    MediaInfo:
+      type: object
+      properties:
+        .tag:
+          description: Type of MediaInfo
+          type: string
+          enum:
+          - pending
+          - metadata
+        metadata:
+          $ref: '#/components/schemas/PhotoVedioMetadata'
+      description: |
+        Additional information if the file is a photo or video. This field is optional. 
+
+        This field will not be set on entries returned by list_folder, list_folder/continue, or get_thumbnail_batch, 
+        starting December 2, 2019.
+
+    # MediaMetadata:
+    #   description: The metadata for the photo/video.
+    #   oneOf:
+    #     - $ref: '#/components/schemas/PhotoVedioMetadata'
+    #     - $ref: '#/components/schemas/PhotoMetadata'
+
+    # Metadata:
+    #   description: Metadata of the relocated object.
+      # oneOf:
+      #   - $ref: '#/components/schemas/FileMetadata'
+      #   - $ref: '#/components/schemas/FolderMetadata'
+      #   - $ref: '#/components/schemas/DeletedMetadata'
+
+    PhotoMetadata:
+      type: object
+      properties:
+        dimensions:
+          $ref: '#/components/schemas/Dimensions'
+        location:
+          $ref: '#/components/schemas/GpsCoordinates'
+        time_taken:
+          type: string
+          description: The timestamp when the photo/video is taken.
+      description: Photo metadata.
+
+    PropertyField:
+      type: object
+      properties:
+        name:
+          type: string
+          description: |
+            Key of the property field associated with a file and template.
+
+            Keys can be up to 256 bytes.
+        value:
+          type: string
+          description: |
+            Value of the property field associated with a file and template.
+
+            Values can be up to 1024 bytes.
+      description: | 
+        Raw key/value data to be associated with a Dropbox file.
+
+        Property fields are added to Dropbox files as a PropertyGroup. 
+        This datatype comes from an imported namespace originally defined in the file_properties namespace.
+
+    PropertyGroup:
+      type: object
+      properties:
+        fields:
+          type: array
+          description: The actual properties associated with the template. There can
+            be up to 32 property types per template.
+          items:
+            $ref: '#/components/schemas/PropertyField'
+        template_id:
+          type: string
+          description: A unique identifier for the associated template.
+      description: |
+        A subset of the property fields described by the corresponding `PropertyGroupTemplate`.
+
+        Properties are always added to a Dropbox file as a PropertyGroup. 
+        The possible key names and value types in this group are defined by the corresponding `PropertyGroupTemplate`. 
+        This datatype comes from an imported namespace originally defined in the file_properties namespace.
+
+    RelocationArg:
+      type: object
+      properties:
+        from_path:
+          type: string
+          description: Path in the user's Dropbox to be copied or moved.
+        to_path:
+          type: string
+          description: Path in the user's Dropbox that is the destination.
+        allow_ownership_transfer:
+          type: boolean
+          description: |
+            Allow moves by owner even if it would result in an ownership transfer for the content being moved. 
+            This does not apply to copies.
+        autorename:
+          type: boolean
+          description: If there's a conflict, have the Dropbox server try to autorename
+            the file to avoid the conflict.
+      description: Relocation arguments.
+
+    RelocationResult:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/FileMetadata'
+      description: Metadata of the relocated object.
+
+    RequestedVisibility:
+      type: object
+      properties:
+        .tag:
+          description: Type of RequestedVisibility
+          type: string
+          enum:
+            - public
+            - team_only
+            - password
+      description: |
+        The shared link's requested visibility. This field is optional.
+      
+        This can be overridden by the team and shared folder policies. The final visibility, after considering these 
+        policies, can be found in resolved_visibility. This is shown only if the caller is the link's owner and 
+        resolved_visibility is returned instead of effective_audience. 
+
+    ResolvedVisibility:
+      type: object
+      properties:
+        .tag:
+          description: Type of ResolvedVisibility
+          type: string
+          enum:
+            - public
+            - team_only
+            - password
+            - team_and_password
+            - shared_folder_only
+            - other
+      description: |
+        The current visibility of the link after considering the shared links policies of the the team 
+        (in case the link's owner is part of a team) and the shared folder (in case the linked file is part of a shared folder). This field is optional. 
+        
+        This field is shown only if the caller has access to this info (the link's owner always has access to this data). 
+        For some links, an effective_audience value is returned instead.
+        
+    RestoreArg:
+      type: object
+      properties:
+        path:
+          type: string
+          description: The path to the file you want to restore.
+        rev:
+          type: string
+          description: The revision to restore for the file.
+      description: Restore arguments.
+
+    SharedLinkAccessFailureReason:
+      type: object
+      properties:
+        .tag:
+          description: Type of SharedLinkAccessFailureReason
+          type: string
+          enum:
+            - login_required
+            - email_verify_required
+            - password_required
+            - team_only
+            - owner_only
+            - other
+      description: The failure reason for revoking the link. This field will only be present if the can_revoke is false. This field is optional.
+
+    SearchArg:
+      type: object
+      properties:
+        options:
+          $ref: '#/components/schemas/SearchOptions'
+        match_field_options:
+          $ref: '#/components/schemas/SearchMatchFieldOptions'
+        query:
+          type: string
+          description: The string to search for. May match across multiple fields based on the request arguments. 
+      required:
+        - "query"
+      description: Search arguments.
+
+    SearchOptions:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Scopes the search to a path in the user's Dropbox. Searches the entire Dropbox if not specified. This field is optional.
+        max_results:
+          type: integer
+          description: The string to search for. May match across multiple fields based on the request arguments. 
+        order_by:
+          $ref: '#/components/schemas/SearchOrderBy'
+        file_status:
+          $ref: '#/components/schemas/FileStatus'
+        filename_only:
+          type: boolean
+          description:  Restricts search to only match on filenames. The default for this field is False. 
+        file_extensions:
+          type: array
+          items:
+            type: string
+          description: Restricts search to only the extensions specified. Only supported for active file search. This field is optional. 
+        file_categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/FileCategory'
+          description: Restricts search to only the file categories specified. Only supported for active file search. This field is optional.
+      description: Options for more targeted search results.
+
+    SearchMatchFieldOptions:
+      type: object
+      properties:
+        include_highlights:
+          type: boolean
+          description: Whether to include highlight span from file title. The default for this field is False. 
+      description: Options for search results match fields.
+  
+    SearchOrderBy:
+      type: string
+      description: Specified property of the order of search results. By default, results are sorted by relevance.
+      enum:
+        - relevance
+        - last_modified_time
+
+    SearchResult:
+      type: object
+      properties:
+        matches:
+          type: array
+          description: A list (possibly empty) of matches for the query.
+          items:
+            $ref: '#/components/schemas/SearchMatch'
+        cursor:
+          type: integer
+          description: Pass the cursor into `search/continue:2` to fetch the next page of results. This field is optional. 
+        has_more:
+          type: boolean
+          description: Used for paging. If true, indicates there is another page of results available that can be 
+            fetched by calling `search/continue:2` with the cursor.
+      description: Search result.
+
+    SharedLinkMetadata:
+      oneOf:
+        - $ref: '#/components/schemas/FileLinkMetadata'
+        - $ref: '#/components/schemas/FolderLinkMetadata'
+      description: The metadata of a shared link.
+
+    SharedLinkSettings:
+      type: object
+      properties:
+        require_password:
+          type: boolean
+          description: Boolean flag to enable or disable password protection. This field is optional. 
+        link_password:
+          type: string
+          description: If require_password is true, this is needed to specify the password to access the link. This field is optional. 
+        expires:
+          type: string
+          description: Expiration time of the shared link. By default the link won't expire.
+        audience: 
+          type: string
+          description: |
+            The new audience who can benefit from the access level specified by the link's access level specified in the 
+            `link_access_level` field of `LinkPermissions`. This field is optional. 
+          
+            This is used in conjunction with team policies and shared folder policies to determine the final effective 
+            audience type in the `effective_audience` field of `LinkPermissions`.
+          enum:
+            - public
+            - team
+            - no_one
+        access:
+          type: string
+          description: |
+            Requested access level you want the audience to gain from this link.
+
+            **Note** modifying access level for an existing link is not supported. This field is optional.
+          enum:
+            - viewer
+            - editor
+            - max
+        allow_download:
+          type: boolean
+          description: Boolean flag to allow or not download capabilities for shared links. This field is optional. 
+      description: The requested settings for the newly created shared link. This field is optional.
+
+    SearchMatch:
+      type: object
+      properties:
+        match_type:
+          $ref: '#/components/schemas/SearchMatchType'
+        metadata:
+          $ref: '#/components/schemas/MetadataV2'
+        highlight_spans:
+          type: array
+          items:
+            $ref: '#/components/schemas/HighlightSpan'
+          description: The list of HighlightSpan determines which parts of the file title should be highlighted. This field is optional.
+      description: The matches for the search query.
+
+    SearchMatchType:
+      type: object
+      properties:
+        .tag:
+          type: string
+          description: Type of search match.
+          enum:
+            - filename
+            - file_content
+            - filename_and_content
+            - filename_and_content
+      description: Indicates what type of match was found for a given item. 
+    
+    HighlightSpan:
+      type: object
+      properties:
+        highlight_str:
+          type: string
+          description: String to be determined whether it should be highlighted or not. 
+        is_highlighted:
+          type: boolean
+          description:  The string should be highlighted or not
+      description: he list of HighlightSpan determines which parts of the file title should be highlighted. 
+
+    MetadataV2:
+      type: object
+      properties:
+        metadata:
+          $ref: '#/components/schemas/FileMetadata'
+      description: The metadata for the matched file or folder.
+
+    SymlinkInfo:
+      type: object
+      properties:
+        target:
+          type: string
+          description: The target this symlink points to.
+      description: Set if this file is a symlink. This field is optional.
+    
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The team's unique ID.
+        name:
+          type: string
+          description: The name of the team.
+      description: Information about a team.
+
+    TeamMemberInfo:
+      type: object
+      properties:
+        member_id:
+          type: string
+          description: |
+            ID of user as a member of a team. This field will only be present.
+
+            if the member is in the same team as current user.
+        display_name:
+          type: string
+          description: The display name of the user.
+        team_info:
+          $ref: '#/components/schemas/Team'
+      description: Information about a team member.
+    
+    TemplateFilterBase:
+      type: object
+      properties:
+        filter_some:
+          type: array
+          description: Only templates with an ID in the supplied list will be returned (a subset of templates will be returned).
+          items:
+            type: string
+      description: If set to a valid list of template IDs, FileMetadata.property_groups is set if there exists property 
+        data associated with the file and each of the listed templates. This field is optional.
+        
+    PhotoVedioMetadata:
+      type: object
+      properties:
+        dimensions:
+          $ref: '#/components/schemas/Dimensions'
+        location:
+          $ref: '#/components/schemas/GpsCoordinates'
+        time_taken:
+          type: string
+          description: The timestamp when the photo/video is taken.  
+        duration:
+          type: integer
+          description: The duration of the video in milliseconds. This field is optional.
+      description: Vedio metadata.
+
+    VisibilityPolicy:
+      type: object
+      properties:
+        policy:
+          $ref: '#/components/schemas/RequestedVisibility'
+        resolved_policy:
+          $ref: '#/components/schemas/AlphaResolvedVisibility'        
+        allowed:
+          type: boolean
+          description:  Whether the user is permitted to set the visibility to this policy. 
+        disallowed_reason:
+          $ref: '#/components/schemas/VisibilityPolicyDisallowedReason'
+
+    WriteMode:
+      type: object
+      properties:
+        .tag:
+          description: Type of WriteMode
+          type: string
+          enum:
+            - add
+            - overwrite
+            - update
+        update:
+          type: string
+          description: |
+            Overwrite if the given "rev" matches the existing file's "rev".
+
+            The autorename strategy is to append the string "conflicted copy" to the file name. 
+            For example, "document.txt" might become "document (conflicted copy).txt" or "document (Panda's conflicted copy).txt".
+      description: Selects what to do if the file already exists. The default for this union is add.
+
+    AlphaResolvedVisibility:
+      type: object
+      properties:
+        .tag:
+          description: |
+            This is what the effective policy would be, if you selected this option. 
+            
+            The resolved policy is obtained after considering external effects such as shared folder settings and team policy. 
+            This value is guaranteed to be provided.
+          type: string
+          enum:
+            - public
+            - team_only
+            - password
+            - team_and_password
+            - shared_folder_only
+            - no_one
+            - only_you
+
+    VisibilityPolicyDisallowedReason:
+      type: object
+      properties:
+        .tag:
+          description: |
+            If allowed is false, this will provide the reason that the user is not permitted to set the visibility to this policy. 
+            This field is optional.
+          type: string
+          enum:
+            - delete_and_recreate
+            - restricted_by_shared_folder
+            - restricted_by_team
+            - user_not_on_team
+            - user_account_type
+            - permission_denied
+
+  securitySchemes:
+    oAuth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://www.dropbox.com/oauth2/authorize
+          scopes:
+            files.content.write : files.content.write 
+            sharing.write : sharing.write 
+            files.content.read: files.content.read 
+            files.metadata.read : files.metadata.read 
+security:
+- oAuth: [files.content.write, sharing.write, files.content.read, files.metadata.read]

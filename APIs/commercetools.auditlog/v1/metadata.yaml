@@ -1,0 +1,11 @@
+id: commercetools.auditlog
+displayName: Commercetools Audit Log
+type: OpenAPI
+version: v1
+description: This is the [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.  The commercetools Platform HTTP API(Audit Log) offers an interface for programmatic access to tracks creations, deletions, and updates of platform resources.
+idlPath: /commercetools.auditlog/v1/openapi.yaml
+thumbnailPath: /commercetools.auditlog/v1/icon.png
+documentationPath: /commercetools.auditlog/v1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

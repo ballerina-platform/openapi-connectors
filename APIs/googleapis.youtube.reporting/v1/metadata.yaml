@@ -1,0 +1,14 @@
+id: googleapis.youtube.reporting
+displayName: Youtube Reporting
+type: OpenAPI
+version: v1
+description: This is the [Youtube Reporting API v1](https://developers.google.com/youtube/reporting) OpenAPI specification.
+idlPath: /googleapis.youtube.reporting/v1/openapi.yaml
+thumbnailPath: /googleapis.youtube.reporting/v1/icon.png
+documentationPath: /googleapis.youtube.reporting/v1/readme.md
+keywords:
+  - BusinessIntelligence/Reporting
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://youtubereporting.googleapis.com/

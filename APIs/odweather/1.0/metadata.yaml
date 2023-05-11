@@ -1,0 +1,13 @@
+id: odweather
+displayName: ODWeather
+type: OpenAPI
+version: "1.0"
+description: This is the [ODWeather API v1.0](https://api.oceandrivers.com/) OpenAPI specification.
+idlPath: /odweather/1.0/openapi.yaml
+thumbnailPath: /odweather/1.0/icon.png
+documentationPath: /odweather/1.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Free
+endpoint:
+  - url: https://api.oceandrivers.com/

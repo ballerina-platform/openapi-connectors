@@ -1,0 +1,573 @@
+openapi: 3.0.0
+info:
+  x-ballerina-display:
+    label: Vonage Numbers
+    iconPath: "icon.png"
+  title: Numbers API
+  version: 1.0.20
+  description: >
+    This is a generated connector for [Vonage Numbers API v1.0.20](https://nexmo-api-specification.herokuapp.com/numbers) OpenAPI specification.
+    The Numbers API enables you to manage your existing numbers and buy new virtual numbers for use with the Vonage APIs. 
+    Further information is here: <https://developer.nexmo.com/numbers/overview>
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [Vonage account](https://www.vonage.com/) and obtain tokens by following [this guide](https://developer.nexmo.com/concepts/guides/authentication).
+  contact:
+    name: Vonage DevRel
+    email: devrel@vonage.com
+    url: "https://developer.nexmo.com"
+  termsOfService: "https://www.nexmo.com/terms-of-use"
+  license:
+    name: The MIT License (MIT)
+    url: "https://opensource.org/licenses/MIT"
+  x-apiClientRegistration: "https://dashboard.nexmo.com/sign-up"
+servers:
+  - url: "https://rest.nexmo.com"
+externalDocs:
+  description: Numbers product documentation on the Vonage Developer Portal
+  url: "https://developer.nexmo.com/numbers/overview"
+security:
+  - apiKey: []
+    apiSecret: []
+paths:
+  "/account/numbers":
+    get:
+      operationId: getOwnedNumbers
+      summary: List the numbers you own
+      description: Retrieve all the inbound numbers associated with your Vonage account.
+      parameters:
+        - $ref: "#/components/parameters/application_id"
+        - $ref: "#/components/parameters/has_application"
+        - name: country
+          description: The two character country code in ISO 3166-1 alpha-2 format
+          required: false
+          in: query
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: GB
+            description: The two character country code in ISO 3166-1 alpha-2 format
+            # $ref: "#/components/schemas/country"
+        - $ref: "#/components/parameters/pattern"
+        - $ref: "#/components/parameters/search_pattern"
+        - $ref: "#/components/parameters/size"
+        - $ref: "#/components/parameters/index"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/inbound-numbers"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/inbound-numbers"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-unauthorized"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/account-unauthorized"
+
+  "/number/search":
+    get:
+      operationId: getAvailableNumbers
+      summary: Search available numbers
+      description: Retrieve inbound numbers that are available for the specified country.
+      parameters:
+        - $ref: "#/components/parameters/country"
+        - $ref: "#/components/parameters/type"
+        - $ref: "#/components/parameters/pattern"
+        - $ref: "#/components/parameters/search_pattern"
+        - name: features
+          required: false
+          in: query
+          description: >-
+            Available features are `SMS`, `VOICE` and `MMS`. To look for numbers that support multiple features, use a
+            comma-separated value: `SMS,MMS,VOICE`.
+          schema:
+            type: string
+          example: SMS
+        - $ref: "#/components/parameters/size"
+        - $ref: "#/components/parameters/index"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/available-numbers"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/available-numbers"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/account-unauthorized"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/account-unauthorized"
+
+  "/number/buy":
+    post:
+      operationId: buyANumber
+      summary: Buy a number
+      description: Request to purchase a specific inbound number.
+      requestBody:
+        description: Number details
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/number-details"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/response"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+        "420":
+          description: Action failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response420"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/response420"
+  "/number/cancel":
+    post:
+      operationId: cancelANumber
+      summary: Cancel a number
+      description: Cancel your subscription for a specific inbound number.
+      requestBody:
+        description: Number details
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/number-details"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/response"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+  "/number/update":
+    post:
+      operationId: updateANumber
+      summary: Update a number
+      description: Change the behaviour of a number that you own.
+      requestBody:
+        description: Number details
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/number-details-update"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/response"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/response"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+            text/xml:
+              schema:
+                $ref: "#/components/schemas/unauthorized"
+
+components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      name: api_key
+      in: query
+      description: "You can find your API key in the [developer dashboard](https://dashboard.nexmo.com)"
+    apiSecret:
+      type: apiKey
+      name: api_secret
+      in: query
+      description: "You can find your API secret in the [developer dashboard](https://dashboard.nexmo.com)"
+  parameters:
+    index:
+      name: index
+      required: false
+      in: query
+      description: Page index
+      schema:
+        type: integer
+        default: 1
+      example: 1
+    size:
+      name: size
+      required: false
+      in: query
+      description: Page size
+      schema:
+        type: integer
+        maximum: 100
+        default: 10
+      example: 10
+    pattern:
+      name: pattern
+      required: false
+      in: query
+      description: The number pattern you want to search for. Use in conjunction with `search_pattern`.
+      schema:
+        type: string
+      example: "12345"
+    search_pattern:
+      name: search_pattern
+      required: false
+      in: query
+      description: |
+        The strategy you want to use for matching:
+
+
+        * `0` - Search for numbers that start with `pattern` (Note: all numbers are in E.164 format, so the starting pattern includes the country code, such as 1 for USA)
+        * `1` - Search for numbers that contain `pattern`
+        * `2` - Search for numbers that end with `pattern`
+      schema:
+        type: integer
+        default: 0
+        enum:
+          - 0
+          - 1
+          - 2
+      example: 1
+    has_application:
+      name: has_application
+      required: false
+      in: query
+      description: |
+        Set this optional field to `true` to restrict your results to numbers
+        associated with an Application (any Application). Set to `false` to
+        find all numbers not associated with any Application. Omit the field
+        to avoid filtering on whether or not the number is assigned to an
+        Application.
+      schema:
+        type: boolean
+      example: false
+    application_id:
+      name: application_id
+      required: false
+      in: query
+      description: The Application that you want to return the numbers for.
+      schema:
+        type: string
+      example: "aaaaaaaa-bbbb-cccc-dddd-0123456789ab"
+    country:
+      name: country
+      in: query
+      required: true
+      description: The two character country code to filter on (in ISO 3166-1 alpha-2 format)
+      schema:
+        type: string
+        minLength: 2
+        maxLength: 2
+        example: GB
+        description: The two character country code in ISO 3166-1 alpha-2 format
+        # $ref: "#/components/schemas/country"
+    type:
+      name: type
+      in: query
+      required: false
+      description: Set this parameter to filter the type of number, such as mobile or landline
+      schema:
+        type: string
+        enum:
+          - landline
+          - mobile-lvn
+          - landline-toll-free
+      example: mobile-lvn
+    msisdn:
+      name: msisdn
+      required: true
+      in: query
+      description: The inbound number you want to cancel, in [E.164 international format](/concepts/guides/glossary#e-164-format)
+      schema:
+        type: string
+      example: "447700900000"
+
+  schemas:
+    country:
+      type: string
+      minLength: 2
+      maxLength: 2
+      example: GB
+      description: The two character country code in ISO 3166-1 alpha-2 format
+    ownednumber:
+      type: object
+      properties:
+        country:
+          $ref: "#/components/schemas/country"
+        msisdn:
+          type: string
+          example: "447700900000"
+          description: An available inbound virtual number.
+        moHttpUrl:
+          type: string
+          format: url
+          example: "https://example.com/webhooks/inbound-sms"
+          description: >-
+            The URL of the webhook endpoint that handles inbound messages
+        type:
+          type: string
+          example: mobile-lvn
+          description: "The type of number: `landline`, `landline-toll-free` or `mobile-lvn`"
+        features:
+          type: array
+          items:
+            type: string
+          example: ["VOICE", "SMS", "MMS"]
+          description: "The capabilities of the number: `SMS` or `VOICE` or `SMS,VOICE` or `SMS,MMS` or `VOICE,MMS` or `SMS,MMS,VOICE`"
+        messagesCallbackType:
+          type: string
+          example: app
+          description: "The messages webhook type: always `app`"
+        messagesCallbackValue:
+          type: string
+          example: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
+          description: An Application ID
+        voiceCallbackType:
+          type: string
+          example: app
+          description: "The voice webhook type: `sip`, `tel`, or `app`"
+        voiceCallbackValue:
+          type: string
+          example: aaaaaaaa-bbbb-cccc-dddd-0123456789ab
+          description: A SIP URI, telephone number or Application ID
+    availablenumber:
+      type: object
+      properties:
+        country:
+          $ref: "#/components/schemas/country"
+        msisdn:
+          type: string
+          example: "447700900000"
+          description: An available inbound virtual number.
+        type:
+          type: string
+          example: mobile-lvn
+          description: "The type of number: `landline`, `landline-toll-free` or `mobile-lvn`"
+        cost:
+          type: string
+          example: "1.25"
+          description: The monthly rental cost for this number, in Euros
+        features:
+          type: array
+          items:
+            type: string
+          example: [VOICE, SMS, MMS]
+          description: "The capabilities of the number: `SMS` or `VOICE` or `SMS,VOICE` or `SMS,MMS` or `VOICE,MMS` or `SMS,MMS,VOICE`"
+    inbound-numbers:
+      type: object
+      xml:
+        name: inbound-numbers
+      properties:
+        count:
+          type: integer
+          description: The total amount of numbers owned by the account
+          example: 1
+        numbers:
+          type: array
+          description: A paginated array of numbers and their details
+          items:
+            $ref: "#/components/schemas/ownednumber"
+    available-numbers:
+      type: object
+      xml:
+        name: inbound-numbers
+      properties:
+        count:
+          type: integer
+          description: The total amount of numbers available in the pool.
+          example: 1234
+        numbers:
+          type: array
+          description: A paginated array of available numbers and their details.
+          items:
+            $ref: "#/components/schemas/availablenumber"
+
+    number-details:
+      type: object
+      properties:
+        country:
+          $ref: "#/components/schemas/country"
+        msisdn:
+          type: string
+          example: "447700900000"
+          description: An available inbound virtual number.
+        target_api_key:
+          type: string
+          example: "1a2345b7"
+          description: If you’d like to perform an action on a subaccount, provide the `api_key` of that account here. If you’d like to perform an action on your own account, you do not need to provide this field.
+      required:
+        - country
+        - msisdn
+
+    number-details-update:
+      type: object
+      properties:
+        country:
+          $ref: "#/components/schemas/country"
+        msisdn:
+          type: string
+          example: "447700900000"
+          description: An available inbound virtual number.
+        app_id:
+          type: string
+          description: The Application that will handle inbound traffic to this number.
+          example: "aaaaaaaa-bbbb-cccc-dddd-0123456789abc"
+        moHttpUrl:
+          description: >-
+            An URL-encoded URI to the webhook endpoint that handles inbound
+            messages. Your webhook endpoint must be active before you make this
+            request. Vonage makes a `GET` request to the endpoint and checks
+            that it returns a `200 OK` response. Set this parameter's value to an empty string to remove the webhook.
+          type: string
+          example: "https://example.com/webhooks/inbound-sms"
+        moSmppSysType:
+          description: The associated system type for your SMPP client
+          type: string
+          example: inbound
+        voiceCallbackType:
+          description: |
+            Specify whether inbound voice calls on your number are forwarded
+            to a SIP or a telephone number.  This must be used with the
+            `voiceCallbackValue` parameter. If set, `sip` or `tel` are
+            prioritized over the Voice capability in your Application.
+
+            *Note: The `app` value is deprecated and will be removed in future.*
+          type: string
+          enum:
+            - sip
+            - tel
+            - app
+          example: "tel"
+        voiceCallbackValue:
+          description: >-
+            A SIP URI or telephone number. Must be used with the
+            `voiceCallbackType` parameter.
+          type: string
+          example: "447700900000"
+        voiceStatusCallback:
+          description: A webhook URI for Vonage to send a request to when a call ends
+          type: string
+          example: "https://example.com/webhooks/status"
+        messagesCallbackType:
+          description: |
+            <strong>DEPRECATED</strong> - We recommend that you use `app_id` instead.
+
+            Specifies the Messages webhook type (always `app`) associated with this
+            number and must be used with the `messagesCallbackValue` parameter.
+          type: string
+          enum:
+            - app
+          example: "app"
+          deprecated: true
+        messagesCallbackValue:
+          description: |
+            <strong>DEPRECATED</strong> - We recommend that you use `app_id` instead.
+
+            Specifies the Application ID of your Messages application.
+            It must be used with the `messagesCallbackType` parameter.
+          type: string
+          example: "aaaaaaaa-bbbb-cccc-dddd-0123456789ab"
+          deprecated: true
+      required:
+        - country
+        - msisdn
+    response:
+      type: object
+      xml:
+        name: response
+      properties:
+        error-code:
+          type: string
+          example: "200"
+          description: The status code of the response. `200` indicates a successful request.
+        error-code-label:
+          type: string
+          example: success
+          description: The status code description
+    unauthorized:
+      type: object
+      xml:
+        name: response
+      properties:
+        error-code:
+          type: string
+          example: "401"
+          description: The status code of the response. `200` indicates a successful request.
+        error-code-label:
+          type: string
+          example: "authentication failed"
+          description: The status code description
+    account-unauthorized:
+      type: object
+      xml:
+        name: inbound-numbers
+      properties:
+        error-code:
+          type: string
+          example: "401"
+          description: The status code of the response. `200` indicates a successful request.
+        error-code-label:
+          type: string
+          example: "authentication failed"
+          description: The status code description
+    response420:
+      type: object
+      xml:
+        name: response
+      properties:
+        error-code:
+          type: string
+          example: "420"
+          description: The status code of the response. `200` indicates a successful request.
+        error-code-label:
+          type: string
+          example: "Numbers from this country can be requested from the Dashboard (https://dashboard.nexmo.com/buy-numbers) as they require a valid local address to be provided before being purchased."
+          description: More detail about what happened. For example you may need to request the number via the dashboard, or you may already own this number.

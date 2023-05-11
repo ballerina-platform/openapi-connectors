@@ -1,0 +1,13 @@
+id: clever.data
+displayName: Clever Data
+type: OpenAPI
+version: 1.2.0
+description: This is the [Clever Data API v1.2](https://dev.clever.com/v1.2/docs/secure-sync) OpenAPI specification. Clever Data API provides the capability to retrieve information from Clever data store.
+idlPath: /clever.data/1.2.0/openapi.yaml
+thumbnailPath: /clever.data/1.2.0/icon.png
+documentationPath: /clever.data/1.2.0/readme.md
+keywords:
+  - Education/Elearning
+  - Cost/Paid
+endpoint:
+  - url: https://api.clever.com/v1.2

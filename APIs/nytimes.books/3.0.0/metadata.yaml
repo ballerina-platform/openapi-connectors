@@ -1,0 +1,13 @@
+id: nytimes.books
+displayName: New York Times Books
+type: OpenAPI
+version: 3.0.0
+description: This is the [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification. The Books API provides information about book reviews and The New York Times bestsellers lists. For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
+idlPath: /nytimes.books/3.0.0/openapi.yaml
+thumbnailPath: /nytimes.books/3.0.0/icon.png
+documentationPath: /nytimes.books/3.0.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Free
+endpoint:
+  - url: https://api.nytimes.com/svc/books/v3

@@ -1,0 +1,13 @@
+id: webscraping.ai
+displayName: WebScraping.AI
+type: OpenAPI
+version: 2.0.4
+description: This is the [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification. It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing. More information about the WebScraping.AI API can be found at https://webscraping.ai.
+idlPath: /webscraping.ai/2.0.4/openapi.yaml
+thumbnailPath: /webscraping.ai/2.0.4/icon.png
+documentationPath: /webscraping.ai/2.0.4/readme.md
+keywords:
+  - Website&AppBuilding/WebScraper
+  - Cost/Freemium
+endpoint:
+  - url: https://api.webscraping.ai

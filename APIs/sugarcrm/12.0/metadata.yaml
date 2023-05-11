@@ -1,0 +1,11 @@
+id: sugarcrm
+displayName: SugarCRM
+type: OpenAPI
+version: "12.0"
+description: This is the [SugarCRM REST API v12.0](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/) OpenAPI Specification.
+idlPath: /sugarcrm/12.0/openapi.yaml
+thumbnailPath: /sugarcrm/12.0/icon.png
+documentationPath: /sugarcrm/12.0/readme.md
+keywords:
+  - Sales&CRM
+  - CustomerRelationshipManagement

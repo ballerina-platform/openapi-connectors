@@ -1,0 +1,5084 @@
+openapi: 3.0.1
+info:
+  title: DocuSign Admin API
+  description: >-
+    This is a generated connector for [DocuSign Admin API](https://developers.docusign.com/docs/admin-api/) OpenAPI specification.
+    An API for an organization administrator to manage organizations, accounts and users which enables you to automate user management with your existing systems while ensuring governance and compliance.
+  termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
+  contact:
+    name: DocuSign Developer Center
+    url: https://developers.docusign.com
+    email: devcenter@docusign.com
+  version: v2.1
+  x-ballerina-init-description: 
+      The connector initialization requires setting the API credentials.
+      Create a [DocuSign account](https://www.docusign.com/) and obtain tokens by following [this guide](https://developers.docusign.com/docs/admin-api/admin101/auth/).
+  x-ballerina-display:
+    label: DocuSign Admin
+    iconPath: "icon.png"
+servers:
+- url: https://api.docusign.net/Management
+tags:
+- name: Users
+  description: Methods to manage users in an account.
+- name: eSignUserManagement
+  description: Methods to manage eSignature users in an account.
+- name: MultiProductUserManagement
+  description: Methods to manage multi-product users in an account.
+- name: UserExport
+  description: Methods for exporting a user list.
+- name: AccountSettingsExport
+  description: Methods and objects to get account information.
+- name: UserImport
+  description: |-
+    Methods to import users.
+
+    To ensure your CSV is properly formatted, use the
+    [Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)
+     as a template.
+
+    You can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.
+- name: IdentityProviders
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  description: Methods for working with organizations.
+- name: AccountSettingsImport
+  description: Methods and objects to update account settings.
+- name: SingleAccountUserImport
+  description: Methods to import users.
+paths:
+  /v2/organizations:
+    get:
+      tags:
+      - Organization
+      summary: Returns a list of organizations that the authenticated user belongs
+        to.
+      description: |-
+        Returns a list of organizations that the authenticated user belongs to.
+
+        - Required scopes: `organization_read`.
+
+        Note that the DocuSign Admin API only returns JSON, not XML.
+      operationId:  Get Organization List
+      parameters:
+      - name: mode
+        in: query
+        description: |-
+          Specifies how to select the organizations. Valid values:
+
+          - `org_admin`: Returns organizations for which the authenticated user is an admin.
+          - `account_membership`: Returns organizations that contain an account of which the authenticated user is a member
+
+          Default value: `org_admin`
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationsResponse'
+      security:
+      - accessCode:
+        - organization_read
+      x-ds-methodname: getOrganizations
+      x-ds-method: getOrganizations
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/accounts/{accountId}/permissions:
+    get:
+      tags:
+      - eSignUserManagement
+      summary: Returns the list of permission profiles in an account.
+      description: |+
+        Returns the list of permission profiles in an account.
+
+        - Required scopes: `permission_read`
+
+      operationId: Get Accounts Permission Profiles
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionsResponse'
+      security:
+      - accessCode:
+        - permission_read
+      x-ds-methodname: getPermissions
+      x-ds-method: getPermissions
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/accounts/{accountId}/groups:
+    get:
+      tags:
+      - eSignUserManagement
+      summary: Returns the list of groups in an account.
+      description: |
+        Returns the list of groups in an account.
+
+        - Required scopes: `group_read`
+      operationId: Get Groups In Account
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Index of first item to include in the response. The default value
+          is 0.
+        schema:
+          type: integer
+          format: int32
+      - name: take
+        in: query
+        description: Page size of the response. The default value is 20.
+        schema:
+          type: integer
+          format: int32
+      - name: end
+        in: query
+        description: Index of the last item to include in the response. Ignored if
+          `take` parameter is specified.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberGroupsResponse'
+      security:
+      - accessCode:
+        - group_read
+      x-ds-methodname: getGroups
+      x-ds-method: getGroups
+      x-ds-service: Accounts
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/exports/user_list:
+    get:
+      tags:
+      - UserExport
+      summary: Returns a list of pending and completed export requests.
+      description: |
+        Returns a list of pending and completed export requests.
+
+        - Required scopes: `user_read`
+      operationId: Get Organization Export Requests
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportsResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUserListExports
+      x-ds-method: getUserListExports
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - UserExport
+      summary: Creates a user list export request.
+      description: "Create a user list export request.\n\n- Required scopes: `user_read`\n\
+        \nThis method initiates a user list export request. You specify the type of\
+        \ export request as JSON in the body of method, like this:\n\n``` json\n{\n\
+        \t\"type\": \"organization_memberships_export\"\n}\n```\n\n\n\n\nThe export\
+        \ request type is one of three values:\n\n| Value                        \
+        \              | Description                                             \
+        \                                                |\n| :-----------------------------------------\
+        \ | :------------------------------------------------------------------------------------------------------\
+        \ |\n| `organization_memberships_export`          | Every user in every account\
+        \ in the organization. Users in multiple accounts will appear more than once.\
+        \ |\n| `organization_domain_users_export`         | All users of the reserved\
+        \ domains.                                                               \
+        \       |\n| `organization_external_memberships_export` | Users whose email\
+        \ address domain is *not* linked to the organization.                    \
+        \               |\n"
+      operationId: Create User List Export Request
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: Enables you to specify the kind of export request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationExportRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: createUserListExport
+      x-ds-method: createUserListExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/exports/account_settings:
+    get:
+      tags:
+      - AccountSettingsExport
+      summary: Returns a list of pending and completed account settings export request.
+      description: |
+        Returns a list of pending and completed account settings export request.
+
+        - Required scopes: `account_read`
+      operationId: Get Account Setting Export Requests
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportsResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getAccountSettingsExports
+      x-ds-method: getAccountSettingsExports
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - AccountSettingsExport
+      summary: Creates a  new account settings export request.
+      description: "Creates a  new account settings export request.\n\nSpecify the\
+        \ accounts whose settings you are requesting as JSON in the body of method,\
+        \ like this:\n\n``` json\n{\n  \"accounts\":\t[\n  \t{ \"account_id\": \"\
+        9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e\"},\n  \t{ \"account_id\": \"624e3e00-xxxx-xxxx-xxxx-43918c520dab\"\
+        }\n\n  ]\n}\n```\n"
+      operationId: Create Account Settings Export Request
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: Organization account request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationAccountsRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: createAccountSettingsExport
+      x-ds-method: createAccountSettingsExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/exports/user_list/{exportId}:
+    get:
+      tags:
+      - UserExport
+      summary: Returns the results for single user list export request.
+      description: |-
+        Returns the results for single user list export request.
+
+        - Required scopes: `user_read`
+
+        Given an export id, this method returns the results of a single user list export request.
+        To get a list of all the export requests, use `getUserListExports`.
+
+        Note that the `metadata_url` property of the response from `createUserListExport` is a read-to-use HTTP GET request to get the status.
+
+        You can find the actual list of users at  `results[n].url` in the response.
+      operationId: Get User List Export Request By Export Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: exportId
+        in: path
+        description: The export ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUserListExport
+      x-ds-method: getUserListExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - UserExport
+      summary: Deletes a single user list export request.
+      description: |+
+        Deletes a single user list export request.
+        Use this method to delete pending or completed user export requests.
+
+        - Required scopes: `user_read`
+
+      operationId: Delete User List Expot By Export Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: exportId
+        in: path
+        description: The export ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: deleteUserListExport
+      x-ds-method: deleteUserListExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/exports/account_settings/{exportId}:
+    get:
+      tags:
+      - AccountSettingsExport
+      summary: Returns the results for a single account settings export request.
+      description: |
+        Returns the results for a single account settings export request.
+
+        - Required scopes: `account_read`
+
+        Given an export id, this method returns the results of an account settings export request.
+        To get a list of all the export requests, use `getAccountSettingsExports`.
+
+        You can find the actual list of settings at  `results[n].url` in the response. The settings export is formatted like this:
+
+        ``` json
+        {
+          "accounts": [
+            {
+              "account_id": "9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e",
+              "name": "The Happy Company",
+              . . .
+            },
+            {
+              "account_id": "624e3e00-xxxx-xxxx-xxxx-43918c520dab",
+              "name": "LoanCo",
+              . . .
+            }
+          ],
+          "settings": [
+            . . .
+            {
+              "category": "Signing",
+              "name": "SignerCanSignOnMobile",
+              "account_values": [
+                {
+                  "account_id": "9ca037f4-xxxx-xxxx-xxxx-212e57d4f22e",
+                  "value": "true",
+                  "rights": "editable"
+                },
+                {
+                  "account_id": "624e3e00-xxxx-xxxx-xxxx-43918c520dab",
+                  "value": "true",
+                  "rights": "editable"
+                }
+              ]
+            },
+            . . .
+          ]
+        }
+
+        ```
+      operationId: Get Account Settings Export By Export Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: exportId
+        in: path
+        description: The export ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationExportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getAccountSettingsExport
+      x-ds-method: getAccountSettingsExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - AccountSettingsExport
+      summary: Deletes a single account settings export request.
+      description: |+
+        Deletes a single account settings export request.
+        Any data associated with the request is also deleted.
+
+        - Required scopes: `account_read`
+
+      operationId: Delete Account Settings Export By Export Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: exportId
+        in: path
+        description: The export ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: deleteAccountSettingsExport
+      x-ds-method: deleteAccountSettingsExport
+      x-ds-service: BulkExports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/account_settings:
+    get:
+      tags:
+      - AccountSettingsImport
+      summary: Returns the details and metadata for Bulk Account Settings Import requests
+        in the organization.
+      description: |-
+        Returns the details and metadata for Bulk Account Settings Import requests in the organization.
+
+        - Required scopes: `account_read`
+      operationId: Get Organization Import Account Settings Requests
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getBulkAccountSettingsImports
+      x-ds-method: getBulkAccountSettingsImports
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - AccountSettingsImport
+      summary: Creates a new account settings import request.
+      description: |-
+        Creates a new account settings import request.
+
+
+        - Required scopes: `account_write`
+      operationId: Create Import Account Settings Request
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: CSV file containing the account settings
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
+      security:
+      - accessCode:
+        - account_write
+      x-ds-methodname: addBulkAccountSettingsImport
+      x-ds-method: addBulkAccountSettingsImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/account_settings/{importId}:
+    get:
+      tags:
+      - AccountSettingsImport
+      summary: Returns the details/metadata for a Bulk Account Settings Import request.
+      description: |+
+        Returns the details/metadata for a Bulk Account Settings Import request.
+
+        Required - scopes: `account_read`
+
+
+
+        Given an import ID, this method returns the results of an account settings import request.
+        To get a list of all the import requests, use `getAccountSettingsImports`.
+
+      operationId: Get Bulk Account Settings Import Request By Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: importId
+        in: path
+        description: The import ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationAccountSettingsImportResponse'
+      security:
+      - accessCode:
+        - account_read
+      x-ds-methodname: getBulkAccountSettingsImport
+      x-ds-method: getBulkAccountSettingsImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - AccountSettingsImport
+      summary: Deletes a Bulk Account Settings Import request.
+      description: |-
+        Deletes a single account settings import request.
+        Any data associated with the request is also deleted.
+
+        - Required scopes: `account_write`
+      operationId: Delete Account Settings Import Request By Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: importId
+        in: path
+        description: The import ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - accessCode:
+        - account_write
+      x-ds-methodname: deleteBulkAccountSettingsImport
+      x-ds-method: deleteBulkAccountSettingsImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/bulk_users/add:
+    post:
+      tags:
+      - UserImport
+      summary: Creates a request to import new users into an account.
+      description: |-
+        Creates a request to import *new* users.
+
+        - Required scopes: `user_write`
+
+
+
+        Your CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.
+
+        To ensure your CSV is properly formatted, use the
+        [Sample Bulk Add CSV file](https://admin.docusign.com/static-resources/organization-user-import.csv)
+         as a template. The following table describes the columns.
+
+
+
+        | Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |
+        | :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | AccountID           | yes      | The API account ID for the account to which you want you add the user. You can find this id in the Admin area for the account under **API and Keys**.                                                                                                                                                                                                                                                            |
+        | AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |
+        | FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |
+        | LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |
+        | UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |
+        | PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |
+        | UserTitle           |          | The user's job title.                                                                                                                                                                                                                                                                                                                                                                                               |
+        | CompanyName         |          | The user's company name.                                                                                                                                                                                                                                                                                                                                                                                            |
+        | Group               |          | The user's assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group.                                                                                                                 |
+        | AddressLine1        |          | The user's address, first line.                                                                                                                                                                                                                                                                                                                                                                                     |
+        | AddressLine2        |          | The user's address, second line.                                                                                                                                                                                                                                                                                                                                                                                    |
+        | City                |          | The user's city name.                                                                                                                                                                                                                                                                                                                                                                                               |
+        | StateRegionProvince |          | The user's regional location.                                                                                                                                                                                                                                                                                                                                                                                       |
+        | PostalCode          |          | The user's postal code.                                                                                                                                                                                                                                                                                                                                                                                             |
+        | Phone               |          | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                            |
+        | Language            |          | The user's display language for their DocuSign account. Must be one of: <ul><li>Chinese Simplified: <code>zh_CN</code></li><li>Chinese Traditional: <code>zh_TW</code></li><li>Dutch: <code>nl</code></li><li>English: <code>en</code></li><li>French: <code>fr</code></li><li>German: <code>de</code></li><li>Italian: <code>it</code></li><li>Japanese: <code>ja</code></li><li>Korean: <code>ko</code></li><li>Portuguese: <code>pt</code></li><li>Portuguese Brazil: <code>pt_BR</code></li><li>Russian: <code>ru</code></li><li>Spanish: <code>es</code></li></ul>                                                                                                                                                                                                                                                                                                                                                            |
+        | LoginPolicy         |          | The user's login policy. Valid values include the following: <ul> <li>Column left blank = The user is created with no policy assigned.</li> <li>FedAuthRequired = The user must log in with an Identity Provider.</li> <li>FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password.</li> </ul> For more information on login policies, see [Setting User Login Policy](https://support.docusign.com/en/guides/org-admin-guide-user-login-policy). |
+        | AutoActivate        |          | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email.                                                                                                                                                   |
+
+
+        You can add up to 2,000 users to an account and include up to 50 accounts per import. The maximum number of users per import is 8,000.
+      operationId: Create Import Users Request  
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: The bulk user data as a CSV content
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addBulkUserImport
+      x-ds-method: addBulkUserImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/accounts/{accountId}/imports/bulk_users/add:
+    post:
+      tags:
+      - SingleAccountUserImport
+      summary: |
+        Import request for adding user to a single account within the organization.
+      description: |
+        Import request for adding user to a single account within the organization.
+        This method lets you upload user information without requiring an AccountId column.
+
+        - Required scopes: `user_write`
+      operationId: Create Import Single Account Users Insert Request
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: The bulk user data as a CSV content
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: createBulkImportSingleAccountAddUsersRequest
+      x-ds-method: createBulkImportSingleAccountAddUsersRequest
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/bulk_users/update:
+    post:
+      tags:
+      - UserImport
+      summary: Bulk updates information for existing users.
+      description: |-
+        Bulk updates information for existing users.
+
+        - Required scopes: `user_write`
+
+
+
+        Your CSV import file is made up of a header row with the column headers and a row of user or account data for each user you want to add to an account. Only new users can be imported. Any changes to existing users will be ignored. To make changes to existing users, use `updateBulkUserImports`.
+
+        **Update limit**: You can update up to 2,000 users on an account and include up to 50 accounts per import. The maximum number of updated users per import is 8,000.
+
+        This method requires the following HTTP headers:
+
+        | Header | Value |
+        | :--- |  :--- |
+        | Content-Type | `text/csv` |
+        | Content-Disposition |  `filename=filename.csv` |
+
+
+
+        To ensure your CSV is properly formatted, use the
+        [Sample Bulk Update CSV file](https://admin.docusign.com/static-resources/organization-user-update-import.csv)
+         as a template. The following table describes the columns.
+
+        Note that the columns for bulk adding users and bulk update users are slightly different.
+        The update CSV file requires an `APIUserName` column, and does not have an `AutoActivate` column.
+
+
+
+        | Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |
+        | :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | AccountID           | yes      | The 32-character API account ID of the user's account in your organization. You can find this value in the API and Keys section of the Admin area of the account.                                                                                                                                                                                                                                                             |
+        | AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |
+        | FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |
+        | LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |
+        | UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |
+        | PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |
+        | UserTitle           |          | The user's job title.                                                                                                                                                                                                                                                                                                                                                                                               |
+        | CompanyName         |          | The user's company name.                                                                                                                                                                                                                                                                                                                                                                                            |
+        | Group               |          | The user's assigned groups. The Group values must match existing Group names for the account. Additional Group columns can be added to the file to add users to more than one group. You do not need to add users to the Everyone group, since all new users are automatically added to that group.                                                                                                                 |
+        | AddressLine1        |          | The user's address, first line.                                                                                                                                                                                                                                                                                                                                                                                     |
+        | AddressLine2        |          | The user's address, second line.                                                                                                                                                                                                                                                                                                                                                                                    |
+        | City                |          | The user's city name.                                                                                                                                                                                                                                                                                                                                                                                               |
+        | StateRegionProvince |          | The user's regional location.                                                                                                                                                                                                                                                                                                                                                                                       |
+        | PostalCode          |          | The user's postal code.                                                                                                                                                                                                                                                                                                                                                                                             |
+        | Phone               |          | The user's phone number.                                                                                                                                                                                                                                                                                                                                                                                            |
+        | Language            |          | The user's display language for their DocuSign account. Must be one of: <ul><li>Chinese Simplified: <code>zh_CN</code></li><li>Chinese Traditional: <code>zh_TW</code></li><li>Dutch: <code>nl</code></li><li>English: <code>en</code></li><li>French: <code>fr</code></li><li>German: <code>de</code></li><li>Italian: <code>it</code></li><li>Japanese: <code>ja</code></li><li>Korean: <code>ko</code></li><li>Portuguese: <code>pt</code></li><li>Portuguese Brazil: <code>pt_BR</code></li><li>Russian: <code>ru</code></li><li>Spanish: <code>es</code></li></ul>                                                                                                                                                                                                                                                                                                                                                            |
+        | LoginPolicy         |          | The user's login policy. Valid values include the following: <ul> <li>Column left blank = The user is created with no policy assigned.</li> <li>FedAuthRequired = The user must log in with an Identity Provider.</li> <li>FedAuthBypass = The user may log in with an Identity Provider or their DocuSign username and password.</li> </ul> For more information on login policies, see [Setting User Login Policy](https://support.docusign.com/en/guides/org-admin-guide-user-login-policy). |
+        | AutoActivate        |          | For domain users, new users can be activated automatically for domain accounts using SSO by setting the value to **true**. The user is activated automatically once the import is complete. Memberships activated in this way do not receive an activation email.                                                                                                                                                   |
+
+
+
+        ## Updating user email addresses
+
+        Changing a user's email address should be done carefully. The user's email address is used to log in to DocuSign and receive documents to sign from others.
+        Once changed, existing documents that were sent or received:
+
+        - Will still appear in the user's documents list.
+        - Notifications about these documents will be sent to the new email address. If someone sends a new document to the old email address:
+        - DocuSign will send a notification to the old address.
+        - It will not appear in the documents list of the account.
+
+        This change of email address will be applied to all of the user's account memberships.
+      operationId: Update Imported Users
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: The bulk user data as a CSV content
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: updateBulkUserImports
+      x-ds-method: updateBulkUserImports
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/accounts/{accountId}/imports/bulk_users/update:
+    post:
+      tags:
+      - SingleAccountUserImport
+      summary: |-
+        Import request for updating users for a single account
+        within the organization.
+      description: |+
+        Import request for updating users for a single account
+        within the organization.
+
+        - Required scopes: `user_write`
+
+        This method lets you upload user information without requiring an AccountId column.
+
+      operationId: Update Single Account Users In Organization
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: The bulk user data as a CSV content
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file.csv
+              properties:
+                file.csv:
+                  type: string
+                  description: CSV file.
+                  format: binary
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: createBulkImportSingleAccountUpdateUsersRequest
+      x-ds-method: createBulkImportSingleAccountUpdateUsersRequest
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/bulk_users/close:
+    post:
+      tags:
+      - UserImport
+      summary: Creates a request to close the accounts of existing users.
+      description: |
+        Creates a request to close the accounts of existing users.
+
+        - Required scopes: `user_write`
+
+        Given a CSV list of users, close their accounts.
+
+
+        Your CSV import file is made up of a header row with the column headers and a row of user or account data for each user whose account you want to close.
+
+        To ensure your CSV is properly formatted, use the
+        [Sample Bulk Update CSV file](https://admin.docusign.com/static-resources/organization-user-update-import.csv)
+         as a template. The following table describes the columns.
+
+
+
+
+        | Column              | Required | Description                                                                                                                                                                                                                                                                                                                                                                                                         |
+        | :------------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+        | AccountID           | yes      | The 32-character API account ID of the user's account in your organization. You can find this value in the API and Keys section of the Admin area of the account.                                                                                                                                                                                                                                                             |
+        | AccountName         |          | The name of the user's account in your organization. The account name must match the account ID provided.                                                                                                                                                                                                                                                                                                           |
+        | FirstName           | yes      | The user's first name.                                                                                                                                                                                                                                                                                                                                                                                              |
+        | LastName            | yes      | The user's last name.                                                                                                                                                                                                                                                                                                                                                                                               |
+        | UserEmail           | yes      | The user's complete email address.                                                                                                                                                                                                                                                                                                                                                                                  |
+        | PermissionSet       | yes      | The user's permission set. The PermissionSet value must match an existing permission set for the account. This value is not case sensitive.                                                                                                                                                                                                                                                                         |
+      operationId: Create Import Users Account Close Request
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: closeBulkUserImportRequest
+      x-ds-method: closeBulkUserImportRequest
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/bulk_users/close_external:
+    post:
+      tags:
+      - UserImport
+      summary: Closes external memberships.
+      description: |
+        Closes external memberships.
+
+        - Required scopes: `user_write`
+
+        External memberships are:
+
+        - Users who have an email address at a verified domain
+        - But do not belong to the organization
+      operationId: Close Extenal Memberships
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: closeBulkExternalUserImportRequest
+      x-ds-method: closeBulkExternalUserImportRequest
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/bulk_users:
+    get:
+      tags:
+      - UserImport
+      summary: Gets a list of all of the user import requests.
+      description: |
+        Gets a list of all of the user import requests.
+
+        - Required scopes: `user_read`
+      operationId: Get Import Users Requests
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportsResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getBulkUserImportRequests
+      x-ds-method: getBulkUserImportRequests
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/bulk_users/{importId}:
+    get:
+      tags:
+      - UserImport
+      summary: Returns the details of a single user import request.
+      description: |-
+        Returns the details of a single user import request.
+
+        - Required scopes: `user_read`
+
+        Use this method to check the status of the request by looking at the `status` property of the response.
+        Once the status becomes `completed` (or fails), use this method to get the details.
+
+        To get a list of all of the user import requests, use `getBulkUserImportRequests`.
+      operationId: Get Import User Request By Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: importId
+        in: path
+        description: The import ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationImportResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getBulkUserImportRequest
+      x-ds-method: getBulkUserImportRequest
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - UserImport
+      summary: Deletes a specific user import request.
+      description: |-
+        Deletes a specific import request and its results.
+
+        - Required scopes: `user_write`
+
+
+        To delete a user, see `closeBulkUserImportRequest`.
+      operationId: Delete Import User Request By Id
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: importId
+        in: path
+        description: The import ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: deleteBulkUserImport
+      x-ds-method: deleteBulkUserImport
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/imports/bulk_users/{importId}/results_csv:
+    get:
+      tags:
+      - UserImport
+      summary: |-
+        Given the ID of a user import request,
+        return the CSV file that was imported.
+      description: |
+        Returns the contents of the CSV file
+        associated with a user import request.
+
+        - Required scopes: `user_read`
+
+        The results have an additional column,
+        `ProcessingResults`,
+        that describes the results of importing that row.
+      operationId: Get CSV Results of User Import Request
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: importId
+        in: path
+        description: The import ID GUID for the request.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            text/csv:
+              schema:
+                type: object
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getBulkUserImportCSV
+      x-ds-method: getBulkUserImportCSV
+      x-ds-service: BulkImports
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/identity_providers:
+    get:
+      tags:
+      - IdentityProviders
+      summary: Returns the list of identity providers for an organization.
+      description: |
+        Returns the list of identity providers for an organization.
+
+        - Required scopes: `identity_provider_read`
+      operationId: Get Identity Providers of Organization
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityProvidersResponse'
+      security:
+      - accessCode:
+        - identity_provider_read
+      x-ds-methodname: getIdentityProviders
+      x-ds-method: getIdentityProviders
+      x-ds-service: IdentityProviders
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/reserved_domains:
+    get:
+      tags:
+      - ReservedDomains
+      summary: Returns the list of reserved domains for the organization.
+      description: |-
+        Returns the list of reserved domains for the organization.
+
+        - Required scopes: `domain_read`.
+
+        Please note the DocuSign Admin API only returns JSON, not XML.
+      operationId: Get Reserved Domains of Organization
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainsResponse'
+      security:
+      - accessCode:
+        - domain_read
+      x-ds-methodname: getReservedDomains
+      x-ds-method: getReservedDomains
+      x-ds-service: ReservedDomains
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/users/profiles:
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Updates a user's information.
+      description: |+
+        Updates a user's information.
+
+        - Required scopes: `user_write`
+
+      operationId: Update User
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: A list of users whose information you want to change.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUsersRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersUpdateResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: updateUser
+      x-ds-method: updateUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users/email_addresses:
+    post:
+      tags:
+      - Users
+      summary: Updates a user's email address.
+      description: |+
+        Updates a user's email address.
+
+        - Required scopes: `user_write`
+
+      operationId: Upate User Email Address
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: A change email request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUsersEmailRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersUpdateResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: updateEmailAddress
+      x-ds-method: updateEmailAddress
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users/{userId}/accounts:
+    delete:
+      tags:
+      - eSignUserManagement
+      summary: Closes a user's memberships.
+      description: |+
+        Closes a user's memberships.
+
+        - Required scopes: `user_write`
+
+      operationId: Close User Memberships
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/DeleteMembershipsRequest'
+        # required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteMembershipsResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: closeMemberships
+      x-ds-method: closeMemberships
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users:
+    get:
+      tags:
+      - Users
+      summary: Returns information about the users in an organization.
+      description: |-
+        Returns information about the users in an organization.
+
+
+        - Required scopes: `user_read`
+
+        You must include at least one of the following query parameters in the request:
+
+        - `account_id`: The id of an account associated with the organization.
+        - `organization_reserved_domain_id`: The id of one of the organization's reserved domains.
+        - `email`: An email address associated with the users that you want to return.
+      operationId: Get Users in Organization
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: start
+        in: query
+        description: Index of first item to include in the response. The default value
+          is 0.
+        schema:
+          type: integer
+          format: int32
+      - name: take
+        in: query
+        description: Page size of the response. The default value is 20.
+        schema:
+          type: integer
+          format: int32
+      - name: end
+        in: query
+        description: Index of the last item to include in the response. Ignored if
+          `take` parameter is specified.
+        schema:
+          type: integer
+          format: int32
+      - name: email
+        in: query
+        description: Email address of the desired user. At least one of `email`, `account_id`
+          or `organization_reserved_domain_id` must be specified.
+        schema:
+          type: string
+      - name: email_user_name_like
+        in: query
+        description: Selects users by pattern matching on the user's email address
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: Status.
+        schema:
+          type: string
+      - name: membership_status
+        in: query
+        description: |
+          The user's membership status. One of:
+
+          - `activation_required`
+          - `activation_sent`
+          - `active`
+          - `closed`
+          - `disabled`
+        schema:
+          type: string
+      - name: account_id
+        in: query
+        description: Select users that are members of the specified account. At least
+          one of `email`, `account_id` or `organization_reserved_domain_id` must be
+          specified.
+        schema:
+          type: string
+          format: uuid
+      - name: organization_reserved_domain_id
+        in: query
+        description: Select users that are in the specified domain. At least one of
+          `email`, `account_id` or `organization_reserved_domain_id` must be specified.
+        schema:
+          type: string
+          format: uuid
+      - name: last_modified_since
+        in: query
+        description: Select users whose data have been modified since the date specified.
+          `account_id` or `organization_reserved_domain_id` must be specified.
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrganizationUsersResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUsers
+      x-ds-method: getUsers
+      x-ds-service: Users
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Creates a new user.
+      description: |+
+        Creates a new user.
+
+        - Required scopes: `user_write`
+
+      operationId: Create User
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: Information about a new user.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewUserRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewUserResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: createUser
+      x-ds-method: createUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users/{userId}/memberships/{membershipId}:
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Activates user memberships.
+      description: |
+        Activates user memberships.
+
+        - Required scopes: `user_write`
+      operationId: Activate User Membership
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: membershipId
+        in: path
+        description: The membership ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: "Data to ctivate user memership"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForceActivateMembershipRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: activateMembership
+      x-ds-method: activateMembership
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2/organizations/{organizationId}/users/profile:
+    get:
+      tags:
+      - eSignUserManagement
+      summary: |
+        Returns information about recently modified users.
+      description: |+
+        Returns information about recently modified users.
+
+        - Required scopes: `user_read`
+
+        The response includes up to the first 20 users modified
+        in the last 10 days.
+      operationId: Get Recently Modified Users
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: email
+        in: query
+        description: The email address associated with the users you want to retrieve.
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersDrilldownResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUserProfiles
+      x-ds-method: getUserProfiles
+      x-ds-service: Users
+      x-ds-in-sdk: true
+  /v2/organizations/{organizationId}/users/{userId}/identities:
+    delete:
+      tags:
+      - eSignUserManagement
+      summary: Deletes user identities.
+      description: |+
+        Deletes user identities.
+
+        - Required scopes: `user_write`
+
+      operationId: Delete User Identities
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/DeleteUserIdentityRequest'
+      #   required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: deleteIdentities
+      x-ds-method: deleteIdentities
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: requestModel
+  /v2/organizations/{organizationId}/accounts/{accountId}/users:
+    post:
+      tags:
+      - eSignUserManagement
+      summary: Adds users to an account.
+      description: |+
+        Adds users to an account.
+
+        - Required scopes: `user_write`
+
+      operationId: Create Account Users
+      parameters:
+      - name: organizationId
+        in: path
+        description: The organization ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID Guid
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: A new user request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewAccountUserRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewUserResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addUsers
+      x-ds-method: addUsers
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Returns a list of DSGroups.
+      description: |-
+        Returns a list of DSGroups
+
+        - Required scopes: `user_read`
+      operationId: Get DS Groups
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Start page of DSGroups.
+        schema:
+          type: integer
+          format: int32
+      - name: page_size
+        in: query
+        description: Page size of DSGroups.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupListResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getDSGroups
+      x-ds-method: getDSGroups
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Creates a new DSGroup.
+      description: |-
+        Creates a new DSGroup.
+
+        - Required scopes: `user_write`
+      operationId: Create DS Group
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: DS Group add data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DSGroupAddRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addDSGroup
+      x-ds-method: addDSGroup
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: addRequest
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups/{dsGroupId}:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Returns details about a single DSGroup.
+      description: |-
+        Returns details about a single DSGroup.
+
+        - Required scopes: `user_read`
+      operationId: Get DS Group
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's ID GUID
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getDSGroup
+      x-ds-method: getDSGroup
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+    delete:
+      tags:
+      - MultiProductUserManagement
+      summary: Deletes a DSGroup.
+      description: |-
+        Deletes a DSGroup
+
+        - Required scopes: `user_write`
+      operationId: Delete DS Group
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        204:
+          description: No Content
+          content: {}
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: deleteDSGroup
+      x-ds-method: deleteDSGroup
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/dsgroups/{dsGroupId}/users:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Gets a list of users in a DSGroup.
+      description: |-
+        Gets a list of users in a DSGroup.
+
+        - Required scopes: `user_read`
+      operationId: Get DS Group Users
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: |
+          Start page of DSGroups.
+        schema:
+          type: integer
+          format: int32
+      - name: page_size
+        in: query
+        description: Page size of DSGroups.
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DSGroupAndUsersResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getDSGroupUsers
+      x-ds-method: getDSGroupUsers
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Adds a list of users to a DSGroup.
+      description: |-
+        Adds a list of users to a DSGroup.
+
+        - Required scopes: `user_write`
+      operationId: Add DS Group Users
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: "DG Group user data"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DSGroupUsersAddRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddDSGroupAndUsersResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addDSGroupUsers
+      x-ds-method: addDSGroupUsers
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: dSGroupUsersAddRequest
+    delete:
+      tags:
+      - MultiProductUserManagement
+      summary: Removes a list of users from a DSGroup.
+      description: |-
+        Removes a list of users from a DSGroup.
+
+        - Required scopes: `user_write`
+      operationId: Remove DS Group Users
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: dsGroupId
+        in: path
+        description: The DSGroup's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      # requestBody:
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: '#/components/schemas/DSGroupUsersRemoveRequest'
+      #   required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveDSGroupUsersResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: removeDSGroupUsers
+      x-ds-method: removeDSGroupUsers
+      x-ds-service: DSGroups
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: dSGroupUsersRemoveRequest
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/products/permission_profiles:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Gets products associated with the account and the available permission
+        profiles.
+      description: |-
+        Gets products associated with the account and the available permission profiles.
+
+        - Required scopes: `user_read`
+      operationId: Get Product Permission Profiles
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPermissionProfilesResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getProductPermissionProfiles
+      x-ds-method: getProductPermissionProfiles
+      x-ds-service: ProductPermissionProfiles
+      x-ds-in-sdk: true
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/products/users/{userId}/permission_profiles:
+    get:
+      tags:
+      - MultiProductUserManagement
+      summary: Retrieves a list of user's permission profiles for each account's product.
+      description: |-
+        Retrieves a list of user's permission profiles for each account's product.
+
+        - Required scopes: `user_read`
+      operationId: Get User Product Permission Profiles of Product
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPermissionProfilesResponse'
+      security:
+      - accessCode:
+        - user_read
+      x-ds-methodname: getUserProductPermissionProfiles
+      x-ds-method: getUserProductPermissionProfiles
+      x-ds-service: ProductPermissionProfiles
+      x-ds-in-sdk: true
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Assigns user to permission profiles for one or more products.
+      description: |-
+        Assigns user to permission profiles for one or more products.
+
+        - Required scopes: `user_write`
+      operationId: Assign User to Product Permission Profiles
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: userId
+        in: path
+        description: The user ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: "Product permission profile data"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPermissionProfilesRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProductPermissionProfilesResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addUserProductPermissionProfiles
+      x-ds-method: addUserProductPermissionProfiles
+      x-ds-service: ProductPermissionProfiles
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: productPermissionProfilesRequest
+  /v2.1/organizations/{organizationId}/accounts/{accountId}/users:
+    post:
+      tags:
+      - MultiProductUserManagement
+      summary: Creates and updates a multi-product user.
+      description: |-
+        Creates and updates a multi-product user.
+
+        - Required scopes: `user_write`
+      operationId: Create or Update Multi Product Users
+      parameters:
+      - name: organizationId
+        in: path
+        description: |
+          The organization's GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: accountId
+        in: path
+        description: The account ID GUID.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        description: "Multi product user data"
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewMultiProductUserAddRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddUserResponse'
+      security:
+      - accessCode:
+        - user_write
+      x-ds-methodname: addOrUpdateUser
+      x-ds-method: addOrUpdateUser
+      x-ds-service: Users
+      x-ds-in-sdk: true
+      x-codegen-request-body-name: request
+components:
+  schemas:
+    OrganizationsResponse:
+      type: object
+      properties:
+        organizations:
+          type: array
+          description: A list of organizations of which the  authenticated user is
+            a member.
+          items:
+            $ref: '#/components/schemas/OrganizationResponse'
+      description: Organization list.
+      x-ds-definition-name: OrganizationsResponse
+      x-ms-summary: Organization list.
+    OrganizationResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the organization.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        name:
+          type: string
+          description: The name of the organization.
+        description:
+          type: string
+          description: A description of the organization.
+        default_account_id:
+          type: string
+          description: The default account ID of the organization.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        default_permission_profile_id:
+          type: integer
+          description: The default permission profile ID of the organization.
+          format: int64
+        created_on:
+          type: string
+          description: The date the organization's account was created.
+          format: date-time
+        created_by:
+          type: string
+          description: The user who created the organization account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        last_modified_on:
+          type: string
+          description: The date the organization's account was last updated.
+          format: date-time
+        last_modified_by:
+          type: string
+          description: The user who last updated the organization's account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        accounts:
+          type: array
+          description: A list of organization accounts.
+          items:
+            $ref: '#/components/schemas/OrganizationAccountResponse'
+        users:
+          type: array
+          description: A list of the organization accounts users.
+          items:
+            $ref: '#/components/schemas/OrganizationSimpleIdObject'
+        reserved_domains:
+          type: array
+          description: A list of reserved domains for the organization.
+          items:
+            $ref: '#/components/schemas/DomainResponse'
+        identity_providers:
+          type: array
+          description: A list of identity providers for the organization.
+          items:
+            $ref: '#/components/schemas/IdentityProvidersResponse'
+        links:
+          type: array
+          description: A list of links for the organization.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about an individual organization.
+      x-ds-definition-name: OrganizationResponse
+      x-ms-summary: Information about an individual organization.
+    OrganizationAccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the  account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        name:
+          type: string
+          description: The name of the account.
+        external_account_id:
+          type: integer
+          description: The external account ID.
+          format: int64
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+      description: Information about an account.
+      x-ds-definition-name: OrganizationAccountResponse
+      x-ms-summary: Information about an account.
+    OrganizationSimpleIdObject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: An ID object.
+      x-ds-definition-name: OrganizationSimpleIdObject
+      x-ms-summary: An ID object.
+    DomainResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the reserved domain.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        status:
+          type: string
+          description: |-
+            The status of the request. One of:
+
+            - `unknown`
+            - `pending`
+            - `active`
+            - `deactivated`
+            - `rejected`
+        host_name:
+          type: string
+          description: The host name of the reserved domain.
+        txt_token:
+          type: string
+          description: A token  in form of text of the reserved domain.
+        identity_provider_id:
+          type: string
+          description: The identity provider ID of the reserved domain.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        settings:
+          type: array
+          description: |
+            A list of settings for the reserved domain.
+          items:
+            $ref: '#/components/schemas/SettingResponse'
+        links:
+          type: array
+          description: A list of useful links.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a reserved domain.
+      x-ds-definition-name: DomainResponse
+      x-ms-summary: Information about a reserved domain.
+    IdentityProvidersResponse:
+      type: object
+      properties:
+        identity_providers:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/IdentityProviderResponse'
+      description: ""
+      x-ds-definition-name: IdentityProvidersResponse
+      x-ms-summary: ""
+    LinkResponse:
+      type: object
+      properties:
+        rel:
+          type: string
+          description: The kind of linked item.
+        href:
+          type: string
+          description: The URL of the linked item.
+      description: A link to a useful URL.
+      x-ds-definition-name: LinkResponse
+      x-ms-summary: A link to a useful URL.
+    SettingResponse:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The key of the setting.
+        value:
+          type: object
+          properties: {}
+          description: The value of the setting.
+        type:
+          type: string
+          description: |-
+            The type of the setting. One of:
+
+            - `unknown`
+            - `guid`
+            - `text`
+            - `integer`
+            - `boolean`
+            - `datetime`
+            - `enumeration`
+      description: A key/value list of settings.
+      x-ds-definition-name: SettingResponse
+      x-ms-summary: A key/value list of settings.
+    Saml2IdentityProviderResponse:
+      type: object
+      properties:
+        issuer:
+          type: string
+          description: The name of the certificate issuer.
+        settings:
+          type: array
+          description: A list of settings.
+          items:
+            $ref: '#/components/schemas/SettingResponse'
+        certificates:
+          type: array
+          description: A list of certificates responses.
+          items:
+            $ref: '#/components/schemas/CertificateResponse'
+        attribute_mappings:
+          type: array
+          description: A list of attribute mappings.
+          items:
+            $ref: '#/components/schemas/RequiredAttributeMappingResponse'
+      description: Information about a SAML 2.0 identity provider.
+      x-ds-definition-name: Saml2IdentityProviderResponse
+      x-ms-summary: Information about a SAML 2.0 identity provider.
+    CertificateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the certificate.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        issuer:
+          type: string
+          description: The certificate issuer.
+        thumbprint:
+          type: string
+          description: The thumbprint of the certificate.
+        expiration_date:
+          type: string
+          description: The date when the certificate expires.
+          format: date-time
+        is_valid:
+          type: boolean
+          description: If **true**, the certificate is valid.
+          readOnly: true
+        links:
+          type: array
+          description: A list of useful links.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single certificate.
+      x-ds-definition-name: CertificateResponse
+      x-ms-summary: Information about a single certificate.
+    RequiredAttributeMappingResponse:
+      type: object
+      properties:
+        required_attribute_id:
+          type: integer
+          description: The unique ID of the attribute.
+          format: int32
+        required_attribute_name:
+          type: string
+          description: The name of the attribute.
+        required_attribute_friendly_name:
+          type: string
+          description: The human-readable name of the attribute.
+        substitute_attribute_name:
+          type: string
+          description: The name of the substitute attribute.
+      description: A single attribute mapping response.
+      x-ds-definition-name: RequiredAttributeMappingResponse
+      x-ms-summary: A single attribute mapping response.
+    PermissionsResponse:
+      type: object
+      properties:
+        permissions:
+          type: array
+          description: An array of permission profile responses.
+          items:
+            $ref: '#/components/schemas/PermissionProfileResponse'
+      description: A list of permission profiles for a given account.
+      x-ds-definition-name: PermissionsResponse
+      x-ms-summary: A list of permission profiles for a given account.
+    PermissionProfileResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the permission profile.
+          format: int64
+        name:
+          type: string
+          description: "The name of the permission profile. \n\nExample: `DocuSign\
+            \ Sender`"
+      description: This object is an individual permission profile response.
+      x-ds-definition-name: PermissionProfileResponse
+      x-ms-summary: This object is an individual permission profile response.
+    PermissionProfileResponse2_1:
+      type: object
+      properties:
+        permission_profile_id:
+          type: string
+          description: ""
+        permission_profile_name:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: PermissionProfileResponse2_1
+      x-ms-summary: ""
+    MemberGroupsResponse:
+      type: object
+      properties:
+        groups:
+          type: array
+          description: A list of the responses.
+          items:
+            $ref: '#/components/schemas/MemberGroupResponse'
+        paging:
+          $ref: '#/components/schemas/PagingResponseProperties'
+      description: A response about member groups. It contains the groups and paging
+        information.
+      x-ds-definition-name: MemberGroupsResponse
+      x-ms-summary: A response about member groups. It contains the groups and paging
+        information.
+    MemberGroupResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The unique ID of the group.
+          format: int64
+        name:
+          type: string
+          description: The name of the group.
+        type:
+          type: string
+          description: |-
+            The type of group. One of:
+
+            - `invalid`
+            - `admin_group`
+            - `everyone_group`
+            - `custom_group`
+      description: And individual group responses,.
+      x-ds-definition-name: MemberGroupResponse
+      x-ms-summary: And individual group responses,.
+    PagingResponseProperties:
+      type: object
+      properties:
+        result_set_size:
+          type: integer
+          description: "The number of items in a result set (page)"
+          format: int32
+        result_set_start_position:
+          type: integer
+          description: "The index position of the first result in this set"
+          format: int32
+        result_set_end_position:
+          type: integer
+          description: "The index position of the last result in this set"
+          format: int32
+        total_set_size:
+          type: integer
+          description: "The total number of results"
+          format: int32
+        next:
+          type: string
+          description: "A URL to the next set of results"
+        previous:
+          type: string
+          description: "A URL to the previous set of results"
+      description: Contains information about paging through the results.
+      x-ds-definition-name: PagingResponseProperties
+      x-ms-summary: ""
+    OrganizationExportRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: "The type of export requested. One of:\n\n- `organization_domain_users_export`:\
+            \ All users of the reserved domains.\n- `organization_external_memberships_export`:\
+            \ Users whose email address domain is *not* linked to the organization.\
+            \ \n- `organization_memberships_export`: Every user in every account in\
+            \ the organization. Users in multiple accounts will appear more than once.\n\
+            - `organization_account_settings_export`: This value only applies to requests\
+            \ to export account settings."
+        accounts:
+          type: array
+          description: "Organization export accounts"
+          items:
+            $ref: '#/components/schemas/OrganizationExportAccount'
+        domains:
+          type: array
+          description: "Organization export domains"
+          items:
+            $ref: '#/components/schemas/OrganizationExportDomain'
+      description: Enables you to specify the kind of export request.
+      x-ds-definition-name: OrganizationExportRequest
+      x-ms-summary: Enables you to specify the kind of export request.
+    OrganizationExportAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ""
+      x-ds-definition-name: OrganizationExportAccount
+      x-ms-summary: ""
+    OrganizationExportDomain:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: OrganizationExportDomain
+      x-ms-summary: ""
+    OrganizationExportResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        type:
+          type: string
+          description: ""
+        requestor:
+          $ref: '#/components/schemas/OrganizationExportRequestorResponse'
+        created:
+          type: string
+          description: ""
+          format: date-time
+        last_modified:
+          type: string
+          description: ""
+          format: date-time
+        completed:
+          type: string
+          description: ""
+          format: date-time
+        expires:
+          type: string
+          description: ""
+          format: date-time
+        status:
+          type: string
+          description: Status.
+        selected_accounts:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrgExportSelectedAccount'
+        selected_domains:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrgExportSelectedDomain'
+        metadata_url:
+          type: string
+          description: ""
+        percent_completed:
+          type: integer
+          description: ""
+          format: int32
+        number_rows:
+          type: integer
+          description: ""
+          format: int64
+        size_bytes:
+          type: integer
+          description: ""
+          format: int64
+        results:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationExportTaskResponse'
+        success:
+          type: boolean
+          description: ""
+      description: ""
+      x-ds-definition-name: OrganizationExportResponse
+      x-ms-summary: ""
+    OrganizationExportRequestorResponse:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ""
+        id:
+          type: string
+          description: ""
+        type:
+          type: string
+          description: ""
+        email:
+          type: string
+          description: The email address.
+      description: ""
+      x-ds-definition-name: OrganizationExportRequestorResponse
+      x-ms-summary: ""
+    OrgExportSelectedAccount:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ""
+      x-ds-definition-name: OrgExportSelectedAccount
+      x-ms-summary: ""
+    OrgExportSelectedDomain:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: OrgExportSelectedDomain
+      x-ms-summary: ""
+    OrganizationExportTaskResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ""
+          format: int32
+        url:
+          type: string
+          description: ""
+        number_rows:
+          type: integer
+          description: ""
+          format: int64
+        size_bytes:
+          type: integer
+          description: ""
+          format: int64
+        error_details:
+          $ref: '#/components/schemas/OETR_ErrorDetails'
+      description: ""
+      x-ds-definition-name: OrganizationExportTaskResponse
+      x-ms-summary: ""
+    OETR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ""
+      x-ds-definition-name: OETR_ErrorDetails
+      x-ms-summary: ""
+    OrganizationExportsResponse:
+      type: object
+      properties:
+        exports:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationExportResponse'
+      description: ""
+      x-ds-definition-name: OrganizationExportsResponse
+      x-ms-summary: ""
+    OrganizationAccountsRequest:
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationAccountRequest'
+      description: ""
+      x-ds-definition-name: OrganizationAccountsRequest
+      x-ms-summary: ""
+    OrganizationAccountRequest:
+      required:
+      - account_id
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ""
+      x-ds-definition-name: OrganizationAccountRequest
+      x-ms-summary: ""
+    OrganizationAccountSettingsImportResponse:
+      type: object
+      properties:
+        created:
+          type: string
+          description: ""
+          format: date-time
+        last_modified:
+          type: string
+          description: ""
+          format: date-time
+        completed:
+          type: string
+          description: ""
+          format: date-time
+        expires:
+          type: string
+          description: ""
+          format: date-time
+        percent_completed:
+          type: integer
+          description: ""
+          format: int32
+        number_processed_accounts:
+          type: integer
+          description: ""
+          format: int64
+        number_unprocessed_accounts:
+          type: integer
+          description: ""
+          format: int64
+        results:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationAccountSettingsImportResultResponse'
+        success:
+          type: boolean
+          description: ""
+        skipped_settings_by_account:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: ""
+        id:
+          type: string
+          description: ""
+        organization_id:
+          type: string
+          description: ""
+        status:
+          type: string
+          description: Status.
+        type:
+          type: string
+          description: ""
+        requestor:
+          $ref: '#/components/schemas/OrganizationAccountSettingsImportRequestorResponse'
+      description: ""
+      x-ds-definition-name: OrganizationAccountSettingsImportResponse
+      x-ms-summary: ""
+    OrganizationAccountSettingsImportResultResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ""
+          format: int32
+        url:
+          type: string
+          description: ""
+        number_processed_accounts:
+          type: integer
+          description: ""
+          format: int64
+        error_details:
+          $ref: '#/components/schemas/OASIRR_ErrorDetails'
+        processing_issues_by_account:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OASIRR_OrganizationAccountSettingsErrorDataResponse'
+        number_unprocessed_accounts:
+          type: integer
+          description: ""
+          format: int64
+      description: ""
+      x-ds-definition-name: OrganizationAccountSettingsImportResultResponse
+      x-ms-summary: ""
+    OrganizationAccountSettingsImportRequestorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+        type:
+          type: string
+          description: ""
+        name:
+          type: string
+          description: ""
+        email:
+          type: string
+          description: The email address.
+      description: ""
+      x-ds-definition-name: OrganizationAccountSettingsImportRequestorResponse
+      x-ms-summary: ""
+    OASIRR_ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The error number.
+        error_description:
+          type: string
+          description: A longer description of the error.
+      description: ""
+      x-ds-definition-name: OASIRR_ErrorDetails
+      x-ms-summary: ""
+    OASIRR_OrganizationAccountSettingsErrorDataResponse:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+        account_name:
+          type: string
+          description: ""
+        error:
+          type: string
+          description: The error number.
+        error_key:
+          type: string
+          description: ""
+        setting_key:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: OASIRR_OrganizationAccountSettingsErrorDataResponse
+      x-ms-summary: ""
+    OrganizationImportResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        type:
+          type: string
+          description: ""
+        requestor:
+          $ref: '#/components/schemas/OrganizationImportResponseRequestor'
+        created:
+          type: string
+          description: ""
+          format: date-time
+        last_modified:
+          type: string
+          description: ""
+          format: date-time
+        status:
+          type: string
+          description: Status.
+        user_count:
+          type: integer
+          description: ""
+          format: int32
+        processed_user_count:
+          type: integer
+          description: ""
+          format: int32
+        added_user_count:
+          type: integer
+          description: ""
+          format: int32
+        updated_user_count:
+          type: integer
+          description: ""
+          format: int32
+        closed_user_count:
+          type: integer
+          description: ""
+          format: int32
+        no_action_required_user_count:
+          type: integer
+          description: ""
+          format: int32
+        error_count:
+          type: integer
+          description: ""
+          format: int32
+        warning_count:
+          type: integer
+          description: ""
+          format: int32
+        invalid_column_headers:
+          type: string
+          description: ""
+        imports_not_found_or_not_available_for_accounts:
+          type: string
+          description: ""
+        imports_failed_for_accounts:
+          type: string
+          description: ""
+        imports_timed_out_for_accounts:
+          type: string
+          description: ""
+        imports_not_found_or_not_available_for_sites:
+          type: string
+          description: ""
+        imports_failed_for_sites:
+          type: string
+          description: ""
+        imports_timed_out_for_sites:
+          type: string
+          description: ""
+        file_level_error_rollups:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationImportResponseErrorRollup'
+        user_level_error_rollups:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationImportResponseErrorRollup'
+        user_level_warning_rollups:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationImportResponseWarningRollup'
+        has_csv_results:
+          type: boolean
+          description: ""
+        results_uri:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: OrganizationImportResponse
+      x-ms-summary: ""
+    OrganizationImportResponseRequestor:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ""
+        id:
+          type: string
+          description: ""
+        type:
+          type: string
+          description: ""
+        email:
+          type: string
+          description: The email address.
+      description: ""
+      x-ds-definition-name: OrganizationImportResponseRequestor
+      x-ms-summary: ""
+    OrganizationImportResponseErrorRollup:
+      type: object
+      properties:
+        error_type:
+          type: string
+          description: ""
+        count:
+          type: integer
+          description: ""
+          format: int32
+      description: ""
+      x-ds-definition-name: OrganizationImportResponseErrorRollup
+      x-ms-summary: ""
+    OrganizationImportResponseWarningRollup:
+      type: object
+      properties:
+        warning_type:
+          type: string
+          description: ""
+        count:
+          type: integer
+          description: ""
+          format: int32
+      description: ""
+      x-ds-definition-name: OrganizationImportResponseWarningRollup
+      x-ms-summary: ""
+    OrganizationImportsResponse:
+      type: object
+      properties:
+        imports:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrganizationImportResponse'
+      description: ""
+      x-ds-definition-name: OrganizationImportsResponse
+      x-ms-summary: ""
+    IdentityProviderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique ID of the identity provider.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        friendly_name:
+          type: string
+          description: The human-readable name of the identity provider.
+        auto_provision_users:
+          type: boolean
+          description: 'If **true**, users who use this identity provider are automatically
+            provisioned. '
+        type:
+          type: string
+          description: |-
+            The type of the identity provider. One of:
+
+            - `none`
+            - `saml_20`
+            - `saml_11`
+            - `saml_10`
+            - `ws_federation`
+            - `open_id_connect`
+        saml_20:
+          $ref: '#/components/schemas/Saml2IdentityProviderResponse'
+        links:
+          type: array
+          description: A list of useful URLs.
+          items:
+            $ref: '#/components/schemas/LinkResponse'
+      description: Information about a single identity provider.
+      x-ds-definition-name: IdentityProviderResponse
+      x-ms-summary: Information about a single identity provider.
+    OrganizationSalesforceAccountManagersResponse:
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+        account_name:
+          type: string
+          description: ""
+        account_type:
+          type: string
+          description: ""
+        account_owner:
+          $ref: '#/components/schemas/OSAMR_Contact'
+        account_manager:
+          $ref: '#/components/schemas/OSAMR_Contact'
+        parent_account:
+          $ref: '#/components/schemas/OrganizationSalesforceAccountManagersResponse'
+      description: ""
+      x-ds-definition-name: OrganizationSalesforceAccountManagersResponse
+      x-ms-summary: ""
+    OSAMR_Contact:
+      type: object
+      properties:
+        name:
+          type: string
+          description: ""
+        email:
+          type: string
+          description: The email address.
+        title:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: OSAMR_Contact
+      x-ms-summary: ""
+    OrgReportRequest:
+      type: object
+      properties:
+        report_type:
+          type: string
+          description: ""
+        report_date_range:
+          type: string
+          description: ""
+        account_ids:
+          type: array
+          description: ""
+          items:
+            type: string
+            format: uuid
+            example: 00000000-0000-0000-0000-000000000000
+        custom_start_date:
+          type: string
+          description: ""
+          format: date-time
+        custom_end_date:
+          type: string
+          description: ""
+          format: date-time
+      description: ""
+      x-ds-definition-name: OrgReportRequest
+      x-ms-summary: ""
+    OrgReportCreateResponse:
+      type: object
+      properties:
+        report_correlation_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ""
+      x-ds-definition-name: OrgReportCreateResponse
+      x-ms-summary: ""
+    OrgReportListResponse:
+      type: object
+      properties:
+        reports:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrgReportListResponse_OrgReport'
+      description: ""
+      x-ds-definition-name: OrgReportListResponse
+      x-ms-summary: ""
+    OrgReportListResponse_OrgReport:
+      type: object
+      properties:
+        complete:
+          type: boolean
+          description: ""
+        report_correlation_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ""
+          format: int32
+        report_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        requestor:
+          $ref: '#/components/schemas/OrgReportListResponse_Requestor'
+        created_on:
+          type: string
+          description: ""
+          format: date-time
+        account_export_count:
+          type: integer
+          description: ""
+          format: int32
+        url:
+          type: string
+          description: ""
+        report_type_id:
+          type: string
+          description: ""
+        report_date_range:
+          type: string
+          description: ""
+        custom_start_date:
+          type: string
+          description: ""
+          format: date-time
+        custom_end_date:
+          type: string
+          description: ""
+          format: date-time
+      description: ""
+      x-ds-definition-name: OrgReportListResponse_OrgReport
+      x-ms-summary: ""
+    OrgReportListResponse_Requestor:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        name:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: OrgReportListResponse_Requestor
+      x-ms-summary: ""
+    OrgReportConfigurationResponse:
+      type: object
+      properties:
+        is_account_limit_disabled:
+          type: boolean
+          description: ""
+        custom_dates_enabled:
+          type: boolean
+          description: ""
+        enabled_report_types:
+          type: array
+          description: ""
+          items:
+            type: integer
+            format: int32
+      description: ""
+      x-ds-definition-name: OrgReportConfigurationResponse
+      x-ms-summary: ""
+    DomainsResponse:
+      type: object
+      properties:
+        reserved_domains:
+          type: array
+          description: Information about reserved domains.
+          items:
+            $ref: '#/components/schemas/DomainResponse'
+      description: A response about reserved domains.
+      x-ds-definition-name: DomainsResponse
+      x-ms-summary: A response about reserved domains.
+    UpdateUsersRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users whose information you want to change.
+          items:
+            $ref: '#/components/schemas/UpdateUserRequest'
+      description: A list of users whose information you want to change.
+      x-ds-definition-name: UpdateUsersRequest
+      x-ms-summary: A list of users whose information you want to change.
+    UpdateUserRequest:
+      required:
+      - id
+      - site_id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        default_account_id:
+          type: string
+          description: The account ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: |
+            The language and culture of the user.
+
+              * Chinese Simplified: `zh_CN`
+              * Chinese Traditional: `zh_TW`
+              * Dutch: `nl`
+              * English: `en`
+              * French: `fr`
+              * German: `de`
+              * Italian: `it`
+              * Japanese: `ja`
+              * Korean: `ko`
+              * Portuguese: `pt`
+              * Portuguese Brazil: `pt_BR`
+              * Russian: `ru`
+              * Spanish: `es`
+        selected_languages:
+          type: string
+          description: "Selected languages"
+        federated_status:
+          type: string
+          description: |-
+            The user's federated status. One of:
+
+            - `RemoveStatus`
+            - `FedAuthRequired`
+            - `FedAuthBypass`
+            - `Evicted`
+        force_password_change:
+          type: boolean
+          description: If **true**, the user will be required to change the account
+            password.
+        memberships:
+          type: array
+          description: A list of group membership requests.
+          items:
+            $ref: '#/components/schemas/UpdateMembershipRequest'
+        device_verification_enabled:
+          type: boolean
+          description: "Device verification enabled"
+      description: Request to change a user's information.
+      x-ds-definition-name: UpdateUserRequest
+      x-ms-summary: Request to change a user's information.
+    UpdateMembershipRequest:
+      required:
+      - account_id
+      type: object
+      properties:
+        account_id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileRequest'
+        groups:
+          type: array
+          description: The user's requested groups.
+          items:
+            $ref: '#/components/schemas/GroupRequest'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The user's job title.
+        send_activation:
+          type: boolean
+          description: If **true**, send an activation request after the update.
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+      description: A request to update group membership.
+      x-ds-definition-name: UpdateMembershipRequest
+      x-ms-summary: A request to update group membership.
+    PermissionProfileRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the permission profile.
+          format: int64
+        name:
+          type: string
+          description: The name of the permission profile.
+      description: A permission profile.
+      x-ds-definition-name: PermissionProfileRequest
+      x-ms-summary: A permission profile.
+    GroupRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the group.
+          format: int64
+        name:
+          type: string
+          description: The name of the group.
+        type:
+          type: string
+          description: |-
+            The type of group. One of:
+
+            - `invalid`
+            - `admin_group`
+            - `everyone_group`
+            - `custom_group`
+      description: A group for a user to belong to.
+      x-ds-definition-name: GroupRequest
+      x-ms-summary: A group for a user to belong to.
+    UsersUpdateResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request to change user information succeeded.
+        users:
+          type: array
+          description: A list of users whose email addresses have been updated.
+          items:
+            $ref: '#/components/schemas/UserUpdateResponse'
+      description: The results of changing a user's information.
+      x-ds-definition-name: UsersUpdateResponse
+      x-ms-summary: The results of changing a user's information.
+    UserUpdateResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the user whose email address has been updated.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        email:
+          type: string
+          description: The email address.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Error result of attempting to change a user's email address.
+      x-ds-definition-name: UserUpdateResponse
+      x-ms-summary: Error result of attempting to change a user's email address.
+    ErrorDetails:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The code for the error.
+        error_description:
+          type: string
+          description: A description of the error.
+      description: Errors.
+      x-ds-definition-name: ErrorDetails
+      x-ms-summary: Errors.
+    UpdateUsersEmailRequest:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users whose email address to change.
+          items:
+            $ref: '#/components/schemas/UpdateUserEmailRequest'
+      description: A change email request.
+      x-ds-definition-name: UpdateUsersEmailRequest
+      x-ms-summary: A change email request.
+    UpdateUserEmailRequest:
+      required:
+      - email
+      - id
+      - site_id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the users whose email address you want to change.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID.
+          format: int32
+        email:
+          type: string
+          description: The new email address.
+      description: And individual change of email.
+      x-ds-definition-name: UpdateUserEmailRequest
+      x-ms-summary: And individual change of email.
+    DeleteMembershipsRequest:
+      required:
+      - accounts
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: A list of accounts to close for a user.
+          items:
+            $ref: '#/components/schemas/DeleteMembershipRequest'
+      description: A list of accounts to close for a user.
+      x-ds-definition-name: DeleteMembershipsRequest
+      x-ms-summary: A list of accounts to close for a user.
+    DeleteMembershipRequest:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of a user's account you want to close.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ""
+      x-ds-definition-name: DeleteMembershipRequest
+      x-ms-summary: ""
+    DeleteMembershipsResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request to close the accounts succeeded.
+        accounts:
+          type: array
+          description: A list of accounts that were closed.
+          items:
+            $ref: '#/components/schemas/DeleteMembershipResponse'
+      description: The results of closing a user's account.
+      x-ds-definition-name: DeleteMembershipsResponse
+      x-ms-summary: The results of closing a user's account.
+    DeleteMembershipResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of an account that could not be closed.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Results of closing accounts.
+      x-ds-definition-name: DeleteMembershipResponse
+      x-ms-summary: Results of closing accounts.
+    OrganizationUsersResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/OrganizationUserResponse'
+        paging:
+          description: Contains information about paging through the results.
+          $ref: '#/components/schemas/PagingResponseProperties'
+      description: A response containing information about users.
+      x-ds-definition-name: OrganizationUsersResponse
+      x-ms-summary: A response containing information about users.
+    OrganizationUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        user_status:
+          type: string
+          description: |
+            The user's status. One of:
+
+            - `active`
+            - `created`
+            - `closed`
+        membership_status:
+          type: string
+          description: |
+            The user's membership status. One of:
+
+            - `activation_required`
+            - `activation_sent`
+            - `active`
+            - `closed`
+            - `disabled`
+        email:
+          type: string
+          description: The email address.
+        created_on:
+          type: string
+          description: The date the user's account was created.
+          format: date-time
+        membership_created_on:
+          type: string
+          description: The date on which the user became a member of the organization.
+          format: date-time
+        ds_groups:
+          type: array
+          description: "DS group response"
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
+        membership_id:
+          type: string
+          description: "Membership ID"
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: Information about a user.
+      x-ds-definition-name: OrganizationUserResponse
+      x-ms-summary: Information about a user.
+    DSGroupResponse:
+      type: object
+      properties:
+        ds_group_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        source_product_name:
+          type: string
+          description: ""
+        group_id:
+          type: string
+          description: ""
+        group_name:
+          type: string
+          description: ""
+        description:
+          type: string
+          description: ""
+        is_admin:
+          type: boolean
+          description: ""
+        last_modified_on:
+          type: string
+          description: ""
+          format: date-time
+        user_count:
+          type: integer
+          description: ""
+          format: int32
+        external_account_id:
+          type: integer
+          description: ""
+          format: int64
+        account_name:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: DSGroupResponse
+      x-ms-summary: ""
+    NewUserRequest:
+      required:
+      - accounts
+      - email
+      type: object
+      properties:
+        accounts:
+          type: array
+          description: A list of accounts the user will belong to.
+          items:
+            $ref: '#/components/schemas/NewUserRequestAccountProperties'
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        default_account_id:
+          type: string
+          description: The account ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: |
+            The language and culture of the user.
+
+              * Chinese Simplified: `zh_CN`
+              * Chinese Traditional: `zh_TW`
+              * Dutch: `nl`
+              * English: `en`
+              * French: `fr`
+              * German: `de`
+              * Italian: `it`
+              * Japanese: `ja`
+              * Korean: `ko`
+              * Portuguese: `pt`
+              * Portuguese Brazil: `pt_BR`
+              * Russian: `ru`
+              * Spanish: `es`
+        selected_languages:
+          type: string
+          description: "Selected languages"
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+        federated_status:
+          type: string
+          description: |-
+            The user's federated status. One of:
+
+            - `RemoveStatus`
+            - `FedAuthRequired`
+            - `FedAuthBypass`
+            - `Evicted`
+        auto_activate_memberships:
+          type: boolean
+          description: If **true**, the user's account is activated automatically.
+      description: Information about a new user.
+      x-ds-definition-name: NewUserRequest
+      x-ms-summary: Information about a new user.
+    NewUserRequestAccountProperties:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: The account ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileRequest'
+        groups:
+          type: array
+          description: The new user's requested groups.
+          items:
+            $ref: '#/components/schemas/GroupRequest'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The user's job title.
+      description: An individual new account user.
+      x-ds-definition-name: NewUserRequestAccountProperties
+      x-ms-summary: An individual new account user.
+    NewUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the added user
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID of the added user.
+          format: int32
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The primary email address of the user.
+        language_culture:
+          type: string
+          description: |
+            The language and culture of the user.
+
+              * Chinese Simplified: `zh_CN`
+              * Chinese Traditional: `zh_TW`
+              * Dutch: `nl`
+              * English: `en`
+              * French: `fr`
+              * German: `de`
+              * Italian: `it`
+              * Japanese: `ja`
+              * Korean: `ko`
+              * Portuguese: `pt`
+              * Portuguese Brazil: `pt_BR`
+              * Russian: `ru`
+              * Spanish: `es`
+        federated_status:
+          type: string
+          description: |
+            The user's federated status. One of:
+
+            - `RemoveStatus`
+            - `FedAuthRequired`
+            - `FedAuthBypass`
+            - `Evicted`
+        accounts:
+          type: array
+          description: A list of accounts the user belongs to.
+          items:
+            $ref: '#/components/schemas/NewUserResponseAccountProperties'
+      description: Information about a newly created user.
+      x-ds-definition-name: NewUserResponse
+      x-ms-summary: Information about a newly created user.
+    NewUserResponseAccountProperties:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID of the account.
+          format: int32
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileResponse'
+        groups:
+          type: array
+          description: A list of groups that the user belongs to.
+          items:
+            $ref: '#/components/schemas/MemberGroupResponse'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The job title of the user.
+      description: Information about a newly created user.
+      x-ds-definition-name: NewUserResponseAccountProperties
+      x-ms-summary: Information about a newly created user.
+    ForceActivateMembershipRequest:
+      required:
+      - site_id
+      type: object
+      properties:
+        site_id:
+          type: integer
+          description: "Site ID"
+          format: int32
+      description: "Data to ctivate user memership"
+      x-ds-definition-name: ForceActivateMembershipRequest
+      x-ms-summary: ""
+    UpdateResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: |
+            The status of the request.
+      description: A response.
+      x-ds-definition-name: UpdateResponse
+      x-ms-summary: A response.
+    UsersDrilldownResponse:
+      type: object
+      properties:
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/UserDrilldownResponse'
+      description: Information about a list of users.
+      x-ds-definition-name: UsersDrilldownResponse
+      x-ms-summary: Information about a list of users.
+    UserDrilldownResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's unique ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: The site ID of the organization.
+          format: int32
+        site_name:
+          type: string
+          description: The site name of the account.
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        user_status:
+          type: string
+          description: |
+            The user's status. One of:
+
+            - `active`
+            - `created`
+            - `closed`
+        default_account_id:
+          type: string
+          description: The ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        default_account_name:
+          type: string
+          description: The name of the user's default account.
+        language_culture:
+          type: string
+          description: |
+            The language and culture of the user.
+
+              * Chinese Simplified: `zh_CN`
+              * Chinese Traditional: `zh_TW`
+              * Dutch: `nl`
+              * English: `en`
+              * French: `fr`
+              * German: `de`
+              * Italian: `it`
+              * Japanese: `ja`
+              * Korean: `ko`
+              * Portuguese: `pt`
+              * Portuguese Brazil: `pt_BR`
+              * Russian: `ru`
+              * Spanish: `es`
+        selected_languages:
+          type: string
+          description: "Selected language"
+        federated_status:
+          type: string
+          description: |
+            The user's federated status. One of:
+
+            - `RemoveStatus`
+            - `FedAuthRequired`
+            - `FedAuthBypass`
+            - `Evicted`
+        is_organization_admin:
+          type: boolean
+          description: If **true**, the user has organization administration privileges.
+        created_on:
+          type: string
+          description: The date the user's account was created.
+          format: date-time
+        last_login:
+          type: string
+          description: The last time the user logged in.
+          format: date-time
+        memberships:
+          type: array
+          description: A list of organizations that have groups that the user is a
+            member of.
+          items:
+            $ref: '#/components/schemas/MembershipResponse'
+        identities:
+          type: array
+          description: A list of identities associated with the user.
+          items:
+            $ref: '#/components/schemas/UserIdentityResponse'
+        device_verification_enabled:
+          type: boolean
+          description: "Device verification enabled"
+      description: Information about a user.
+      x-ds-definition-name: UserDrilldownResponse
+      x-ms-summary: Information about a user.
+    MembershipResponse:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address.
+        account_id:
+          type: string
+          description: The ID of the account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        external_account_id:
+          type: string
+          description: The external account ID.
+        account_name:
+          type: string
+          description: The name of the account.
+        is_external_account:
+          type: boolean
+          description: |-
+            If **true**,
+            this is an external account.
+        status:
+          type: string
+          description: The status of the user's membership.
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileResponse'
+        created_on:
+          type: string
+          description: The date the user's account was created.
+          format: date-time
+        groups:
+          type: array
+          description: A list of groups the user is a member of in this account,
+          items:
+            $ref: '#/components/schemas/MemberGroupResponse'
+        is_admin:
+          type: boolean
+          description: "If **true**,\nthe user has administration \nprivileges on\
+            \ the account."
+      description: Information about group membership.
+      x-ds-definition-name: MembershipResponse
+      x-ms-summary: Information about group membership.
+    UserIdentityResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the result.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        provider_id:
+          type: string
+          description: The ID of the identity provider.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        user_id:
+          type: string
+          description: The user ID.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        immutable_id:
+          type: string
+          description: A unique ID to identify the removed user.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: Results of deleting a user identity.
+      x-ds-definition-name: UserIdentityResponse
+      x-ms-summary: Results of deleting a user identity.
+    DeleteUserIdentityRequest:
+      required:
+      - identities
+      type: object
+      properties:
+        identities:
+          type: array
+          description: A list of identities.
+          items:
+            $ref: '#/components/schemas/UserIdentityRequest'
+      description: Request to delete a user's identities,
+      x-ds-definition-name: DeleteUserIdentityRequest
+      x-ms-summary: Request to delete a user's identities,
+    UserIdentityRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the identity.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: User identity,
+      x-ds-definition-name: UserIdentityRequest
+      x-ms-summary: User identity,
+    DeleteResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: If **true**, the request succeeded.
+        identities:
+          type: array
+          description: A list of identities to delete.
+          items:
+            $ref: '#/components/schemas/UserIdentityResponse'
+      description: Results of deleting identities.
+      x-ds-definition-name: DeleteResponse
+      x-ms-summary: Results of deleting identities.
+    NewAccountUserRequest:
+      required:
+      - email
+      type: object
+      properties:
+        permission_profile:
+          $ref: '#/components/schemas/PermissionProfileRequest'
+        groups:
+          type: array
+          description: The new user's requested groups.
+          items:
+            $ref: '#/components/schemas/GroupRequest'
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address of the user.
+        default_account_id:
+          type: string
+          description: The account ID of the user's default account.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: |
+            The language and culture of the user.
+
+              * Chinese Simplified: `zh_CN`
+              * Chinese Traditional: `zh_TW`
+              * Dutch: `nl`
+              * English: `en`
+              * French: `fr`
+              * German: `de`
+              * Italian: `it`
+              * Japanese: `ja`
+              * Korean: `ko`
+              * Portuguese: `pt`
+              * Portuguese Brazil: `pt_BR`
+              * Russian: `ru`
+              * Spanish: `es`
+        selected_languages:
+          type: string
+          description: "Selected languages"
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+        federated_status:
+          type: string
+          description: |
+            The user's federated status. One of:
+
+            - `RemoveStatus`
+            - `FedAuthRequired`
+            - `FedAuthBypass`
+            - `Evicted`
+        auto_activate_memberships:
+          type: boolean
+          description: If **true**, the user's account is activated automatically.
+      description: A new user request.
+      x-ds-definition-name: NewAccountUserRequest
+      x-ms-summary: A new user request.
+    DSGroupListResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: The page number.
+          format: int32
+        page_size:
+          type: integer
+          description: The number of items per page.
+          format: int32
+        total_count:
+          type: integer
+          description: ""
+          format: int32
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        ds_groups:
+          type: array
+          description: ""
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
+      description: ""
+      x-ds-definition-name: DSGroupListResponse
+      x-ms-summary: ""
+    DSGroupAddRequest:
+      required:
+      - group_name
+      type: object
+      properties:
+        group_name:
+          type: string
+          description: "Group name"
+        description:
+          type: string
+          description: "Description"
+      description: DS Group add data
+      x-ds-definition-name: DSGroupAddRequest
+      x-ms-summary: ""
+    DSGroupUsersAddRequest:
+      required:
+      - user_ids
+      type: object
+      properties:
+        user_ids:
+          type: array
+          description: "User IDs"
+          items:
+            type: string
+            format: uuid
+            example: 00000000-0000-0000-0000-000000000000
+      description: "DG Group user data"
+      x-ds-definition-name: DSGroupUsersAddRequest
+      x-ms-summary: ""
+    AddDSGroupAndUsersResponse:
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/DSGroupResponse'
+        group_users:
+          $ref: '#/components/schemas/AddDSGroupUsersResponse'
+      description: ""
+      x-ds-definition-name: AddDSGroupAndUsersResponse
+      x-ms-summary: ""
+    AddDSGroupUsersResponse:
+      type: object
+      properties:
+        is_success:
+          type: boolean
+          description: ""
+        TotalCount:
+          type: integer
+          description: ""
+          format: int32
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ""
+      x-ds-definition-name: AddDSGroupUsersResponse
+      x-ms-summary: ""
+    DSGroupUserResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        middle_name:
+          type: string
+          description: ""
+        status:
+          type: string
+          description: Status.
+        error_details:
+          $ref: '#/components/schemas/ErrorDetails'
+      description: ""
+      x-ds-definition-name: DSGroupUserResponse
+      x-ms-summary: ""
+    DSGroupAndUsersResponse:
+      type: object
+      properties:
+        group:
+          $ref: '#/components/schemas/DSGroupResponse'
+        group_users:
+          $ref: '#/components/schemas/DSGroupUsersResponse'
+      description: ""
+      x-ds-definition-name: DSGroupAndUsersResponse
+      x-ms-summary: ""
+    DSGroupUsersResponse:
+      type: object
+      properties:
+        page:
+          type: integer
+          description: The page number.
+          format: int32
+        page_size:
+          type: integer
+          description: The number of items per page.
+          format: int32
+        total_count:
+          type: integer
+          description: ""
+          format: int32
+        users:
+          type: array
+          description: A list of users.
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ""
+      x-ds-definition-name: DSGroupUsersResponse
+      x-ms-summary: ""
+    DSGroupUsersRemoveRequest:
+      required:
+      - user_ids
+      type: object
+      properties:
+        user_ids:
+          type: array
+          description: ""
+          items:
+            type: string
+            format: uuid
+            example: 00000000-0000-0000-0000-000000000000
+      description: ""
+      x-ds-definition-name: DSGroupUsersRemoveRequest
+      x-ms-summary: ""
+    RemoveDSGroupUsersResponse:
+      type: object
+      properties:
+        is_success:
+          type: boolean
+          description: ""
+        failed_users:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/DSGroupUserResponse'
+      description: ""
+      x-ds-definition-name: RemoveDSGroupUsersResponse
+      x-ms-summary: ""
+    ProductPermissionProfilesResponse:
+      type: object
+      properties:
+        product_permission_profiles:
+          type: array
+          description: ""
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+      description: ""
+      x-ds-definition-name: ProductPermissionProfilesResponse
+      x-ms-summary: ""
+    ProductPermissionProfileResponse:
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        product_name:
+          type: string
+          description: ""
+        permission_profiles:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/PermissionProfileResponse2_1'
+        error_message:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: ProductPermissionProfileResponse
+      x-ms-summary: ""
+    ProductPermissionProfilesRequest:
+      required:
+      - product_permission_profiles
+      type: object
+      properties:
+        product_permission_profiles:
+          type: array
+          description: "Prouct permission profiles"
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileRequest'
+      description: "Product permission profile data"
+      x-ds-definition-name: ProductPermissionProfilesRequest
+      x-ms-summary: ""
+    ProductPermissionProfileRequest:
+      required:
+      - permission_profile_id
+      - product_id
+      type: object
+      properties:
+        product_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        permission_profile_id:
+          type: string
+          description: ""
+      description: ""
+      x-ds-definition-name: ProductPermissionProfileRequest
+      x-ms-summary: ""
+    UserProductPermissionProfilesResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        account_id:
+          type: string
+          description: Select users that are members of the specified account. At
+            least one of `email`, `account_id` or `organization_reserved_domain_id`
+            must be specified.
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        product_permission_profiles:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+      description: ""
+      x-ds-definition-name: UserProductPermissionProfilesResponse
+      x-ms-summary: ""
+    NewMultiProductUserAddRequest:
+      required:
+      - email
+      - product_permission_profiles
+      type: object
+      properties:
+        product_permission_profiles:
+          type: array
+          description: "Product permission profiles"
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileRequest'
+        ds_groups:
+          type: array
+          description: "DS groups"
+          items:
+            $ref: '#/components/schemas/DSGroupRequest'
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        default_account_id:
+          type: string
+          description: "Default account ID"
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        language_culture:
+          type: string
+          description: |
+            The language and culture of the user.
+
+              * Chinese Simplified: `zh_CN`
+              * Chinese Traditional: `zh_TW`
+              * Dutch: `nl`
+              * English: `en`
+              * French: `fr`
+              * German: `de`
+              * Italian: `it`
+              * Japanese: `ja`
+              * Korean: `ko`
+              * Portuguese: `pt`
+              * Portuguese Brazil: `pt_BR`
+              * Russian: `ru`
+              * Spanish: `es`
+        access_code:
+          type: string
+          description: The access code that the user needs to activate an account.
+        federated_status:
+          type: string
+          description: |-
+            The user's federated status. One of:
+
+            - `RemoveStatus`
+            - `FedAuthRequired`
+            - `FedAuthBypass`
+            - `Evicted`
+        auto_activate_memberships:
+          type: boolean
+          description: If **true**, the user's account is activated automatically.
+      description: "Multi product user data"
+      x-ds-definition-name: NewMultiProductUserAddRequest
+      x-ms-summary: ""
+    DSGroupRequest:
+      required:
+      - ds_group_id
+      type: object
+      properties:
+        ds_group_id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+      description: ""
+      x-ds-definition-name: DSGroupRequest
+      x-ms-summary: ""
+    AddUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ""
+          format: int32
+        user_name:
+          type: string
+          description: The full name of the user.
+        first_name:
+          type: string
+          description: The user's first name.
+        last_name:
+          type: string
+          description: The user's last name.
+        email:
+          type: string
+          description: The email address.
+        language_culture:
+          type: string
+          description: |
+            The language and culture of the user.
+
+              * Chinese Simplified: `zh_CN`
+              * Chinese Traditional: `zh_TW`
+              * Dutch: `nl`
+              * English: `en`
+              * French: `fr`
+              * German: `de`
+              * Italian: `it`
+              * Japanese: `ja`
+              * Korean: `ko`
+              * Portuguese: `pt`
+              * Portuguese Brazil: `pt_BR`
+              * Russian: `ru`
+              * Spanish: `es`
+        federated_status:
+          type: string
+          description: |-
+            The user's federated status. One of:
+
+            - `RemoveStatus`
+            - `FedAuthRequired`
+            - `FedAuthBypass`
+            - `Evicted`
+        accounts:
+          type: array
+          description: ""
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/AddUserResponseAccountProperties'
+      description: ""
+      x-ds-definition-name: AddUserResponse
+      x-ms-summary: ""
+    AddUserResponseAccountProperties:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ""
+          format: uuid
+          example: 00000000-0000-0000-0000-000000000000
+        site_id:
+          type: integer
+          description: ""
+          format: int32
+        product_permission_profiles:
+          type: array
+          description: ""
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ProductPermissionProfileResponse'
+        ds_groups:
+          type: array
+          description: ""
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DSGroupResponse'
+        company_name:
+          type: string
+          description: The user's company name.
+        job_title:
+          type: string
+          description: The user's job title.
+      description: ""
+      x-ds-definition-name: AddUserResponseAccountProperties
+      x-ms-summary: ""
+    Users:
+      type: object
+      description: Methods to manage users in an account.
+      x-ds-category: UserManagement
+      x-ms-summary: Methods to manage users in an account.
+    eSignUserManagement:
+      type: object
+      description: Methods to manage eSignature users in an account.
+      x-ds-category: UserManagement
+      x-ms-summary: Methods to manage eSignature users in an account.
+    # MultiProductUserManagement:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #       description: ""
+    #       format: uuid
+    #       example: 00000000-0000-0000-0000-000000000000
+    #     site_id:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     user_name:
+    #       type: string
+    #       description: The full name of the user.
+    #     first_name:
+    #       type: string
+    #       description: The user's first name.
+    #     last_name:
+    #       type: string
+    #       description: The user's last name.
+    #     email:
+    #       type: string
+    #       description: The email address.
+    #     language_culture:
+    #       type: string
+    #       description: |
+    #         The language and culture of the user.
+
+    #           * Chinese Simplified: `zh_CN`
+    #           * Chinese Traditional: `zh_TW`
+    #           * Dutch: `nl`
+    #           * English: `en`
+    #           * French: `fr`
+    #           * German: `de`
+    #           * Italian: `it`
+    #           * Japanese: `ja`
+    #           * Korean: `ko`
+    #           * Portuguese: `pt`
+    #           * Portuguese Brazil: `pt_BR`
+    #           * Russian: `ru`
+    #           * Spanish: `es`
+    #     federated_status:
+    #       type: string
+    #       description: |-
+    #         The user's federated status. One of:
+
+    #         - `RemoveStatus`
+    #         - `FedAuthRequired`
+    #         - `FedAuthBypass`
+    #         - `Evicted`
+    #     accounts:
+    #       type: array
+    #       description: ""
+    #       readOnly: true
+    #       items:
+    #         $ref: '#/components/schemas/AddUserResponseAccountProperties'
+    #   description: Methods to manage multi-product users in an account.
+    #   x-ds-definition-name: AddUserResponse
+    #   x-ds-category: UserManagement
+    #   x-ds-order: "100"
+    #   x-ms-summary: Methods to manage multi-product users in an account.
+    UserExport:
+      type: object
+      description: Methods for exporting a user list.
+      x-ds-category: BulkOperations
+      x-ms-summary: Methods for exporting a user list.
+    AccountSettingsExport:
+      type: object
+      description: Methods and objects to get account information.
+      x-ds-category: BulkOperations
+      x-ms-summary: Methods and objects to get account information.
+    UserImport:
+      type: object
+      description: |
+        Methods to import users.
+      x-ds-category: BulkOperations
+      x-ms-summary: |
+        Methods to import users.
+    IdentityProviders:
+      type: object
+      description: Methods to get a list of identity providers.
+      x-ds-category: IdentityProviders
+      x-ms-summary: Methods to get a list of identity providers.
+    ReservedDomains:
+      type: object
+      description: Methods to get a list of reserved domains.
+      x-ds-category: ReservedDomains
+      x-ms-summary: Methods to get a list of reserved domains.
+    Organization:
+      type: object
+      description: Methods for working with organizations.
+      x-ds-category: Organization
+      x-ms-summary: Methods for working with organizations.
+    AccountSettingsImport:
+      type: object
+      description: Methods and objects to update account settings.
+      x-ds-category: BulkOperations
+      x-ms-summary: Methods and objects to update account settings.
+    # SingleAccountUserImport:
+    #   type: object
+    #   properties:
+    #     id:
+    #       type: string
+    #       description: ""
+    #       format: uuid
+    #       example: 00000000-0000-0000-0000-000000000000
+    #     type:
+    #       type: string
+    #       description: ""
+    #     requestor:
+    #       $ref: '#/components/schemas/OrganizationImportResponseRequestor'
+    #     created:
+    #       type: string
+    #       description: ""
+    #       format: date-time
+    #     last_modified:
+    #       type: string
+    #       description: ""
+    #       format: date-time
+    #     status:
+    #       type: string
+    #       description: Status.
+    #     user_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     processed_user_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     added_user_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     updated_user_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     closed_user_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     no_action_required_user_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     error_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     warning_count:
+    #       type: integer
+    #       description: ""
+    #       format: int32
+    #     invalid_column_headers:
+    #       type: string
+    #       description: ""
+    #     imports_not_found_or_not_available_for_accounts:
+    #       type: string
+    #       description: ""
+    #     imports_failed_for_accounts:
+    #       type: string
+    #       description: ""
+    #     imports_timed_out_for_accounts:
+    #       type: string
+    #       description: ""
+    #     imports_not_found_or_not_available_for_sites:
+    #       type: string
+    #       description: ""
+    #     imports_failed_for_sites:
+    #       type: string
+    #       description: ""
+    #     imports_timed_out_for_sites:
+    #       type: string
+    #       description: ""
+    #     file_level_error_rollups:
+    #       type: array
+    #       description: ""
+    #       items:
+    #         $ref: '#/components/schemas/OrganizationImportResponseErrorRollup'
+    #     user_level_error_rollups:
+    #       type: array
+    #       description: ""
+    #       items:
+    #         $ref: '#/components/schemas/OrganizationImportResponseErrorRollup'
+    #     user_level_warning_rollups:
+    #       type: array
+    #       description: ""
+    #       items:
+    #         $ref: '#/components/schemas/OrganizationImportResponseWarningRollup'
+    #     has_csv_results:
+    #       type: boolean
+    #       description: ""
+    #     results_uri:
+    #       type: string
+    #       description: ""
+    #   description: Methods to import users.
+    #   x-ds-definition-name: OrganizationImportResponse
+    #   x-ds-category: BulkOperations
+    #   x-ds-order: "100"
+    #   x-ms-summary: Methods to import users.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oAuth2Auth:
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow. [More info](https://developers.docusign.com/platform/auth/)
+      flows:
+        implicit:
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          scopes:
+            organization_read: "Gets lists of organizations and organization data."
+            permission_read: "Gets lists of permission profiles associated with an account."
+            group_read: "Gets lists of groups associated with an account."
+            user_read: "Reads user data."
+            account_read: "Gets account data."
+            account_write: ""
+            user_write: "Updates, creates, or deletes users."
+            identity_provider_read: "Gets data on already-defined identity providers for an organization."
+            domain_read: "Gets data on reserved domains for the organization."
+        authorizationCode:
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          tokenUrl: https://account-d.docusign.com/oauth/token
+          scopes:
+            organization_read: "Gets lists of organizations and organization data."
+            permission_read: "Gets lists of permission profiles associated with an account."
+            group_read: "Gets lists of groups associated with an account."
+            user_read: "Reads user data."
+            account_read: "Gets account data."
+            account_write: ""
+            user_write: "Updates, creates, or deletes users."
+            identity_provider_read: "Gets data on already-defined identity providers for an organization."
+            domain_read: "Gets data on reserved domains for the organization."
+x-ds-categories:
+- name: UserManagement
+  summary: Methods to manage users in an account.
+  description: Methods to manage users in an account.
+- name: BulkOperations
+  summary: Methods to import and export users and accounts.
+  description: Methods to import and export users and accounts.
+- name: IdentityProviders
+  summary: Methods to get a list of identity providers.
+  description: Methods to get a list of identity providers.
+- name: ReservedDomains
+  summary: Methods to get a list of reserved domains.
+  description: Methods to get a list of reserved domains.
+- name: Organization
+  summary: Methods for working with organizations.
+  description: Methods for working with organizations.

@@ -1,0 +1,15 @@
+id: stabilityai
+displayName: StabilityAI
+type: OpenAPI
+version: v1
+description: Stability.ai REST API!
+idlPath: /stabilityai/v1/openapi.yaml
+thumbnailPath: /stabilityai/v1/icon.png
+documentationPath: /stabilityai/v1/readme.md
+keywords:
+  - AI/Images
+  - Vendor/StabilityAI
+  - Cost/Paid
+  - StableDiffusion
+endpoint:
+  - url: https://api.stability.ai

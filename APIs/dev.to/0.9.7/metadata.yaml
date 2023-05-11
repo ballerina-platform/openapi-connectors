@@ -1,0 +1,14 @@
+id: dev.to
+displayName: dev.to
+type: OpenAPI
+version: 0.9.7
+description: This is the [DEV API v0.9.7](https://developers.forem.com/api/) OpenAPI specification. Access Forem articles, users and other resources via API. For a real-world example of Forem in action, check out [DEV](https://www.dev.to). All endpoints that don't require authentication are CORS enabled. Dates and date times, unless otherwise specified, must be inthe [RFC 3339](https://tools.ietf.org/html/rfc3339) format.
+idlPath: /dev.to/0.9.7/openapi.yaml
+thumbnailPath: /dev.to/0.9.7/icon.png
+documentationPath: /dev.to/0.9.7/readme.md
+keywords:
+  - Marketing/SocialMediaAccounts
+  - Cost/Freemium
+endpoint:
+  - url: https://dev.to/api
+    description: Production server

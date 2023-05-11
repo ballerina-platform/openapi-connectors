@@ -1,0 +1,11 @@
+id: saps4hana.pp.idm
+displayName: SAPS4HANA Cross-domain Identity Management
+type: OpenAPI
+version: 1.0.0
+description: This is the [SAP S/4HANA Procurement Planning System for Cross-domain Identity Management API v1.0.0](https://api.sap.com/api/SCIMService/overview) OpenAPI specification.  This service allows to read and write user data. It will be used by the Identity Provisioning Service. The SCIM Service is protected by the Identity Authentication Service, so the customer must configure the authentication in the Identity Provisioning Service.
+idlPath: /saps4hana.pp.idm/1.0.0/openapi.yaml
+thumbnailPath: /saps4hana.pp.idm/1.0.0/icon.png
+documentationPath: /saps4hana.pp.idm/1.0.0/readme.md
+keywords:
+  - BusinessManagement/ERP
+  - Cost/Paid

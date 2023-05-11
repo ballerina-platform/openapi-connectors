@@ -1,0 +1,11 @@
+id: alfresco
+displayName: Alfresco
+type: OpenAPI
+version: "1"
+description: This is the [Alfresco API](https://docs.alfresco.com/content-services) OpenAPI Specification. The Alfresco REST API enable you to access to the core features of Alfresco Content Services.
+idlPath: /alfresco/1/openapi.yaml
+thumbnailPath: /alfresco/1/icon.png
+documentationPath: /alfresco/1/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Paid

@@ -1,0 +1,14 @@
+id: ebay.listing
+displayName: eBay Listing
+type: OpenAPI
+version: v1_beta.3.0
+description: This is the [eBay Listing API v1_beta.3.0](https://developer.ebay.com) OpenAPI specification. '<span class="tablenote"><b>Note:</b> This is a <a href="https://developer.ebay.com/api-docs/static/versioning.html#limited" target="_blank">
+idlPath: /ebay.listing/v1_beta.3.0/openapi.yaml
+thumbnailPath: /ebay.listing/v1_beta.3.0/icon.png
+documentationPath: /ebay.listing/v1_beta.3.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.ebay.com/sell/listing/v1_beta
+    description: Production

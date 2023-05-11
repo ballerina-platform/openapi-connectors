@@ -1,0 +1,13 @@
+id: elasticsearch
+displayName: Elasticsearch
+type: OpenAPI
+version: "1"
+description: This is the [Elastic Cloud API](https://cloud.elastic.co/api/v1/api-docs/spec.json) OpenAPI Specification.
+idlPath: /elasticsearch/1/openapi.yaml
+thumbnailPath: /elasticsearch/1/icon.png
+documentationPath: /elasticsearch/1/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Paid
+endpoint:
+  - url: https://api.elastic-cloud.com/api/v1/

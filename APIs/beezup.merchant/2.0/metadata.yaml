@@ -1,0 +1,13 @@
+id: beezup.merchant
+displayName: BeezUP Merchant
+type: OpenAPI
+version: "2.0"
+description: This is the [BeezUP Merchant API v2.0](https://api-docs.beezup.com/swagger-ui/) OpenAPI specification. BeezUP Merchant API provides capability to read and write BeezUP data such as accounts, stores, product catalog, channel search etc.
+idlPath: /beezup.merchant/2.0/openapi.yaml
+thumbnailPath: /beezup.merchant/2.0/icon.png
+documentationPath: /beezup.merchant/2.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid
+endpoint:
+  - url: https://api.beezup.com/

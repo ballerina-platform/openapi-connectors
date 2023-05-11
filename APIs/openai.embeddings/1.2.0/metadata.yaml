@@ -1,0 +1,16 @@
+id: openai.embeddings
+displayName: OpenAI Embeddings
+type: OpenAPI
+version: 1.2.0
+description: This is the the [OpenAI API] (https://platform.openai.com/docs/api-reference/introduction) specification. Use the OpenAI API to access the state-of-the-art language models that can complete sentences, transcribe audio, and generate images. The API also supports natural language processing tasks such as text classification, entity recognition, and sentiment analysis. By using the OpenAI API, you can incorporate advanced AI capabilities into your own applications and services.
+idlPath: /openai.embeddings/1.2.0/openapi.yaml
+thumbnailPath: /openai.embeddings/1.2.0/icon.png
+documentationPath: /openai.embeddings/1.2.0/readme.md
+keywords:
+  - AI/Embeddings
+  - OpenAI
+  - Cost/Paid
+  - GPT-3
+  - Vendor/OpenAI
+endpoint:
+  - url: https://api.openai.com/v1

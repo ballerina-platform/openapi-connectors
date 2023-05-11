@@ -1,0 +1,14 @@
+id: googleapis.cloudtalentsolution
+displayName: Google Cloud Talent Solution
+type: OpenAPI
+version: v4
+description: This is the [Google Cloud Talent Solution API v4](https://cloud.google.com/talent-solution/job-search/docs/) OpenAPI specification.
+idlPath: /googleapis.cloudtalentsolution/v4/openapi.yaml
+thumbnailPath: /googleapis.cloudtalentsolution/v4/icon.png
+documentationPath: /googleapis.cloudtalentsolution/v4/readme.md
+keywords:
+  - HumanResources/TalentAcquisition
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://jobs.googleapis.com/

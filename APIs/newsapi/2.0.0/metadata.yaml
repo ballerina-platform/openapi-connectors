@@ -1,0 +1,13 @@
+id: newsapi
+displayName: News API
+type: OpenAPI
+version: 2.0.0
+description: This is the [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification.
+idlPath: /newsapi/2.0.0/openapi.yaml
+thumbnailPath: /newsapi/2.0.0/icon.png
+documentationPath: /newsapi/2.0.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Freemium
+endpoint:
+  - url: https://newsapi.org/v2

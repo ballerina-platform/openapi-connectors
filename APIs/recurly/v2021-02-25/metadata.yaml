@@ -1,0 +1,13 @@
+id: recurly
+displayName: Recurly
+type: OpenAPI
+version: v2021-02-25
+description: This is the [Recurly API V3](https://developers.recurly.com/api/v2021-02-25/index.html) OpenAPI specification.
+idlPath: /recurly/v2021-02-25/openapi.yaml
+thumbnailPath: /recurly/v2021-02-25/icon.png
+documentationPath: /recurly/v2021-02-25/readme.md
+keywords:
+  - Finance/Billing
+  - Cost/Paid
+endpoint:
+  - url: https://v3.recurly.com

@@ -1,0 +1,13 @@
+id: aayu.mftg.as2
+displayName: MFT
+type: OpenAPI
+version: "1.0"
+description: This is the [MFT REST API v1.0](https://documenter.getpostman.com/view/12285357/UV5WEe66) OpenAPI specification. The [MFT REST API](https://documenter.getpostman.com/view/12285357/UV5WEe66)  provides a secure AS2 secured channel for such communications, and offers your company, multiple ways to upload/download files, or automate the exchange through integration mechanisms.
+idlPath: /aayu.mftg.as2/1.0/openapi.yaml
+thumbnailPath: /aayu.mftg.as2/1.0/icon.png
+documentationPath: /aayu.mftg.as2/1.0/readme.md
+keywords:
+  - ITOperations/Gateway
+  - Cost/Paid
+endpoint:
+  - url: https://api.mftgateway.com

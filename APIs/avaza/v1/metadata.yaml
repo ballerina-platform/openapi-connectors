@@ -1,0 +1,13 @@
+id: avaza
+displayName: Avaza
+type: OpenAPI
+version: v1
+description: This is the [Avaza API v1](https://api.avaza.com/swagger/ui/index) OpenAPI specification. Avaza API allows to collaborate on projects, chat, schedule resources, track time, manage expenses & invoice customers.
+idlPath: /avaza/v1/openapi.yaml
+thumbnailPath: /avaza/v1/icon.png
+documentationPath: /avaza/v1/readme.md
+keywords:
+  - Productivity/ProjectManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.avaza.com/

@@ -1,0 +1,681 @@
+openapi: 3.0.0
+info:
+  version: 2.0.0
+  title: World Bank Data API
+  description: >
+    This is the [World Bank API v2](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation) OpenAPI Specification. 
+    The World Bank Indicators API provides access to nearly 16,000 time series indicators. Most of these indicators are available online through tools such as `Databank` and the `Open Data` website. The API provides programmatic access to this same data. Many data series date back over 50 years, and can be used to create interesting applications.
+  x-ballerina-display:
+    label: World Bank
+    iconPath: "icon.png"
+  x-ballerina-init-description: >
+    The connector initialization doesn't require setting the API credentials.
+servers:
+  - description: Indicators represent data like total population, gross domestic product, energy use, and many more
+    url: http://api.worldbank.org/v2/
+paths:
+  /country/all/indicator/SP.POP.TOTL:
+    get:
+      tags: ["Population", "Total", "World"]
+      description: "Get population of each country"
+      operationId: getPopulation
+      x-ballerina-display:
+        label: "Get Population"
+      parameters:
+        - name: date
+          in: query
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-ballerina-display:
+            label: "Date"
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Population of each countries"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+
+  /country/{country_code}/indicator/SP.POP.TOTL:
+    get:
+      tags: ["Population", "Total", "Country"]
+      description: "Get population of a country"
+      operationId: getPopulationByCountry
+      x-ballerina-display:
+        label: "Get Country Population"
+      parameters:
+        - name: country_code
+          in: path
+          description: "Country code (Example- AFG, ALB, LKA)"
+          required: true
+          schema:
+            type: string
+          x-ballerina-display:
+            label: "Country Code"
+        - name: date
+          in: query
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-ballerina-display:
+            label: "Date"
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Yearly population of the given country"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+
+  /country/all/indicator/NY.GDP.MKTP.CD:
+    get:
+      tags: ["GDP", "All Countries"]
+      description: "Get GDP of each country."
+      operationId: getGDP
+      x-ballerina-display:
+        label: "Get GDP"
+      parameters:
+        - name: date
+          in: query
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-displya:
+            label: Date
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "GDP of each country"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+
+  /country/{country_code}/indicator/NY.GDP.MKTP.CD:
+    get:
+      tags: ["GDP data of a given country"]
+      description: "Get GDP of a country."
+      operationId: getGDPByCountry
+      x-ballerina-display:
+        label: "Get GDP By Country"
+      parameters:
+        - name: country_code
+          in: path
+          description: "Country code (Example- AFG, ALB, LKA)"
+          required: true
+          schema:
+            type: string
+          x-ballerina-display:
+            label: Country Code
+        - name: date
+          in: query
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-displya:
+            label: Date
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Yearly GDP of the given country"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+
+  /country/all/indicator/1.1_ACCESS.ELECTRICITY.TOT:
+    get:
+      tags: ["Access to electricity (% of total population) of countries"]
+      description: "Get percentage of population with access to electricity of countries in the world."
+      operationId: getAccessToElectricityPercentage
+      x-ballerina-display:
+        label: "Get Population% Having Electricity"
+      parameters:
+        - name: date
+          in: query
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-displya:
+            label: Date
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format "
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Population percentage having electricity of each country."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+
+  /country/{country_code}/indicator/1.1_ACCESS.ELECTRICITY.TOT:
+    get:
+      tags: ["Access to electricity (% of total population) of the given country"]
+      description: "Get percentage of population with access to electricity of a given country."
+      operationId: getAccessToElectricityPercentageByCountry
+      x-ballerina-display:
+        label: "Get Population% Having Electricity By Country"
+      parameters:
+        - name: country_code
+          in: path
+          description: "Country code (Example- AFG, ALB, LKA)"
+          required: true
+          schema:
+            type: string
+          x-ballerina-display:
+            label: "Country Code"
+        - name: date
+          in: query
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-displya:
+            label: "Date"
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Yearly population percentage having electricity of the given country."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+
+  /country/all/indicator/1.1_YOUTH.LITERACY.RATE:
+    get:
+      tags: ["Literacy rate, youth total (% of people ages 15-24)"]
+      description: "Get literacy rate of youth (% of people ages 15-24) of countries in the world."
+      operationId: getYouthLiteracyRate
+      x-ballerina-display:
+        label: "Get Youth Literacy Rate"
+      parameters:
+        - name: date
+          in: query
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-ballerina-display:
+            label: "Date"
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Youth literacy rate of each country."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+  /country/{country_code}/indicator/1.1_YOUTH.LITERACY.RATE:
+    get:
+      tags: ["Literacy rate, youth total (% of people ages 15-24)"]
+      description: "Get literacy rate of youth (% of people ages 15-24) of a country."
+      operationId: getYouthLiteracyRateByCountry
+      x-ballerina-display:
+        label: "Get Youth Literacy Rate By Country"
+      parameters:
+        - name: country_code
+          in: path
+          description: "Country code (Example- AFG, ALB, LKA)"
+          required: true
+          schema:
+            type: string
+          x-ballerina-display:
+            label: "Country Code"
+        - name: date
+          in: query
+          description:  "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-ballerina-display:
+            label: "Date"
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Youth literacy rate of the given country."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+  /country/all/indicator/UIS.X.PPP.1.FSGOV:
+    get:
+      tags: ["Government expenditure on primary education, PPP$ (millions)"]
+      description: "Get government expenditure on primary education of each country"
+      operationId: getGovernmentExpenditureOnPrimaryEducation
+      x-ballerina-display:
+        label: "Get Government Expenditure On Education"
+      parameters:
+        - name: date
+          in: query
+          description:  "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-ballerina-display:
+            label: "Date"
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format "
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Government expenditure on primary education of each country."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+  /country/{country_code}/indicator/UIS.X.PPP.1.FSGOV:
+    get:
+      tags: ["Government expenditure on primary education, PPP$ (millions)"]
+      description: "Get government expenditure on primary education of a country."
+      operationId: getGovernmentExpenditureOnPrimaryEducationByCountry
+      x-ballerina-display:
+        label: "Get Government Expenditure On Education By Country"
+      parameters:
+        - name: country_code
+          in: path
+          description: "Country code (Example- AFG, ALB, LKA)"
+          required: true
+          schema:
+            type: string
+          x-ballerina-display:
+            label: "Country Code"
+        - name: date
+          in: query
+          description:  "Date-range by year, month or quarter that scopes the result-set."
+          required: false
+          schema:
+            type: string
+            default: "2010"
+          x-ballerina-display:
+            label: "Date"
+        - name: format
+          in: query
+          description: "Format of the response."
+          required: false
+          schema:
+            type: string
+            default: json
+          x-ballerina-display:
+            label: "Response Format"
+        - name: page
+          in: query
+          description: "Page number"
+          required: false
+          schema:
+            type: integer
+            default: 1
+          x-ballerina-display:
+            label: "Page Number"
+        - name: per_page
+          in: query
+          description: "Per page record count"
+          required: false
+          schema:
+            type: integer
+            default: 50
+          x-ballerina-display:
+            label: "Per Page Record Count"
+      responses:
+        '200':
+          description: "Government expenditure on primary education of a country."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorldBankResponse"
+components:
+  schemas:
+    WorldBankResponse:
+      type: array
+      items:
+        oneOf:
+          - $ref: "#/components/schemas/PaginationData"
+          - type: array
+            items:
+              $ref: "#/components/schemas/IndicatorInformation"
+            nullable: true
+    PaginationData:
+      type: object
+      required:
+        - "page"
+        - "pages"
+        - "per_page"
+        - "total"
+        - "sourceid"
+        - "sourcename"
+        - "lastupdated"
+      properties:
+        page:
+          type: integer
+        pages:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        sourceid:
+          type: string
+          nullable: true
+        sourcename:
+          type: string
+          nullable: true
+        lastupdated:
+          type: string
+          nullable: true
+    Indicator:
+      type: object
+      description: "Data indicator"
+      required:
+        - id
+        - value
+      properties:
+        id:
+          type: string
+          description: "Id of the indicator"
+          example: SP.POP.TOTL
+        value:
+          type: string
+          description: "Value represent by the indicator"
+          example: Population, total
+
+    Country:
+      type: object
+      description: "Represent a Country"
+      required:
+        - id
+        - value
+      properties:
+        id:
+          type: string
+          description: "Country code"
+          example: CHL
+        value:
+          type: string
+          description: "Country name"
+          example: Chilie
+    IndicatorInformation:
+      type: object
+      description: "Represent country population."
+      required:
+        - "indicator"
+        - "country"
+        - "date"
+        - "value"
+        - "countryiso3code"
+        - "unit"
+        - "decimal"
+      properties:
+        indicator:
+          "$ref": "#/components/schemas/Indicator"
+          description: "World bank indicator"
+        country:
+          "$ref": "#/components/schemas/Country"
+          description: "Country"
+        date:
+          type: string
+          description: "Date-range by year, month or quarter that scopes the result-set."
+          example: "2016"
+        value:
+          type: integer
+          description: "Country population"
+          nullable: true
+          example: 100
+        countryiso3code:
+          type: string
+          description: Country ISO3 Code
+        unit:
+          type: string
+          description: Unit of measure
+        decimal:
+          type: number
+          description: "Decimal"
+        obs_status:
+          type: string
+          description: OBS Status

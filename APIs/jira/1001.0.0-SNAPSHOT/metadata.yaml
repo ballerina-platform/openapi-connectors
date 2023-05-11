@@ -1,0 +1,13 @@
+id: jira
+displayName: Jira
+type: OpenAPI
+version: 1001.0.0-SNAPSHOT
+description: This is the [Jira Cloud platform API](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification.
+idlPath: /jira/1001.0.0-SNAPSHOT/openapi.yaml
+thumbnailPath: /jira/1001.0.0-SNAPSHOT/icon.png
+documentationPath: /jira/1001.0.0-SNAPSHOT/readme.md
+keywords:
+  - Productivity/ProjectManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://your-domain.atlassian.net

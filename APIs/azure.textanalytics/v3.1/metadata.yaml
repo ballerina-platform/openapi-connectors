@@ -1,0 +1,12 @@
+id: azure.textanalytics
+displayName: Azure Text Analytics
+type: OpenAPI
+version: v3.1
+description: This is the [Azure Text Analytics API v1](https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/) OpenAPI specification. The Text Analytics API is a suite of natural language processing (NLP) services built with best-in-class Microsoft machine learning algorithms.  The API can be used to analyze unstructured text for tasks such as sentiment analysis, key phrase extraction and language detection. Functionality for analysis of text specific to the healthcare domain and personal information are also available in the API. Further documentation can be found in <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview">https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview</a>
+idlPath: /azure.textanalytics/v3.1/openapi.yaml
+thumbnailPath: /azure.textanalytics/v3.1/icon.png
+documentationPath: /azure.textanalytics/v3.1/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Paid
+  - Vendor/Microsoft

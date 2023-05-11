@@ -1,0 +1,13 @@
+id: hubspot.files
+displayName: HubSpot Files
+type: OpenAPI
+version: v3
+description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification. These APIs allow to upload and manage files.
+idlPath: /hubspot.files/v3/openapi.yaml
+thumbnailPath: /hubspot.files/v3/icon.png
+documentationPath: /hubspot.files/v3/readme.md
+keywords:
+  - Content&Files/FileManagement&Storage
+  - Cost/Freemium
+endpoint:
+  - url: https://api.hubapi.com

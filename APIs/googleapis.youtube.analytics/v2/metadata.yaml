@@ -1,0 +1,14 @@
+id: googleapis.youtube.analytics
+displayName: Youtube Analytics
+type: OpenAPI
+version: v2
+description: This is the [Youtube Analytics API v2](https://developers.google.com/youtube/analytics) OpenAPI specification.
+idlPath: /googleapis.youtube.analytics/v2/openapi.yaml
+thumbnailPath: /googleapis.youtube.analytics/v2/icon.png
+documentationPath: /googleapis.youtube.analytics/v2/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://youtubeanalytics.googleapis.com/

@@ -1,0 +1,11 @@
+id: iris.esignature
+displayName: IRIS E-Signature
+type: OpenAPI
+version: 1.6.4
+description: This is the [IRIS E-Signature API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+idlPath: /iris.esignature/1.6.4/openapi.yaml
+thumbnailPath: /iris.esignature/1.6.4/icon.png
+documentationPath: /iris.esignature/1.6.4/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Paid

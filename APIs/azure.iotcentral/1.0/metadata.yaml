@@ -1,0 +1,12 @@
+id: azure.iotcentral
+displayName: Azure IoT Central
+type: OpenAPI
+version: "1.0"
+description: This is the [Azure IoT Central API v1.0](https://azure.microsoft.com/en-us/services/iot-central/) OpenAPI specification. Azure IoT Central is a service that makes it easy to connect, monitor, and manage your IoT devices at scale.
+idlPath: /azure.iotcentral/1.0/openapi.yaml
+thumbnailPath: /azure.iotcentral/1.0/icon.png
+documentationPath: /azure.iotcentral/1.0/readme.md
+keywords:
+  - InternetofThings/DeviceManagement
+  - Cost/Paid
+  - Vendor/Microsoft

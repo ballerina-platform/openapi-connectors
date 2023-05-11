@@ -1,0 +1,11 @@
+id: zuora.revenue
+displayName: Zuora Revenue
+type: OpenAPI
+version: "2021-08-12T00:00:00.000Z"
+description: This is the [Zuora Revenue API V2021-08-12](https://www.zuora.com/developer/revpro-api/) OpenAPI specification. The Revenue API provides access to Zuroa revenue related operations on BI views, reports, revenue Jobs etc.
+idlPath: /zuora.revenue/2021-08-12T00:00:00.000Z/openapi.yaml
+thumbnailPath: /zuora.revenue/2021-08-12T00:00:00.000Z/icon.png
+documentationPath: /zuora.revenue/2021-08-12T00:00:00.000Z/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Paid

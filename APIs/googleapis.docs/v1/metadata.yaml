@@ -1,0 +1,14 @@
+id: googleapis.docs
+displayName: Google Docs
+type: OpenAPI
+version: v1
+description: This is the [Google Docs API v1.0](https://developers.google.com/docs/api) OpenAPI specification. The Docs API provides access to reads and writes Google Docs documents.
+idlPath: /googleapis.docs/v1/openapi.yaml
+thumbnailPath: /googleapis.docs/v1/icon.png
+documentationPath: /googleapis.docs/v1/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://docs.googleapis.com/

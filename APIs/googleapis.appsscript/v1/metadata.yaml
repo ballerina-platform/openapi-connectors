@@ -1,0 +1,14 @@
+id: googleapis.appsscript
+displayName: Google Apps Script
+type: OpenAPI
+version: v1
+description: This is the [Google Apps Script API v1](https://developers.google.com/apps-script/api/) OpenAPI specification.
+idlPath: /googleapis.appsscript/v1/openapi.yaml
+thumbnailPath: /googleapis.appsscript/v1/icon.png
+documentationPath: /googleapis.appsscript/v1/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://script.googleapis.com/

@@ -1,0 +1,13 @@
+id: interzoid.convertcurrency
+displayName: Interzoid Convert Currency
+type: OpenAPI
+version: 1.0.0
+description: This is the [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification. This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
+idlPath: /interzoid.convertcurrency/1.0.0/openapi.yaml
+thumbnailPath: /interzoid.convertcurrency/1.0.0/icon.png
+documentationPath: /interzoid.convertcurrency/1.0.0/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Freemium
+endpoint:
+  - url: https://api.interzoid.com

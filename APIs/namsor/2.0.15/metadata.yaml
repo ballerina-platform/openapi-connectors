@@ -1,0 +1,14 @@
+id: namsor
+displayName: NamSor
+type: OpenAPI
+version: 2.0.15
+description: This is the [NamSor API v2](https://v2.namsor.com/NamSorAPIv2/index.html) OpenAPI specification.  The NamSor API provides the capability to process personal names (gender, cultural origin or ethnicity) in all alphabets or languages.
+idlPath: /namsor/2.0.15/openapi.yaml
+thumbnailPath: /namsor/2.0.15/icon.png
+documentationPath: /namsor/2.0.15/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Freemium
+endpoint:
+  - url: https://v2.namsor.com/NamSorAPIv2
+    description: namsor_v2

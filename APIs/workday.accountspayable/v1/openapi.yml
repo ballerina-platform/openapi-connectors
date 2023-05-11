@@ -1,0 +1,2015 @@
+openapi: 3.0.1
+info:
+  title: accountsPayable
+  description: >-
+    This is a generated connector for [WorkDay Accounts Payable REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    The WorkDay accounts payable service enables applications to access information related to accounts payable.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
+  x-ballerina-display:
+    label: Workday Accounts Payable
+    iconPath: icon.png 
+  version: v1
+tags:
+  - name: supplierInvoiceRequests
+paths:
+  /supplierInvoiceRequests/{id}/submit:
+    post:
+      tags:
+        - supplierInvoiceRequests
+      summary: Submits a single supplier invoice instance.
+      operationId: submitInvoiceInstance
+      description: |-
+        Submits a supplier invoice instance with the specified ID for approval.
+
+        Secured by: Process: Supplier Invoice - Request
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/SubmitSupplierInvoiceRequest
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/SubmitSupplierInvoiceRequest
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            You cannot submit this supplier invoice request due to Critical
+            Custom Validations. Please fix the exceptions before submitting the
+            supplier invoice request.
+
+
+            You cannot submit this Supplier Invoice Request because the Supplier
+            Invoice Request is not in submittable status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: submitSupplierInvoiceRequest
+  /supplierInvoiceRequests/{id}/attachments/{subresourceID}?type=viewContent:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      operationId: viewSupplierInvoiceRequests
+      description: >-
+        Secured by: View: Supplier Invoice Request, Process: Supplier Invoice -
+        Request
+
+
+        Scope: Supplier Accounts
+
+
+        Contains attachment(s) only
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: subresourceID
+          in: path
+          description: The Workday ID of the subresource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supplierInvoiceRequests:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      summary: Retrieves a collection of supplier invoices.
+      operationId: getSupplierInvoiceRequests
+      description: >-
+        Retrieves all supplier invoices.
+
+
+        Secured by: View: Supplier Invoice Request, Self-Service: Supplier
+        Invoice Request, Process: Supplier Invoice - Request
+
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: company
+          in: query
+          description: >-
+            The company for the Common Financial Dimensions. This is for
+            internal use only on a REST API.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: fromDueDate
+          in: query
+          description: >-
+            The  beginning date of the payment due period for this supplier
+            invoice request. Use the MM/DD/YYYY format. Example: When the
+            payment term is Net 30, the due date value is the day from this
+            invoice date.
+          schema:
+            type: string
+            format: date
+        - name: fromInvoiceDate
+          in: query
+          description: >-
+            The date on or after which the supplier invoice is created using the
+            MM/DD/YYYY format.
+          schema:
+            type: string
+            format: date
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+        - name: requester
+          in: query
+          description: The ID of the worker generating the supplier invoice request.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          in: query
+          description: >-
+            The status of the supplier invoice request. This is for internal use
+            only on a REST API.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: supplier
+          in: query
+          description: The supplier on the business documents.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: toDueDate
+          in: query
+          description: >-
+            The end date of the payment due period for this supplier invoice
+            request. Use the MM/DD/YYYY format. Example: When the payment term
+            is Net 30, the due date value is 30 days from the invoice date.
+          schema:
+            type: string
+            format: date
+        - name: toInvoiceDate
+          in: query
+          description: >-
+            The date on or before which the supplier invoice is created using
+            the MM/DD/YYYY format.
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/InvoiceRequestSummary
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    post:
+      tags:
+        - supplierInvoiceRequests
+      summary: Creates the supplier invoice as specified in the request.
+      operationId: createSupplierInvoice
+      description: |-
+        Request Supplier Invoice Requests
+
+        Secured by: Process: Supplier Invoice - Request
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: company
+          in: query
+          description: >-
+            The company for the Common Financial Dimensions. This is for
+            internal use only on a REST API.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: fromDueDate
+          in: query
+          description: >-
+            The  beginning date of the payment due period for this supplier
+            invoice request. Use the MM/DD/YYYY format. Example: When the
+            payment term is Net 30, the due date value is the day from this
+            invoice date.
+          schema:
+            type: string
+            format: date
+        - name: fromInvoiceDate
+          in: query
+          description: >-
+            The date on or after which the supplier invoice is created using the
+            MM/DD/YYYY format.
+          schema:
+            type: string
+            format: date
+        - name: requester
+          in: query
+          description: The ID of the worker generating the supplier invoice request.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          in: query
+          description: >-
+            The status of the supplier invoice request. This is for internal use
+            only on a REST API.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: supplier
+          in: query
+          description: The supplier on the business documents.
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: toDueDate
+          in: query
+          description: >-
+            The end date of the payment due period for this supplier invoice
+            request. Use the MM/DD/YYYY format. Example: When the payment term
+            is Net 30, the due date value is 30 days from the invoice date.
+          schema:
+            type: string
+            format: date
+        - name: toInvoiceDate
+          in: query
+          description: >-
+            The date on or before which the supplier invoice is created using
+            the MM/DD/YYYY format.
+          schema:
+            type: string
+            format: date
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/CreateInvoiceRequestSummary
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/CreateInvoiceRequestSummary
+        '400':
+          description: >-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+
+
+            Enter a requester that has a status of Active or a Hiring Date
+            before today. You can't enter a requester that has a status of
+            Terminated or a Hiring Date in the future.
+
+
+            Values for Quantity and Unit Cost are not allowed for Invoice
+            Request Service Lines.
+
+
+            [list of worktag types] not valid for this transaction.
+
+
+            The following worktag type(s) are required: [missing types]
+
+
+            Total of Extended Amount in Invoice Request line splits are not same
+            as Extended Amount for Invoice Request Line
+
+
+            All purchase items must be active.
+
+
+            Supplier Connection is not valid for Supplier.
+
+
+            Enter an Item or Item Description on the Supplier Invoice Request
+            Service Line.
+
+
+            The Extended Amount of the splits must equal Quantity of the splits
+            multiplied by Unit Cost of the line. Currently,[expression].
+
+
+            Worktags are not allowed when there are split lines.
+
+
+            Enter a whole number for Quantity if you want to split by quantity.
+
+
+            The quantity must be a whole number.
+
+
+            Currency entered is not listed as an Accepted Currency by Supplier.
+
+
+            Supplier Connection is Inactive.
+
+
+            Total of Quantity in Invoice Request line splits are not same as
+            Quantity for Invoice Request Goods Line
+
+
+            The following Accounting Worktags are required but have not been
+            assigned: [missing].
+
+
+            The [type] is/are not available for use with the company/s:
+            [partitionable] [company]
+
+
+            Can not have any combination of Project, Project Phase or Project
+            Task worktags for the same line.
+
+
+            Enter at least one invoice request line.
+
+
+            Service Lines cannot be split based on quantity.
+
+
+            The Supplier's Invoice Number entered has already been used on
+            another Supplier Invoice, Adjustment, or Invoice Request for this
+            supplier
+
+
+            Only one worktag for each type is allowed for each document line.
+
+
+            [invalid supplier invoice worktag value message]
+
+
+            [missing required worktag types on Spend Transactions]
+
+
+            The Quantity must equal zero when you split a supplier invoice
+            request line by amount.
+
+
+            The following worktag type(s) are invalid: [invalid type]
+
+
+            The Supplier Invoice Request Line cannot be marked as Billable if
+            the selected Worktag is not for a Project Plan, Phase, or Task from
+            a Billable Project.
+
+
+            The total invoice request amount does not match the control total
+            amount.
+
+
+            Reference Number is missing.  The Reference Number is required when
+            submitting an invoice request with a Reference Type.
+
+
+            The Invoice Type must be active, have supplier accounts usage, and
+            apply to the same country as the company on this document.
+
+
+            Currency Conversion Rates between currency and company's default
+            currency are not defined.
+
+
+            [worktag value] is not permitted as an allowed value for worktag
+            type: [worktag type], because it is inactive.
+
+
+            Select a unit of measure that is already in use for the supplier
+            item.
+
+
+            Reference Type is missing. The Reference Type is required when
+            submitting an invoice request with a Reference Number.
+
+
+            Select a balancing worktag for Worktags of the following type:
+            [type]
+
+
+            The Extended Amount of the lines must equal Quantity of the lines
+            multiplied by Unit Cost of the line. Currently,[expression].
+
+
+            Spend Category must match the Spend Category for the Purchase Item.
+
+
+            Quantity is required for a Purchase Item.
+
+
+            Currency is required.
+
+
+            Suppliers that are restricted to company must be restricted to
+            either the document header company or the Company Hierarchy for
+            which it is a subordinate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: createInvoiceRequestSummary
+  /supplierInvoiceRequests/{id}/attachments/{subresourceID}:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      summary: Retrieves a single attachment instance.
+      operationId: getSupplierInvoiceRequestAttachment
+      description: >-
+        Retrieves an attachment with the specified subresource ID for the
+        specified supplier invoice.
+
+
+        Secured by: View: Supplier Invoice Request, Process: Supplier Invoice -
+        Request
+
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: subresourceID
+          in: path
+          description: The Workday ID of the subresource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/AttachmentSummary
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supplierInvoiceRequests/{id}/attachmentst:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      operationId: getInvoiceRequestAttachmentByID
+      description: >-
+        Secured by: View: Supplier Invoice Request, Process: Supplier Invoice -
+        Request
+
+
+        Scope: Supplier Accounts
+
+
+        Contains attachment(s) only
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supplierInvoiceRequests/{id}/lines:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      summary: Retrieves a collection of supplier invoice lines.
+      operationId: getSupplierInvoiceLines
+      description: >-
+        Retrieves all supplier invoice lines for the specified supplier invoice.
+
+
+        Secured by: View: Supplier Invoice Request, Process: Supplier Invoice -
+        Request
+
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/ViewLineSummary
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supplierInvoiceRequests/{id}:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      summary: Retrieves a single supplier invoice instance.
+      operationId: getSupplierInvoiceInstance
+      description: >-
+        Retrieves the supplier invoice with the specified ID.
+
+
+        Secured by: View: Supplier Invoice Request, Self-Service: Supplier
+        Invoice Request, Process: Supplier Invoice - Request
+
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/InvoiceRequestSummary
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /supplierInvoiceRequests/{id}/attachments:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      summary: >-
+        Retrieves a collection of attachments for the specified supplier
+        invoice.
+      operationId: getInvoiceAttachments
+      description: >-
+        Retrieves all attachments associated with supplier invoices.
+
+
+        Secured by: View: Supplier Invoice Request, Process: Supplier Invoice -
+        Request
+
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: >-
+            The maximum number of objects in a single response. The default is
+            20. The maximum is 100.
+          schema:
+            type: integer
+            format: int64
+        - name: offset
+          in: query
+          description: >-
+            The zero-based index of the first object in a response collection.
+            The default is 0. Use offset with the limit parameter to control
+            paging of a response collection. Example: If limit is 5 and offset
+            is 9, the response returns a collection of 5 objects starting with
+            the 10th object.
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: >-
+                        #/components/schemas/AttachmentSummary
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    post:
+      tags:
+        - supplierInvoiceRequests
+      summary: Creates a new attachment for the supplier invoice.
+      operationId: createsNewAttachmentSupplierInvoice
+      description: |-
+        Creates attachments for the specified supplier invoice.
+
+        Secured by: Process: Supplier Invoice - Request
+
+        Scope: Supplier Accounts
+
+        Contains attachment(s)
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/CreateAttachmentSummary
+        required: true
+      responses:
+        '201':
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/CreateAttachmentSummary
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: createAttachmentSummary
+  /supplierInvoiceRequests/{id}/lines/{subresourceID}:
+    get:
+      tags:
+        - supplierInvoiceRequests
+      summary: Retrieves a single supplier invoice line instance.
+      operationId: getSupplierInvoiceLineInstance
+      description: >-
+        Retrieves a supplier invoice line with the specified subresource ID for
+        the specified supplier invoice ID.
+
+
+        Secured by: View: Supplier Invoice Request, Process: Supplier Invoice -
+        Request
+
+
+        Scope: Supplier Accounts
+      parameters:
+        - name: id
+          in: path
+          description: The Workday ID of the resource.
+          required: true
+          schema:
+            type: string
+        - name: subresourceID
+          in: path
+          description: The Workday ID of the subresource.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/ViewLineSummary
+        '400':
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '401':
+          description: >-
+            Invalid resource or operation.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '403':
+          description: >-
+            User has insufficient permissions.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        '404':
+          description: >-
+            Resource not found.
+            (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+components:
+  schemas:
+    INSTANCE_MODEL_REFERENCE:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+          type: string
+          description: wid / id / reference id
+        descriptor:
+          type: string
+          description: A description of the instance
+          readOnly: true
+        href:
+          type: string
+          description: A link to the instance
+          readOnly: true
+    ERROR_MODEL_REFERENCE:
+      required:
+        - error
+      type: object
+      properties:
+        error:
+          type: string
+          description: A description of the error
+    VALIDATION_ERROR_MODEL_REFERENCE:
+      allOf:
+        - $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+        - type: object
+          properties:
+            errors:
+              type: array
+              description: An array of validation errors
+              items:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    FACETS_MODEL_REFERENCE:
+      type: array
+      items:
+        type: object
+        properties:
+          descriptor:
+            type: string
+            description: A description of the facet
+          facetParameter:
+            type: string
+            description: The alias used to select the facet
+          values:
+            type: array
+            description: the facet values
+            items:
+              required:
+                - id
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: The number of instances returned by this facet
+                  format: int32
+                id:
+                  pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+                  type: string
+                  description: wid / id / reference id
+                descriptor:
+                  type: string
+                  description: A description of the facet
+                href:
+                  type: string
+                  description: A link to the instance
+                  readOnly: true
+        description: This object represents the possible facets for this resource
+        readOnly: true
+    MULTIPLE_INSTANCE_MODEL_REFERENCE:
+      type: object
+      properties:
+        total:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+    StatutoryInvoiceType:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    HandlingCode:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Status:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    RemitToConnection:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    PaymentTerms:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Currency:
+      allOf:
+        - $ref: >-
+            #/components/schemas/CurrencyEmbedded
+        - type: object
+    ShipToAddress:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    ReferenceType:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Requester:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Supplier:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Company:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    InvoiceRequestSummary:
+      allOf:
+        - type: object
+          properties:
+            invoiceDate:
+              type: string
+              description: The date when a request for a supplier invoice is created.
+              format: date
+              x-workday-type: Date
+            statutoryInvoiceType:
+              $ref: >-
+                #/components/schemas/StatutoryInvoiceType
+            referenceNumber:
+              maxLength: 140
+              type: string
+              description: >-
+                The reference number that is encoded with key payment
+                information on the invoice request document.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            taxAmount:
+              type: object
+              properties: {}
+              description: Tax amount for the supplier invoice request.
+              example: '1177178883'
+              x-workday-type: Currency
+            handlingCode:
+              $ref: >-
+                #/components/schemas/HandlingCode
+            status:
+              $ref: '#/components/schemas/Status'
+            dueDate:
+              type: string
+              description: >-
+                The due date for payment for this Supplier Invoice Request.
+                Example: If the payment terms are Net 30, the Due Date field is
+                30 days after the invoice date.
+              format: date
+              x-workday-type: Date
+            remitToConnection:
+              $ref: >-
+                #/components/schemas/RemitToConnection
+            paymentTerms:
+              $ref: >-
+                #/components/schemas/PaymentTerms
+            controlTotalAmount:
+              type: object
+              properties: {}
+              description: >-
+                The amount entered that should match the total of the line
+                amounts.
+              example: '183869831'
+              x-workday-type: Currency
+            memo:
+              type: string
+              description: The memo for the supplier invoice request.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            suppliersInvoiceNumber:
+              type: string
+              description: >-
+                The reference number provided by the supplier for the supplier
+                invoice request.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            currency:
+              $ref: '#/components/schemas/Currency'
+            freightAmount:
+              type: object
+              properties: {}
+              description: The freight amount for the supplier invoice request.
+              example: '192005887'
+              x-workday-type: Currency
+            shipToAddress:
+              $ref: >-
+                #/components/schemas/ShipToAddress
+            referenceType:
+              $ref: >-
+                #/components/schemas/ReferenceType
+            requestNumber:
+              type: string
+              description: >-
+                The unique number assigned to the Supplier Invoice Request at
+                the time of creation.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            invoiceReceivedDate:
+              type: string
+              description: The date the invoice was recieved
+              format: date
+              x-workday-type: Date
+            requester:
+              $ref: '#/components/schemas/Requester'
+            supplier:
+              $ref: '#/components/schemas/Supplier'
+            company:
+              $ref: '#/components/schemas/Company'
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    CurrencyInstanceModelRef:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    remitToConnection:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    CreateInvoiceRequestSummary:
+      allOf:
+        - required:
+            - company
+            - invoiceDate
+            - supplier
+          type: object
+          properties:
+            currency:
+              $ref: '#/components/schemas/CurrencyInstanceModelRef'
+            company:
+              $ref: '#/components/schemas/Company'
+            taxAmount:
+              type: object
+              properties: {}
+              description: Tax amount for the supplier invoice request.
+              example: '434945035'
+              x-workday-type: Currency
+            requester:
+              $ref: '#/components/schemas/Requester'
+            controlTotalAmount:
+              type: object
+              properties: {}
+              description: >-
+                The amount entered that should match the total of the line
+                amounts.
+              example: '1022848001'
+              x-workday-type: Currency
+            paymentTerms:
+              $ref: >-
+                #/components/schemas/PaymentTerms
+            referenceType:
+              $ref: >-
+                #/components/schemas/ReferenceType
+            lines:
+              type: array
+              description: >-
+                The Supplier Invoice Request Lines for a Supplier Invoice
+                Request.
+              items:
+                $ref: >-
+                  #/components/schemas/CreateLineSummary
+              x-workday-type: Multi-instance
+            statutoryInvoiceType:
+              $ref: >-
+                #/components/schemas/StatutoryInvoiceType
+            suppliersInvoiceNumber:
+              type: string
+              description: >-
+                The reference number provided by the supplier for the supplier
+                invoice request.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            referenceNumber:
+              maxLength: 140
+              type: string
+              description: >-
+                The reference number that is encoded with key payment
+                information on the invoice request document.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            invoiceReceivedDate:
+              type: string
+              description: The date an invoice is received.
+              format: date
+              x-workday-type: Date
+            freightAmount:
+              type: object
+              properties: {}
+              description: Freight amount for the supplier invoice request.
+              example: '676899757'
+              x-workday-type: Currency
+            supplier:
+              $ref: '#/components/schemas/Supplier'
+            handlingCode:
+              $ref: >-
+                #/components/schemas/HandlingCode
+            shipToAddress:
+              $ref: >-
+                #/components/schemas/ShipToAddress
+            invoiceDate:
+              type: string
+              description: The date when a request for a supplier invoice is created.
+              format: date
+              x-workday-type: Date
+            memo:
+              type: string
+              description: The memo for the Supplier Invoice Request.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            remitToConnection:
+              $ref: >-
+                #/components/schemas/remitToConnection
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    UnitOfMeasure:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    SpendCategory:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    Item:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    ViewLineSummary:
+      allOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              description: Gets the line type for supplier invoice request.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            itemIdentifiers:
+              type: array
+              description: >-
+                Contains list of Item Identifiers for Procurement Item on
+                Business Document Line Distribution.
+              items:
+                $ref: >-
+                  #/components/schemas/ItemIdentifierSummary
+              x-workday-type: Multi-instance
+            unitOfMeasure:
+              $ref: >-
+                #/components/schemas/UnitOfMeasure
+            internalMemo:
+              type: string
+              description: The internal line memo for the supplier invoice request line.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            splits:
+              type: array
+              description: Splits for the Supplier Invoice Request Line instance.
+              items:
+                $ref: >-
+                  #/components/schemas/LineSplitSummary
+              x-workday-type: Multi-instance
+            itemDescription:
+              type: string
+              description: >-
+                The description of the item on the document line. This is a
+                text-only value.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            billable:
+              type: boolean
+              description: >-
+                Returns true if the Supplier Invoice Request Line or Line Split
+                is Billable.
+              example: true
+              x-workday-type: Boolean
+            unitCost:
+              type: object
+              properties: {}
+              description: The unit cost for the document line.
+              example: '547499786'
+              x-workday-type: Currency
+            extendedAmount:
+              type: object
+              properties: {}
+              description: >-
+                The extended amount for the document line.  Excludes Extended
+                Amounts on Tax Only Invoices.
+              example: '657262193'
+              x-workday-type: Currency
+            spendCategory:
+              $ref: >-
+                #/components/schemas/SpendCategory
+            memo:
+              type: string
+              description: The memo on the document line.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            itemTags:
+              type: array
+              description: All item tags for a goods delivery run line's item
+              items:
+                $ref: >-
+                  #/components/schemas/ItemTagSummary
+              x-workday-type: Multi-instance
+            item:
+              $ref: '#/components/schemas/Item'
+            quantity:
+              type: integer
+              description: >-
+                The quantity on the transaction line. This value can have 20
+                integer places, is precise to 2 decimal places, and can be
+                negative.
+              example: 673420748
+              x-workday-type: Numeric
+            worktags:
+              type: array
+              description: Accounting Worktags for Requisition. Used in REST API Only.
+              items:
+                $ref: >-
+                  #/components/schemas/LinesWorkTagSummary
+              x-workday-type: Multi-instance
+            splitBy:
+              $ref: '#/components/schemas/SplitBy'
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    SubmitSupplierInvoiceRequest:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    AttachmentSummary:
+      allOf:
+        - type: object
+          properties:
+            fileExtension:
+              type: string
+              description: Type of the file extension for an attachment.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            fileLength:
+              type: integer
+              description: File length of the attachment
+              example: 619242485
+              x-workday-type: Numeric
+            fileName:
+              maxLength: 255
+              type: string
+              description: File name of the attachment
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    SplitBy:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    CreateLineSummary:
+      allOf:
+        - type: object
+          properties:
+            unitCost:
+              type: object
+              properties: {}
+              description: The unit cost for the document line.
+              example: '733462474'
+              x-workday-type: Currency
+            internalMemo:
+              type: string
+              description: The internal line memo for the supplier invoice request line.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            itemDescription:
+              type: string
+              description: >-
+                The description of the item on the document line. This is a
+                text-only value.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            worktags:
+              type: array
+              description: Accounting Worktags for Requisition. Used in REST API Only.
+              items:
+                $ref: >-
+                  #/components/schemas/LinesWorkTagSummary
+              x-workday-type: Multi-instance
+            splits:
+              type: array
+              description: >-
+                The supplier invoice lines that includes the splits for the
+                requested instance.
+
+
+                Note: Splits occur on a Supplier Invoice when a user decides to
+                divide a line into multiple lines. For instance, if someone has
+                a line which has a quantity of 4 items and they select "Splits"
+                and they may split that line into 2 (so there will now be 2
+                lines, each of which has a quantity of 2 items)
+              items:
+                $ref: >-
+                  #/components/schemas/LineSplitSummary
+              x-workday-type: Multi-instance
+            order:
+              type: string
+              description: >-
+                The order of the lines on a transaction. You can use this field
+                to compare other transactions, such as supplier invoice matching
+                events.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            billable:
+              type: boolean
+              description: >-
+                True if the supplier invoice request line or line split are
+                billable.
+              example: true
+              x-workday-type: Boolean
+            splitBy:
+              $ref: '#/components/schemas/SplitBy'
+            quantity:
+              type: integer
+              description: >-
+                The quantity on the transaction line. This value can have 20
+                integer places, is precise to 2 decimal places, and can be
+                negative.
+              example: 748992345
+              x-workday-type: Numeric
+            extendedAmount:
+              type: object
+              properties: {}
+              description: >-
+                The extended amount for the document line.  Excludes extended
+                amount on tax only invoices.
+              example: '783641658'
+              x-workday-type: Currency
+            spendCategory:
+              $ref: >-
+                #/components/schemas/SpendCategory
+            unitOfMeasure:
+              $ref: >-
+                #/components/schemas/UnitOfMeasure
+            memo:
+              type: string
+              description: The memo on the document line.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            serviceLine:
+              type: boolean
+              description: The line type for supplier invoice request line.
+              example: true
+              x-workday-type: Boolean
+            item:
+              $ref: '#/components/schemas/Item'
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    LineSplitSummary:
+      allOf:
+        - type: object
+          properties:
+            percent:
+              type: integer
+              description: >-
+                The percentage specified for the Business Document Line
+                distribution line split.
+              example: 489
+              x-workday-type: Numeric
+            billable:
+              type: boolean
+              description: >-
+                True if the supplier invoice request line or line split are
+                billable.
+              example: true
+              x-workday-type: Boolean
+            memo:
+              type: string
+              description: The memo for a line split
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            quantity:
+              type: integer
+              description: >-
+                The quantity specified for the Business Document Line
+                distribution line split.
+              example: 879775692
+              x-workday-type: Numeric
+            amount:
+              type: object
+              properties: {}
+              description: >-
+                The amount on the transaction line split. This value displays in
+                the same currency as the business document.
+              example: '514872888'
+              x-workday-type: Currency
+            worktags:
+              type: array
+              description: The accounting worktags for the line split.
+              items:
+                $ref: >-
+                  #/components/schemas/LineSplitWorktagSummary
+              x-workday-type: Multi-instance
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    ItemIdentifierSummary:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    CurrencyEmbedded:
+      allOf:
+        - type: object
+          properties:
+            currencyID:
+              type: string
+              description: >-
+                The Reference ID to use for lookups within our Workday Web
+                Services. For ~supervisory organizations~, this is also the
+                'Organization ID'
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    ContentType:
+      allOf:
+        - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+        - type: object
+    CreateAttachmentSummary:
+      allOf:
+        - type: object
+          properties:
+            fileLength:
+              type: integer
+              description: File length of the attachment.
+              example: 1154046465
+              x-workday-type: Numeric
+            contentType:
+              $ref: >-
+                #/components/schemas/ContentType
+            fileName:
+              maxLength: 255
+              type: string
+              description: File name of the attachment.
+              example: >-
+                Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+                ubique iisque contentiones ex duo. Quo lorem etiam eu.
+              x-workday-type: Text
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    LineSplitWorktagSummary:
+      allOf:
+        - type: object
+          properties:
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+    LinesWorkTagSummary:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: Id of the instance
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+    ItemTagSummary:
+      allOf:
+        - type: object
+          properties:
+            descriptor:
+              type: string
+              description: A preview of the instance
+              example: Lorem ipsum dolor sit ame
+            id:
+              type: string
+              description: Id of the instance
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: "tenantURL"
+          scopes: {}

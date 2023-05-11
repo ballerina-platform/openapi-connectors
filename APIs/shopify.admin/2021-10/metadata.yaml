@@ -1,0 +1,11 @@
+id: shopify.admin
+displayName: Shopify Admin
+type: OpenAPI
+version: 2021-10
+description: This is the [Shopify Admin API v2021-10](https://shopify.dev/api/admin-rest) OpenAPI specification.
+idlPath: /shopify.admin/2021-10/openapi.yaml
+thumbnailPath: /shopify.admin/2021-10/icon.png
+documentationPath: /shopify.admin/2021-10/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

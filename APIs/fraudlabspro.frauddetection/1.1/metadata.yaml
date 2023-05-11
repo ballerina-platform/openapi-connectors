@@ -1,0 +1,16 @@
+id: fraudlabspro.frauddetection
+displayName: FraudLabs Pro Fraud Detection
+type: OpenAPI
+version: "1.1"
+description: This is the [FraudLabsPro Fraud Detection API v1.1](https://www.fraudlabspro.com/developer/api/screen-order) OpenAPI specification. Online payment fraud detection service. It helps merchants to minimize chargebacks and therefore maximize the revenue.  It can be used to detect fraud for various kinds of payment method, such as credit card, paypal, cod and so on.  Please visit https://www.fraudlabspro.com to learn more.
+idlPath: /fraudlabspro.frauddetection/1.1/openapi.yaml
+thumbnailPath: /fraudlabspro.frauddetection/1.1/icon.png
+documentationPath: /fraudlabspro.frauddetection/1.1/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium
+endpoint:
+  - url: https://api.fraudlabspro.com
+    description: FraudLabs Pro
+  - url: https://virtserver.swaggerhub.com/fraudlabspro/fraudlabspro/1.0
+    description: SwaggerHub API Auto Mocking

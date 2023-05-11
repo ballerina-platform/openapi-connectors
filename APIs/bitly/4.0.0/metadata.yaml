@@ -1,0 +1,13 @@
+id: bitly
+displayName: Bitly
+type: OpenAPI
+version: 4.0.0
+description: This is the [Bitly API v4.0.0](https://dev.bitly.com/api-reference) OpenAPI specification. Bitly is the most widely trusted link management platform in the world.  By using the Bitly API, you will exercise the full power of your links through automated link customization, mobile deep linking, and click analytics.
+idlPath: /bitly/4.0.0/openapi.yaml
+thumbnailPath: /bitly/4.0.0/icon.png
+documentationPath: /bitly/4.0.0/readme.md
+keywords:
+  - Devtools
+  - Cost/Freemium
+endpoint:
+  - url: https://api-ssl.bitly.com/v4

@@ -1,0 +1,13 @@
+id: bintable
+displayName: BINTable
+type: OpenAPI
+version: 1.0.0-oas3
+description: This is the [BINTable API v1](https://bintable.com/get-api) OpenAPI Specification.  BIN lookup API, the free api service from bintable.com to lookup card information using it's BIN.  The service maintains updated database based on the comunity and other third party services to make sure all BINs in the database are accurate and up to date.
+idlPath: /bintable/1.0.0-oas3/openapi.yaml
+thumbnailPath: /bintable/1.0.0-oas3/icon.png
+documentationPath: /bintable/1.0.0-oas3/readme.md
+keywords:
+  - BusinessIntelligence/Analytics
+  - Cost/Free
+endpoint:
+  - url: https://api.bintable.com/v1

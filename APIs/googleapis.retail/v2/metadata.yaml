@@ -1,0 +1,14 @@
+id: googleapis.retail
+displayName: Google Retail
+type: OpenAPI
+version: v2
+description: This is the [Google Retail API v2](https://cloud.google.com/retail/docs/overview) OpenAPI specification.
+idlPath: /googleapis.retail/v2/openapi.yaml
+thumbnailPath: /googleapis.retail/v2/icon.png
+documentationPath: /googleapis.retail/v2/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid
+  - Vendor/Google
+endpoint:
+  - url: https://retail.googleapis.com/

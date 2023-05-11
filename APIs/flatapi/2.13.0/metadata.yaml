@@ -1,0 +1,13 @@
+id: flatapi
+displayName: Flat API
+type: OpenAPI
+version: 2.13.0
+description: This is the [Flat API v2.13.0](https://flat.io/developers/docs/api/) OpenAPI specification.
+idlPath: /flatapi/2.13.0/openapi.yaml
+thumbnailPath: /flatapi/2.13.0/icon.png
+documentationPath: /flatapi/2.13.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Freemium
+endpoint:
+  - url: https://api.flat.io/v2

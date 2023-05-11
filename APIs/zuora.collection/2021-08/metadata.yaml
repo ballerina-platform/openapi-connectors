@@ -1,0 +1,11 @@
+id: zuora.collection
+displayName: Zuora Collection
+type: OpenAPI
+version: 2021-08
+description: This is the [Zuora Collections API V1](https://www.zuora.com/developer/collect-api/#) OpenAPI specification. This reference provides detailed descriptions about functions, requests, and responses of the APIs for the following two component apps. Rest APIs for other component apps will  be included in this reference when they are released. - Advanced Payment Manager - Collections Window - Configurable Payment Retry - Statement Generator
+idlPath: /zuora.collection/2021-08/openapi.yaml
+thumbnailPath: /zuora.collection/2021-08/icon.png
+documentationPath: /zuora.collection/2021-08/readme.md
+keywords:
+  - Finance/Payment
+  - Cost/Paid

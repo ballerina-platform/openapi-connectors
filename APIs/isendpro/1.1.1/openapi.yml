@@ -1,0 +1,1594 @@
+openapi: 3.0.0
+servers:
+  - url: https://apirest.isendpro.com/cgi-bin
+  - url: http://apirest.isendpro.com/cgi-bin
+info:
+  x-ballerina-display:
+      label: iSendPro
+      iconPath: "icon.png"
+  contact:
+    email: support@isendpro.com
+    name: iSendPro Support Team
+    url: https://www.isendpro.com/
+    x-twitter: isendpro
+  description: |
+    This is a generated connector for [iSendPro v1.1.1](https://www.isendpro.com/docs/?type=7) OpenAPI specification.
+    [1] List of features:
+    - sending SMS to one or more recipients,
+    - HLR lookup,
+    - recovery of campaign summaries,
+    - directory management,
+    - addition to blacklist.
+    - counting of the number of characters in SMS
+    [2] To use this API you must:
+    - Create an iSendPro account on https://isendpro.com/
+    - Credit your account
+        - Note: obtaining a test credit possible under certain conditions
+    - Write down your account key (keyid)
+      - It will be essential for you to use the API
+      - You can find it in the section my "account", sub-section "my API"
+    - Configure IP control
+      - IP control can be configured in the my "account" section, "my API" sub-section
+      - This is a whitelist system, you need to enter the IPs used to call the API
+      - You can also completely disable IP control
+  title: API iSendPro
+  version: 1.1.1
+  x-apisguru-categories:
+    - messaging
+  x-logo:
+    url: https://en.isendpro.com/img/logo-isendpro.png
+  x-origin:
+    - format: openapi
+      url: https://apirest.isendpro.com/isendpro.json
+      version: "3.0"
+  x-providerName: isendpro.com
+  x-ballerina-init-description: | 
+    The connector initialization doesn't require setting the API credentials.
+    Create an [iSendPro account](https://en.isendpro.com/signup.php) and obtain tokens by following this [guide](https://www.isendpro.com/docs/?type=7#prerequis_english)
+    Operations require passing the token as a parameter.
+paths:
+  /campagne:
+    get:
+      description: |
+        Returns the SMS sent over a given period according to a start date and an end date.
+
+        The dates are in the format YYYY-MM-DD hh: mm.
+
+        The campaign report file is in the form of a zip file + containing a csv file containing the details of the shipments.
+      operationId: getCampaign
+      parameters:
+        - description: API key
+          in: query
+          name: keyid
+          required: true
+          schema:
+            type: string
+        - description: Must be "1"
+          in: query
+          name: rapportCampagne
+          required: true
+          schema:
+            enum:
+              - "1"
+            type: string
+        - description: start date in format YYYY-MM-DD hh:mm
+          in: query
+          name: date_deb
+          required: true
+          schema:
+            type: string
+        - description: End date in format YYYY-MM-DD hh:mm
+          in: query
+          name: date_fin
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+            file:
+              schema:
+                format: binary
+                type: string
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+            file:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Returns the SMS sent over a given period
+      tags:
+        - campaign
+  /count:
+    post:
+      description: Counts the number of SMS necessary for a sending
+      operationId: count
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CountRequest"
+        description: Count request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountResponse"
+            etat:
+              examples:
+                response:
+                  value:
+                    etat:
+                      nb_character: "222"
+                      nb_sms: "2"
+                      tel: "0680010203"
+          description: Response OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Dysfonctionnement
+      summary: "Count the number of characters."
+      tags:
+        - count
+  /credit:
+    get:
+      description: |
+        Returns the existing credit associated with the account.
+      operationId: getCredit
+      parameters:
+        - description: API key
+          in: query
+          name: keyid
+          required: true
+          schema:
+            format: string
+            type: string
+        - description: Type of response requested, 1 for euro, 2 for euro + quantity estimate
+          in: query
+          name: credit
+          required: true
+          schema:
+            enum:
+              - "1"
+              - "2"
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    etat:
+                      credit: "10.0"
+              schema:
+                $ref: "#/components/schemas/CreditResponse"
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Get credit
+      tags:
+        - credit
+  /dellistenoire:
+    post:
+      description: Remove a blacklisted number
+      operationId: removeBlacklistNumber
+      parameters:
+        - description: API key
+          in: query
+          name: keyid
+          required: true
+          schema:
+            format: string
+            type: string
+        - description: Must be "1"
+          in: query
+          name: delListeNoire
+          required: true
+          schema:
+            enum:
+              - "1"
+            type: string
+        - description: Mobile number to be deleted
+          in: query
+          name: num
+          required: true
+          schema:
+            format: string
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlacklistResponse"
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Add a blacklisted number
+      tags:
+        - addBlacklist
+  /getlistenoire:
+    post:
+      description: Return a zipped csv file containing the blacklist
+      operationId: getBlacklist
+      parameters:
+        - description: API key
+          in: query
+          name: keyid
+          required: true
+          schema:
+            format: string
+            type: string
+        - description: Must be "1"
+          in: query
+          name: getListeNoire
+          required: true
+          schema:
+            enum:
+              - "1"
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                format: binary
+                type: string
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Return the blacklist
+      tags:
+        - getBlacklist
+  /hlr:
+    post:
+      description: |
+        Perform an HLR lookup on the numbers 
+      operationId: validateNumber
+      requestBody:
+        description: HLR to be looked up
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HLRrequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    etat:
+                      etat:
+                        operator: ORAN
+                        tel: "0680010203"
+              schema:
+                $ref: "#/components/schemas/HLRResponse"
+          description: Response OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Dysfonctionnement
+      summary: Check the validity of a number
+      tags:
+        - hlr
+  /repertoire:
+    post:
+      description: Create a new directory and return its identifier. This identifier can be used to add or delete numbers via the API.
+      operationId: createDirectory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Directorycreaterequest"
+        description: Creation directory
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Directorycreatereponse"
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Create directory
+      tags:
+        - directory
+    put:
+      description: Adds or removes a list of numbers to an existing directory.
+      operationId: updateDirectory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DirectoryUpdateRequest"
+        description: Creation directory request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Directorymodifreponse"
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Update directory
+      tags:
+        - directory
+  /setlistenoire:
+    post:
+      description: Adds a blacklisted number. Once added, requests to send marketing SMS to this number will be refused.
+      operationId: addBlacklistNumber
+      parameters:
+        - description: API key
+          in: query
+          name: keyid
+          required: true
+          schema:
+            format: string
+            type: string
+        - description: Must be "1"
+          in: query
+          name: setlisteNoire
+          required: true
+          schema:
+            enum:
+              - "1"
+            type: string
+        - description: mobile number to be blacklisted
+          in: query
+          name: num
+          required: true
+          schema:
+            format: string
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlacklistResponse"
+          description: Successful response
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Error
+      summary: Add a blacklisted number.
+      tags:
+        - setListeNoire
+  /shortlink:
+    post:
+      description: add a shortlink
+      operationId: addShortlink
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShortlinkRequest"
+        description: add sub account request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShortlinkResponse"
+            exemple1:
+              examples:
+                response:
+                  value:
+                    etat:
+                      etat:
+                        code: 250
+                        message: The short link has been generated
+                        shortlink: ww.sms.ht/aOHi
+          description: Response OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Dysfonctionnement
+      summary: add a shortlink
+      tags:
+        - add shortlink
+  /sms:
+    post:
+      description: Sending an SMS to a single recipient
+      operationId: sendSms
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SmsUniqueRequest"
+        description: SMS request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SMSResponse"
+            etat:
+              examples:
+                response:
+                  value:
+                    etat:
+                      code: "0"
+                      message: hello world!
+                      tel: "0680010203"
+          description: Response OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Dysfonctionnement
+      summary: Send a text message.
+      tags:
+        - sms
+  /smsmulti:
+    post:
+      description: |
+        Sending SMS to 1 or more recipients
+      operationId: sendSmsMulti
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SMSRequest"
+        description: SMS request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SMSResponse"
+            etat:
+              examples:
+                response:
+                  value:
+                    etat:
+                      code: "0"
+                      message: hello world!
+                      tel: "0680010203"
+          description: Response OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Dysfonctionnement
+      summary: Send multiple text messages
+      tags:
+        - sms
+  /subaccount:
+    post:
+      description: Add sub account
+      operationId: addSubAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubaccountAddRequest"
+        description: add sub account request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubaccountAddResponse"
+            exemple1:
+              examples:
+                response:
+                  value:
+                    etat:
+                      etat:
+                        code: 230
+                        subAccountId: 20150
+                        subAccountKeyId: a9bc68fe78
+                        subAccountLogin: marion.peltier.agence06
+                        tel: The sub account has been added
+          description: Response OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Dysfonctionnement
+      summary: Add a sub account
+      tags:
+        - add subaccount
+    put:
+      description: Update subaccount
+      operationId: updateSubAccount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubaccountRequest"
+        description: Update sub account request
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubaccountResponse"
+          description: Response OK
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+          description: Dysfonctionnement
+      summary: Edit a subaccount
+      tags:
+        - Update subaccount
+components:
+  schemas:
+    CountResponse:
+      properties:
+        etat:
+          $ref: "#/components/schemas/CountResponse_etat"
+      type: object
+    CountResponse_etat:
+      properties:
+        etat:
+          items:
+            $ref: "#/components/schemas/CountResponse_etat_etat"
+          type: array
+    CountResponse_etat_etat:
+      properties:
+        nb_character:
+          description: Number of characters
+          type: string
+        nb_sms:
+          description: Number of sms needed
+          type: string
+        tel:
+          description: Phone number
+          type: string
+    CountRequest:
+      example:
+        count: "1"
+        emetteur: iSendPro
+        keyid: YOUR_KEYID
+        num: "0600123456"
+        sms: BGood morning! Welcome to iSendPro!
+      properties:
+        count:
+          default: "1"
+          enum:
+            - "1"
+          type: string
+        date_envoi:
+          description: "Date sent in YYYY-MM-DD format hh: mm. This parameter is optional, if it is omitted, the sending is carried out immediately."
+          type: string
+        emetteur:
+          description: |
+             - The sender must be an alphanumeric string between 4 and 11 characters long.
+
+             - The accepted characters are numbers between 0 and 9, letters between A and Z and space.
+
+             - It cannot consist of only numbers.
+
+             - For the modification of the transmitter and within the framework of commercial campaigns, the operators contractually impose to add at the end of the message the text "STOP XXXXX". As a result, the message sent cannot exceed a length of 148 characters instead of 160 characters, the "STOP" being added automatically.
+          type: string
+        gmt_zone:
+          description: Time zone of the date sent
+          enum:
+            - Pacific/Midway
+            - America/Adak
+            - Etc/GMT+10
+            - Pacific/Marquesas
+            - Pacific/Gambier
+            - America/Anchorage
+            - America/Ensenada
+            - Etc/GMT+8
+            - America/Los_Angeles
+            - America/Denver
+            - America/Chihuahua
+            - America/Dawson_Creek
+            - America/Belize
+            - America/Cancun
+            - Chile/EasterIsland
+            - America/Chicago
+            - America/New_York
+            - America/Havana
+            - America/Bogota
+            - America/Caracas
+            - America/Santiago
+            - America/La_Paz
+            - Atlantic/Stanley
+            - America/Campo_Grande
+            - America/Goose_Bay
+            - America/Glace_Bay
+            - America/St_Johns
+            - America/Araguaina
+            - America/Montevideo
+            - America/Miquelon
+            - America/Godthab
+            - America/Argentina/Buenos_Aires
+            - America/Sao_Paulo
+            - America/Noronha
+            - Atlantic/Cape_Verde
+            - Atlantic/Azores
+            - Europe/Belfast
+            - Europe/Dublin
+            - Europe/Lisbon
+            - Europe/London
+            - Africa/Abidjan
+            - Europe/Amsterdam
+            - Europe/Belgrade
+            - Europe/Brussels
+            - Africa/Algiers
+            - Africa/Windhoek
+            - Asia/Beirut
+            - Africa/Cairo
+            - Asia/Gaza
+            - Africa/Blantyre
+            - Asia/Jerusalem
+            - Europe/Minsk
+            - Asia/Damascus
+            - Europe/Moscow
+            - Africa/Addis_Ababa
+            - Asia/Tehran
+            - Asia/Dubai
+            - Asia/Yerevan
+            - Asia/Kabul
+            - Asia/Yekaterinburg
+            - Asia/Tashkent
+            - Asia/Kolkata
+            - Asia/Katmandu
+            - Asia/Dhaka
+            - Asia/Novosibirsk
+            - Asia/Rangoon
+            - Asia/Bangkok
+            - Asia/Krasnoyarsk
+            - Asia/Hong_Kong
+            - Asia/Irkutsk
+            - Australia/Perth
+            - Australia/Eucla
+            - Asia/Tokyo
+            - Asia/Seoul
+            - Asia/Yakutsk
+            - Australia/Adelaide
+            - Australia/Darwin
+            - Australia/Brisbane
+            - Australia/Hobart
+            - Asia/Vladivostok
+            - Australia/Lord_Howe
+            - Etc/GMT-11
+            - Asia/Magadan
+            - Pacific/Norfolk
+            - Asia/Anadyr
+            - Pacific/Auckland
+            - Etc/GMT-12
+            - Pacific/Chatham
+            - Pacific/Tongatapu
+            - Pacific/Kiritimati
+          type: string
+        keyid:
+          description: API key
+          type: string
+        nostop:
+          description: If the message is not for commercial purposes, you can request to withdraw the obligation from the STOP. Once your request has been validated by our services, you can remove the STOP SMS mention by adding nostop = "1"
+          type: string
+        num:
+          description: Telephone number in national (example 0680010203) or international (example 33680010203) format
+          type: string
+        numAzur:
+          enum:
+            - "1"
+          type: string
+        sms:
+          description: Message to send to recipients. The message must be encoded in utf-8 format and contain only characters existing in the GSM alphabet. It is also possible to send (abroad only) SMS in UCS-2, see parameter ucs2 for more details.
+          type: string
+        smslong:
+          default: "999"
+          description: |
+            The long SMS allows you to exceed the limit of 160 characters by sending a message consisting of
+            of several SMS.
+            Up to 6 concatenated SMS can be sent for a maximum total length of 918
+            characters per message.
+            For technical reasons, the limit per concatenated SMS is 153 characters.
+            If the transmitter is changed, consider the automatic addition of 12 characters
+            of the "STOP SMS".
+            To send a smslong, you must add the smslong parameter to the calls. The value of SMS must be the maximum number of concatenated SMS allowed. In order not to have this error message and to obtain a dynamic calculation of the number of SMS then you must enter smslong = "999"
+          enum:
+            - "999"
+          type: string
+        tracker:
+          description: "Le tracker doit être une chaine alphanumérique de moins de 50 caractères. Ce tracker sera ensuite renvoyé en paramètre des urls pour les retours des accusés de réception. "
+          type: string
+        ucs2:
+          description: |
+            It is also possible to send SMS in non-Latin alphabet (Russian, Chinese, Arabic, etc.) on
+            numbers outside mainland France.
+            To do this, the request should be encoded in UTF-8 format and contain the argument ucs2 = "1"
+            Due to technical constraints, 1 unique SMS cannot exceed 70 characters (instead of
+            of the usual 160) and in the case of long SMS, each SMS cannot exceed 67 characters.
+          type: string
+      required:
+        - count
+        - keyid
+        - num
+        - sms
+      type: object
+    CreditResponse:
+      properties:
+        etat:
+          $ref: "#/components/schemas/CreditResponse_etat"
+      type: object
+    CreditResponse_etat:
+      properties:
+        credit:
+          description: Amount of credit remaining
+          format: double
+          type: number
+        quantite:
+          description: Credit equivalence in number of SMS to Metropolitan France.
+          format: string
+          type: string
+    Error:
+      properties:
+        etat:
+          $ref: "#/components/schemas/Erreur_etat"
+      type: object
+    Erreur_etat:
+      properties:
+        etat:
+          items:
+            $ref: "#/components/schemas/Erreur_etat_etat"
+          type: array
+    Erreur_etat_etat:
+      properties:
+        code:
+          description: Return code. See "return code table" in the appendix of the documentation
+          format: string
+          type: string
+        message:
+          description: Label associated with the return code
+          format: string
+          type: string
+    HLRResponse:
+      properties:
+        etat:
+          $ref: "#/components/schemas/HLRResponse_etat"
+      type: object
+    HLRResponse_etat:
+      properties:
+        etat:
+          description: list of returns
+          items:
+            $ref: "#/components/schemas/HLRResponse_etat_etat"
+          type: array
+      required:
+        - etat
+    HLRResponse_etat_etat:
+      properties:
+        operator:
+          description: Associated operator (if valid number)
+          type: string
+        tel:
+          description: Phone number concerned
+          type: string
+      required:
+        - operator
+        - tel
+    HLRrequest:
+      example:
+        getHLR: "1"
+        keyid: YOUR_KEYID
+        num:
+          - "06123456789"
+          - "06345687899"
+      properties:
+        getHLR:
+          default: "1"
+          description: Must be "1"
+          enum:
+            - "1"
+          type: string
+        keyid:
+          description: API key
+          type: string
+        num:
+          description: Phone number list
+          items:
+            description: Number in national, French or international format
+            type: string
+          type: array
+      required:
+        - getHLR
+        - keyid
+        - num
+      type: object
+    BlacklistResponse:
+      properties:
+        etat:
+          $ref: "#/components/schemas/BlacklistResponse_etat"
+      type: object
+    BlacklistResponse_etat:
+      properties:
+        etat:
+          items:
+            $ref: "#/components/schemas/BlacklistResponse_etat_etat"
+          type: array
+      required:
+        - etat
+    BlacklistResponse_etat_etat:
+      properties:
+        listeNoire:
+          description: Must be "OK"
+          type: string
+        tel:
+          description: Telephone number to be blacklisted. National French or international format.
+          type: string
+      required:
+        - listeNoire
+        - tel
+    Directorycreatereponse:
+      properties:
+        etat:
+          $ref: "#/components/schemas/Directorycreatereponse_etat"
+      type: object
+    Directorycreatereponse_etat:
+      properties:
+        etat:
+          items:
+            $ref: "#/components/schemas/Directorycreatereponse_etat_etat"
+          type: array
+    Directorycreatereponse_etat_etat:
+      properties:
+        code:
+          description: Return code. See "return code table" in the appendix of the documentation
+          type: string
+        message:
+          description: Label associated with the return code.
+          type: string
+        repertoireId:
+          description: directoryId of the directory created.
+          type: string
+      required:
+        - code
+    Directorycreaterequest:
+      example:
+        keyid: YOUR_KEYID
+        repertoireEdit: create
+        repertoireNom: Repertoire de test
+      properties:
+        keyid:
+          description: API key
+          type: string
+        repertoireEdit:
+          default: create
+          description: Action à réaliser doit valoir "create" ici.
+          enum:
+            - create
+          type: string
+        repertoireNom:
+          description: Nom du répertoire (libellé) à créer
+          type: string
+      required:
+        - keyid
+        - repertoireEdit
+        - repertoireNom
+      type: object
+    Directorymodifreponse:
+      properties:
+        etat:
+          $ref: "#/components/schemas/Directorymodifreponse_etat"
+      type: object
+    Directorymodifreponse_etat:
+      properties:
+        etat:
+          items:
+            $ref: "#/components/schemas/Directorymodifreponse_etat_etat"
+          type: array
+    Directorymodifreponse_etat_etat:
+      description: Return code table. If successful, a separate return code for each number submitted.
+      properties:
+        code:
+          description: Return code. See "return code table" in the appendix of the documentation
+          type: string
+        message:
+          description: Label associated with the return code.
+          type: string
+        repertoireId:
+          description: directory ID passed as argument during the call
+          type: string
+        tel:
+          description: Phone number
+          type: string
+      required:
+        - code
+    DirectoryUpdateRequest:
+      example:
+        keyid: YOUR_KEYID
+        num:
+          - "06123456789"
+          - "07123456789"
+        repertoireEdit: add
+        repertoireId: YOUR_DIRECTORY_ID
+      properties:
+        champ1:
+          description: Contact names
+          items:
+            description: Contact names
+            type: string
+          type: array
+        champ10:
+          description: Champs I des contacts
+          items:
+            description: Champ I
+            type: string
+          type: array
+        champ11:
+          description: Champs J des contacts
+          items:
+            description: Champ J
+            type: string
+          type: array
+        champ12:
+          description: Champs K des contacts
+          items:
+            description: Champ K
+            type: string
+          type: array
+        champ13:
+          description: Champs L des contacts
+          items:
+            description: Champ L
+            type: string
+          type: array
+        champ14:
+          description: Champs M des contacts
+          items:
+            description: Champ M
+            type: string
+          type: array
+        champ15:
+          description: Champs N des contacts
+          items:
+            description: Champ N
+            type: string
+          type: array
+        champ16:
+          description: Champs O des contacts
+          items:
+            description: Champ O
+            type: string
+          type: array
+        champ17:
+          description: Champs P des contacts
+          items:
+            description: Champ P
+            type: string
+          type: array
+        champ18:
+          description: Champs Q des contacts
+          items:
+            description: Champ Q
+            type: string
+          type: array
+        champ19:
+          description: Champs R des contacts
+          items:
+            description: Champ R
+            type: string
+          type: array
+        champ2:
+          description: Champs A des contacts
+          items:
+            description: Champ A
+            type: string
+          type: array
+        champ20:
+          description: Champs S des contacts
+          items:
+            description: Champ S
+            type: string
+          type: array
+        champ21:
+          description: Champs T des contacts
+          items:
+            description: Champ T
+            type: string
+          type: array
+        champ22:
+          description: Champs U des contacts
+          items:
+            description: Champ U
+            type: string
+          type: array
+        champ23:
+          description: Champs V des contacts
+          items:
+            description: Champ V
+            type: string
+          type: array
+        champ24:
+          description: Champs W des contacts
+          items:
+            description: Champ W
+            type: string
+          type: array
+        champ25:
+          description: Champs X des contacts
+          items:
+            description: Champ X
+            type: string
+          type: array
+        champ26:
+          description: Champs Y des contacts
+          items:
+            description: Champ Y
+            type: string
+          type: array
+        champ27:
+          description: Champs Z des contacts
+          items:
+            description: Champ Z
+            type: string
+          type: array
+        champ3:
+          description: Champs B des contacts
+          items:
+            description: Champ B
+            type: string
+          type: array
+        champ4:
+          description: Champs C des contacts
+          items:
+            description: Champ C
+            type: string
+          type: array
+        champ5:
+          description: Champs D des contacts
+          items:
+            description: Champ D
+            type: string
+          type: array
+        champ6:
+          description: Champs E des contacts
+          items:
+            description: Champ E
+            type: string
+          type: array
+        champ7:
+          description: Champs F des contacts
+          items:
+            description: Champ F
+            type: string
+          type: array
+        champ8:
+          description: Champs G des contacts
+          items:
+            description: Champ G
+            type: string
+          type: array
+        champ9:
+          description: Champs H des contacts
+          items:
+            description: Champ H
+            type: string
+          type: array
+        keyid:
+          description: API key
+          type: string
+        num:
+          description: list of phone numbers to add or delete
+          items:
+            description: Telephone number in national or international format
+            type: string
+          type: array
+        repertoireEdit:
+          description: Action to perform, "add" for adding numbers, "del" for removing numbers
+          enum:
+            - add
+            - del
+          type: string
+        repertoireId:
+          description: directory ID of the target directory
+          type: string
+      required:
+        - keyid
+        - num
+        - repertoireEdit
+        - repertoireId
+      type: object
+    SMSResponse:
+      properties:
+        etat:
+          $ref: "#/components/schemas/SMSResponse_etat"
+      type: object
+    SMSResponse_etat:
+      properties:
+        etat:
+          items:
+            $ref: "#/components/schemas/SMSResponse_etat_etat"
+          type: array
+    SMSResponse_etat_etat:
+      properties:
+        code:
+          description: Return code. See "return code table" in the appendix of the documentation
+          type: integer
+        message:
+          description: Label associated with the return code
+          type: string
+        smslong:
+          description: Number of long SMS invoiced
+          type: string
+        tel:
+          description: Phone number concerned
+          type: string
+    SMSRequest:
+      example:
+        emetteur: iSendPro
+        keyid: YOUR_KEYID
+        num:
+          - "0600123456"
+          - "0612345678"
+        sms: Good morning! Welcome to iSendPro!
+      properties:
+        date_envoi:
+          description: "Optional parameter, date of sending in YYYY-MM-DD hh: mm format"
+          type: string
+        emetteur:
+          description: "The sender must be an alphanumeric string between 4 and 11 characters long. Accepted characters are numbers between 0 and 9, letters between A and Z and space. It cannot consist of only numbers. For modification from the sender and in the context of commercial campaigns, the operators contractually impose the following text to be added at the end of the message: STOP XXXXX Therefore, the message sent may not exceed a length of 148 characters instead of 160 characters, the STOP being added automatically. "
+          type: string
+        gmt_zone:
+          description: Time zone of the date sent
+          enum:
+            - Pacific/Midway
+            - America/Adak
+            - Etc/GMT+10
+            - Pacific/Marquesas
+            - Pacific/Gambier
+            - America/Anchorage
+            - America/Ensenada
+            - Etc/GMT+8
+            - America/Los_Angeles
+            - America/Denver
+            - America/Chihuahua
+            - America/Dawson_Creek
+            - America/Belize
+            - America/Cancun
+            - Chile/EasterIsland
+            - America/Chicago
+            - America/New_York
+            - America/Havana
+            - America/Bogota
+            - America/Caracas
+            - America/Santiago
+            - America/La_Paz
+            - Atlantic/Stanley
+            - America/Campo_Grande
+            - America/Goose_Bay
+            - America/Glace_Bay
+            - America/St_Johns
+            - America/Araguaina
+            - America/Montevideo
+            - America/Miquelon
+            - America/Godthab
+            - America/Argentina/Buenos_Aires
+            - America/Sao_Paulo
+            - America/Noronha
+            - Atlantic/Cape_Verde
+            - Atlantic/Azores
+            - Europe/Belfast
+            - Europe/Dublin
+            - Europe/Lisbon
+            - Europe/London
+            - Africa/Abidjan
+            - Europe/Amsterdam
+            - Europe/Belgrade
+            - Europe/Brussels
+            - Africa/Algiers
+            - Africa/Windhoek
+            - Asia/Beirut
+            - Africa/Cairo
+            - Asia/Gaza
+            - Africa/Blantyre
+            - Asia/Jerusalem
+            - Europe/Minsk
+            - Asia/Damascus
+            - Europe/Moscow
+            - Africa/Addis_Ababa
+            - Asia/Tehran
+            - Asia/Dubai
+            - Asia/Yerevan
+            - Asia/Kabul
+            - Asia/Yekaterinburg
+            - Asia/Tashkent
+            - Asia/Kolkata
+            - Asia/Katmandu
+            - Asia/Dhaka
+            - Asia/Novosibirsk
+            - Asia/Rangoon
+            - Asia/Bangkok
+            - Asia/Krasnoyarsk
+            - Asia/Hong_Kong
+            - Asia/Irkutsk
+            - Australia/Perth
+            - Australia/Eucla
+            - Asia/Tokyo
+            - Asia/Seoul
+            - Asia/Yakutsk
+            - Australia/Adelaide
+            - Australia/Darwin
+            - Australia/Brisbane
+            - Australia/Hobart
+            - Asia/Vladivostok
+            - Australia/Lord_Howe
+            - Etc/GMT-11
+            - Asia/Magadan
+            - Pacific/Norfolk
+            - Asia/Anadyr
+            - Pacific/Auckland
+            - Etc/GMT-12
+            - Pacific/Chatham
+            - Pacific/Tongatapu
+            - Pacific/Kiritimati
+          type: string
+        keyid:
+          description: API key
+          type: string
+        nostop:
+          description: If the message is not for commercial purposes, you can request to withdraw the obligation from the STOP. Once your request has been validated by our services, you can remove the STOP SMS mention by adding nostop = "1"
+          type: string
+        num:
+          items:
+            description: Telephone numbers in national (example 0680010203) or international format (example 33680010203)
+            type: string
+          type: array
+        numAzur:
+          enum:
+            - "1"
+          type: string
+        repertoireId:
+          description: Directory ID
+          type: string
+        sms:
+          items:
+            description: Message to send to recipients. There can be a single message or 1 message per different recipient.
+            type: string
+          type: array
+        smslong:
+          description: 'The long SMS allows you to exceed the limit of 160 characters by sending a message consisting of several SMS. Up to 6 concatenated SMS can be sent for a maximum total length of 918 characters per message. For technical reasons, the limit per concatenated SMS is 153 characters. If the transmitter is changed, consider the automatic addition of 12 characters of the "STOP SMS". To send a smslong, you must add the smslong parameter to the calls. The value of SMS must be the maximum number of concatenated SMS allowed. In order not to get this error message and to obtain a dynamic calculation of the number of SMS then you must enter smslong = "999" '
+          type: string
+        tracker:
+          items:
+            description: "The tracker must be an alphanumeric string of less than 50 characters. This tracker will then be returned as a parameter of the urls for the return of acknowledgments."
+            type: string
+          type: array
+        ucs2:
+          description: It is also possible to send SMS in non-Latin alphabet (Russian, Chinese, Arabic, etc.) to numbers outside mainland France. To do this, the request should be encoded in UTF-8 format and contain the argument ucs2 = "1" Due to technical constraints, 1 single SMS cannot exceed 70 characters (instead of the usual 160) and in the case long SMS, each SMS cannot exceed 67 characters.
+          type: string
+      required:
+        - keyid
+        - num
+        - sms
+      type: object
+    ShortlinkRequest:
+      properties:
+        keyid:
+          type: string
+        shortlink:
+          type: string
+      required:
+        - keyid
+        - shortlink
+      type: object
+    ShortlinkResponse:
+      properties:
+        etat:
+          properties:
+            etat:
+              items:
+                properties:
+                  code:
+                    type: number
+                  message:
+                    type: string
+                  shortlink:
+                    type: string
+                type: object
+              type: array
+          type: object
+      type: object
+    SmsUniqueRequest:
+      example:
+        emetteur: iSendPro
+        keyid: YOUR_KEYID
+        num: "0600123456"
+        sms: Good morning! Welcome to iSendPro!
+      properties:
+        date_envoi:
+          description: "Date sent in YYYY-MM-DD format hh: mm. This parameter is optional, if it is omitted, the sending is carried out immediately."
+          type: string
+        emetteur:
+          description: |
+            - The sender must be an alphanumeric string between 4 and 11 characters long.
+
+            - The accepted characters are numbers between 0 and 9, letters between A and Z and space.
+
+            - It cannot consist of only numbers.
+
+            - For the modification of the transmitter and within the framework of commercial campaigns, the operators contractually impose to add at the end of the message the text "STOP XXXXX". As a result, the message sent cannot exceed a length of 148 characters instead of 160 characters, the "STOP" being added automatically.
+          type: string
+        gmt_zone:
+          description: Fuseau horaire de la date d'envoi
+          enum:
+            - Pacific/Midway
+            - America/Adak
+            - Etc/GMT+10
+            - Pacific/Marquesas
+            - Pacific/Gambier
+            - America/Anchorage
+            - America/Ensenada
+            - Etc/GMT+8
+            - America/Los_Angeles
+            - America/Denver
+            - America/Chihuahua
+            - America/Dawson_Creek
+            - America/Belize
+            - America/Cancun
+            - Chile/EasterIsland
+            - America/Chicago
+            - America/New_York
+            - America/Havana
+            - America/Bogota
+            - America/Caracas
+            - America/Santiago
+            - America/La_Paz
+            - Atlantic/Stanley
+            - America/Campo_Grande
+            - America/Goose_Bay
+            - America/Glace_Bay
+            - America/St_Johns
+            - America/Araguaina
+            - America/Montevideo
+            - America/Miquelon
+            - America/Godthab
+            - America/Argentina/Buenos_Aires
+            - America/Sao_Paulo
+            - America/Noronha
+            - Atlantic/Cape_Verde
+            - Atlantic/Azores
+            - Europe/Belfast
+            - Europe/Dublin
+            - Europe/Lisbon
+            - Europe/London
+            - Africa/Abidjan
+            - Europe/Amsterdam
+            - Europe/Belgrade
+            - Europe/Brussels
+            - Africa/Algiers
+            - Africa/Windhoek
+            - Asia/Beirut
+            - Africa/Cairo
+            - Asia/Gaza
+            - Africa/Blantyre
+            - Asia/Jerusalem
+            - Europe/Minsk
+            - Asia/Damascus
+            - Europe/Moscow
+            - Africa/Addis_Ababa
+            - Asia/Tehran
+            - Asia/Dubai
+            - Asia/Yerevan
+            - Asia/Kabul
+            - Asia/Yekaterinburg
+            - Asia/Tashkent
+            - Asia/Kolkata
+            - Asia/Katmandu
+            - Asia/Dhaka
+            - Asia/Novosibirsk
+            - Asia/Rangoon
+            - Asia/Bangkok
+            - Asia/Krasnoyarsk
+            - Asia/Hong_Kong
+            - Asia/Irkutsk
+            - Australia/Perth
+            - Australia/Eucla
+            - Asia/Tokyo
+            - Asia/Seoul
+            - Asia/Yakutsk
+            - Australia/Adelaide
+            - Australia/Darwin
+            - Australia/Brisbane
+            - Australia/Hobart
+            - Asia/Vladivostok
+            - Australia/Lord_Howe
+            - Etc/GMT-11
+            - Asia/Magadan
+            - Pacific/Norfolk
+            - Asia/Anadyr
+            - Pacific/Auckland
+            - Etc/GMT-12
+            - Pacific/Chatham
+            - Pacific/Tongatapu
+            - Pacific/Kiritimati
+          type: string
+        keyid:
+          description: API key
+          type: string
+        nostop:
+          description: If the message is not for commercial purposes, you can request to withdraw the obligation from the STOP. Once your request has been validated by our services, you can remove the STOP SMS mention by adding nostop = "1"
+          type: string
+        num:
+          description: Telephone number in national (example 0680010203) or international (example 33680010203) format
+          type: string
+        numAzur:
+          enum:
+            - "1"
+          type: string
+        sms:
+          description: Message to send to recipients. The message must be encoded in utf-8 format and contain only characters existing in the GSM alphabet. It is also possible to send (abroad only) SMS in UCS-2, see parameter ucs2 for more details.
+          type: string
+        smslong:
+          description: |
+            The long SMS allows you to exceed the limit of 160 characters by sending a message consisting of
+            of several SMS.
+            Up to 6 concatenated SMS can be sent for a maximum total length of 918
+            characters per message.
+            For technical reasons, the limit per concatenated SMS is 153 characters.
+            If the transmitter is changed, consider the automatic addition of 12 characters
+            of the "STOP SMS".
+            To send a smslong, you must add the smslong parameter to the calls. The value of SMS must be the maximum number of concatenated SMS allowed. In order not to have this error message and to obtain a dynamic calculation of the number of SMS then you must enter smslong = "999"
+          type: string
+        tracker:
+          description: "Le tracker doit être une chaine alphanumérique de moins de 50 caractères. Ce tracker sera ensuite renvoyé en paramètre des urls pour les retours des accusés de réception. "
+          type: string
+        ucs2:
+          description: |
+            It is also possible to send SMS in non-Latin alphabet (Russian, Chinese, Arabic, etc.) on 
+            numbers outside mainland France.
+            To do this, the request should be encoded in UTF-8 format and contain the argument ucs2 = "1"
+            Due to technical constraints, 1 unique SMS cannot exceed 70 characters (instead of
+            the usual 160) and in the case of long SMS, each SMS cannot exceed 67 characters.
+          type: string
+      required:
+        - keyid
+        - num
+        - sms
+      type: object
+    SubaccountAddRequest:
+      properties:
+        keyid:
+          type: string
+        subAccountEdit:
+          enum:
+            - addAccount
+          type: string
+        subAccountLogin:
+          type: string
+        subAccountPassword:
+          type: string
+      required:
+        - keyid
+        - subAccountEdit
+        - subAccountLogin
+        - subAccountPassword
+      type: object
+    SubaccountAddResponse:
+      properties:
+        etat:
+          properties:
+            etat:
+              items:
+                properties:
+                  code:
+                    type: number
+                  message:
+                    type: string
+                  subAccountId:
+                    type: string
+                  subAccountKeyId:
+                    type: string
+                  subAccountLogin:
+                    type: string
+                type: object
+              type: array
+          type: object
+      type: object
+    SubaccountRequest:
+      properties:
+        keyid:
+          description: API key
+          type: string
+        subAccountAddCredit:
+          description: Amount of credit to add
+          type: string
+        subAccountCountryCode:
+          type: string
+        subAccountEdit:
+          description: Action to be carried out either setPrice to define a price or addCredit to add credit or setRestriction to modify the restriction stop.
+          enum:
+            - setPrice
+            - addCredit
+            - setRestriction
+          type: string
+        subAccountKeyId:
+          description: sub-account key ID
+          type: string
+        subAccountPrice:
+          type: string
+        subAccountRestrictionStop:
+          enum:
+            - "0"
+            - "1"
+          type: string
+        subAccountRestrictionTime:
+          enum:
+            - "0"
+            - "1"
+          type: string
+      required:
+        - keyid
+        - subAccountEdit
+      type: object
+    SubaccountResponse:
+      properties:
+        etat:
+          properties:
+            etat:
+              items:
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  subAccountId:
+                    type: string
+                  subAccountKeyid:
+                    type: string
+                type: object
+              type: array
+          type: object
+      type: object

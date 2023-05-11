@@ -1,0 +1,11 @@
+id: workday.connect
+displayName: Workday Connect
+type: OpenAPI
+version: v2
+description: This is the [WorkDay Connect Service REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification. The WorkDay connect service enables applications to access REST service for Multichannel Collaboration (MCC) services.
+idlPath: /workday.connect/v2/openapi.yaml
+thumbnailPath: /workday.connect/v2/icon.png
+documentationPath: /workday.connect/v2/readme.md
+keywords:
+  - HumanResources/HRMS
+  - Cost/Paid

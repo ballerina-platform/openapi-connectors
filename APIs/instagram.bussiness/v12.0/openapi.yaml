@@ -1,0 +1,725 @@
+openapi: 3.0.1
+info:
+  title: Instagram Graph API
+  version: v12.0
+  description: >
+    This is a generated connector for [Instagram Graph API v12.0](https://developers.facebook.com/docs/instagram-api) OpenAPI specification. 
+    Instagram is a free photo-sharing application that enables its users to take photos, apply filters, and share them on social networks.
+    The Instagram Graph API is a collection of Facebook Graph API endpoints that allow apps to access data in Instagram Professional accounts (both Business and Creator accounts).
+  x-ballerina-init-description: 
+    The connector initialization requires setting the API credentials.
+    Create an [Instagram account](https://www.instagram.com/?hl=en) and obtain tokens by following [this guide](https://developers.facebook.com/docs/instagram-api/overview).
+  x-ballerina-display:
+    label: Instagram For Bussiness
+    iconPath: icon.png 
+servers:
+  - url: https://graph.instagram.com/
+tags: []
+paths:
+  /{ig-media-id}:
+    get:
+      tags:
+        - "IG_Media"
+      description: Retrieves information about a media object.
+      operationId: Get Media Info
+      parameters:
+          - in: path
+            name: ig-media-id
+            required: true
+            schema:
+              type: string
+            description: ID of the image, video, or album.
+          # - in: query
+          #   name: access-token
+          #   required: true
+          #   schema:
+          #     type: string
+          #   description: The app user's User Access Token.
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+                type: array
+                items: 
+                  type: string
+                  enum:
+                    - caption
+                    - comments_count
+                    - id
+                    - ig_id
+                    - is_comment_enabled
+                    - like_count
+                    - media_product_type
+                    - media_type
+                    - media_url
+                    - permalink
+                    - shortcode
+                    - thumbnail_url
+                    - timestamp
+                    - username
+                    - video_title
+            description: A comma-separated list of Fields you want returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaFieldsObject'
+
+  /{ig-media-id}/comments:
+    get:
+      tags:
+        - "IG_Media"
+      description: Getting Comments on a Media Object.
+      operationId: Get Media Comments
+      parameters:
+          - in: path
+            name: ig-media-id
+            required: true
+            schema:
+              type: string
+            description: ID of the image, video, or album.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comments'
+
+    post:
+      tags:
+        - "IG_Media"
+      description: Creating a Comment on a Media Object 
+      operationId: Create Comment
+      parameters:
+          - in: path
+            name: ig-media-id
+            required: true
+            schema:
+              type: string
+            description: ID of the image, video, or album.
+          - in: query
+            name: message
+            required: true
+            schema:
+              type: string
+            description: The text to be included in the comment.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+
+  /{ig-media-id}/insights:
+    get:
+      tags:
+        - "IG_Media"
+      description: Get insights data on an IG Media object.
+      operationId: Get Media Insights
+      parameters:
+          - in: path
+            name: ig-media-id
+            required: true
+            schema:
+              type: string
+            description: ID of the image, video, or album.
+          # - in: query
+          #   name: access-token
+          #   required: true
+          #   schema:
+          #     type: string
+          #   description: The app user's User Access Token.
+          - in: query
+            name: metric
+            style: form
+            explode: false
+            schema:
+                type: array
+                items: 
+                  type: string
+                  enum:
+                    - engagement
+                    - impressions
+                    - reach
+                    - saved
+                    - video_views
+                    - carousel_album_engagement
+                    - carousel_album_impressions
+                    - carousel_album_reach
+                    - carousel_album_saved
+                    - carousel_album_video_views
+                    - exits
+                    - impressions
+                    - reach
+                    - replies
+                    - taps_forward
+                    - taps_back
+            description: A comma-separated list of Metrics you want returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MediaMetrics'
+
+  /{ig-user-id}?fields=business_discovery.username({username}){fieldset}:
+    get:
+      tags:
+        - "IG_User"
+      description: |
+        Returns data about another Instagram Business or Creator IG User. 
+        
+        Perform this request on the Instagram Business or Creator IG User who is making the query, and identify the 
+        targeted business with the username parameter.
+      operationId: Get User Data
+      parameters:
+          - in: path
+            name: ig-user-id
+            required: true
+            schema:
+              type: string
+            description: ID of an IG User who calls the function.
+          - in: path
+            name: username
+            required: true
+            schema:
+              type: string
+            description: The username of the Instagram Business or Creator IG User you want to get data about.
+          - in: path
+            name: fieldset
+            required: true
+            schema:
+                type: string
+                enum:
+                  - biography
+                  - id
+                  - ig_id
+                  - followers_count
+                  - follows_count
+                  - media_count
+                  - name
+                  - profile_picture_url
+                  - username
+                  - website
+            description: A comma-separated list of Fields you want returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BussinessDiscoveryData'
+
+  /{ig-user-id}/insights:
+    get:
+      tags:
+        - "IG_User"
+      description: Returns insights on an IG User.
+      operationId: Get User Insights
+      parameters:
+          - in: path
+            name: ig-user-id
+            required: true
+            schema:
+              type: string
+            description: ID of an IG User who calls the function.
+          # - in: query
+          #   name: access-token
+          #   required: true
+          #   schema:
+          #     type: string
+          #   description: The app user's User Access Token.
+          - in: query
+            name: metric
+            style: form
+            explode: false
+            schema:
+                type: array
+                items: 
+                  type: string
+                  enum:
+                    - audience_city
+                    - audience_country
+                    - audience_gender_age
+                    - audience_locale
+                    - email_contacts
+                    - follower_count
+                    - get_directions_clicks
+                    - impressions
+                    - online_followers
+                    - phone_call_clicks
+                    - profile_views
+                    - reach
+                    - text_message_clicks
+                    - website_clicks
+            description: A comma-separated list of Metrics you want returned. If requesting multiple metrics, they must all have the same compatible Period.
+          - in: query
+            name: period
+            required: true
+            schema:
+              type: string
+            description: A Period that is compatible with the metrics you are requesting.
+          - in: query
+            name: since
+            required: true
+            schema:
+              type: integer
+            description: Used in conjunction with {until} to define a Range. If you omit since and until, the API defaults to a 2 day range - yesterday through today.         
+          - in: query
+            name: until
+            required: true
+            schema:
+              type: integer
+            description: Used in conjunction with {since} to define a Range. If you omit since and until, the API defaults to a 2 day range - yesterday through today.   
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetrics'
+
+
+  /{ig-user-id}/media:
+    get:
+      tags:
+        - "IG_User"
+      description: Gets all IG Media objects on an IG User.
+      operationId: Get User Media
+      parameters:
+          - in: path
+            name: ig-user-id
+            required: true
+            schema:
+              type: string
+            description: ID of an IG User who calls the function.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+
+  /{ig-hashtag-id}:
+    get:
+      tags:
+        - "IG_Hashtag"
+      description: Returns Fields and Edges on an IG Hashtag.
+      operationId: Get Hashtag Fields
+      parameters:
+          - in: path
+            name: ig-hashtag-id
+            required: true
+            schema:
+              type: string
+            description:  The ID of the IG Hashtag.
+          # - in: query
+          #   name: access-token
+          #   required: true
+          #   schema:
+          #     type: string
+          #   description: The app user's User Access Token.
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+                type: array
+                items: 
+                  type: string
+                  enum:
+                    - id
+                    - name
+            description: A comma-separated list of Fields and Edges you want returned. If omitted, default fields will be returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HashtagResponse'
+
+  /{ig-hashtag-id}/recent_media:
+    get:
+      tags:
+        - "IG_Hashtag"
+      description: Returns a list of the most recently published photo and video IG Media objects published with a specific hashtag.
+      operationId: Get Recent Hashtag Media
+      parameters:
+          - in: path
+            name: ig-hashtag-id
+            required: true
+            schema:
+              type: string
+            description:  The ID of the IG Hashtag.
+          - in: query
+            name: user_id
+            required: true
+            schema:
+              type: string
+            description: The ID of the IG User performing the query.
+          - in: query
+            name: fields
+            style: form
+            explode: false
+            schema:
+                type: array
+                items: 
+                  type: string
+                  enum:
+                    - caption
+                    - children
+                    - comments_count
+                    - id
+                    - like_count
+                    - media_type
+                    - media_url
+                    - permalink
+                    - timestamp
+            description: A comma-separated list of Fields you want returned.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Media'
+
+  /ig_hashtag_search:
+    post:
+      tags:
+        - "IG_Hashtag_Search"
+      description: Returns the ID of an IG Hashtag. 
+      operationId: Search Hashtag
+      parameters:
+          - in: query
+            name: user_id
+            required: true
+            schema:
+              type: string
+            description:  The ID of the IG User performing the request.
+          - in: query
+            name: q
+            required: true
+            schema:
+              type: string
+            description: The hashtag name to query.
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Hashtags'
+
+components:
+  schemas:
+    BussinessDiscoveryData:
+      type: object
+      properties:
+        business_discovery:
+          type: object
+          properties:
+            biography:
+              type: string
+              description: The bio of the person. 
+            id:
+              type: string
+              description: The unique identifier of the Instagram business account.
+            ig_id:
+              type: string
+              description: Instagram ID.
+            followers_count:
+              type: integer
+              description: The followers count of the profile. 
+            follows_count:
+              type: integer
+              description: The follows count of the profile. 
+            media_count:
+              type: integer
+              description: The media count of the profile. 
+            name:
+              type: string
+              description: The name of the person. 
+            profile_picture_url:
+              type: string
+              description: The profile picture of the person. 
+            username:
+              type: string
+              description: The username of the person. 
+            website: 
+              type: string
+              description: The website of the person. 
+            media:
+              $ref: '#/components/schemas/Media'
+          description: Information about the Instagram Business account.
+      description: Bussiness discover data object.
+
+    MediaMetrics:
+      type: object
+      description: Media metrics
+      properties:
+        data:
+          type: array
+          description: Array of media metrics.
+          items:
+            $ref: '#/components/schemas/MediaMetricObject'
+
+    MediaMetricObject:
+      type: object
+      description: Media metric object.
+      properties:
+        name:
+          type: string
+          description: Name
+        period:
+          type: string
+          description: Period
+        values:
+          type: object
+          description: Values
+          properties:
+            value:
+              type: array
+              description: Value
+              items:
+                {} 
+        title:
+          type: string
+          description: Title
+        description:
+          type: string
+          description: Description
+        id:
+          type: string
+          description: ID
+
+    UserMetrics:
+      type: object
+      description: Array of user metrics
+      properties:
+        data:
+          type: array
+          description: Array of user metrics
+          items:
+            $ref: '#/components/schemas/UserMetricObject'
+
+    UserMetricObject:
+      description: User metric object.
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name
+        period:
+          type: string
+          description: Period
+        values:
+          type: object
+          description: Values
+          properties:
+            value:
+              type: array
+              description: Value
+              items:
+                {}
+        title:
+          type: string
+          description: Title
+        description:
+          type: string
+          description: Description
+        id:
+          type: string
+          description: ID
+    
+     
+    Media:
+      properties:
+        data:
+          type: array
+          description: An array containing requested media fields.
+          items:
+            $ref: '#/components/schemas/MediaFieldsObject'
+        paging:
+          $ref: '#/components/schemas/Paging'
+      description: An object containing the media data requested.
+
+    MediaFieldsObject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The Media's ID.
+        caption:
+          type: string
+          description: The Media's caption text. Not returnable for Media in albums.
+        media_type:
+          type: string
+          description: The Media's type. Can be `IMAGE`, `VIDEO`, or `CAROUSEL_ALBUM`.
+        media_url:
+          type: string
+          description: |
+            Media URL. 
+            Will be omitted from responses if the media contains copyrighted material, or has been flagged for a copyright violation.
+        permalink:
+          type: string
+          description: The Media's permanent URL. 
+        thumbnail_url:
+          type: string
+          description: The Media's thumbnail image URL. Only available on VIDEO Media.
+        timestamp:
+          type: string
+          description: ISO 8601 formatted creation date in UTC (default is UTC ±00:00)
+        username:
+          type: string
+          description: Username of user who created the media.       
+        owner:
+          type: string 
+          description:  |
+            ID of Instagram user who created the media. 
+            Only returned if the app user making the query also created the media, otherwise username field will be returned instead.
+        comments_count:
+          type: integer
+          description: |
+            Count of comments on the media. 
+            Excludes comments on album child media and the media's caption. Includes replies on comments.
+        ig_id:
+          type: string
+          description: Instagram media ID.
+        is_comment_enabled:
+          type: boolean
+          description: Indicates if comments are enabled or disabled. Excludes album children.
+        like_count:
+          type: integer
+          description: |
+            Count of likes on the media. 
+            Excludes likes on album child media and likes on promoted posts created from the media. Includes replies on comments.
+        media_product_type:
+          type: string
+          description: |
+            Surface where the media is published. 
+            Can be AD, FEED, IGTV, or STORY. Will return FEED instead of IGTV if targeting an Instagram TV video created on or after October 5, 2021.
+        shortcode:
+          type: integer
+          description: Shortcode to the media.
+        video_title:
+          type: string
+          description: Instagram TV media title. Will not be returned if targeting an Instagram TV video created on or after October 5, 2021.
+      description: Media fields.
+
+    Hashtags:
+      properties:
+        data:
+          type: array
+          description: An array containing hashtag IDs.
+          items:
+            $ref: '#/components/schemas/HashtagResponse'
+
+    HashtagResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The hashtag's ID (included by default). IDs are static and global.
+        name:
+          type: string
+          description: The hashtag's name, without the leading hash symbol.
+      description: Hashtag response.
+
+    CommentResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the comment.
+      description: Comment response.
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID of the comment.
+        timestamp:
+          type: string
+          description: Time when the comment is created.
+        text:
+          type: string
+          description: Comment content.
+        hidden:
+          type: boolean
+          description: The boolean that shows if the comment is hidden.
+        like_count:
+          type: integer
+          description: The number of likes.
+        media: 
+          type: string
+          description: Comment media.
+        replies:
+          type: string
+          description: Replies for comment.
+        user:
+          type: string
+          description: Comment author.
+        username:
+          type: string
+          description: The username for the user.
+      description: Comment information. 
+
+    Comments:
+      properties:
+        data:
+          type: array
+          description: An array containing comments.
+          items:
+            $ref: '#/components/schemas/Comment'
+        paging:
+          $ref: '#/components/schemas/Paging'
+      description: An object containing the media data requested.
+
+    Paging:
+      type: object
+      properties:
+        cursors:
+          type: object
+          description: Pagination cursor.
+          properties:
+            before:
+              type: string
+              description: This is the cursor that points to the start of the page of data that has been returned.
+            after:
+              type: string
+              description: This is the cursor that points to the end of the page of data that has been returned.
+        next:
+          description: |
+            The Graph API endpoint that will return the next page of data. If not included, this is the last page of data. 
+            
+            Due to how pagination works with visibility and privacy, it is possible that a page may be empty but contain 
+            a next paging link. Stop paging when the next link no longer appears.
+        previous:
+          description: The Graph API endpoint that will return the previous page of data. If not included, this is the first page of data.
+      description: A cursor-paginated edge.
+
+
+  securitySchemes:
+    oAuth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.instagram.com/oauth/authorize
+          tokenUrl: https://api.instagram.com/oauth/access_token
+          scopes:
+            instagram_graph_user_media : instagram_graph_user_media
+            instagram_graph_user_profile: instagram_graph_user_profile
+security:
+- oAuth: [instagram_graph_user_media, instagram_graph_user_profile]
+
+

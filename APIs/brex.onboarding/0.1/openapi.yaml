@@ -1,0 +1,597 @@
+openapi: 3.0.1
+info:
+  title: Onboarding API
+  description: >
+    This is a generated connector for [Brex Onboarding API v0.1](https://developer.brex.com/openapi/onboarding_api/) OpenAPI specification. 
+    Onboarding APIs allows partners to refer their customers to Brex to streamline the process of creating new accounts 
+    for these customers. By submitting information for referrals, it removes the need for customers to enter in this information again.
+  x-ballerina-init-description: > 
+    The connector initialization requires setting the API credentials.
+    Create a [Brex account](https://www.brex.com/) and obtain tokens by following [this guide](https://developer.brex.com/docs/authentication/).
+  x-ballerina-display:
+    label: brex.onboarding 
+    iconPath: "icon.png"
+  contact:
+    name: Admin
+    url: https://brex.com
+    email: developer-access@brex.com
+  version: '0.1'
+servers:
+  - url: https://platform.staging.brexapps.com
+    description: 'Staging API (Note: this is not sandbox)'
+  - url: https://platform.brexapis.com
+    description: Production servers
+security:
+  - oAuth2ClientCredentials: []
+tags:
+  - name: Referrals
+    description: >
+
+      The Onboarding API enables partners to submit customer referrals to Brex
+      and receive a customized Brex application url 
+
+      with all the partner provided information pre-filled into the application.
+      Partners have visibility into the application
+
+      approval status.
+paths:
+  /v1/referrals:
+    get:
+      tags:
+        - Referrals
+      summary: List referrals
+      description: |
+        Returns referrals created.
+        *Note*: This doesn't include referrals that have expired
+      operationId: listReferralsGet
+      parameters:
+        - name: cursor
+          in: query
+          description: The cursor
+          required: false
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: listReferralsGet 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferralPage'
+        '400':
+          description: Invalid cursor
+        '401':
+          description: Unauthorized
+    post:
+      tags:
+        - Referrals
+      summary: Creates a referral
+      description: >-
+        This creates new referrals. The response will contain an identifier and
+        a unique personalized link to an application flow. Many fields are
+        optional and when they're provided they'll prefill the application flow
+        for Brex.  You should handle and store these references securely as they
+        contain sensitive information about the referral.
+      operationId: createReferralRequestPost
+      parameters: []
+      requestBody:
+        description: Create referral request.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReferralRequest'
+        required: true
+      responses:
+        '200':
+          description: createReferralRequestPost 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Referral'
+        '401':
+          description: Unauthorized
+  /v1/referrals/{id}:
+    get:
+      tags:
+        - Referrals
+      summary: Gets a referral by ID
+      description: Returns a referral object by ID if it exists
+      operationId: getReferralGet
+      parameters:
+        - name: id
+          in: path
+          description: Referral ID.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: getReferralGet 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Referral'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Referral not found
+  /v1/referrals/{id}/document_upload:
+    post:
+      tags:
+        - Referrals
+      summary: Create a new document upload
+      description: >
+        The `url` will be a pre-signed S3 URL to upload the referral doc
+        securely. This URL can only be used for a `PUT` operation and expires 30
+        minutes after its creation. Once your upload is complete, we will use
+        this to prefill the application.
+      operationId: createDocumentPost
+      parameters:
+        - name: id
+          in: path
+          description: Referral ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Create Document request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDocumentRequest'
+        required: true
+      responses:
+        '200':
+          description: createDocumentPost 200 response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Document'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Referral not found
+components:
+  schemas:
+    Account:
+      required:
+        - created_at
+        - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Brex cash management account Id.
+        instructions:
+          $ref: '#/components/schemas/Instruction'
+          nullable: true
+        created_at:
+          type: string
+          description: Created date and time.
+          format: date-time
+      description: >-
+        If the application status is APPROVED, array of bank cash management
+        accounts (note there is currently only one account per customer).
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+          description: Address line 1, no PO Box.
+          nullable: true
+        line2:
+          type: string
+          description: Address line 2 (e.g., apartment, suite, unit, or building).
+          nullable: true
+        city:
+          type: string
+          description: City, district, suburb, town, or village.
+          nullable: true
+        state:
+          type: string
+          description: >-
+            For US-addressed the 2-letter State abbreviation. For
+            international-addresses the County, Providence, or Region.
+          nullable: true
+        country:
+          type: string
+          description: Two-letter country code (ISO 3166-1 alpha-2).
+          nullable: true
+        postal_code:
+          type: string
+          description: ZIP or postal code.
+          nullable: true
+        phone_number:
+          type: string
+          description: Phone number.
+          nullable: true
+      description: >-
+        Company business address (must be in the US; no PO box or
+        virtual/forwarding addresses allowed).
+    Applicant:
+      required:
+        - email
+        - first_name
+        - last_name
+      type: object
+      properties:
+        last_name:
+          type: string
+          description: Last name of the applying customer.
+        first_name:
+          type: string
+          description: First name of the applying customer.
+        email:
+          type: string
+          description: Business Email of the applying customer.
+          format: email
+      description: Required information about the referred prospect.
+    Application:
+      required:
+        - status
+      type: object
+      description: Application information.
+      properties:
+        status:
+          $ref: '#/components/schemas/ApplicationStatus'
+    ApplicationStatus:
+      type: string
+      description: Application status of a product
+      enum:
+        - NO_ACCOUNT
+        - ACTIVE
+        - REJECTED
+        - CLOSED
+    BeneficialOwner:
+      required:
+        - legal_name
+        - prong
+      type: object
+      properties:
+        legal_name:
+          type: string
+          description: Legal full name.
+        company_relationship:
+            $ref: '#/components/schemas/CompanyRelationship'
+            nullable: true
+        date_of_birth:
+          type: string
+          description: Date of birth.
+          format: date
+          nullable: true
+        identity_document:
+          $ref: '#/components/schemas/IdentityDocument'
+          nullable: true
+        address:
+          $ref: '#/components/schemas/Address'
+          nullable: true
+        prong:
+          $ref: '#/components/schemas/Prong'
+      description: >-
+        Federal law requires us to collect information for anyone who owns 25%
+        or more of the company.
+    Business:
+      type: object
+      properties:
+        legal_name:
+          type: string
+          description: Company legal name.
+          nullable: true
+        incorporation_type:
+          $ref: '#/components/schemas/IncorporationType'
+          nullable: true
+        employer_identification_number:
+          maxLength: 9
+          minLength: 9
+          type: string
+          description: Company Employer Identification Number(EIN).
+          nullable: true
+        website_url:
+          type: string
+          description: Business website (or link to Amazon store for sellers).
+          nullable: true
+        activity_description:
+          type: string
+          description: Brief description of the business activity.
+          nullable: true
+        address:
+          $ref: '#/components/schemas/Address'
+          nullable: true
+        beneficial_owners:
+          type: array
+          description: List of beneficial owners of the company
+          nullable: true
+          items:
+            $ref: '#/components/schemas/BeneficialOwner'
+        alternate_address:
+          $ref: '#/components/schemas/Address'
+          nullable: true
+      description: >
+        Information about the business the application is for.
+    Cash:
+      required:
+        - application
+      type: object
+      properties:
+        accounts:
+          type: array
+          nullable: true
+          description: An array of bank cash management accounts
+          items:
+            $ref: '#/components/schemas/Account'
+        application:
+          $ref: '#/components/schemas/Application'
+      description: Available if customer applied for Brex Cash.
+    CompanyRelationship:
+      type: string
+      description: Relationship of this beneficial owner for this company.
+      enum:
+        - FOUNDER
+        - EXECUTIVE
+        - SENIOR_LEADERSHIP
+        - OTHER
+    ContactPreference:
+      type: string
+      description: >-
+        When set to `EMAIL_OUTBOUND`, Brex will email the referred customer
+        directly to prompt them to create their account rather than rely on the
+        partner to direct the customer to claim the account. If not provided,
+        the partner is responsible to contact the customer and the value
+        defaults to `NO_OUTBOUND`.
+      enum:
+        - NO_OUTBOUND
+        - EMAIL_OUTBOUND
+    CreateDocumentRequest:
+      required:
+        - type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DocumentType'
+      description: Request for creating new document upload url.
+    CreateReferralRequest:
+      required:
+        - applicant
+        - referral_code
+      type: object
+      properties:
+        referral_code:
+          type: string
+          description: Partner referral code to attribute this prospect to if they sign up.
+        applicant:
+          $ref: '#/components/schemas/Applicant'
+        business:
+          $ref: '#/components/schemas/Business'
+          nullable: true
+        contact_preference:
+          $ref: '#/components/schemas/ContactPreference'
+          nullable: true
+      description: Submit a new referral to Brex for onboarding.
+    Document:
+      required:
+        - id
+        - uri
+      type: object
+      properties:
+        uri:
+          type: string
+          description: >-
+            This is a presigned S3 link that should be used to attach the
+            document.
+
+            The maximum size accepted for this document is 50 MB
+        id:
+          type: string
+          description: Unique identifier for the document.
+    DocumentType:
+      type: string
+      description: |
+        Type of document being submitted. Allowable types:
+        - ARTICLES_OF_INCORPORATION
+        - IRS_EIN_CONFIRMATION (IRS CP 575 or 147C form)
+        - IRS_EIN_APPLICATION (IRS SS4 form)
+        - CERTIFICATE_GOOD_STANDING
+      enum:
+        - ARTICLES_OF_INCORPORATION
+        - IRS_EIN_CONFIRMATION
+        - IRS_EIN_APPLICATION
+        - CERTIFICATE_GOOD_STANDING
+    DomesticInstruction:
+      required:
+        - account_type
+        - bank_account_number
+        - bank_address
+        - bank_name
+        - bank_routing_number
+        - beneficiary_address
+        - beneficiary_name
+      type: object
+      properties:
+        account_type:
+          type: string
+          description: Account type.
+        bank_account_number:
+          type: string
+          description: Account number.
+        bank_routing_number:
+          type: string
+          description: Routing number.
+        beneficiary_name:
+          type: string
+          description: Beneficiary name.
+        beneficiary_address:
+          type: string
+          description: Beneficiary address.
+        bank_name:
+          type: string
+          description: Bank name.
+        bank_address:
+          type: string
+          description: Bank address.
+      description: Domestic ACH/Wire instructions.
+    IdentityDocument:
+      required:
+        - country
+        - number
+        - type
+      type: object
+      properties:
+        country:
+          type: string
+          description: Country where the identity document was issued.
+        type:
+          $ref: '#/components/schemas/IdentityDocumentType'
+        number:
+          type: string
+          description: US SSN or Passport number.
+      description: Document identifying the owner.
+    IdentityDocumentType:
+      type: string
+      description: Either US SSN or US/International Passport.
+      enum:
+        - SSN
+        - PASSPORT
+    IncorporationType:
+      type: string
+      description: Incorporation type of the company referred
+      enum:
+        - C_CORP
+        - S_CORP
+        - B_CORP
+        - LLC
+        - LLP
+        - SOLE_PROP
+        - ORG_501C3
+    Instruction:
+      required:
+        - domestic
+        - international
+      type: object
+      properties:
+        domestic:
+          $ref: '#/components/schemas/DomesticInstruction'
+        international:
+          $ref: '#/components/schemas/InternationalInstruction'
+      description: Domestic and international ACH/Wire instructions.
+    InternationalInstruction:
+      required:
+        - account_type
+        - bank_address
+        - bank_name
+        - beneficiary_address
+        - beneficiary_name
+        - special_instructions
+        - swift_account_number
+        - swift_bank_number
+      type: object
+      properties:
+        account_type:
+          type: string
+          description: Account type.
+        swift_account_number:
+          type: string
+          description: Swift account number.
+        swift_bank_number:
+          type: string
+          description: Swift bank number.
+        beneficiary_name:
+          type: string
+          description: Beneficiary name.
+        beneficiary_address:
+          type: string
+          description: Beneficiary address.
+        bank_name:
+          type: string
+          description: Bank name.
+        bank_address:
+          type: string
+          description: Bank address.
+        special_instructions:
+          type: string
+          description: Special instructions.
+      description: International Wire instructions.
+    Product:
+      required:
+        - cash
+      type: object
+      properties:
+        cash:
+          $ref: '#/components/schemas/Cash'
+      description: >-
+        Array of Brex products that the customer has applied for. This is a
+        gated feature available to select clients only.
+    Prong:
+      type: string
+      description: >
+        Beneficial owner type
+      enum:
+        - OWNERSHIP
+        - CONTROL
+        - BOTH
+    Referral:
+      required:
+        - expires_at
+        - id
+        - products
+        - referral_signup_url
+        - status
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the referral.
+        referral_signup_url:
+          type: string
+          description: >
+            Signup URL to redirect prospects to complete their onboarding flow.
+            *Note*: Necessary disclosures must be shown when the prospect clicks
+            on this link
+        expires_at:
+          type: string
+          description: The time at which this referral link expires at.
+          format: date-time
+        status:
+          $ref: '#/components/schemas/ReferralStatus'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    ReferralPage:
+      required:
+        - items
+      type: object
+      properties:
+        next_cursor:
+          type: string
+          nullable: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Referral'
+    ReferralStatus:
+      type: string
+      description: >-
+        Status of the referral. `UNCLAIMED` or `EXPIRED` unless the customer
+        completes sign up. Customers are attributed once `ACTIVE` until the
+        account is `CLOSED`.
+      enum:
+        - UNCLAIMED
+        - EXPIRED
+        - ACTIVE
+        - CLOSED
+  securitySchemes:
+    oAuth2ClientCredentials:
+      type: oauth2
+      description: >
+
+        Refer to [these](https://developer.brex.com/docs/onboarding_examples/)
+        docs on how to use client credentials 
+      flows:
+        clientCredentials:
+          tokenUrl: https://accounts.brex.com/oauth2/v1/token
+          scopes:
+            openid: openid
+            offline_access: offline access
+            https://onboarding.brexapis.com/referrals: referrals
+x-explorer-enabled: false

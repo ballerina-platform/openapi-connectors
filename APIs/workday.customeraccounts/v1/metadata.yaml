@@ -1,0 +1,11 @@
+id: workday.customeraccounts
+displayName: Workday Customer Accounts
+type: OpenAPI
+version: v1
+description: This is the [WorkDay Customer Accounts REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification. The customer accounts service enables applications to access  customer accounts information including customers, invoices, adjustments, and payments.
+idlPath: /workday.customeraccounts/v1/openapi.yaml
+thumbnailPath: /workday.customeraccounts/v1/icon.png
+documentationPath: /workday.customeraccounts/v1/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Paid

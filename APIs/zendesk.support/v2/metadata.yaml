@@ -1,0 +1,11 @@
+id: zendesk.support
+displayName: Zendesk Support
+type: OpenAPI
+version: v2
+description: This is the [Zendesk Support API v2](https://developer.zendesk.com/api-reference/) OpenAPI specification. Zendesk Support is a simple system for tracking, prioritizing and solving customer support tickets.
+idlPath: /zendesk.support/v2/openapi.yaml
+thumbnailPath: /zendesk.support/v2/icon.png
+documentationPath: /zendesk.support/v2/readme.md
+keywords:
+  - Support/CustomerSupport
+  - Cost/Freemium

@@ -1,0 +1,14 @@
+id: leanix.integrationapi
+displayName: Leanix Integration
+type: OpenAPI
+version: 1.0.0
+description: This is the [LeanIX Integration API v1](https://eu.leanix.net/services/integration-api/v1/docs/) OpenAPI specification. The Integration API provides the ability to import and export data using a generic LeanIX Data Interchange Format (LDIF). LDIF is a JSON format with a very simple structure described in the following sections. All mapping and processing of the incoming and outgoing data is done using "Data Processors" that are configured behind the API. Configuration of the processors can be done using the UI, please see the [Setup](https://docs-eas.leanix.net/docs/setup) page for more information. The configurations can be managed using the Integration API as well.
+idlPath: /leanix.integrationapi/1.0.0/openapi.yaml
+thumbnailPath: /leanix.integrationapi/1.0.0/icon.png
+documentationPath: /leanix.integrationapi/1.0.0/readme.md
+keywords:
+  - ITOperations/EnterpriseArchitectureTools
+  - Cost/Paid
+endpoint:
+- url: https://eu.leanix.net/services/integration-api/v1
+- url: https://us.leanix.net/services/integration-api/v1

@@ -1,0 +1,13 @@
+id: godaddy.subscriptions
+displayName: GoDaddy Subscriptions
+type: OpenAPI
+version: "1.0"
+description: This is the [GoDaddy Subscriptions API v1](https://developer.godaddy.com/doc/endpoint/subscriptions) OpenAPI specification. The GoDaddy Subscriptions API provides capability to access GoDaddy operations related to subscriptions.
+idlPath: /godaddy.subscriptions/1.0/openapi.yaml
+thumbnailPath: /godaddy.subscriptions/1.0/icon.png
+documentationPath: /godaddy.subscriptions/1.0/readme.md
+keywords:
+  - Website&AppBuilding/WebsiteBuilders
+  - Cost/Paid
+endpoint:
+  - url: https://api.ote-godaddy.com/

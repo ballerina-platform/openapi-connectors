@@ -1,0 +1,13 @@
+id: gotowebinar
+displayName: GoTo Webinar
+type: OpenAPI
+version: 2.0.0
+description: This is the [GoToWebinar API v2.0](https://developer.goto.com/GoToWebinarV2) OpenAPI specification.
+idlPath: /gotowebinar/2.0.0/openapi.yaml
+thumbnailPath: /gotowebinar/2.0.0/icon.png
+documentationPath: /gotowebinar/2.0.0/readme.md
+keywords:
+  - Communication/VideoConferencing
+  - Cost/Paid
+endpoint:
+  - url: https://api.getgo.com/G2W/rest/v2

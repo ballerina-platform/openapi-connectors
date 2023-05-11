@@ -1,0 +1,14 @@
+id: googleapis.books
+displayName: Google Books
+type: OpenAPI
+version: v1
+description: This is the [Google Books API v1](https://developers.google.com/books) OpenAPI specification. The Google Books API allows clients to access the Google Books repository.
+idlPath: /googleapis.books/v1/openapi.yaml
+thumbnailPath: /googleapis.books/v1/icon.png
+documentationPath: /googleapis.books/v1/readme.md
+keywords:
+  - Lifestyle&Entertainment/Books
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://books.googleapis.com/

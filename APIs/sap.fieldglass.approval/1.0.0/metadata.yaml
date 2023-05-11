@@ -1,0 +1,11 @@
+id: sap.fieldglass.approval
+displayName: SAP Fieldglass Approval
+type: OpenAPI
+version: 1.0.0
+description: This is the [SAP Fieldglass Approval API API v1.0.0](https://api.sap.com/api/approvals/resource) OpenAPI specification.  The SAP Fieldglass Approval API allows clients to approve or reject SAP Fieldglass work items. Clients retrieve the work items pending an approval action from the authenticated user and return the workflow action to be performed (either approve or reject). The list and details provided by the SAP Fieldglass API give clients the ability to present work items for approval to their users with the level of detail needed to make an informed approval decision and the mechanism to return the approval or rejection decision.
+idlPath: /sap.fieldglass.approval/1.0.0/openapi.yaml
+thumbnailPath: /sap.fieldglass.approval/1.0.0/icon.png
+documentationPath: /sap.fieldglass.approval/1.0.0/readme.md
+keywords:
+  - BusinessManagement/ERP
+  - Cost/Paid

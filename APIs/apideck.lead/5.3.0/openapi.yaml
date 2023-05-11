@@ -1,0 +1,1394 @@
+openapi: 3.0.3
+info:
+  x-ballerina-display:
+    label: Apideck Lead
+    iconPath: "icon.png"
+  version: 5.3.0
+  title: Lead API
+  description: 
+    This is the [Apideck Lead API v5.3.0](https://www.apideck.com/lead-api) OpenAPI specification.
+    You can use this API to access all Lead API endpoints.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Unify API accounts have sandbox mode and live mode API keys. To change modes just use the appropriate key to get a live or test object. 
+    You can find your API keys on the unify settings of your Apideck app.Your Apideck application_id can also be found on the same page.
+    Obtain API keys following [this guide](https://developers.apideck.com/apis/lead/reference#section/Authorization).
+  contact:
+    email: hello@apideck.com
+    url: 'https://developers.apideck.com'
+  x-logo:
+    url: 'https://developers.apideck.com/icon.png'
+  x-apideck-api: lead
+  x-apideck-sdk-support: true
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+externalDocs:
+  description: Apideck Developer Docs
+  url: 'https://developers.apideck.com'
+servers:
+  - url: 'https://unify.apideck.com'
+    description: Production
+security:
+  - apiKey: []
+    applicationId: []
+    consumerId: []
+tags:
+  - name: Leads
+    description: ''
+    x-apideck-model:
+      $ref: '#/components/schemas/Lead'
+components:
+  schemas:
+    UnifiedId:
+      title: UnifiedId
+      required:
+        - id
+      properties:
+        id:
+          description: Unified ID
+          type: string
+          readOnly: true
+          example: '12345'
+    Lead:
+      required:
+        - name
+        - company_name
+      x-pii:
+        - name
+        - email
+        - first_name
+        - last_name
+      additionalProperties: false
+      properties:
+        id:
+          description: Lead ID
+          type: string
+          example: '12345'
+          readOnly: true
+        name:
+          description: Lead name
+          type: string
+          example: Elon Musk
+          minLength: 1
+        company_name:
+          description: Company name
+          type: string
+          example: Spacex
+          nullable: true
+        owner_id:
+          description: Owner ID
+          type: string
+          example: '54321'
+        company_id:
+          description: Company ID
+          type: string
+          example: '2'
+          nullable: true
+        contact_id:
+          description: Contact ID
+          type: string
+          example: '2'
+          nullable: true
+        lead_source:
+          description: Lead source
+          type: string
+          example: Cold Call
+          nullable: true
+        first_name:
+          description: First name
+          type: string
+          example: Elon
+          nullable: true
+        last_name:
+          description: Last name
+          type: string
+          example: Musk
+          nullable: true
+        description:
+          description: Lead description
+          type: string
+          example: A thinker
+          nullable: true
+        prefix:
+          description: Salutation
+          type: string
+          example: Sir
+          nullable: true
+        title:
+          description: Title
+          type: string
+          example: CEO
+          nullable: true
+        language:
+          type: string
+          example: EN
+          description: language code according to ISO 639-1. For the United States - EN
+          nullable: true
+        status:
+          description: Comapny status
+          type: string
+          example: New
+          nullable: true
+        monetary_amount:
+          description: Monetory amount
+          type: number
+          example: 75000
+          nullable: true
+        currency:
+          description: Currency
+          type: string
+          example: USD
+          nullable: true
+        fax:
+          description: Fax number
+          type: string
+          example: '+12129876543'
+          nullable: true
+        websites:
+          description: Company websites
+          type: array
+          items:
+            $ref: '#/components/schemas/Website'
+        addresses:
+          description: Company addresses
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        social_links:
+          description: Social links
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialLink'
+        phone_numbers:
+          description: Phone numbers
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        emails:
+          description: Emails
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+        custom_fields:
+          description: Custom fields
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        tags:
+          $ref: '#/components/schemas/Tags'
+        updated_at:
+          description: Updated date
+          type: string
+          example: '2020-09-30T07:43:32.000Z'
+          readOnly: true
+        created_at:
+          description: Created date
+          type: string
+          example: '2020-09-30T07:43:32.000Z'
+          readOnly: true
+    BankAccount:
+      type: object
+      properties:
+        iban:
+          type: string
+          example: CH2989144532982975332
+          nullable: true
+        bic:
+          type: string
+          example: AUDSCHGGXXX
+          nullable: true
+        bsb_number:
+          type: string
+          title: BSB Number
+          description: A BSB is a 6 digit numeric code used for identifying the branch of an Australian or New Zealand bank or financial institution.
+          example: 062-001
+          nullable: true
+        bank_code:
+          type: string
+          title: Bank Code
+          description: 'A bank code is a code assigned by a central bank, a bank supervisory body or a Bankers Association in a country to all its licensed member banks or financial institutions.'
+          example: BNH
+          nullable: true
+        account_number:
+          type: string
+          title: Bank Account Number
+          description: 'A bank account number is a number that is tied to your bank account. If you have several bank accounts, such as personal, joint, business (and so on), each account will have a different account number.'
+          example: '123456789'
+          nullable: true
+        account_name:
+          type: string
+          title: Bank Account Name
+          description: The name which you used in opening your bank account.
+          example: SPACEX LLC
+          nullable: true
+    Website:
+      type: object
+      required:
+        - url
+      properties:
+        id:
+          description: ID
+          type: string
+          example: '12345'
+          nullable: true
+        url:
+          description: Website URL
+          type: string
+          example: 'http://example.com'
+          minLength: 1
+        type:
+          description: Type
+          type: string
+          x-graphql-type-name: WebsiteType
+          enum:
+            - primary
+            - secondary
+            - work
+            - personal
+            - other
+          example: primary
+    Address:
+      type: object
+      properties:
+        id:
+          description: ID
+          type: string
+          example: '123'
+          nullable: true
+        type:
+          description: Address type
+          type: string
+          x-graphql-type-name: AddressType
+          enum:
+            - primary
+            - secondary
+            - home
+            - office
+            - shipping
+            - billing
+            - other
+          example: primary
+        string:
+          type: string
+          description: The address string. Some APIs don't provide structured address data.
+          example: '25 Spring Street, Blackburn, VIC 3130'
+          nullable: true
+        name:
+          description: Name
+          type: string
+          example: HQ US
+          nullable: true
+        line1:
+          type: string
+          example: Main street
+          description: 'Line 1 of the address e.g. number, street, suite, apt #, etc.'
+          nullable: true
+        line2:
+          type: string
+          example: 'apt #'
+          description: Line 2 of the address
+          nullable: true
+        city:
+          type: string
+          example: San Francisco
+          description: Name of city.
+          nullable: true
+        state:
+          type: string
+          example: CA
+          description: Name of state
+          nullable: true
+        postal_code:
+          type: string
+          example: '94104'
+          description: Zip code or equivalent.
+          nullable: true
+        country:
+          type: string
+          example: US
+          description: country code according to ISO 3166-1 alpha-2.
+          nullable: true
+        latitude:
+          description: Latitude
+          type: string
+          example: '40.759211'
+          nullable: true
+        longitude:
+          description: Longitude
+          type: string
+          example: '-73.984638'
+          nullable: true
+    SocialLink:
+      required:
+        - url
+      type: object
+      properties:
+        id:
+          description: ID
+          type: string
+          example: '12345'
+          nullable: true
+        url:
+          description: Social link
+          type: string
+          example: 'https://www.twitter.com/apideck-io'
+          minLength: 1
+        type:
+          description: Type
+          type: string
+          example: twitter
+          nullable: true
+    PhoneNumber:
+      required:
+        - number
+      type: object
+      properties:
+        id:
+          description: ID
+          type: string
+          example: '12345'
+          nullable: true
+        number:
+          description: Phone number
+          type: string
+          example: 111-111-1111
+          minLength: 1
+        type:
+          description: Type
+          type: string
+          x-graphql-type-name: PhoneType
+          enum:
+            - primary
+            - secondary
+            - home
+            - office
+            - mobile
+            - assistant
+            - fax
+            - other
+          example: primary
+    Email:
+      required:
+        - email
+      type: object
+      properties:
+        id:
+          description: ID
+          type: string
+          example: '123'
+        email:
+          description: Email address
+          type: string
+          format: email
+          example: elon@musk.com
+          minLength: 1
+        type:
+          description: Email type
+          type: string
+          x-graphql-type-name: EmailType
+          enum:
+            - primary
+            - secondary
+            - work
+            - personal
+            - billing
+            - other
+          example: primary
+    CustomField:
+      type: object
+      required:
+        - id
+      additionalProperties: false
+      properties:
+        id:
+          description: ID
+          type: string
+          example: custom_technologies
+        value:
+          description: Custom value
+          anyOf:
+            - type: string
+              example: Uses Salesforce and Marketo
+              nullable: true
+            - type: number
+              example: 10
+              nullable: true
+            - type: boolean
+              example: true
+              nullable: true
+            - type: array
+              items:
+                type: string
+    Tags:
+      type: array
+      items:
+        type: string
+      example:
+        - New
+    Meta:
+      type: object
+      description: Reponse metadata
+      properties:
+        items_on_page:
+          type: integer
+          description: Number of items returned in the data property of the response
+          example: 50
+        cursors:
+          type: object
+          description: Cursors to navigate to previous or next pages through the API
+          properties:
+            previous:
+              type: string
+              description: Cursor to navigate to the previous page of results through the API
+              example: em9oby1jcm06OnBhZ2U6OjE=
+              nullable: true
+            current:
+              type: string
+              description: Cursor to navigate to the current page of results through the API
+              example: em9oby1jcm06OnBhZ2U6OjI=
+              nullable: true
+            next:
+              type: string
+              description: Cursor to navigate to the next page of results through the API
+              example: em9oby1jcm06OnBhZ2U6OjM=
+              nullable: true
+    Links:
+      type: object
+      description: Links to navigate to previous or next pages through the API
+      properties:
+        previous:
+          type: string
+          description: Link to navigate to the previous page through the API
+          example: 'https://unify.apideck.com/crm/companies?cursor=em9oby1jcm06OnBhZ2U6OjE%3D'
+          nullable: true
+        current:
+          type: string
+          description: Link to navigate to the current page through the API
+          example: 'https://unify.apideck.com/crm/companies'
+        next:
+          type: string
+          description: Link to navigate to the previous page through the API
+          example: 'https://unify.apideck.com/crm/companies?cursor=em9oby1jcm06OnBhZ2U6OjM'
+          nullable: true
+    NotFoundResponse:
+      properties:
+        status_code:
+          type: number
+          description: HTTP status code
+          example: 404
+        error:
+          type: string
+          description: Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+          example: Not Found
+        type_name:
+          type: string
+          description: The type of error returned
+          example: EntityNotFoundError
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Unknown Widget
+        detail:
+          anyOf:
+            - type: string
+              example: "Could not find widget with id: '123'"
+            - type: object
+              example:
+                not_found:
+                  entity: widget
+                  id: '123'
+          description: Contains parameter or domain specific information related to the error and why it occured.
+        ref:
+          type: string
+          description: Link to documentation of error type
+          example: 'https://developers.apideck.com/errors#entitynotfounderror'
+    Unauthorized:
+      properties:
+        status_code:
+          type: number
+          description: HTTP status code
+          example: 401
+        error:
+          type: string
+          description: Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+          example: Unauthorized
+        type_name:
+          type: string
+          description: The type of error returned
+          example: UnauthorizedError
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Unauthorized Request
+        detail:
+          type: string
+          description: Contains parameter or domain specific information related to the error and why it occured.
+          example: Failed to generate valid JWT Session. Verify applicationId is correct
+        ref:
+          type: string
+          description: Link to documentation of error type
+          example: 'https://developers.apideck.com/errors#unauthorizederror'
+    Unprocessable:
+      properties:
+        status_code:
+          type: number
+          description: HTTP status code
+          example: 422
+        error:
+          type: string
+          description: Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+          example: Unprocessable Entity
+        type_name:
+          type: string
+          description: The type of error returned
+          example: InvalidStateError
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Invalid State
+        detail:
+          type: string
+          description: Contains parameter or domain specific information related to the error and why it occured.
+          example: State did not include unified_api
+        ref:
+          type: string
+          description: Link to documentation of error type
+          example: 'https://developers.apideck.com/errors#invalidstateerror'
+    BadRequest:
+      properties:
+        status_code:
+          type: number
+          description: HTTP status code
+          example: 400
+        error:
+          type: string
+          description: Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+          example: Bad Request
+        type_name:
+          type: string
+          description: The type of error returned
+          example: RequestHeadersValidationError
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Invalid Params
+        detail:
+          anyOf:
+            - type: string
+              example: Missing property foobar
+            - type: object
+              example:
+                missing:
+                  - foobar: required
+          description: Contains parameter or domain specific information related to the error and why it occured.
+        ref:
+          type: string
+          description: Link to documentation of error type
+          example: 'https://developers.apideck.com/errors#requestbodyvalidationerror'
+    PaymentRequired:
+      properties:
+        status_code:
+          type: number
+          description: HTTP status code
+          example: 402
+        error:
+          type: string
+          description: Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+          example: Payment Required
+        type_name:
+          type: string
+          description: The type of error returned
+          example: RequestLimitError
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Request Limit Reached
+        detail:
+          type: string
+          description: Contains parameter or domain specific information related to the error and why it occured.
+          example: You have reached your limit of 2000
+        ref:
+          type: string
+          description: Link to documentation of error type
+          example: 'https://developers.apideck.com/errors#requestlimiterror'
+    NotImplemented:
+      properties:
+        status_code:
+          type: number
+          description: HTTP status code
+          example: 501
+        error:
+          type: string
+          description: Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+          example: Not Implemented
+        type_name:
+          type: string
+          description: The type of error returned
+          example: MappingError
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Unmapped Attribute
+        detail:
+          anyOf:
+            - type: string
+              example: Failed to retrieve Widget tokenUrl from 'components.securitySchemes.oauth2.flows'
+            - type: object
+          description: Contains parameter or domain specific information related to the error and why it occured.
+        ref:
+          type: string
+          description: Link to documentation of error type
+          example: 'https://developers.apideck.com/errors#mappingerror'
+    UnexpectedError:
+      properties:
+        status_code:
+          type: number
+          description: HTTP status code
+          example: 400
+        error:
+          type: string
+          description: Contains an explanation of the status_code as defined in HTTP/1.1 standard (RFC 7231)
+          example: Bad Request
+        type_name:
+          type: string
+          description: The type of error returned
+          example: RequestHeadersValidationError
+        message:
+          type: string
+          description: A human-readable message providing more details about the error.
+          example: Invalid Params
+        detail:
+          anyOf:
+            - type: string
+              example: 'Missing Header: x-apideck-consumer-id'
+            - type: object
+              example:
+                missing:
+                  - x-apideck-consumer-id: required
+          description: Contains parameter or domain specific information related to the error and why it occured.
+        ref:
+          type: string
+          description: Link to documentation of error type
+          example: 'https://developers.apideck.com/errors#unauthorizederror'
+  parameters:
+    id:
+      in: path
+      name: id
+      schema:
+        type: string
+      required: true
+      description: ID of the record you are acting upon.
+    x-apideck-app-id:
+      name: x-apideck-app-id
+      in: header
+      required: true
+      description: The ID of your Unify application
+      schema:
+        type: string
+    x-apideck-service-id:
+      name: x-apideck-service-id
+      in: header
+      description: 'Provide the service id you want to call (e.g., pipedrive). [See the full list in the connector section.](#section/Connectors) Only needed when a consumer has activated multiple integrations for a Unified API.'
+      schema:
+        type: string
+    x-apideck-consumer-id:
+      name: x-apideck-consumer-id
+      in: header
+      required: true
+      description: ID of the consumer which you want to get or push data from
+      schema:
+        type: string
+    raw:
+      name: raw
+      in: query
+      description: Include raw response. Mostly used for debugging purposes
+      schema:
+        type: boolean
+        default: true
+    cursor:
+      name: cursor
+      in: query
+      description: Cursor to start from. You can find cursors for next/previous pages in the meta.cursors property of the response.
+      schema:
+        type: string
+        nullable: true
+    limit:
+      name: limit
+      in: query
+      description: Number of records to return
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 20
+  responses:
+    GetLeads:
+      description: Leads
+      content:
+        application/json:
+          schema:
+            x-graphql-type-name: LeadList
+            type: object
+            required:
+              - status_code
+              - status
+              - service
+              - resource
+              - operation
+              - data
+            properties:
+              status_code:
+                type: integer
+                description: HTTP Response Status Code
+                example: 200
+              status:
+                type: string
+                description: HTTP Response Status
+                example: OK
+              service:
+                type: string
+                description: Apideck ID of service provider
+                example: zoho-crm
+              resource:
+                type: string
+                description: Unified API resource name
+                example: companies
+              operation:
+                type: string
+                description: Operation performed
+                example: one
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lead'
+              meta:
+                $ref: '#/components/schemas/Meta'
+              links:
+                $ref: '#/components/schemas/Links'
+    GetLead:
+      description: Lead
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status_code
+              - status
+              - service
+              - resource
+              - operation
+              - data
+            properties:
+              status_code:
+                type: integer
+                description: HTTP Response Status Code
+                example: 200
+              status:
+                type: string
+                description: HTTP Response Status
+                example: OK
+              service:
+                type: string
+                description: Apideck ID of service provider
+                example: zoho-crm
+              resource:
+                type: string
+                description: Unified API resource name
+                example: companies
+              operation:
+                type: string
+                description: Operation performed
+                example: one
+              data:
+                $ref: '#/components/schemas/Lead'
+    CreateLead:
+      description: Lead created
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status_code
+              - status
+              - service
+              - resource
+              - operation
+              - data
+            properties:
+              status_code:
+                type: integer
+                description: HTTP Response Status Code
+                example: 200
+              status:
+                type: string
+                description: HTTP Response Status
+                example: OK
+              service:
+                type: string
+                description: Apideck ID of service provider
+                example: zoho-crm
+              resource:
+                type: string
+                description: Unified API resource name
+                example: companies
+              operation:
+                type: string
+                description: Operation performed
+                example: one
+              data:
+                $ref: '#/components/schemas/UnifiedId'
+    UpdateLead:
+      description: Lead updated
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status_code
+              - status
+              - service
+              - resource
+              - operation
+              - data
+            properties:
+              status_code:
+                type: integer
+                description: HTTP Response Status Code
+                example: 200
+              status:
+                type: string
+                description: HTTP Response Status
+                example: OK
+              service:
+                type: string
+                description: Apideck ID of service provider
+                example: zoho-crm
+              resource:
+                type: string
+                description: Unified API resource name
+                example: companies
+              operation:
+                type: string
+                description: Operation performed
+                example: one
+              data:
+                $ref: '#/components/schemas/UnifiedId'
+    DeleteLead:
+      description: Lead deleted
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - status_code
+              - status
+              - service
+              - resource
+              - operation
+              - data
+            properties:
+              status_code:
+                type: integer
+                description: HTTP Response Status Code
+                example: 200
+              status:
+                type: string
+                description: HTTP Response Status
+                example: OK
+              service:
+                type: string
+                description: Apideck ID of service provider
+                example: zoho-crm
+              resource:
+                type: string
+                description: Unified API resource name
+                example: companies
+              operation:
+                type: string
+                description: Operation performed
+                example: one
+              data:
+                $ref: '#/components/schemas/UnifiedId'
+    NotFound:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFoundResponse'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Unauthorized'
+    Unprocessable:
+      description: Unprocessable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Unprocessable'
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadRequest'
+    PaymentRequired:
+      description: Payment Required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentRequired'
+    NotImplemented:
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotImplemented'
+    UnexpectedError:
+      description: Unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnexpectedError'
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      x-ballerina-apikey-description: "Provide your API key as `Authorization`. Eg: `{\"Authorization\" : \"<API key>\"}`"
+      description: |
+        To use API you have to sign up and get your own API key. Unify API accounts have sandbox mode and live mode API keys. 
+        To change modes just use the appropriate key to get a live or test object. You can find your API keys on the unify settings of your Apideck app.
+        Your Apideck application_id can also be found on the same page.
+
+        Authenticate your API requests by including your test or live secret API key in the request header. 
+
+        - Bearer authorization header: `Authorization: Bearer <your-apideck-api-key>`
+        - Application id header: `x-apideck-app-id: <your-apideck-app-id>`
+
+        You should use the public keys on the SDKs and the secret keys to authenticate API requests.
+
+        **Do not share or include your secret API keys on client side code.** Your API keys carry significant privileges. Please ensure to keep them 100% secure and be sure to not share your secret API keys in areas that are publicly accessible like GitHub.
+
+        Learn how to set the Authorization header inside Postman https://learning.postman.com/docs/postman/sending-api-requests/authorization/#api-key
+
+        Go to Unify to grab your API KEY https://app.apideck.com/unify/api-keys
+    # applicationId:
+    #   type: apiKey
+    #   in: header
+    #   name: x-apideck-app-id
+    #   description: The ID of your Unify application
+    # consumerId:
+    #   type: apiKey
+    #   in: header
+    #   name: x-apideck-consumer-id
+    #   description: The ID of the consumer which you want to get or push data from
+paths:
+  /lead/leads:
+    get:
+      tags:
+        - Leads
+      operationId: leadsAll
+      x-graphql-field-name: leads
+      summary: List leads
+      description: List leads
+      parameters:
+        - $ref: '#/components/parameters/raw'
+        - $ref: '#/components/parameters/x-apideck-consumer-id'
+        - $ref: '#/components/parameters/x-apideck-app-id'
+        - $ref: '#/components/parameters/x-apideck-service-id'
+        - $ref: '#/components/parameters/cursor'
+        - $ref: '#/components/parameters/limit'
+      security:
+        - apiKey: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetLeads'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      x-apideck-api: lead
+      x-codeSamples:
+        - lang: TypeScript
+          label: Node
+          source: |
+            import { Apideck } from '@apideck/node'
+
+            const apideck = new Apideck({
+              apiKey: 'REPLACE_WITH_API_KEY',
+              appId: 'REPLACE_WITH_APP_ID',
+              consumerId: 'REPLACE_WITH_CONSUMER_ID'
+            })
+
+            try {
+              const { data } = await apideck.lead.leadsAll({})
+              console.log('API called successfully', data)
+            } catch (error) {
+              console.error(error)
+            }
+    post:
+      tags:
+        - Leads
+      operationId: leadsAdd
+      summary: Create lead
+      description: Create lead
+      parameters:
+        - $ref: '#/components/parameters/raw'
+        - $ref: '#/components/parameters/x-apideck-consumer-id'
+        - $ref: '#/components/parameters/x-apideck-app-id'
+        - $ref: '#/components/parameters/x-apideck-service-id'
+      security:
+        - apiKey: []
+      requestBody:
+        description: Lead information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+      responses:
+        '201':
+          $ref: '#/components/responses/CreateLead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      x-apideck-api: lead
+      x-codeSamples:
+        - lang: TypeScript
+          label: Node
+          source: |
+            import { Apideck } from '@apideck/node'
+
+            const apideck = new Apideck({
+              apiKey: 'REPLACE_WITH_API_KEY',
+              appId: 'REPLACE_WITH_APP_ID',
+              consumerId: 'REPLACE_WITH_CONSUMER_ID'
+            })
+
+            const params = {
+              lead: {
+                name: 'Elon Musk',
+                company_name: 'Spacex',
+                owner_id: '54321',
+                company_id: '2',
+                contact_id: '2',
+                lead_source: 'Cold Call',
+                first_name: 'Elon',
+                last_name: 'Musk',
+                description: 'A thinker',
+                prefix: 'Sir',
+                title: 'CEO',
+                language: 'EN',
+                status: 'New',
+                monetary_amount: 75000,
+                currency: 'USD',
+                fax: '+12129876543',
+                websites: [
+                  {
+                    id: '12345',
+                    url: 'http://example.com',
+                    type: 'primary'
+                  }
+                ],
+                addresses: [
+                  {
+                    id: '123',
+                    type: 'primary',
+                    string: '25 Spring Street, Blackburn, VIC 3130',
+                    name: 'HQ US',
+                    line1: 'Main street',
+                    line2: 'apt #',
+                    city: 'San Francisco',
+                    state: 'CA',
+                    postal_code: '94104',
+                    country: 'US',
+                    latitude: '40.759211',
+                    longitude: '-73.984638'
+                  }
+                ],
+                social_links: [
+                  {
+                    id: '12345',
+                    url: 'https://www.twitter.com/apideck-io',
+                    type: 'twitter'
+                  }
+                ],
+                phone_numbers: [
+                  {
+                    id: '12345',
+                    number: '111-111-1111',
+                    type: 'primary'
+                  }
+                ],
+                emails: [
+                  {
+                    id: '123',
+                    email: 'elon@musk.com',
+                    type: 'primary'
+                  }
+                ],
+                custom_fields: [
+                  {
+                    id: 'custom_technologies',
+                    value: 'Uses Salesforce and Marketo'
+                  }
+                ],
+                tags: ['New']
+              }
+            }
+
+            try {
+              const { data } = await apideck.lead.leadsAdd(params)
+              console.log('API called successfully', data)
+            } catch (error) {
+              console.error(error)
+            }
+  '/lead/leads/{id}':
+    get:
+      tags:
+        - Leads
+      operationId: leadsOne
+      summary: Get lead
+      description: Get lead
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/x-apideck-consumer-id'
+        - $ref: '#/components/parameters/x-apideck-app-id'
+        - $ref: '#/components/parameters/x-apideck-service-id'
+        - $ref: '#/components/parameters/raw'
+      security:
+        - apiKey: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetLead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      x-apideck-api: lead
+      x-codeSamples:
+        - lang: TypeScript
+          label: Node
+          source: |
+            import { Apideck } from '@apideck/node'
+
+            const apideck = new Apideck({
+              apiKey: 'REPLACE_WITH_API_KEY',
+              appId: 'REPLACE_WITH_APP_ID',
+              consumerId: 'REPLACE_WITH_CONSUMER_ID'
+            })
+
+            try {
+              const { data } = await apideck.lead.leadsOne({
+                id: 'id_example'
+              })
+              console.log('API called successfully', data)
+            } catch (error) {
+              console.error(error)
+            }
+    patch:
+      tags:
+        - Leads
+      operationId: leadsUpdate
+      summary: Update lead
+      description: Update lead
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/x-apideck-consumer-id'
+        - $ref: '#/components/parameters/x-apideck-app-id'
+        - $ref: '#/components/parameters/x-apideck-service-id'
+        - $ref: '#/components/parameters/raw'
+      security:
+        - apiKey: []
+      requestBody:
+        description: Lead information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateLead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      x-apideck-api: lead
+      x-codeSamples:
+        - lang: TypeScript
+          label: Node
+          source: |
+            import { Apideck } from '@apideck/node'
+
+            const apideck = new Apideck({
+              apiKey: 'REPLACE_WITH_API_KEY',
+              appId: 'REPLACE_WITH_APP_ID',
+              consumerId: 'REPLACE_WITH_CONSUMER_ID'
+            })
+
+            const params = {
+              id: 'id_example',
+              lead: {
+                name: 'Elon Musk',
+                company_name: 'Spacex',
+                owner_id: '54321',
+                company_id: '2',
+                contact_id: '2',
+                lead_source: 'Cold Call',
+                first_name: 'Elon',
+                last_name: 'Musk',
+                description: 'A thinker',
+                prefix: 'Sir',
+                title: 'CEO',
+                language: 'EN',
+                status: 'New',
+                monetary_amount: 75000,
+                currency: 'USD',
+                fax: '+12129876543',
+                websites: [
+                  {
+                    id: '12345',
+                    url: 'http://example.com',
+                    type: 'primary'
+                  }
+                ],
+                addresses: [
+                  {
+                    id: '123',
+                    type: 'primary',
+                    string: '25 Spring Street, Blackburn, VIC 3130',
+                    name: 'HQ US',
+                    line1: 'Main street',
+                    line2: 'apt #',
+                    city: 'San Francisco',
+                    state: 'CA',
+                    postal_code: '94104',
+                    country: 'US',
+                    latitude: '40.759211',
+                    longitude: '-73.984638'
+                  }
+                ],
+                social_links: [
+                  {
+                    id: '12345',
+                    url: 'https://www.twitter.com/apideck-io',
+                    type: 'twitter'
+                  }
+                ],
+                phone_numbers: [
+                  {
+                    id: '12345',
+                    number: '111-111-1111',
+                    type: 'primary'
+                  }
+                ],
+                emails: [
+                  {
+                    id: '123',
+                    email: 'elon@musk.com',
+                    type: 'primary'
+                  }
+                ],
+                custom_fields: [
+                  {
+                    id: 'custom_technologies',
+                    value: 'Uses Salesforce and Marketo'
+                  }
+                ],
+                tags: ['New']
+              }
+            }
+
+            try {
+              const { data } = await apideck.lead.leadsUpdate(params)
+              console.log('API called successfully', data)
+            } catch (error) {
+              console.error(error)
+            }
+    delete:
+      tags:
+        - Leads
+      operationId: leadsDelete
+      summary: Delete lead
+      description: Delete lead
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/x-apideck-consumer-id'
+        - $ref: '#/components/parameters/x-apideck-app-id'
+        - $ref: '#/components/parameters/x-apideck-service-id'
+        - $ref: '#/components/parameters/raw'
+      security:
+        - apiKey: []
+      responses:
+        '200':
+          $ref: '#/components/responses/DeleteLead'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '422':
+          $ref: '#/components/responses/Unprocessable'
+        default:
+          $ref: '#/components/responses/UnexpectedError'
+      x-apideck-api: lead
+      x-codeSamples:
+        - lang: TypeScript
+          label: Node
+          source: |
+            import { Apideck } from '@apideck/node'
+
+            const apideck = new Apideck({
+              apiKey: 'REPLACE_WITH_API_KEY',
+              appId: 'REPLACE_WITH_APP_ID',
+              consumerId: 'REPLACE_WITH_CONSUMER_ID'
+            })
+
+            try {
+              const { data } = await apideck.lead.leadsDelete({
+                id: 'id_example'
+              })
+              console.log('API called successfully', data)
+            } catch (error) {
+              console.error(error)
+            }

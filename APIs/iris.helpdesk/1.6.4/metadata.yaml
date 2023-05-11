@@ -1,0 +1,11 @@
+id: iris.helpdesk
+displayName: IRIS Helpdesk
+type: OpenAPI
+version: 1.6.4
+description: This is the [IRIS Helpdesk API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+idlPath: /iris.helpdesk/1.6.4/openapi.yaml
+thumbnailPath: /iris.helpdesk/1.6.4/icon.png
+documentationPath: /iris.helpdesk/1.6.4/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Paid

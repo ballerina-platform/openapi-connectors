@@ -1,0 +1,11 @@
+id: freshdesk
+displayName: Freshdesk
+type: OpenAPI
+version: "2.0"
+description: This is the [Freshdesk API v2.0](https://developers.freshdesk.com/api/#intro) OpenAPI specification. Freshdesk is a cloud-based customer service software that enables businesses of all sizes to deliver stellar customer support.
+idlPath: /freshdesk/2.0/openapi.yaml
+thumbnailPath: /freshdesk/2.0/icon.png
+documentationPath: /freshdesk/2.0/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Freemium

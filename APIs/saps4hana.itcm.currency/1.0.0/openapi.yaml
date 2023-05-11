@@ -1,0 +1,317 @@
+openapi: 3.0.1
+info:
+  title: Currency Service
+  description: >
+    This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
+    SAPS4HANA Intelligent Trade Claims Management uses currency codes and their languages to properly display monetary value and decimal or comma placement.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA ITCM Currency
+    iconPath: "icon.png"
+  license:
+    name: SAP
+  version: 1.0.0
+externalDocs:
+  description: Business Documentation for Currency Service
+  url: https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US/1d160199f77440c986e28e43ea35026b.html
+# servers:
+# - url: https://{host}.{environment}.{domain}/v1
+#   variables:
+#     host:
+#       default: api.dev1
+#       description: Your host where SAP Intelligent Trade Claims Management has deployed
+#     environment:
+#       default: e2e
+#       description: Your defined environment for your SAP Intelligent Trade Claims Management account
+#     domain:
+#       default: eurekacloud.io
+security:
+- OAuth2: []
+tags:
+- name: Currency Code
+paths:
+  /currencies:
+    post:
+      tags:
+      - Currency Code
+      summary: Create a new Currency
+      description: Using this API, user can create a Currency. As of now, batch creation is not supported
+      operationId: createCurrencyCode
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CurrencyCodeDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreatedCurrencyMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /currencies/{currencyCode}/{languageKey}:
+    get:
+      tags:
+      - Currency Code
+      summary: Get a Currency based on code and language
+      description: Using this API, user can get particular Currency using {currencyCode} and {languageKey}
+      operationId: getByISOLangKey
+      parameters:
+      - name: currencyCode
+        in: path
+        description: CurrencyCode
+        required: true
+        schema:
+          maxLength: 3
+          minLength: 0
+          type: string
+      - name: languageKey
+        in: path
+        description: LanguageKey
+        required: true
+        schema:
+          maxLength: 2
+          minLength: 0
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCurrencyMessage'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+    delete:
+      tags:
+      - Currency Code
+      summary: Permanently deletes a Currency
+      description: Using this api, user can delete particular Currency based on {currencyCode} and {languageKey}
+      operationId: deleteCurrency
+      parameters:
+      - name: currencyCode
+        in: path
+        description: CurrencyCode
+        required: true
+        schema:
+          maxLength: 3
+          minLength: 0
+          type: string
+      - name: languageKey
+        in: path
+        description: LanguageKey
+        required: true
+        schema:
+          maxLength: 2
+          minLength: 0
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDeleteCurrencyMessage'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    CurrencyCodeDTO:
+      title: Currency Code
+      type: object
+      example:
+        currencyCode: USD
+        unitOfMeasureISO: T006
+        languageKey: EN
+        numberOfDecimals: 2
+      properties:
+        currencyCode:
+          type: string
+        currencyText:
+          type: string
+        languageKey:
+          type: string
+        numberOfDecimals:
+          type: integer
+          format: int32
+        unitOfMeasureISO:
+          type: string
+    CurrencyCodeResponse:
+      title: Currency Code Response
+      type: object
+      properties:
+        currencyCodeData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CurrencyCodeResponseDTO'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    CurrencyCodeResponseDTO:
+      title: Currency Code Data
+      type: object
+      properties:
+        currencyCode:
+          type: string
+        currencyText:
+          type: string
+        languageKey:
+          type: string
+    ResponseCreatedCurrencyMessage:
+      title: Response Currency created
+      type: object
+      example:
+        currencyCode: USD
+        langKey: EN
+        message: Success Created
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        currencyCode:
+          type: string
+        langKey:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponseDeleteCurrencyMessage:
+      title: Response Delete Currency
+      type: object
+      example:
+        message: Success Deleted
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponseCurrencyMessage:
+      title: Response Message
+      type: object
+      example:
+        currencyCode: USD
+        langKey: EN
+        message: Success Created
+        timestamp: '2021-01-18T18:32:30.095Z'
+      properties:
+        currencyCode:
+          type: string
+        langKey:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponseNotFoundMessage:
+      type: object
+      example:
+        message: There is no data found based on the given inputs.
+        error: No Result Found
+        timestamp: '2021-01-18T19:37:13.701+00:00'
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Not Found Message
+    ResponseForbiddenMessage:
+      type: object
+      example:
+        message: Access denied
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Forbidden Message
+    ResponseUnauthorizedMessage:
+      type: object
+      example:
+        message: Unauthorized/API key not found
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Unauthorized Message
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client ID and secret) from SAP ITCM, and be authorized to use the relevant scope. Refer to the <a href="https://developer.sap.com/api-reference/authentication/getting-started.html">full authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token
+          scopes: {}
+x-sap-shortText: The Currency service represents Currencies that can be posted to, deleted or queried from SAP Intelligent Trade Claims Management by a user.

@@ -1,0 +1,13 @@
+id: nowpayments
+displayName: NOWPayments
+type: OpenAPI
+version: 1.0.0
+description: This is the [NOWPayments API v1](https://nowpayments.io/) OpenAPI Specification.  NOWPayments is a non-custodial cryptocurrency payment processing platform.  Accept payments in a wide range of cryptos and get them instantly converted into a coin of your choice and sent to your wallet. Keeping it simple.
+idlPath: /nowpayments/1.0.0/openapi.yaml
+thumbnailPath: /nowpayments/1.0.0/icon.png
+documentationPath: /nowpayments/1.0.0/readme.md
+keywords:
+  - Finance/Payment
+  - Cost/Paid
+endpoint:
+  - url: https://api.nowpayments.io

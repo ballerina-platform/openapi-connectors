@@ -1,0 +1,13 @@
+id: godaddy.shopper
+displayName: GoDaddy Shopper
+type: OpenAPI
+version: v1
+description: This is the [GoDaddy Shoppers API v1](https://developer.godaddy.com/doc/endpoint/shoppers) OpenAPI specification. The GoDaddy Shoppers API provides capability to access GoDaddy operations related to shopper.
+idlPath: /godaddy.shopper/v1/openapi.yaml
+thumbnailPath: /godaddy.shopper/v1/icon.png
+documentationPath: /godaddy.shopper/v1/readme.md
+keywords:
+  - Website&AppBuilding/WebsiteBuilders
+  - Cost/Paid
+endpoint:
+  - url: https://api.ote-godaddy.com/

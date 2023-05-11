@@ -1,0 +1,11 @@
+id: iris.subscriptions
+displayName: IRIS Subscriptions
+type: OpenAPI
+version: 1.6.4
+description: This is the [IRIS Subscriptions API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+idlPath: /iris.subscriptions/1.6.4/openapi.yaml
+thumbnailPath: /iris.subscriptions/1.6.4/icon.png
+documentationPath: /iris.subscriptions/1.6.4/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Paid

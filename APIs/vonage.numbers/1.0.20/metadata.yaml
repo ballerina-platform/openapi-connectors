@@ -1,0 +1,13 @@
+id: vonage.numbers
+displayName: Vonage Numbers
+type: OpenAPI
+version: 1.0.20
+description: This is the [Vonage Numbers API v1.0.20](https://nexmo-api-specification.herokuapp.com/numbers) OpenAPI specification. The Numbers API enables you to manage your existing numbers and buy new virtual numbers for use with the Vonage APIs.  Further information is here. <https://developer.nexmo.com/numbers/overview>
+idlPath: /vonage.numbers/1.0.20/openapi.yaml
+thumbnailPath: /vonage.numbers/1.0.20/icon.png
+documentationPath: /vonage.numbers/1.0.20/readme.md
+keywords:
+  - Communication/CallTracking
+  - Cost/Paid
+endpoint:
+  - url: https://rest.nexmo.com

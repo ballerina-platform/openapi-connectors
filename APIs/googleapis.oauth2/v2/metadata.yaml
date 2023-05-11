@@ -1,0 +1,14 @@
+id: googleapis.oauth2
+displayName: Google OAuth2
+type: OpenAPI
+version: v2
+description: This is the [Google OAuth2 API v2.0](https://developers.google.com/identity/protocols/oauth2/) OpenAPI specification. Obtains end-user authorization grants for use with other Google APIs.
+idlPath: /googleapis.oauth2/v2/openapi.yaml
+thumbnailPath: /googleapis.oauth2/v2/icon.png
+documentationPath: /googleapis.oauth2/v2/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://www.googleapis.com/

@@ -1,0 +1,13 @@
+id: browshot
+displayName: Browshot
+type: OpenAPI
+version: 1.17.0
+description: This is the [Browshot API v1.17.0](https://browshot.com/api/documentation) OpenAPI specification. The Browshot API provides services to get screenshots of any website in real time.
+idlPath: /browshot/1.17.0/openapi.yaml
+thumbnailPath: /browshot/1.17.0/icon.png
+documentationPath: /browshot/1.17.0/readme.md
+keywords:
+  - ITOperations/BrowserTools
+  - Cost/Freemium
+endpoint:
+  - url: https://api.browshot.com/api/v1

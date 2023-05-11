@@ -1,0 +1,984 @@
+openapi: 3.0.1
+info:
+  title: Organizational Data Services
+  description: >
+    This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
+    SAP Intelligent Trade Claims Management uses the organizational data services to represent distribution channel services, sales areas, sales divisions, and sales organizations for customer management.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
+  x-ballerina-display:
+    label: SAPS4HANA ITCM Organizational Data
+    iconPath: "icon.png"
+  contact:
+    name: ITCM
+  license:
+    name: SAP
+  version: 1.0.0
+externalDocs:
+  description: Business Documentation for Organizational Data Services
+  url: https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US/c32b39f9222a41c2bc494184342a830b.html
+# servers:
+# - url: https://{host}.{environment}.{domain}/v1
+#   variables:
+#     host:
+#       default: api.dev1
+#       description: Your host where SAP Intelligent Trade Claims Management has deployed
+#     environment:
+#       default: e2e
+#       description: Your defined environment for your SAP Intelligent Trade Claims Management account
+#     domain:
+#       default: eurekacloud.io
+security:
+- OAuth2: []
+tags:
+- name: Distribution Channel
+- name: Sales Area
+- name: Sales Division
+- name: Sales Organization
+paths:
+  /distributionChannels:
+    post:
+      tags:
+      - Distribution Channel
+      summary: Create a new Distribution Channel
+      description: Using this API, user can create a Distribution Channel. As of now, batch creation is not supported
+      operationId: createDistributionChannel
+      parameters: []
+      requestBody:
+        description: Request payload to create distribution channel
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalDistributionChannelDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreated'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /distributionChannels/{externalId}:
+    get:
+      tags:
+      - Distribution Channel
+      summary: Get particular Distribution Channel
+      description: Using this API, user can get for the particular Distribution Channel available in the system
+      operationId: getDistributionChannelByExternalId
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionChannelResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+    delete:
+      tags:
+      - Distribution Channel
+      summary: Delete particular Distribution Channel
+      description: Using this API, a user can delete a particular Distribution Channel using {externalId}
+      operationId: deleteDistributionChannel
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DistributionChannelDeleteResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /salesAreas:
+    post:
+      tags:
+      - Sales Area
+      summary: Create a new Sales Area
+      description: Using this API, user can create a Sales Area. As of now, batch creation is not supported
+      operationId: createSalesArea
+      parameters: []
+      requestBody:
+        description: Request payload to create a sales area
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalSalesAreaDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreated'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /salesAreas/{externalId}:
+    get:
+      tags:
+      - Sales Area
+      summary: Get particular Sales Area
+      description: Using this API, user can get the particular Sales Area using {externalId}
+      operationId: getSalesAreaByExternalId
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesAreaResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+    delete:
+      tags:
+      - Sales Area
+      summary: Delete particular Sales Area
+      description: Using this API, a user can delete a particular Sales Area by using {externalId}
+      operationId: deleteSalesArea
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesAreaDeleteResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /salesDivisions:
+    post:
+      tags:
+      - Sales Division
+      summary: Create a new Sales Division
+      description: Using this API, user can create a Sales Division. As of now, batch creation is not supported
+      operationId: createSalesDivision
+      parameters: []
+      requestBody:
+        description: salesDivisionDTO
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalSalesDivisionDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreated'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /salesDivisions/{externalId}:
+    get:
+      tags:
+      - Sales Division
+      summary: Get particular Sales Division
+      description: Using this API, user can get a particular Sales Division using {externalId}
+      operationId: getSalesDivisionByExternalId
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesDivisionResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+    delete:
+      tags:
+      - Sales Division
+      summary: delete particular Sales Division
+      description: Using this API, a user can delete a particular Sales Division using {externalId}
+      operationId: deleteSalesDivision
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesDivisionDeleteResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /salesOrganizations:
+    post:
+      tags:
+      - Sales Organization
+      summary: Create a new Sales Organization
+      description: Using this API, user can create a Sales Organization. As of now, batch creation is not supported
+      operationId: createSalesOrganization
+      parameters: []
+      requestBody:
+        description: Request payload to create sales organization
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalSalesOrganizationDTO'
+        required: true
+      responses:
+        '201':
+          description: Success Created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCreated'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+  /salesOrganizations/{externalId}:
+    get:
+      tags:
+      - Sales Organization
+      summary: Get particular Sales Organization
+      description: Using this API, user can get a particular Sales Organization using {externalId}
+      operationId: getSalesOrganizationByExternalId
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesOrganizationResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+    delete:
+      tags:
+      - Sales Organization
+      summary: Delete particular Sales Organization
+      description: Using this API, a user can delete a particular Sales Organization using {externalId}
+      operationId: deleteSalesOrganization
+      parameters:
+      - name: externalId
+        in: path
+        description: externalId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesOrgDeleteResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUnauthorizedMessage'
+        '403':
+          description: Forbidden (insufficient authorization).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseForbiddenMessage'
+        '404':
+          description: Not Found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseNotFoundMessage'
+      deprecated: false
+      security:
+      - OAuth2: []
+components:
+  schemas:
+    ResponseNotFoundMessage:
+      type: object
+      example:
+        message: There is no data found based on the given inputs.
+        error: No Result Found
+        timestamp: '2021-01-18T19:37:13.701+00:00'
+      properties:
+        message:
+          type: string
+        error:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+      title: Not Found Message
+    ResponseForbiddenMessage:
+      type: object
+      example:
+        message: Access denied
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Forbidden Message
+    ResponseUnauthorizedMessage:
+      type: object
+      example:
+        message: Unauthorized/API key not found
+        timestamp: '2021-01-18T18:33:18.914Z'
+      properties:
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        uri:
+          type: string
+      title: Unauthorized Message
+    ExternalDistributionChannelDTO:
+      title: Distribution Channel
+      example:
+        externalId: '1232'
+        descriptions:
+        - description: this Distribution Channel description in English
+          languageKey: EN
+        - description: this Distribution Channel description in Deutsch
+          languageKey: DU
+      required:
+      - externalId
+      type: object
+      properties:
+        descriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalDistributionChannelDescriptionDTO'
+        externalId:
+          maxLength: 40
+          minLength: 1
+          type: string
+    ExternalDistributionChannelDescriptionDTO:
+      title: Distribution Channel Description
+      type: object
+      properties:
+        description:
+          type: string
+        languageKey:
+          maxLength: 2
+          minLength: 0
+          type: string
+    DistributionChannelDeleteResponse:
+      title: Distribution Channel deletion
+      type: object
+      example:
+        message: Success Deleted!
+        externalid: '1232'
+        timestamp: '2021-01-18T20:34:49.843+00:00'
+      properties:
+        message:
+          type: string
+        externalid:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    DistributionChannelResponse:
+      title: Distribution Channel Found
+      type: object
+      example:
+        message: Found Distribution-Channel.
+        externalid: '1232'
+        distribution-channels:
+          externalId: '1232'
+          descriptions:
+          - description: this Distribution Channel description in English
+            languageKey: EN
+          - description: this Distribution Channel description in Deutsch
+            languageKey: DU
+        timestamp: '2021-01-18T20:31:28.255+00:00'
+      properties:
+        distribution-channels:
+          $ref: '#/components/schemas/ExternalDistributionChannelDTO'
+        externalid:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    DistributionChannelResponseNotFound:
+      title: Distribution Channel not found
+      type: object
+      example:
+        message: Distribution-Channel has already been deleted or does not exist.
+        externalid: '1231'
+        timestamp: '2021-01-18T20:34:06.576+00:00'
+      properties:
+        message:
+          type: string
+        externalid:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ExternalSalesAreaDTO:
+      title: ' Sales Area'
+      example:
+        externalId: '1232'
+        externalSalesOrganization: '007'
+        externalSalesDivision: '009'
+        externalDistributionChannel: AQA
+        descriptions:
+        - description: this Sales-Area description in English
+          languageKey: EN
+        - description: this Sales-Area description in Deutsch
+          languageKey: DU
+      required:
+      - externalId
+      type: object
+      properties:
+        descriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalSalesAreaDescriptionDTO'
+        externalDistributionChannel:
+          type: string
+        externalId:
+          maxLength: 40
+          minLength: 1
+          type: string
+        externalSalesDivision:
+          type: string
+        externalSalesOrganization:
+          type: string
+    ExternalSalesAreaDescriptionDTO:
+      title: ' Sales Area Description'
+      type: object
+      properties:
+        description:
+          type: string
+        languageKey:
+          type: string
+    SalesAreaDeleteResponse:
+      title: Single sales-area deletion
+      type: object
+      example:
+        message: Success Deleted!
+        externalId: '1232'
+        timestamp: '2021-01-18T20:39:24.896+00:00'
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    SalesAreaResponse:
+      title: Sales-Area Found
+      type: object
+      example:
+        message: Found Sales-Area
+        externalId: '1232'
+        sales-areas:
+          externalId: '1232'
+          descriptions:
+          - description: this Sales-Area description in English
+            languageKey: EN
+          - description: this Sales-Area description in Deutsch
+            languageKey: DU
+          externalSalesOrganization: '007'
+          externalSalesDivision: '009'
+          externalDistributionChannel: AQA
+        timestamp: '2021-01-18T20:41:06.876+00:00'
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        sales-areas:
+          $ref: '#/components/schemas/ExternalSalesAreaDTO'
+        timestamp:
+          type: string
+          format: date-time
+    SalesAreaResponseNotFound:
+      title: Sales Area not found
+      type: object
+      example:
+        message: Not Found
+        externalId: '1232'
+        sales-areas: null
+        timestamp: '2021-01-18T20:38:04.203+00:00'
+      properties:
+        count:
+          type: integer
+          format: int32
+        distribution-channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalDistributionChannelDTO'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ExternalSalesDivisionDTO:
+      title: ' Sales Division'
+      example:
+        externalId: '1232'
+        descriptions:
+        - description: this Sales-Division description in English
+          languageKey: EN
+        - description: this Sales-Division description in Deutsch
+          languageKey: DU
+      required:
+      - externalId
+      type: object
+      properties:
+        descriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalSalesDivisionDescriptionDTO'
+        externalId:
+          maxLength: 40
+          minLength: 1
+          type: string
+    ExternalSalesDivisionDescriptionDTO:
+      title: ' Sales Division Description'
+      type: object
+      properties:
+        description:
+          pattern: '[a-zA-Z0-9/.+!@#$%^&*()+\- ]*'
+          type: string
+        languageKey:
+          maxLength: 2
+          minLength: 1
+          pattern: '[a-zA-Z0-9/ ]*'
+          type: string
+    SalesOrgDeleteResponse:
+      title: Single sales-org deletion
+      type: object
+      example:
+        message: Success Deleted!
+        externalId: '1232'
+        timestamp: '2021-01-18T20:39:24.896+00:00'
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    SalesDivisionDeleteResponse:
+      title: Single sales-division deletion
+      type: object
+      example:
+        message: Success Deleted!
+        externalId: '1232'
+        timestamp: '2021-01-18T20:39:24.896+00:00'
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    SalesDivisionResponse:
+      title: Sales-Division Found
+      type: object
+      example:
+        message: Found Sales-Division
+        externalId: '1232'
+        sales-divisions:
+          externalId: '1232'
+          descriptions:
+          - languageKey: EN
+            description: this Sales-Division description in English
+          - languageKey: DU
+            description: this Sales-Division description in Deutch
+        timestamp: '2021-01-20T05:13:52.123+00:00'
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        sales-divisions:
+          $ref: '#/components/schemas/ExternalSalesDivisionDTO'
+        timestamp:
+          type: string
+          format: date-time
+    SalesDivisionResponseNotFound:
+      title: Sales Division not found
+      type: object
+      example:
+        message: Not Found
+        externalId: '1232'
+        sales-areas: null
+        timestamp: '2021-01-18T20:38:04.203+00:00'
+      properties:
+        count:
+          type: integer
+          format: int32
+        distribution-channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalDistributionChannelDTO'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ExternalSalesOrganizationDTO:
+      title: ' Sale sOrganization'
+      example:
+        externalId: '123'
+        externalCompanyCodeId: '527'
+        descriptions:
+        - description: this Sales-Org description in English
+          languageKey: EN
+        - description: this Sales-Org description in Deutsch
+          languageKey: DU
+      required:
+      - externalId
+      type: object
+      properties:
+        descriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalSalesOrganizationDescriptionDTO'
+        externalCompanyCodeId:
+          type: string
+        externalId:
+          maxLength: 40
+          minLength: 1
+          type: string
+    ExternalSalesOrganizationDescriptionDTO:
+      title: ' Sales Organization Description'
+      type: object
+      properties:
+        description:
+          type: string
+        languageKey:
+          maxLength: 2
+          minLength: 0
+          type: string
+    SalesOrganizationDeleteResponse:
+      title: Sales-organization deletion
+      type: object
+      properties:
+        externalid:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    SalesOrganizationResponse:
+      title: Sales Organization Found
+      type: object
+      example:
+        message: Found Sales-Organization
+        externalId: '123'
+        sales-organization:
+          externalId: '123'
+          externalCompanyCodeId: '5279'
+          descriptions:
+          - description: this Sales-Org description in English
+            languageKey: EN
+          - description: this Sales-Org description in Deutch
+            languageKey: DU
+        timestamp: '2021-01-20T05:10:56.598+00:00'
+      properties:
+        externalId:
+          type: string
+        message:
+          type: string
+        sales-organization:
+          $ref: '#/components/schemas/ExternalSalesOrganizationDTO'
+        timestamp:
+          type: string
+          format: date-time
+    SalesOrganizationResponseNotFound:
+      title: Sales Organization not found
+      type: object
+      example:
+        message: Not Found
+        externalId: '1231'
+        sales-organization: null
+        timestamp: '2021-01-18T20:45:56.515+00:00'
+      properties:
+        count:
+          type: integer
+          format: int32
+        distribution-channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalDistributionChannelDTO'
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponseCreated:
+      title: Created
+      type: object
+      example:
+        message: Success Created!
+        externalId: '123'
+        timestamp: '2021-01-18T20:29:04.124+00:00'
+      properties:
+        externalId:
+          type: string
+        message:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+    ResponseMessage:
+      title: Response Message
+      type: object
+      properties:
+        message:
+          type: string
+        uri:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: To use this API, you need to get OAuth client credentials (client ID and secret) from SAP ITCM, and be authorized to use the relevant scope. Refer to the <a href="https://developer.sap.com/api-reference/authentication/getting-started.html">full authentication information</a> for more information.
+      flows:
+        clientCredentials:
+          tokenUrl: https://colgate-dev1.authentication.us30.hana.ondemand.com/oauth/token
+          scopes: {}
+x-sap-shortText: The Organizational Data services represent organizational data that can be posted to, deleted or queried from SAP Intelligent Trade Claims Management by a user.

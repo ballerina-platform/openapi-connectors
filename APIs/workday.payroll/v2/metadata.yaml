@@ -1,0 +1,11 @@
+id: workday.payroll
+displayName: Workday Payroll
+type: OpenAPI
+version: v2
+description: This is the [WorkDay payroll REST API v2](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification. The Payroll service enables you to access and manage payroll information,such as pay groups, payroll inputs, and tax rates.
+idlPath: /workday.payroll/v2/openapi.yaml
+thumbnailPath: /workday.payroll/v2/icon.png
+documentationPath: /workday.payroll/v2/readme.md
+keywords:
+  - Finance/Accounting
+  - Cost/Paid

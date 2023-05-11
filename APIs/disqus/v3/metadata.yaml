@@ -1,0 +1,13 @@
+id: disqus
+displayName: Disqus
+type: OpenAPI
+version: v3
+description: This is the [Disqus API v1](https://disqus.com/api/docs) OpenAPI specification.
+idlPath: /disqus/v3/openapi.yaml
+thumbnailPath: /disqus/v3/icon.png
+documentationPath: /disqus/v3/readme.md
+keywords:
+  - Website&AppBuilding/WebsiteBuilders
+  - Cost/Freemium
+endpoint:
+  - url: https://disqus.com/api/3.0

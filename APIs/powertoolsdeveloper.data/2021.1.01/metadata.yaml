@@ -1,0 +1,13 @@
+id: powertoolsdeveloper.data
+displayName: PowerTools Developer Data
+type: OpenAPI
+version: 2021.1.01
+description: This is the [Apptigent PowerTools Developer API v2021.1.01](https://portal.apptigent.com/node/612) OpenAPI specification. 'Apptigent PowerTools Developer Edition is a powerful suite of API endpoints for custom applications running on any stack.  Manipulate text, modify collections, format dates and times, convert currency, perform advanced mathematical calculations, shorten URL's, encode strings, convert text to speech, translate content into multiple languages, process images, and more.  PowerTools is the ultimate developer toolkit.' This connector provides the capability for data conversion.
+idlPath: /powertoolsdeveloper.data/2021.1.01/openapi.yaml
+thumbnailPath: /powertoolsdeveloper.data/2021.1.01/icon.png
+documentationPath: /powertoolsdeveloper.data/2021.1.01/readme.md
+keywords:
+  - Website&AppBuilding/AppBuilders
+  - Cost/Freemium
+endpoint:
+  - url: https://connect.apptigent.com/api/utilities

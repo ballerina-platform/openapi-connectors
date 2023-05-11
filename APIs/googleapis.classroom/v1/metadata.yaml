@@ -1,0 +1,14 @@
+id: googleapis.classroom
+displayName: Google Classroom
+type: OpenAPI
+version: v1
+description: This is the [Google Classroom API v1](https://developers.google.com/classroom/guides/get-started) OpenAPI specification.
+idlPath: /googleapis.classroom/v1/openapi.yaml
+thumbnailPath: /googleapis.classroom/v1/icon.png
+documentationPath: /googleapis.classroom/v1/readme.md
+keywords:
+  - Education/Elearning
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://classroom.googleapis.com

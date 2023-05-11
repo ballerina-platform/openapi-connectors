@@ -1,0 +1,530 @@
+openapi: 3.0.3
+info:
+  title: Psycholinguistic Text Analytics
+  description: >-
+    This is the [Symanto Psycholinguistic Text Analytics version 1.5.0](https://api.symanto.net/docs) OpenAPI Specification.
+    Symanto psycholinguistic text analytics API provides capability to access operations related to the deepest understanding of people through psychology &
+    AI
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create an [Symanto account](https://www.symanto.com/) and obtain OAuth tokens following [this guide](https://symanto-research.github.io/symanto-docs/#authentication)
+  x-ballerina-display:
+    label: Symanto Text Analytics
+    iconPath: "icon.png"
+  termsOfService: https://developers.symanto.net/terms-of-service
+  contact:
+    name: Symanto Support
+    url: https://developers.symanto.net
+    email: support@symanto.net
+  version: '1.0'
+servers:
+  - url: https://api.symanto.net
+security:
+  - apiKeyHeader: []
+paths:
+  /communication:
+    post:
+      tags:
+        - Text Analysis
+      summary: Communication & Tonality
+      description: >-
+        Identify the purpose and writing style of a written text.
+
+        Supported Languages: [`ar`, `de`, `en`, `es`, `fr`, `it`, `nl`, `pt`,
+        `ru`, `tr`, `zh`]
+
+
+        Returned labels:
+
+        * action-seeking
+
+        * fact-oriented
+
+        * information-seeking
+
+        * self-revealing
+      operationId: getCommunicationStyle
+      parameters:
+        - name: all
+          description: Returns all predictions, not only the most probable one
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Request Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResults'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+  /emotion:
+    post:
+      tags:
+        - Text Analysis
+      summary: Emotion Analysis
+      description: |-
+        Detect the emotions of the text.
+
+        Supported Langauges: [`en`, `de`, `es`]
+
+        Returned labels:
+        * anger
+        * joy
+        * love
+        * sadness
+        * surprise
+        * uncategorized
+      operationId: getEmotion
+      parameters:
+        - name: all
+          description: Returns all predictions, not only the most probable one
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Request Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResults'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+  /ekman-emotion:
+    post:
+      tags:
+        - Text Analysis
+      summary: Emotion Analysis
+      description: |-
+        Detect the emotions of the text based on Ekman.
+
+        Supported Langauges: [`en`, `de`, `es`]
+
+        Returned labels:
+        * anger
+        * disgust
+        * fear
+        * joy
+        * sadness
+        * surprise
+        * no-emotion
+      operationId: getEkmanEmotion
+      parameters:
+        - name: all
+          description: Returns all predictions, not only the most probable one
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Request Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResults'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+  /personality:
+    post:
+      tags:
+        - Text Analysis
+      summary: Personality Traits
+      description: >-
+        Predict the personality trait of author of any written text.
+
+
+        Supported Languages: [`ar`, `de`, `en`, `es`, `fr`, `it`, `nl`, `pt`,
+        `ru`, `tr`, `zh`]
+
+
+        Returned labels:
+
+
+        * emotional
+
+        * rational
+      operationId: getPersonality
+      parameters:
+        - name: all
+          description: Returns all predictions, not only the most probable one
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Request Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResults'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+  /sentiment:
+    post:
+      tags:
+        - Text Analysis
+      summary: Sentiment Analysis
+      description: |-
+        Evaluate the overall tonality of the text.
+
+        Supported Languages: [`en`, `de`, `es`]
+
+        Returned labels:
+        * positive
+        * negative
+      operationId: getSentiment
+      parameters:
+        - name: all
+          description: Returns all predictions, not only the most probable one
+          in: query
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            default: false
+      requestBody:
+        description: Request Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionResults'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+  /topic-sentiment:
+    post:
+      tags:
+        - Text Analysis
+      summary: Extracts topics and sentiments and relates them.
+      operationId: getTopicSentiment
+      parameters:
+        - name: domain
+          in: query
+          description: Provide analysis domain for better extraction (optional)
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: string
+            enum:
+              - Ecom
+              - Employee
+              - Hotel
+              - Restaurant
+      requestBody:
+        description: Request Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TopicSentimentResponse'
+  /language-detection:
+    post:
+      tags:
+        - Text Analysis
+      summary: Language Detection
+      description: >-
+        Identifies what language a text is written in. Only languages that our
+        API supports can be analyzed.
+
+        Returned labels:
+
+        * language_code of the detected language
+      operationId: getLanguageDetection
+      requestBody:
+        description: Request Details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LanguageDetectionRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LanguageDetectionResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationErrors'
+components:
+  schemas:
+    PostRequest:
+      title: Posts
+      maxItems: 32
+      minItems: 1
+      type: array
+      items:
+        $ref: '#/components/schemas/Post'
+    LanguageDetection:
+      required:
+        - text
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the text.
+        text:
+          type: string
+          description: the text itself.
+    Post:
+      title: Post
+      required:
+        - language
+        - text
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the post.
+          example: '1'
+        text:
+          type: string
+          description: the text to be analysed.
+          example: I love the service
+        language:
+          type: string
+          description: language_code of the text.
+          example: en
+    LanguagePredicted:
+      title: LanguagePredicted
+      required:
+        - detected_language
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the post.
+        detected_language:
+          type: string
+          description: the detected language_code corresponding to the input text.
+    PostPredicted:
+      title: PostPredicted
+      required:
+        - predictions
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the post.
+        predictions:
+          type: array
+          description: the list of predictions.
+          items:
+            $ref: '#/components/schemas/Prediction'
+    Prediction:
+      title: Prediction
+      required:
+        - prediction
+        - probability
+      type: object
+      properties:
+        prediction:
+          title: Prediction
+          type: string
+          description: the predicted label.
+        probability:
+          title: Probability
+          type: number
+          description: the probability of the predicted label.
+    PredictionResults:
+      title: Prediction Results
+      type: array
+      items:
+        $ref: '#/components/schemas/PostPredicted'
+    LanguageDetectionRequest:
+      maxItems: 64
+      minItems: 1
+      type: array
+      items:
+        $ref: '#/components/schemas/LanguageDetection'
+    LanguageDetectionResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/LanguagePredicted'
+    TopicSentimentOutput:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        language:
+          type: string
+        topicSentiments:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicSentiment'
+        sentiments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sentiment'
+        topics:
+          type: array
+          items:
+            $ref: '#/components/schemas/Topic'
+    TopicSentiment:
+      type: object
+      properties:
+        topic:
+          $ref: '#/components/schemas/Topic'
+        sentiment:
+          $ref: '#/components/schemas/Sentiment'
+        sentence:
+          type: string
+    Sentiment:
+      type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+        end:
+          type: integer
+          format: int32
+        text:
+          type: string
+        positive:
+          type: boolean
+        scale:
+          type: number
+          format: double
+        category:
+          type: string
+        parentCategory:
+          type: string
+        negationTerm:
+          type: string
+    Topic:
+      type: object
+      properties:
+        start:
+          type: integer
+          format: int32
+        end:
+          type: integer
+          format: int32
+        topic:
+          type: string
+        text:
+          type: string
+        category:
+          type: string
+        polarity:
+          type: number
+          format: double
+    TopicSentimentResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/TopicSentimentOutput'
+    ValidationErrors:
+      title: ValidationErrors
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: Represents API Key `x-api-key`

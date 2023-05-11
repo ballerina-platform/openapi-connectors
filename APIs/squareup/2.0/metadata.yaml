@@ -1,0 +1,13 @@
+id: squareup
+displayName: SquareUp
+type: OpenAPI
+version: "2.0"
+description: This is the [Square Connect API 2.0](https://squareup.com/us/en) OpenAPI Specification.
+idlPath: /squareup/2.0/openapi.yaml
+thumbnailPath: /squareup/2.0/icon.png
+documentationPath: /squareup/2.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid
+endpoint:
+  - url: https://connect.squareup.com

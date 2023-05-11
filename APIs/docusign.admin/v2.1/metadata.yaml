@@ -1,0 +1,13 @@
+id: docusign.admin
+displayName: DocuSign Admin
+type: OpenAPI
+version: v2.1
+description: This is the [DocuSign Admin API](https://developers.docusign.com/docs/admin-api/) OpenAPI specification. An API for an organization administrator to manage organizations, accounts and users which enables you to automate user management with your existing systems while ensuring governance and compliance.
+idlPath: /docusign.admin/v2.1/openapi.yaml
+thumbnailPath: /docusign.admin/v2.1/icon.png
+documentationPath: /docusign.admin/v2.1/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: https://api.docusign.net/Management

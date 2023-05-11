@@ -1,0 +1,13 @@
+id: pipedrive
+displayName: Pipedrive
+type: OpenAPI
+version: 1.0.0
+description: This is the [Pipedrive API v1](https://developers.pipedrive.com/docs/api/v1) OpenAPI specification.
+idlPath: /pipedrive/1.0.0/openapi.yaml
+thumbnailPath: /pipedrive/1.0.0/icon.png
+documentationPath: /pipedrive/1.0.0/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Paid
+endpoint:
+  - url: https://api.pipedrive.com/v1

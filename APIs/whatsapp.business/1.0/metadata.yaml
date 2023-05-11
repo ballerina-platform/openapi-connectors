@@ -1,0 +1,11 @@
+id: whatsapp.business
+displayName: WhatsApp Business
+type: OpenAPI
+version: "1.0"
+description: This is the [WhatsApp Business v2.21.4](https://developers.facebook.com/docs/whatsapp/) OpenAPI Specification.
+idlPath: /whatsapp.business/1.0/openapi.yaml
+thumbnailPath: /whatsapp.business/1.0/icon.png
+documentationPath: /whatsapp.business/1.0/readme.md
+keywords:
+  - Communication/Call&SMS
+  - Cost/Freemium

@@ -1,0 +1,14 @@
+id: googleapis.blogger
+displayName: Google Blogger
+type: OpenAPI
+version: v3
+description: This is the [Google Blogger API v3.0](https://developers.google.com/blogger/docs/3.0/getting_started) OpenAPI specification.
+idlPath: /googleapis.blogger/v3/openapi.yaml
+thumbnailPath: /googleapis.blogger/v3/icon.png
+documentationPath: /googleapis.blogger/v3/readme.md
+keywords:
+  - Content&Files/Blogs
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://blogger.googleapis.com

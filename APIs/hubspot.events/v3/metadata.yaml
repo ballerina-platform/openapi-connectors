@@ -1,0 +1,13 @@
+id: hubspot.events
+displayName: HubSpot Events
+type: OpenAPI
+version: v3
+description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification. These APIs allow accessing CRM object events.
+idlPath: /hubspot.events/v3/openapi.yaml
+thumbnailPath: /hubspot.events/v3/icon.png
+documentationPath: /hubspot.events/v3/readme.md
+keywords:
+  - Marketing/EventManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.hubapi.com

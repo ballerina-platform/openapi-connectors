@@ -1,0 +1,11 @@
+id: magento.cart
+displayName: Magento Cart
+type: OpenAPI
+version: 2.2.10
+description: This is the [Magento REST API v2.2](https://devdocs.magento.com/guides/v2.4/rest/bk-rest.html) OpenAPI specification. The Magento B2B Rest API service enables applications to build and manage a customized commerce store.
+idlPath: /magento.cart/2.2.10/openapi.yaml
+thumbnailPath: /magento.cart/2.2.10/icon.png
+documentationPath: /magento.cart/2.2.10/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

@@ -1,0 +1,11 @@
+id: ronin
+displayName: Ronin
+type: OpenAPI
+version: v2
+description: This is the [Ronin API v1](https://www.roninapp.com/api) OpenAPI specification.
+idlPath: /ronin/v2/openapi.yaml
+thumbnailPath: /ronin/v2/icon.png
+documentationPath: /ronin/v2/readme.md
+keywords:
+  - Finance/Billing
+  - Cost/Paid

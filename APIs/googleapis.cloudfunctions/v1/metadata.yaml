@@ -1,0 +1,13 @@
+id: googleapis.cloudfunctions
+type: OpenAPI
+version: v1
+description: v1
+idlPath: /googleapis.cloudfunctions/v1/openapi.yaml
+thumbnailPath: /googleapis.cloudfunctions/v1/icon.png
+documentationPath: /googleapis.cloudfunctions/v1/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://cloudfunctions.googleapis.com/

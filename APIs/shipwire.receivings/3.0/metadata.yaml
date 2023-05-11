@@ -1,0 +1,13 @@
+id: shipwire.receivings
+displayName: Shipwire Receivings
+type: OpenAPI
+version: "3.0"
+description: This is the [Shipwire Receivings API v3.0](https://www.shipwire.com/developers/receiving) OpenAPI specification.
+idlPath: /shipwire.receivings/3.0/openapi.yaml
+thumbnailPath: /shipwire.receivings/3.0/icon.png
+documentationPath: /shipwire.receivings/3.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.shipwire.com/

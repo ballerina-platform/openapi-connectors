@@ -1,0 +1,16 @@
+id: azure.openai.finetunes
+displayName: Azure OpenAI Finetunes
+type: OpenAPI
+version: "2022-12-01"
+description: APIs for fine-tuning and managing deployments of OpenAI models.
+idlPath: /azure.openai.finetunes/2022-12-01/openapi.yaml
+thumbnailPath: /azure.openai.finetunes/2022-12-01/icon.png
+documentationPath: /azure.openai.finetunes/2022-12-01/readme.md
+keywords:
+  - AI/Fine-tunes
+  - Vendor/Microsoft
+  - Cost/Paid
+  - Fine-tunes
+  - Files
+  - Models
+  - AzureOpenAI

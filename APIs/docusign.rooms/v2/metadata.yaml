@@ -1,0 +1,13 @@
+id: docusign.rooms
+displayName: DocuSign Rooms
+type: OpenAPI
+version: v2
+description: This is the [DocuSign Rooms API](https://developers.docusign.com/docs/rooms-api/) OpenAPI specification.  DocuSign Rooms streamlines real estate and mortgage workflows by connecting all parties in a digital, secure, and central workspace. With the DocuSign Rooms API, it’s easy to integrate Rooms functionality into your own solutions.
+idlPath: /docusign.rooms/v2/openapi.yaml
+thumbnailPath: /docusign.rooms/v2/icon.png
+documentationPath: /docusign.rooms/v2/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: https://rooms.docusign.com/restapi

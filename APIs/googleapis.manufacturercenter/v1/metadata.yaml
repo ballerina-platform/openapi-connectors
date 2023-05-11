@@ -1,0 +1,14 @@
+id: googleapis.manufacturercenter
+displayName: Google Manufacturer Center
+type: OpenAPI
+version: v1
+description: This is the [Google Manufacturer Center API v1](https://developers.google.com/manufacturers/) OpenAPI specification.
+idlPath: /googleapis.manufacturercenter/v1/openapi.yaml
+thumbnailPath: /googleapis.manufacturercenter/v1/icon.png
+documentationPath: /googleapis.manufacturercenter/v1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Free
+  - Vendor/Google
+endpoint:
+  - url: https://manufacturers.googleapis.com/

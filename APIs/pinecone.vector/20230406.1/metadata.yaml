@@ -1,0 +1,13 @@
+id: pinecone.vector
+displayName: Pinecone Vector
+type: OpenAPI
+version: "20230406.1"
+description: This is the the `Vector Operations` under [Pinecone Vector Database API](https://docs.pinecone.io/reference) OpenAPI specification. Pinecone is a fully managed vector database which supports building developer-friendly, easily scalable, and high-performance vector search applications without infrastructure hassles.
+idlPath: /pinecone.vector/20230406.1/openapi.yaml
+thumbnailPath: /pinecone.vector/20230406.1/icon.png
+documentationPath: /pinecone.vector/20230406.1/readme.md
+keywords:
+  - AI/VectorDatabases
+  - Cost/Freemium
+  - Vendor/Pinecone
+  - EmbeddingSearch

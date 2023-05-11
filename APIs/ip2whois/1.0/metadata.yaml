@@ -1,0 +1,13 @@
+id: ip2whois
+displayName: IP2WHOIS
+type: OpenAPI
+version: "1.0"
+description: This is the [IP2WHOIS API v2](https://www.ip2whois.com/developers-api) OpenAPI Specification.  IP2WHOIS is a free tool to allow you to check WHOIS information for a particular domain, such as domain assigned owner contact information, registrar information, registrant information, location and much more.
+idlPath: /ip2whois/1.0/openapi.yaml
+thumbnailPath: /ip2whois/1.0/icon.png
+documentationPath: /ip2whois/1.0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Free
+endpoint:
+  - url: https://api.ip2whois.com/v1

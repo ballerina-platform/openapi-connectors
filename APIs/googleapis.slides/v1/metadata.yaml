@@ -1,0 +1,14 @@
+id: googleapis.slides
+displayName: Google Slides
+type: OpenAPI
+version: v1
+description: This is the [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification. Reads and writes Google Slides presentations.
+idlPath: /googleapis.slides/v1/openapi.yaml
+thumbnailPath: /googleapis.slides/v1/icon.png
+documentationPath: /googleapis.slides/v1/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+  - Vendor/Google
+endpoint:
+  - url: https://slides.googleapis.com/

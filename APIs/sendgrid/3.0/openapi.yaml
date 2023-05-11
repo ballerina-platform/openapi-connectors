@@ -1,0 +1,1500 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.sendgrid.com/v3
+info:
+  description: >
+    This is a generated connector for [Sendgrid API v3](https://docs.sendgrid.com/api-reference/how-to-use-the-sendgrid-v3-api/) OpenAPI Specification. 
+    The Beta endpoints for the new Email Activity APIs - functionality is subject to change without notice. You may not have access to this Beta endpoint.
+    Email Activity offers filtering and search by event type for two days worth of data. There is an optional add-on to store 60 days worth of data. This add-on also gives you access to the ability to download a CSV of the 60 days worth of email event data.
+  title: SendGrid v3 API Documentation
+  version: "3.0"
+  x-ballerina-display:
+    label: SendGrid
+    iconPath: "icon.png"
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Create a [Sendgrid](https://sendgrid.com/) account and obtain an API Key visiting [Settings -> APIKeys](https://app.sendgrid.com/settings/api_keys). Use the obtained API Key as the token at connector initialization. Configure [required permissions](https://docs.sendgrid.com/ui/account-and-settings/api-keys) when generating the API Key.
+externalDocs:
+  url: https://sendgrid.com/docs/API_Reference/Web_API_v3/index.html
+paths:
+  /mail/send:
+    post:
+      description: >-
+        This endpoint allows you to send email over SendGrid’s v3 Web API,
+        the most recent version of our API. If you are looking for documentation
+        about the v2 Mail Send endpoint, please see our [v2 API
+        Reference](https://sendgrid.com/docs/API_Reference/Web_API/mail.html).
+
+
+        * Top level parameters are referred to as "global".
+
+        * Individual fields within the personalizations array will override any other global, or “message level”, parameters that are defined outside of personalizations.
+         
+        **SendGrid provides libraries to help you quickly and easily integrate with the v3 Web API in 7 different languages: [C#](https://github.com/sendgrid/sendgrid-csharp), [Go](https://github.com/sendgrid/sendgrid-go), [Java](https://github.com/sendgrid/sendgrid-java), [Node JS](https://github.com/sendgrid/sendgrid-nodejs), [PHP](https://github.com/sendgrid/sendgrid-php), [Python](https://github.com/sendgrid/sendgrid-python), and [Ruby](https://github.com/sendgrid/sendgrid-ruby).**
+
+
+
+        For more detailed information about how to use the v3 Mail Send endpoint, please visit our [Classroom](https://sendgrid.com/docs/Classroom/Send/v3_Mail_Send/index.html).
+      operationId: sendMail
+      x-ballerina-display:
+        label: Send Email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendEmailRequest'
+        description: Mail content
+        x-ballerina-display: 
+          label: Email Content
+      responses:
+        "202":
+          description: "No Content"
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errors"
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errors"
+          description: ""
+        "413":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/errors"
+          description: ""
+      security:
+        - Authorization: []
+      summary: Send Mail
+      tags:
+        - Mail Send
+  /alerts:
+    get:
+      description: >-
+        **This endpoint allows you to retieve all of your alerts.**
+
+
+        Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics. 
+
+        * Usage alerts allow you to set the threshold at which an alert will be sent.
+
+        * Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+
+
+        For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
+      operationId: GET_alerts
+      x-ballerina-display: 
+        label: Get All Alerts
+      parameters:
+        - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    - created_at: 1451498784
+                      email_to: example1@example.com
+                      id: 46
+                      percentage: 90
+                      type: usage_limit
+                      updated_at: 1451498784
+                    - created_at: 1451498812
+                      email_to: example2@example.com
+                      frequency: monthly
+                      id: 47
+                      type: stats_notification
+                      updated_at: 1451498812
+                    - created_at: 1451520930
+                      email_to: example3@example.com
+                      frequency: daily
+                      id: 48
+                      type: stats_notification
+                      updated_at: 1451520930
+              schema:
+                description: The list of alerts.
+                items:
+                  $ref: '#/components/schemas/AlertResponse'
+          description: "Details related to alerts"
+      security:
+        - Authorization: []
+      summary: Retrieve all alerts
+      tags:
+        - Alerts
+    post:
+      description: >-
+        **This endpoint allows you to create a new alert.**
+
+
+        Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics. There are two types of alerts that can be created with this endpoint:
+
+
+        * `usage_limit` allows you to set the threshold at which an alert will be sent.
+
+        * `stats_notification` allows you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+
+
+        For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
+      operationId: POST_alerts
+      x-ballerina-display: 
+        label: Create Alert
+      parameters:
+        - in: header
+          description: "The subuser's username. This header generates the API call as if the subuser account was making the call."
+          name: on-behalf-of
+          x-ballerina-display: 
+            label: Subuser's Username
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostAlertsRequest'
+        description: Alert Content
+        x-ballerina-display: 
+          label: Alert Content
+      responses:
+        "201":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    created_at: 1451520930
+                    email_to: test@example.com
+                    frequency: daily
+                    id: 48
+                    type: stats_notification
+                    updated_at: 1451520930
+              schema:
+                $ref: '#/components/schemas/PostAlertsResponse'
+          description: "Created alert details"
+        "400":
+          content:
+            application/json:
+              schema:
+                properties:
+                  field:
+                    type: string
+                  message:
+                    type: string
+                type: object
+          description: ""
+      security:
+        - Authorization: []
+      summary: Create a new Alert
+      tags:
+        - Alerts
+  "/alerts/{alert_id}":
+    delete:
+      description: >-
+        **This endpoint allows you to delete an alert.**
+        Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics. 
+        * Usage alerts allow you to set the threshold at which an alert will be sent.
+        * Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+        For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
+      operationId: deleteAlertById
+      x-ballerina-display:
+        label: Delete Alert by Id
+      parameters:
+        - description: The ID of the alert you would like to retrieve.
+          in: path
+          name: alert_id
+          required: true
+          schema:
+            type: integer
+          x-ballerina-display:
+            label: Alert Id
+        - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+      responses:
+        "204":
+          description: "Succesful - No Content"
+      security:
+        - Authorization: []
+      summary: Delete an alert
+      tags:
+        - Alerts
+    patch:
+      description: >-
+        **This endpoint allows you to update an alert.**
+        Alerts allow you to specify an email address to receive notifications regarding your email usage or statistics. 
+        * Usage alerts allow you to set the threshold at which an alert will be sent.
+        * Stats notifications allow you to set how frequently you would like to receive email statistics reports. For example, "daily", "weekly", or "monthly".
+        For more information about alerts, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Settings/alerts.html).
+      operationId: updateAlertbyId
+      x-ballerina-display:
+        label: Update Alert by Id
+      parameters:
+        - description: The ID of the alert you would like to retrieve.
+          in: path
+          name: alert_id
+          required: true
+          schema:
+            type: integer
+          x-ballerina-display:
+            label: Alert Id
+        - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAlertbyIdRequest'
+        description: Alert content to update
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    created_at: 1451520930
+                    email_to: example@example.com
+                    frequency: daily
+                    id: 48
+                    type: stats_notification
+                    updated_at: 1451522691
+              schema:
+                $ref: '#/components/schemas/UpdateAlertbyIdResponse'
+          description: "Updated alert details"
+      security:
+        - Authorization: []
+      summary: Update an alert
+      tags:
+        - Alerts
+  /subusers:
+    get:
+      description: >-
+        This endpoint allows you to retrieve a list of all of your
+        subusers. You can choose to retrieve specific subusers as well as limit
+        the results that come back from the API.
+
+
+        For more information about Subusers:
+
+
+        * [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+
+        * [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+      operationId: GET_subusers
+      x-ballerina-display: 
+        label: List All Subusers
+      parameters:
+        - description: The username of this subuser.
+          in: query
+          name: username
+          schema:
+            type: string
+          x-ballerina-display: 
+            label: Username
+        - description: The number of results you would like to get in each request.
+          in: query
+          name: limit
+          schema:
+            type: integer
+          x-ballerina-display: 
+            label: Limit
+        - description: The number of subusers to skip.
+          in: query
+          name: offset
+          schema:
+            type: integer
+          x-ballerina-display: 
+            label: Offset
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    - disabled: false
+                      email: example@example.com
+                      id: 1234
+                      username: example_subuser
+                    - disabled: false
+                      email: example2@example.com
+                      id: 1234
+                      username: example_subuser2
+              schema:
+                items:
+                  $ref: "#/components/schemas/Subuser"
+                type: array
+          description: "List of Subusers"
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/global_ErrorResponse"
+          description: Unexpected error in API call. See HTTP response body for details.
+      security:
+        - Authorization: []
+      summary: List all Subusers
+      tags:
+        - Subusers API
+    post:
+      description: >-
+        This endpoint allows you to retrieve a list of all of your
+        subusers. You can choose to retrieve specific subusers as well as limit
+        the results that come back from the API.
+
+
+        For more information about Subusers:
+
+
+        * [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+
+        * [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+      operationId: POST_subusers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostSubusersRequest'
+        description: New subuser details  
+        x-ballerina-display: 
+          label: New Subuser Details
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    authorization_token: ""
+                    credit_allocation:
+                      type: unlimited
+                    email: example@example.com
+                    signup_session_token: ""
+                    user_id: 1234
+                    username: example_subuser
+              schema:
+                $ref: "#/components/schemas/subuser_post"
+          description: Created subuser's details
+        "400":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    errors:
+                      - message: username exists
+                      - message: unable to validate IPs at this time
+              schema:
+                $ref: "#/components/schemas/global_ErrorResponse"
+          description: ""
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/global_ErrorResponse"
+          description: ""
+        "403":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    errors:
+                      - message: you dont have permission to access this resource
+              schema:
+                $ref: "#/components/schemas/global_ErrorResponse"
+          description: ""
+        "500":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    errors:
+                      - message: unable to validate IPs at this time
+              schema:
+                type: object
+          description: ""
+      security:
+        - Authorization: []
+      summary: Create Subuser
+      tags:
+        - Subusers API
+  "/subusers/{subuser_name}":
+    delete:
+      description: >-
+        This endpoint allows you to delete a subuser. This is a permanent
+        action, once deleted a subuser cannot be retrieved.
+        For more information about Subusers:
+        * [User Guide > Subusers](https://sendgrid.com/docs/User_Guide/Settings/Subusers/index.html)
+        * [Classroom > How do I add more subusers to my account?](https://sendgrid.com/docs/Classroom/Basics/Account/how_do_i_add_more_subusers_to_my_account.html)
+      operationId: deleteSubuserByName
+      x-ballerina-display: 
+        label: Update Subuser by Subuser Name
+      responses:
+        "204":
+          description: "Successful - No Content"
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/global_ErrorResponse"
+          description: ""
+      security:
+        - Authorization: []
+      summary: Delete a subuser
+      tags:
+        - Subusers API
+    parameters:
+      - in: path
+        name: subuser_name
+        required: true
+        schema:
+          type: string
+        x-ballerina-display:
+          label: Subuser Name
+        description: Subuser name
+  "/suppression/blocks":
+    get:
+      description: >-
+        **This endpoint allows you to retrieve a list of all email
+        addresses that are currently on your blocks list.**
+
+
+        There are several causes for [blocked](https://sendgrid.com/docs/Glossary/blocks.html) emails: for example, your mail server IP address is on an ISP blacklist, or blocked by an ISP, or if the receiving server flags the message content.
+
+
+        For more information, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Suppressions/blocks.html).
+      operationId: GET_suppression-blocks
+      x-ballerina-display: 
+        label: Get Suppression Blocks
+      parameters:
+        - description: Refers start of the time range in unix timestamp when a blocked
+            email was created (inclusive).
+          in: query
+          name: start_time
+          schema:
+            type: integer
+          x-ballerina-display: 
+            label: Start Time
+        - description: Refers end of the time range in unix timestamp when a blocked email
+            was created (inclusive).
+          in: query
+          name: end_time
+          schema:
+            type: integer
+          x-ballerina-display: 
+            label: End Time
+        - description: Limit the number of results to be displayed per page.
+          in: query
+          name: limit
+          schema:
+            type: integer
+          x-ballerina-display: 
+            label: Limit
+        - description: The point in the list to begin displaying results.
+          in: query
+          name: offset
+          schema:
+            type: integer
+          x-ballerina-display: 
+            label: Offset
+        - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    - created: 1443651154
+                      email: example@example.com
+                      reason: "error dialing remote address: dial tcp 10.57.152.165:25: no route to
+                        host"
+                      status: 4.0.0
+              schema:
+                items:
+                  $ref: '#/components/schemas/SuppressionBlocks'
+                type: array
+          description: "List of all blocks"
+      security:
+        - Authorization: []
+      summary: Retrieve all blocks
+      tags:
+        - Blocks API
+  "/suppression/spam_reports":
+      get:
+        description: >-
+          **This endpoint allows you to retrieve all spam reports.**
+  
+  
+          [Spam reports](https://sendgrid.com/docs/Glossary/spam_reports.html) happen when a recipient indicates that they think your email is [spam](https://sendgrid.com/docs/Glossary/spam.html) and then their email provider reports this to SendGrid.
+  
+  
+          For more information, please see our [User Guide](https://sendgrid.com/docs/User_Guide/Suppressions/spam_reports.html).
+        operationId: GET_suppression-spam_reports
+        x-ballerina-display:
+          label: Get Suppression Spam Reports
+        parameters:
+          - description: Refers start of the time range in unix timestamp when a spam report
+              was created (inclusive).
+            in: query
+            name: start_time
+            schema:
+              type: integer
+            x-ballerina-display:
+              label: Start Time
+          - description: Refers end of the time range in unix timestamp when a spam report
+              was created (inclusive).
+            in: query
+            name: end_time
+            schema:
+              type: integer
+            x-ballerina-display:
+              label: End Time
+          - description: Limit the number of results to be displayed per page.
+            in: query
+            name: limit
+            schema:
+              type: integer
+            x-ballerina-display:
+              label: Limit
+          - description: Paging offset. The point in the list to begin displaying results.
+            in: query
+            name: offset
+            schema:
+              type: integer
+            x-ballerina-display:
+              label: Offset
+          - $ref: "#/components/parameters/trait_onBehalfOfSubuser_on-behalf-of"
+        responses:
+          "200":
+            content:
+              application/json:
+                examples:
+                  response:
+                    value:
+                      - created: 1443651141
+                        email: user1@example.com
+                        ip: 10.63.202.100
+                      - created: 1443651154
+                        email: user2@example.com
+                        ip: 10.63.202.100
+                schema:
+                  items:
+                    $ref: '#/components/schemas/SpamReportDetails'
+                  type: array
+            description: "Received spam reports"
+        security:
+          - Authorization: []
+        summary: Retrieve all spam reports
+        tags:
+          - Spam Reports API
+components:
+  parameters:
+    trait_onBehalfOfSubuser_on-behalf-of:
+      description: "The subuser's username. This header generates the API call as if the subuser account was making the call."
+      in: header
+      name: on-behalf-of
+      schema:
+        type: string
+      x-ballerina-display: 
+        label: Subuser's Username
+  schemas:
+    PostSubusersRequest:
+      example:
+        email: John@example.com
+        ips:
+          - 1.1.1.1
+          - 2.2.2.2
+        password: johns_password
+        username: John@example.com
+      properties:
+        email:
+          description: The email address of the subuser.
+          format: email
+          type: string
+          x-ballerina-display: 
+            label: Subuser's Email
+        ips:
+          description: The IP addresses that should be assigned to this subuser.
+          items:
+            format: ipv4
+            type: string
+          type: array
+          x-ballerina-display: 
+            label: Subuser's IP Addresses
+        password:
+          description: The password this subuser will use when logging into SendGrid.
+          type: string
+          x-ballerina-display: 
+            label: Password
+        username:
+          description: The username for this subuser.
+          type: string
+          x-ballerina-display: 
+            label: Username
+      required:
+        - username
+        - email
+        - password
+        - ips
+      type: object
+    UpdateAlertbyIdResponse:
+      properties:
+        created_at:
+          description: A Unix timestamp indicating when the alert was created.
+          type: integer
+        email_to:
+          description: The email address that the alert will be sent to.
+          type: string
+        frequency:
+          description: 'If the alert is of type stats_notification, this indicates how
+            frequently the stats notifications will be sent. For
+            example: "daily", "weekly", or "monthly".'
+          type: string
+        id:
+          description: The ID of the alert.
+          type: integer
+        percentage:
+          description: If the alert is of type usage_limit, this indicates the percentage
+            of email usage that must be reached before the alert will
+            be sent.
+          type: integer
+        type:
+          description: The type of alert.
+          enum:
+            - usage_alert
+            - stats_notification
+          type: string
+        updated_at:
+          description: A Unix timestamp indicating when the alert was last modified.
+          type: integer
+      required:
+        - created_at
+        - email_to
+        - id
+        - type
+        - updated_at
+      type: object
+    UpdateAlertbyIdRequest:
+      example:
+        email_to: example@example.com
+      properties:
+        email_to:
+          description: |-
+            The new email address you want your alert to be sent to.
+            Example: test@example.com
+          type: string
+        frequency:
+          description: >-
+            The new frequency at which to send the stats_notification alert.
+            Example: monthly
+          type: string
+        percentage:
+          description: >-
+            The new percentage threshold at which the usage_limit alert will be
+            sent.
+            Example: 90
+          type: integer
+      type: object
+    PostAlertsResponse:
+      properties:
+        created_at:
+          description: A Unix timestamp indicating when the alert was created.
+          type: integer
+        email_to:
+          description: The email address that the alert will be sent to.
+          type: string
+        frequency:
+          description: If the alert is of type stats_notification, this indicates how
+            frequently the stats notifications will be sent. For
+            example, "daily", "weekly", or "monthly".
+          type: string
+        id:
+          description: The ID of the alert.
+          type: integer
+        percentage:
+          description: "If the alert is of type usage_limit, this indicates the
+            percentage of email usage that must be reached before the
+            alert will be sent."
+          type: integer
+        type:
+          description: The type of alert.
+          type: string
+        updated_at:
+          description: A Unix timestamp indicating when the alert was last modified.
+          type: integer
+      required:
+        - created_at
+        - email_to
+        - id
+        - type
+        - updated_at
+      type: object
+    PostAlertsRequest:
+      example:
+        email_to: example@example.com
+        frequency: daily
+        type: stats_notification
+      description: "Alert Object"
+      properties:
+        email_to:
+          description: |-
+            The email address the alert will be sent to.
+            Example: test@example.com
+          nullable: true
+          type: string
+          x-ballerina-display: 
+            label: Email To
+        frequency:
+          description: >-
+            Required for stats_notification. How frequently the alert will be
+            sent. Example: daily
+          type: string
+          x-ballerina-display: 
+            label: Frequency
+        percentage:
+          description: >-
+            Required for usage_alert. When this usage threshold is reached, the
+            alert will be sent. Example: 90
+          type: integer
+          x-ballerina-display: 
+            label: Percentage
+        type:
+          description: >-
+            The type of alert you want to create. Can be either usage_limit or
+            stats_notification. Example: usage_limit
+          enum:
+            - stats_notification
+            - usage_limit
+          type: string
+          x-ballerina-display: 
+            label: Type
+      required:
+        - type
+        - email_to
+      type: object
+    SendEmailRequest:
+      properties:
+        asm:
+          description: An object allowing you to specify how to handle unsubscribes.
+          properties:
+            group_id:
+              description: The unsubscribe group to associate with this email.
+              type: integer
+              x-ballerina-display:
+                label: Group Id
+            groups_to_display:
+              description: An array containing the unsubscribe groups that you would like to
+                be displayed on the unsubscribe preferences page.
+              items:
+                type: integer
+              maxItems: 25
+              type: array
+              x-ballerina-display:
+                label: Groups to Display
+          required:
+            - group_id
+          type: object
+        attachments:
+          description: An array of objects in which you can specify any attachments you
+            want to include.
+          x-ballerina-display:
+            label: Attachments
+          items:
+            properties:
+              content:
+                description: The Base64 encoded content of the attachment.
+                minLength: 1
+                type: string
+                x-ballerina-display:
+                 label: Content
+              content_id:
+                description: The content id for the attachment. This is used when the
+                  disposition is set to “inline” and the attachment is
+                  an image, allowing the file to be displayed within the
+                  body of your email.
+                type: string
+                x-ballerina-display:
+                 label: Content Id
+              disposition:
+                default: attachment
+                description: The content-disposition of the attachment specifying how you would
+                  like the attachment to be displayed. For example,
+                  “inline” results in the attached file being displayed
+                  automatically within the message while “attachment”
+                  results in the attached file requiring some action to
+                  be taken before it is displayed (e.g. opening or
+                  downloading the file).
+                x-ballerina-display:
+                 label: Disposition
+                enum:
+                  - inline
+                  - attachment
+                type: string
+              filename:
+                description: The filename of the attachment.
+                type: string
+                x-ballerina-display:
+                 label: File Name
+              type:
+                description: The mime type of the content you are attaching. For example,
+                  “text/plain” or “text/html”.
+                minLength: 1
+                type: string
+                x-ballerina-display:
+                 label: Mime Type
+            required:
+              - content
+              - filename
+            type: object
+          type: array
+        batch_id:
+          description: "This ID represents a batch of emails to be sent at the same time.
+            Including a batch_id in your request allows you include this
+            email in that batch, and also enables you to cancel or pause
+            the delivery of that batch. For more information, see
+            https://sendgrid.com/docs/API_Reference/Web_API_v3/cancel_s\
+            chedule_send.html "
+          type: string
+          x-ballerina-display:
+            label: Batch Id
+        categories:
+          description: "An array of category names for this message. Each category name
+            may not exceed 255 characters. "
+          x-ballerina-display:
+            label: Categories
+          items:
+            maxLength: 255
+            type: string
+          maxItems: 10
+          type: array
+          uniqueItems: true
+        content:
+          description: An array in which you may specify the content of your email. You
+            can include multiple mime types of content, but you must
+            specify at least one mime type. To include more than one
+            mime type, simply add another object to the array containing
+            the `type` and `value` parameters.
+          x-ballerina-display:
+            label: Content
+          items:
+            properties:
+              type:
+                description: The mime type of the content you are including in your email. For
+                  example, “text/plain” or “text/html”.
+                minLength: 1
+                type: string
+                x-ballerina-display:
+                 label: Type
+              value:
+                description: The actual content of the specified mime type that you are
+                  including in your email.
+                minLength: 1
+                type: string
+                x-ballerina-display:
+                 label: Value
+            required:
+              - type
+              - value
+            type: object
+          type: array
+        custom_args:
+          description: Values that are specific to the entire send that will be carried
+            along with the email and its activity data. Substitutions
+            will not be made on custom arguments, so any string that is
+            entered into this parameter will be assumed to be the custom
+            argument that you would like to be used. This parameter is
+            overridden by personalizations[x].custom_args if that
+            parameter has been defined. Total custom args size may not
+            exceed 10,000 bytes.
+          type: object
+          x-ballerina-display: 
+           label: Custome Arguments
+        from:
+          $ref: "#/components/schemas/EmailObject"
+          description: "Email details"
+          x-ballerina-display:
+            label: From Email
+        headers:
+          description: An object containing key/value pairs of header names and the value
+            to substitute for them. You must ensure these are properly
+            encoded if they contain unicode characters. Must not be one
+            of the reserved headers.
+          type: object
+          x-ballerina-display:
+            label: Headers
+        ip_pool_name:
+          description: The IP Pool that you would like to send this email from.
+          maxLength: 64
+          minLength: 2
+          type: string
+          x-ballerina-display:
+            label: Ip Pool Name
+        mail_settings:
+          description: A collection of different mail settings that you can use to specify
+            how you would like this email to be handled.
+          x-ballerina-display:
+            label: Mail Settings
+          properties:
+            bcc:
+              description: This allows you to have a blind carbon copy automatically sent to
+                the specified email address for every email that is
+                sent.
+              x-ballerina-display:
+                label: BCC
+              properties:
+                email:
+                  description: The email address that you would like to receive the BCC.
+                  format: email
+                  type: string
+                  x-ballerina-display:
+                    label: Email Address
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display:
+                    label: Enable BCC
+              type: object
+            bypass_list_management:
+              description: Allows you to bypass all unsubscribe groups and suppressions to
+                ensure that the email is delivered to every single
+                recipient. This should only be used in emergencies when
+                it is absolutely necessary that every recipient receives
+                your email.
+              x-ballerina-display: 
+                label: Bypass List Management
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display:
+                    label: Enable
+              type: object
+            footer:
+              description: The default footer that you would like included on every email.
+              x-ballerina-display: 
+                label: Footer
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enable
+                html:
+                  description: The HTML content of your footer.
+                  type: string
+                  x-ballerina-display: 
+                    label: HTML Content
+                text:
+                  description: The plain text content of your footer.
+                  type: string
+                  x-ballerina-display: 
+                    label: Text Content
+              type: object
+            sandbox_mode:
+              description: This allows you to send a test email to ensure that your request
+                body is valid and formatted correctly.
+              x-ballerina-display: 
+                label: Sandbox Mode
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enable
+              type: object
+            spam_check:
+              description: This allows you to test the content of your email for spam.
+              x-ballerina-display: 
+                label: Spam Check
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enable
+                post_to_url:
+                  description: An Inbound Parse URL that you would like a copy of your email along
+                    with the spam report to be sent to.
+                  x-ballerina-display: 
+                    label: Post to URL
+                  type: string
+                threshold:
+                  description: The threshold used to determine if your content qualifies as spam
+                    on a scale from 1 to 10, with 10 being most strict,
+                    or most likely to be considered as spam.
+                  maximum: 10
+                  minimum: 1
+                  type: integer
+                  x-ballerina-display: 
+                    label: Threshold
+              type: object
+          type: object
+        personalizations:
+          description: An array of messages and their metadata. Each object within
+            personalizations can be thought of as an envelope - it
+            defines who should receive an individual message and how
+            that message should be handled.
+          x-ballerina-display: 
+            label: Personalization
+          items:
+            properties:
+              bcc:
+                description: An array of recipients who will receive a blind carbon copy of your
+                  email. Each object within this array may contain the
+                  name, but must always contain the email, of a
+                  recipient.
+                items:
+                  $ref: "#/components/schemas/EmailObject"
+                  description: "Email details"
+                maxItems: 1000
+                type: array
+                x-ballerina-display: 
+                  label: BCC
+              cc:
+                description: An array of recipients who will receive a copy of your email. Each
+                  object within this array may contain the name, but
+                  must always contain the email, of a recipient.
+                items:
+                  $ref: "#/components/schemas/EmailObject"
+                  description: "Email details"
+                maxItems: 1000
+                type: array
+                x-ballerina-display: 
+                  label: CC
+              custom_args:
+                description: Values that are specific to this personalization that will be
+                  carried along with the email and its activity data.
+                  Substitutions will not be made on custom arguments, so
+                  any string that is entered into this parameter will be
+                  assumed to be the custom argument that you would like
+                  to be used. May not exceed 10,000 bytes.
+                type: object
+                x-ballerina-display: 
+                  label: Custome Arguments
+              headers:
+                description: "A collection of JSON key/value pairs allowing you to specify
+                  specific handling instructions for your email. You may
+                  not overwrite the following headers: x-sg-id,
+                  x-sg-eid, received, dkim-signature, Content-Type,
+                  Content-Transfer-Encoding, To, From, Subject,
+                  Reply-To, CC, BCC"
+                type: object
+                x-ballerina-display: 
+                  label: Headers
+              send_at:
+                description: A unix timestamp allowing you to specify when you want your email
+                  to be delivered. Scheduling more than 72 hours in
+                  advance is forbidden.
+                type: integer
+                x-ballerina-display: 
+                  label: Send At
+              subject:
+                description: The subject of your email. Char length requirements, according to
+                  the RFC -
+                  http://stackoverflow.com/questions/1592291/what-is-the-email-subject-length-limit#answer-1592310
+                minLength: 1
+                type: string
+                x-ballerina-display: 
+                  label: Subject
+              substitutions:
+                description: A collection of key/value pairs following the pattern
+                  "substitution_tag":"value to substitute". All are
+                  assumed to be strings. These substitutions will apply
+                  to the text and html content of the body of your
+                  email, in addition to the `subject` and `reply-to`
+                  parameters.
+                maxProperties: 10000
+                type: object
+                x-ballerina-display: 
+                  label: Substitutions
+              to:
+                description: An array of recipients. Each object within this array may contain
+                  the name, but must always contain the email, of a
+                  recipient.
+                x-ballerina-display: 
+                  label: To
+                items:
+                  $ref: "#/components/schemas/EmailObject"
+                  description: "Email details"
+                maxItems: 1000
+                minItems: 1
+                type: array
+            required:
+              - to
+            type: object
+          maxItems: 1000
+          type: array
+          uniqueItems: false
+        reply_to:
+          $ref: "#/components/schemas/EmailObject"
+          description: "Reply to Email details"
+          x-ballerina-display: 
+            label: Reply To
+        sections:
+          description: An object of key/value pairs that define block sections of code to
+            be used as substitutions.
+          type: object
+          x-ballerina-display: 
+            label:  Sections
+        send_at:
+          description: A unix timestamp allowing you to specify when you want your email
+            to be delivered. This may be overridden by the
+            personalizations[x].send_at parameter. Scheduling more ta 72
+            hours in advance is forbidden.
+          type: integer
+          x-ballerina-display: 
+            label: Send At
+        subject:
+          description: The global, or “message level”, subject of your email. This may be
+            overridden by personalizations[x].subject.
+          minLength: 1
+          type: string
+          x-ballerina-display: 
+            label: Subject
+        template_id:
+          description: "The id of a template that you would like to use. If you use a
+            template that contains a subject and content (either text or
+            html), you do not need to specify those at the
+            personalizations nor message level. "
+          type: string
+          x-ballerina-display: 
+            label: Template Id
+        tracking_settings:
+          description: Settings to determine how you would like to track the metrics of
+            how your recipients interact with your email.
+          x-ballerina-display: 
+            label: Tracking Settings
+          properties:
+            click_tracking:
+              description: Allows you to track whether a recipient clicked a link in your
+                email.
+              x-ballerina-display: 
+                label: Click Tracking
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enable
+                enable_text:
+                  description: Indicates if this setting should be included in the text/plain
+                    portion of your email.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enable Text
+              type: object
+            ganalytics:
+              description: Allows you to enable tracking provided by Google Analytics.
+              x-ballerina-display: 
+                label: Google Analytics
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enable
+                utm_campaign:
+                  description: "The name of the campaign.\t"
+                  type: string
+                  x-ballerina-display: 
+                    label: Campaign Name
+                utm_content:
+                  description: "Used to differentiate your campaign from advertisements.\t"
+                  type: string
+                  x-ballerina-display: 
+                    label: Campaign Advertisement Content
+                utm_medium:
+                  description: Name of the marketing medium. (e.g. Email)
+                  type: string
+                  x-ballerina-display: 
+                    label: Marketing Medium
+                utm_source:
+                  description: Name of the referrer source. (e.g. Google, SomeDomain.com, or
+                    Marketing Email)
+                  type: string
+                  x-ballerina-display: 
+                    label: Referrer Source
+                utm_term:
+                  description: "Used to identify any paid keywords.\t"
+                  type: string
+                  x-ballerina-display: 
+                    label: UTM Term
+              type: object
+            open_tracking:
+              description: Allows you to track whether the email was opened or not, but
+                including a single pixel image in the body of the
+                content. When the pixel is loaded, we can log that the
+                email was opened.
+              x-ballerina-display: 
+                label: Open Tracking
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enable
+                substitution_tag:
+                  description: Allows you to specify a substitution tag that you can insert in the
+                    body of your email at a location that you desire.
+                    This tag will be replaced by the open tracking
+                    pixel.
+                  type: string
+                  x-ballerina-display: 
+                    label: Substitution Tag
+              type: object
+            subscription_tracking:
+              description: Allows you to insert a subscription management link at the bottom
+                of the text and html bodies of your email. If you would
+                like to specify the location of the link within your
+                email, you may use the substitution_tag.
+              x-ballerina-display: 
+                label: Subscription Tracking
+              properties:
+                enable:
+                  description: Indicates if this setting is enabled.
+                  type: boolean
+                  x-ballerina-display: 
+                    label: Enale
+                html:
+                  description: HTML to be appended to the email, with the subscription tracking
+                    link. You may control where the link is by using the
+                    tag <% %>
+                  type: string
+                  x-ballerina-display: 
+                    label: HTML Content
+                substitution_tag:
+                  description: "A tag that will be replaced with the unsubscribe URL. for example:
+                    [unsubscribe_url]. If this parameter is used, it
+                    will override both the `text` and `html` parameters.
+                    The URL of the link will be placed at the
+                    substitution tag’s location, with no additional
+                    formatting."
+                  type: string
+                  x-ballerina-display: 
+                    label: Substitution Tag
+                text:
+                  description: Text to be appended to the email, with the subscription tracking
+                    link. You may control where the link is by using the
+                    tag <% %>
+                  type: string
+                  x-ballerina-display: 
+                    label: Text 
+              type: object
+          type: object
+      required:
+        - personalizations
+        - from
+        - subject
+        - content
+      type: object
+    SpamReportDetails:
+      description: Spam report details
+      properties:
+        created:
+          description: A Unix timestamp indicating when the spam report was made.
+          type: integer
+        email:
+          description: The email address of the recipient who marked your message as spam.
+          type: string
+        ip:
+          description: The IP address that the message was sent on.
+          type: string
+      required:
+        - created
+        - email
+        - ip
+      type: object
+    subuser_post:
+      description: Created subuser's details
+      example:
+        authorization_token: ""
+        credit_allocation:
+          type: unlimited
+        email: example@example.com
+        signup_session_token: ""
+        user_id: 1234
+        username: example_subuser
+      properties:
+        authorization_token:
+          description: Authorization tokens
+          type: string
+        credit_allocation:
+          description: Credit allocations
+          properties:
+            type:
+              type: string
+              description: Credit allocation type
+          type: object
+        email:
+          description: The email address for this subuser.
+          format: email
+          type: string
+        signup_session_token:
+          description: Signup session token
+          type: string
+        user_id:
+          description: The user ID for this subuser.
+          type: number
+        username:
+          description: The username of the subuser.
+          type: string
+      required:
+        - username
+        - user_id
+        - email
+      title: Subuser::POST
+      type: object
+    global_ErrorResponse:
+      example:
+        errors:
+          - field: field_name
+            message: Some message here
+      description: Global error response
+      properties:
+        errors:
+          description: Error details
+          items:
+            $ref: '#/components/schemas/ErrorDetails'
+          type: array
+      title: "Global: Error Response"
+      type: object
+    ErrorDetails:
+      description: Error details
+      properties:
+        field:
+          description: The field that generated the error.
+          nullable: true
+          type: string
+        message:
+          description: The error message.
+          type: string
+      required:
+        - message
+      type: object
+    SuppressionBlocks:
+      description: Details of the blocks
+      properties:
+        created:
+          description: A Unix timestamp indicating when the email address was added to the
+            blocks list.
+          type: integer
+        email:
+          description: The email address that was added to the block list.
+          type: string
+        reason:
+          description: An explanation for the reason of the block.
+          type: string
+        status:
+          description: The status of the block.
+          type: string
+      required:
+        - created
+        - email
+        - reason
+        - status
+      type: object
+    Subuser:
+      description: Details of the subuser
+      example:
+        disabled: false
+        email: example@example.com
+        id: 1234
+        username: example_subuser
+      properties:
+        disabled:
+          description: Whether or not the user is enabled or disabled.
+          type: boolean
+        email:
+          description: The email address to contact this subuser.
+          format: email
+          type: string
+        id:
+          description: The ID of this subuser.
+          type: number
+        username:
+          description: The name by which this subuser will be referred.
+          type: string
+      required:
+        - disabled
+        - id
+        - username
+        - email
+      title: List all Subusers for a parent response
+      type: object
+    AlertResponse:
+      description: Alert details
+      properties:
+        created_at:
+          description: A Unix timestamp indicating when the alert was created.
+          type: integer
+        email_to:
+          description: The email address that the alert will be sent to.
+          type: string
+        frequency:
+          description: If the alert is of type stats_notification, this indicates how
+            frequently the stats notifications will be sent. For
+            example, "daily", "weekly", or "monthly".
+          type: string
+        id:
+          description: The ID of the alert.
+          type: integer
+        percentage:
+          description: If the alert is of type usage_limit, this indicates the percentage
+            of email usage that must be reached before the alert
+            will be sent.
+          type: integer
+        type:
+          description: The type of alert.
+          enum:
+            - usage_limit
+            - stats_notification
+          type: string
+        updated_at:
+          description: A Unix timestamp indicating when the alert was last modified.
+          type: integer
+      required:
+        - created_at
+        - email_to
+        - id
+        - type
+      type: object
+    EmailObject:
+      description: Email details
+      properties:
+        email:
+          description: Email Address
+          format: email
+          type: string
+        name:
+          description: The name of the person to whom you are sending an email.
+          type: string
+      required:
+        - email
+      title: Email Object
+      type: object
+    errors:
+      description: List of errors
+      properties:
+        errors:
+          description: Error message
+          items:
+            properties:
+              field:
+                description: The field that has the error.
+                nullable: true
+                type: string
+              message:
+                description: The message the API caller will receive.
+                type: string
+            type: object
+          type: array
+      title: Error Schema
+      type: object
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer

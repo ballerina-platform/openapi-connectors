@@ -1,0 +1,1097 @@
+openapi: 3.0.1
+info:
+  title: API docs | logoraisr.com
+  description: >
+    This is the [Logoraisr API v1](https://docs.logoraisr.com/) OpenAPI Specification.
+    Logoraisr API provides capability to access operations related to your graphic design tasks automatically using best-in-class algorithms and artificial intelligence.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create an [Logoraisr account](https://logoraisr.com/) and obtain OAuth tokens following [this guide](https://docs.logoraisr.com/#section/Authentication).
+  x-ballerina-display:
+    label: Logoraisr
+    iconPath: "icon.png"
+  termsOfService: https://logoraisr.com/terms-conditions
+  contact:
+    url: https://logoraisr.com
+    email: support@logoraisr.com
+  version: v1
+  x-logo:
+    url: https://logoraisr.com/assets/images/content/logo_docs.png
+    backgroundColor: '#FFFFFF'
+servers:
+- url: https://api.logoraisr.com/rest-v1
+security:
+- Token: []
+paths:
+  /previews/{file_id}/:
+    get:
+      tags:
+      - previews
+      summary: Gets preview image of uploaded file
+      description: This GET-Method returns the URL where the preview image of uploaded
+        file can downloaded from.
+      operationId: readPreviews
+      parameters:
+      - name: file_id
+        in: path
+        description: Id of the file for which the preview_img_url is generated.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Returns preview response or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreviewResponse'
+        400:
+          description: BAD REQUEST
+          content: {}
+        403:
+          description: FORBIDDEN
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: |-
+          curl -X GET 'https://api.logoraisr.com/rest-v1/previews/{file_id}/' \
+          -H "Authorization:Token your_api_key" \
+      - lang: python
+        source: |-
+          import requests
+
+
+
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key'}
+
+
+          resp = request.get('https://api.logoraisr.com/rest-v1/previews/{file_id}/', headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'GET',
+            url: 'https://api.logoraisr.com/rest-v1/previews/{file_id}/',
+            headers: {
+              'Authorization: Token your_api_key',
+
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.GET("https://api.logoraisr.com/rest-v1/previews/{file_id}/")
+          .header("Authorization", "Token your_api_key")
+
+
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::GET("https://api.logoraisr.com/rest-v1/previews/{file_id}/",
+            array(
+              "Authorization" => "Token your_api_key"
+
+            ),
+            array(
+
+            );
+  /processes/:
+    get:
+      tags:
+      - processes
+      summary: Gets process list.
+      description: This GET-Method lists all on logoraisr available processes.
+      operationId: listProcesses
+      responses:
+        200:
+          description: "Returns process detail or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Process'
+      x-code-samples:
+      - lang: cURL
+        source: |-
+          curl -X GET 'https://api.logoraisr.com/rest-v1/processes/' \
+          -H "Authorization:Token your_api_key" \
+      - lang: python
+        source: |-
+          import requests
+
+
+
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key'}
+
+
+          resp = request.get('https://api.logoraisr.com/rest-v1/processes/', headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'GET',
+            url: 'https://api.logoraisr.com/rest-v1/processes/',
+            headers: {
+              'Authorization: Token your_api_key',
+
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.GET("https://api.logoraisr.com/rest-v1/processes/")
+          .header("Authorization", "Token your_api_key")
+
+
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::GET("https://api.logoraisr.com/rest-v1/processes/",
+            array(
+              "Authorization" => "Token your_api_key"
+
+            ),
+            array(
+
+            );
+  /projects/:
+    get:
+      tags:
+      - projects
+      summary: Gets user project list.
+      description: This GET-Method lists the user's projects.
+      operationId: listProjects
+      responses:
+        200:
+          description: "Returns user project list or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        403:
+          description: FORBIDDEN
+          content: {}
+        404:
+          description: NOT FOUND
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X GET 'https://api.logoraisr.com/rest-v1/projects/' \\\n-H\
+          \ \"Authorization:Token your_api_key\" \\ \n-H \"content-type:application/json\"\
+          \ \\\n -d processes=logo-super-resolution \\\n -d file_id=string \\\n -d\
+          \ project_title=string \\\n -d paid=true \\\n"
+      - lang: python
+        source: |-
+          import requests
+
+
+          payload = {'processes': 'logo-super-resolution', 'file_id': 'string', 'project_title': 'string', 'paid': 'true'}
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key', 'content-type : application/json'}
+
+
+          resp = request.get('https://api.logoraisr.com/rest-v1/projects/', headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'GET',
+            url: 'https://api.logoraisr.com/rest-v1/projects/',
+            headers: {
+              'Authorization: Token your_api_key',
+              'content-type: application/json',
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.GET("https://api.logoraisr.com/rest-v1/projects/")
+          .header("Authorization", "Token your_api_key")
+          .header("content-type", "application/json")
+          .body({"process": "l2v", "file_id": "00e49cf703184d8c9c6f75ca61547bce", "project_title": "rapid_api_test"})
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::GET("https://api.logoraisr.com/rest-v1/projects/",
+            array(
+              "Authorization" => "Token your_api_key"
+              "content-type" => "application/json"
+            ),
+            array(
+              {"process": "l2v", "file_id": "00e49cf703184d8c9c6f75ca61547bce", "project_title": "rapid_api_test"}
+            );
+    post:
+      tags:
+      - projects
+      summary: Creates a new project.
+      description: This POST-Method creates a new project.
+      operationId: createProject
+      requestBody:
+        description: Project details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectRequest'
+        required: true
+      responses:
+        201:
+          description: "Returns project response or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectResponse'
+        400:
+          description: BAD REQUEST
+          content: {}
+        403:
+          description: FORBIDDEN
+          content: {}
+        404:
+          description: NOT FOUND
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: "curl -X POST 'https://api.logoraisr.com/rest-v1/projects/' \\\n-H\
+          \ \"Authorization:Token your_api_key\" \\ \n-H \"content-type:application/json\"\
+          \ \\\n -d processes=logo-super-resolution \\\n -d file_id=string \\\n -d\
+          \ project_title=string \\\n -d paid=true \\\n"
+      - lang: python
+        source: |-
+          import requests
+
+
+          payload = {'processes': 'logo-super-resolution', 'file_id': 'string', 'project_title': 'string', 'paid': 'true'}
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key', 'content-type : application/json'}
+
+
+          resp = request.post('https://api.logoraisr.com/rest-v1/projects/', data=payload, headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'POST',
+            url: 'https://api.logoraisr.com/rest-v1/projects/',
+            headers: {
+              'Authorization: Token your_api_key',
+              'content-type: application/json',
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.POST("https://api.logoraisr.com/rest-v1/projects/")
+          .header("Authorization", "Token your_api_key")
+          .header("content-type", "application/json")
+          .body({"process": "l2v", "file_id": "00e49cf703184d8c9c6f75ca61547bce", "project_title": "rapid_api_test"})
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::POST("https://api.logoraisr.com/rest-v1/projects/",
+            array(
+              "Authorization" => "Token your_api_key"
+              "content-type" => "application/json"
+            ),
+            array(
+              {"process": "l2v", "file_id": "00e49cf703184d8c9c6f75ca61547bce", "project_title": "rapid_api_test"}
+            );
+      x-codegen-request-body-name: data
+  /projects/{project_number}/:
+    get:
+      tags:
+      - projects
+      summary: Gets project details.
+      description: This GET-Method returns a specific project.
+      operationId: readProjects
+      parameters:
+      - name: project_number
+        in: path
+        description: Number of the project.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Returns project details or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        403:
+          description: FORBIDDEN
+          content: {}
+        404:
+          description: NOT FOUND
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: |-
+          curl -X GET 'https://api.logoraisr.com/rest-v1/projects/{project_number}/' \
+          -H "Authorization:Token your_api_key" \
+      - lang: python
+        source: |-
+          import requests
+
+
+
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key'}
+
+
+          resp = request.get('https://api.logoraisr.com/rest-v1/projects/{project_number}/', headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'GET',
+            url: 'https://api.logoraisr.com/rest-v1/projects/{project_number}/',
+            headers: {
+              'Authorization: Token your_api_key',
+
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.GET("https://api.logoraisr.com/rest-v1/projects/{project_number}/")
+          .header("Authorization", "Token your_api_key")
+
+
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::GET("https://api.logoraisr.com/rest-v1/projects/{project_number}/",
+            array(
+              "Authorization" => "Token your_api_key"
+
+            ),
+            array(
+
+            );
+  /reports/:
+    get:
+      tags:
+      - reports
+      summary: Gets user report list.
+      description: This GET method lists the user's reports.
+      operationId: getReports
+      responses:
+        200:
+          description: "Returns user report list or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+        403:
+          description: FORBIDDEN
+          content: {}
+        404:
+          description: NOT FOUND
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: |-
+          curl -X GET 'https://api.logoraisr.com/rest-v1/reports/' \
+          -H "Authorization:Token your_api_key" \
+      - lang: python
+        source: |-
+          import requests
+
+
+
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key'}
+
+
+          resp = request.get('https://api.logoraisr.com/rest-v1/reports/', headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'GET',
+            url: 'https://api.logoraisr.com/rest-v1/reports/',
+            headers: {
+              'Authorization: Token your_api_key',
+
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.GET("https://api.logoraisr.com/rest-v1/reports/")
+          .header("Authorization", "Token your_api_key")
+
+
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::GET("https://api.logoraisr.com/rest-v1/reports/",
+            array(
+              "Authorization" => "Token your_api_key"
+
+            ),
+            array(
+
+            );
+    post:
+      tags:
+      - reports
+      summary: Creates a new report.
+      description: This POST-Method creates a new report.
+      operationId: createReport
+      requestBody:
+        description: Report request details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReportRequest'
+        required: true
+      responses:
+        201:
+          description: "Returns report response or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        400:
+          description: BAD REQUEST
+          content: {}
+        401:
+          description: UNAUTHORIZED
+          content: {}
+        403:
+          description: FORBIDDEN
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: |-
+          curl -X POST 'https://api.logoraisr.com/rest-v1/reports/' \
+          -H "Authorization:Token your_api_key" \
+      - lang: python
+        source: |-
+          import requests
+
+
+
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key'}
+
+
+
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'POST',
+            url: 'https://api.logoraisr.com/rest-v1/reports/',
+            headers: {
+              'Authorization: Token your_api_key',
+
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.POST("https://api.logoraisr.com/rest-v1/reports/")
+          .header("Authorization", "Token your_api_key")
+
+
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::POST("https://api.logoraisr.com/rest-v1/reports/",
+            array(
+              "Authorization" => "Token your_api_key"
+
+            ),
+            array(
+
+            );
+      x-codegen-request-body-name: data
+  /reports/{report_number}/:
+    get:
+      tags:
+      - reports
+      summary: Gets report details.
+      description: This GET-Method returns the details of a specific report.
+      operationId: readReports
+      parameters:
+      - name: report_number
+        in: path
+        description: Report number
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Returns report detail or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+        403:
+          description: FORBIDDEN
+          content: {}
+        404:
+          description: NOT FOUND
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: |-
+          curl -X GET 'https://api.logoraisr.com/rest-v1/reports/{report_number}/' \
+          -H "Authorization:Token your_api_key" \
+      - lang: python
+        source: |-
+          import requests
+
+
+
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key'}
+
+
+          resp = request.get('https://api.logoraisr.com/rest-v1/reports/{report_number}/', headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'GET',
+            url: 'https://api.logoraisr.com/rest-v1/reports/{report_number}/',
+            headers: {
+              'Authorization: Token your_api_key',
+
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.GET("https://api.logoraisr.com/rest-v1/reports/{report_number}/")
+          .header("Authorization", "Token your_api_key")
+
+
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::GET("https://api.logoraisr.com/rest-v1/reports/{report_number}/",
+            array(
+              "Authorization" => "Token your_api_key"
+
+            ),
+            array(
+
+            );
+  /results/{result_file_id}/:
+    get:
+      tags:
+      - results
+      summary: Gets the result from image processing
+      description: This GET-Method returns the URL where the result can downloaded
+        from.
+      operationId: readResults
+      parameters:
+      - name: result_file_id
+        in: path
+        description: Id of the result_file for which the result_file_url is generated.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "Returns result from image processing or an error"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultResponse'
+        400:
+          description: BAD REQUEST
+          content: {}
+        403:
+          description: FORBIDDEN
+          content: {}
+      x-code-samples:
+      - lang: cURL
+        source: |-
+          curl -X GET 'https://api.logoraisr.com/rest-v1/results/{result_file_id}/' \
+          -H "Authorization:Token your_api_key" \
+      - lang: python
+        source: |-
+          import requests
+
+
+
+          # provide your API token here
+          headers = {'Authorization:Token your_api_key'}
+
+
+          resp = request.get('https://api.logoraisr.com/rest-v1/results/{result_file_id}/', headers=headers)
+          print(resp.json())
+      - lang: node.js
+        source: |
+          var request = require("request");
+
+          var options = {
+            method: 'GET',
+            url: 'https://api.logoraisr.com/rest-v1/results/{result_file_id}/',
+            headers: {
+              'Authorization: Token your_api_key',
+
+            },
+
+          };
+
+          request(options, function (error, response, body) {
+            if (error) throw new Error(error);
+
+            console.log(body);
+          });
+      - lang: java
+        source: |-
+          HttpResponse<String> response = Unirest.GET("https://api.logoraisr.com/rest-v1/results/{result_file_id}/")
+          .header("Authorization", "Token your_api_key")
+
+
+          .asString();
+      - lang: php
+        source: |-
+          $response = Unirest\Request::GET("https://api.logoraisr.com/rest-v1/results/{result_file_id}/",
+            array(
+              "Authorization" => "Token your_api_key"
+
+            ),
+            array(
+
+            );
+  # /uploads/:
+  #   post:
+  #     tags:
+  #     - uploads
+  #     summary: Uploads a new image
+  #     description: This POST-Method uploads a new file on the server.
+  #     operationId: createUploads
+  #     requestBody:
+  #       description: Image details
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             required:
+  #             - file
+  #             properties:
+  #               file:
+  #                 type: string
+  #                 description: 'File which should be uploaded. Supported file types
+  #                   are: JPEG and PNG'
+  #                 format: binary
+  #       required: true
+  #     responses:
+  #       201:
+  #         description: "Returns file response or an error"
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/FileResponse'
+  #       400:
+  #         description: BAD REQUEST
+  #         content: {}
+  #     x-code-samples:
+  #     - lang: cURL
+  #       source: |-
+  #         curl -X POST 'https://api.logoraisr.com/rest-v1/uploads/' \
+  #         -H "Authorization:Token your_api_key" \
+  #         -F '@/path/to/your/logo.png'  \
+  #     - lang: python
+  #       source: |-
+  #         import requests
+
+  #         files = '/path/to/your/logo.png'
+
+  #         # provide your API token here
+  #         headers = {'Authorization:Token your_api_key'}
+
+
+  #         resp = request.post('https://api.logoraisr.com/rest-v1/uploads/', files=files, headers=headers)
+  #         print(resp.json())
+  #     - lang: node.js
+  #       source: |
+  #         var request = require("request");
+
+  #         var options = {
+  #           method: 'POST',
+  #           url: 'https://api.logoraisr.com/rest-v1/uploads/',
+  #           headers: {
+  #             'Authorization: Token your_api_key',
+
+  #           },
+  #           formData: {file: {value: {'/path/to/your/logo.png'}}}
+  #         };
+
+  #         request(options, function (error, response, body) {
+  #           if (error) throw new Error(error);
+
+  #           console.log(body);
+  #         });
+  #     - lang: java
+  #       source: |-
+  #         HttpResponse<String> response = Unirest.POST("https://api.logoraisr.com/rest-v1/uploads/")
+  #         .header("Authorization", "Token your_api_key")
+
+  #         .field("upload", new File("/path/to/your/logo.png"))
+  #         .asString();
+  #     - lang: php
+  #       source: |-
+  #         $response = Unirest\Request::POST("https://api.logoraisr.com/rest-v1/uploads/",
+  #           array(
+  #             "Authorization" => "Token your_api_key"
+
+  #           ),
+  #           array(
+  #             "file" => Unirest\file::add("/path/to/your/logo.png")
+  #           );
+components:
+  schemas:
+    PreviewResponse:
+      type: object
+      properties:
+        preview_img_url:
+          title: Preview img url
+          maxLength: 256
+          minLength: 1
+          type: string
+          description: Url from which the preview file can be downloaded.
+    Process:
+      required:
+      - processing_algorithm
+      type: object
+      properties:
+        processing_algorithm:
+          title: Processing algorithm
+          minLength: 1
+          type: string
+          description: Schlüssel welcher Verarbeitungs-Algorithmus angewendet wird.
+            Zur Auswahl stehen "logo-to-vector", "logo-super-resolution", "logo-segmentation"
+            und "image-processing".
+        resize:
+          title: Resize
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: 'Changes the size of the image according to the specified size.
+            Example: "resize": "200x300".'
+        flip:
+          title: Flip
+          type: boolean
+          description: 'Flips the image around the horizontal axis, from top to bottom.
+            Example: "flip": true'
+        mirror:
+          title: Mirror
+          type: boolean
+          description: 'Mirrors the image around the vertical axis, i.e. from right
+            to left. Example: "mirror": true'
+        rotate:
+          title: Rotate
+          maximum: 3.6E+2
+          minimum: 0
+          type: integer
+          description: 'Rotates the image around the center according to the specified
+            degree. Example: "rotate": 90'
+        crop:
+          title: Crop
+          maxLength: 255
+          minLength: 1
+          type: string
+          description: 'Crops the image according to the specified mechanism. If you
+            specify the size "WidthexHeight", the image will be cropped centered.
+            If coordinates "x1,y1,x2,y2" are given, the image is cropped according
+            to the coordinates. The image will be cropped to the size of the stories
+            if "faces" are specified as. Example Centered: "crop": "200x300". Example
+            Region: "crop": "200,300,150,300". Example Faces: "crop": "faces".'
+    Project:
+      required:
+      - process_id
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+          description: Id of the created project.
+        project_number:
+          title: Project number
+          type: integer
+          description: Number of the created project.
+        file_id:
+          title: File id
+          type: string
+          description: Id of the file on which the process was applied.
+          format: uuid
+        result_file_id:
+          title: Result file id
+          type: string
+          description: Id of the result file which the process created.
+          format: uuid
+        process_id:
+          title: Process id
+          minLength: 1
+          type: string
+          description: Process which should applied. Processes are "color-classification".
+        process:
+          $ref: '#/components/schemas/Process'
+        created:
+          title: Created
+          type: string
+          description: The Date when the project was created.
+          format: date-time
+        project_title:
+          title: Project title
+          minLength: 1
+          type: string
+          description: Name of the project with which it was saved.
+        paypal_payment_id:
+          title: Paypal payment id
+          minLength: 1
+          type: string
+          description: Id of the paypal payment.
+    ProjectRequest:
+      required:
+      - file_id
+      - project_title
+      type: object
+      properties:
+        process:
+          $ref: '#/components/schemas/Process'
+        file_id:
+          title: File id
+          type: string
+          description: Id of the file on which the process is to be applied.
+          format: uuid
+        project_title:
+          title: Project title
+          minLength: 1
+          type: string
+          description: Name of the project with which it is saved.
+    ProjectResponse:
+      type: object
+      properties:
+        project_number:
+          title: Project number
+          type: integer
+          description: Number of the created project.
+        project_id:
+          title: Project id
+          type: integer
+          description: Id of the created project.
+        result_file_id:
+          title: Result file id
+          type: string
+          description: Id of the result_file. This id must be specified to create
+            the result_file_url.
+          format: uuid
+    Color:
+      type: object
+      properties:
+        red:
+          title: Red
+          type: integer
+          description: RGB-Red color value.
+        green:
+          title: Green
+          type: integer
+          description: RGB-Green color value.
+        blue:
+          title: Blue
+          type: integer
+          description: RGB-Blue color value
+        percentage:
+          title: Percentage
+          type: string
+          description: Percentage of pixels that holds this color.
+          format: decimal
+        number_of_pixel:
+          title: Number of pixel
+          type: integer
+          description: Number of pixels that holds this color.
+        hex:
+          title: Hex
+          minLength: 1
+          type: string
+          description: Hex-label of this color.
+    Result:
+      title: Result
+      type: object
+      properties:
+        number_of_pixel_in_image:
+          title: Number of pixel in image
+          type: integer
+          description: Number of pixel in image.
+        width:
+          title: Width
+          type: integer
+          description: Width of image.
+        height:
+          title: Height
+          type: integer
+          description: Height of image.
+        colors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Color'
+    Report:
+      required:
+      - file_id
+      - process_id
+      - report_number
+      - result_id
+      type: object
+      properties:
+        report_number:
+          title: Report number
+          type: integer
+          description: Number of the created report.
+        created:
+          title: Created
+          type: string
+          description: The Date when the report was created.
+          format: date-time
+        file_id:
+          title: File id
+          type: string
+          description: Id of the file on which the report was applied.
+          format: uuid
+        process_id:
+          title: Process id
+          type: integer
+          description: Process_id of the process which was applied. Processes are
+            "color-classification".
+        result_id:
+          title: Result id
+          type: integer
+          description: Result_id of the result which was created.
+        result:
+          $ref: '#/components/schemas/Result'
+    ReportRequest:
+      required:
+      - file_id
+      - process
+      type: object
+      properties:
+        process:
+          title: Process
+          minLength: 1
+          type: string
+          description: Process which should applied. Processes are "color-classification".
+        file_id:
+          title: File id
+          type: string
+          description: Id of the file on which the process is to be applied.
+          format: uuid
+    ReportResponse:
+      type: object
+      properties:
+        report_number:
+          title: Report number
+          type: integer
+          description: Number of the report which was created.
+        created:
+          title: Created
+          type: string
+          description: The Date when the project was created.
+          format: date-time
+        file_id:
+          title: File id
+          minLength: 1
+          type: string
+          description: Id of the file on which the process was applied.
+        processing_algorithm:
+          title: Processing algorithm
+          minLength: 1
+          type: string
+          description: Process which was applied. Processes are "color-classification".
+        result:
+          $ref: '#/components/schemas/Result'
+    ResultResponse:
+      type: object
+      properties:
+        result_file_url:
+          title: Result file url
+          maxLength: 256
+          minLength: 1
+          type: string
+          description: Url from which the result file can be downloaded.
+    FileResponse:
+      type: object
+      properties:
+        file_id:
+          title: File id
+          type: string
+          description: Returns the file_id. To apply processes to the uploaded file,
+            this file_id must be referenced in the API-calls.
+          format: uuid
+  securitySchemes:
+    Token:
+      type: apiKey
+      name: Authorization
+      in: header
+      description: Represents API Key `Authorization`

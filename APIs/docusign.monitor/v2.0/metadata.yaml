@@ -1,0 +1,13 @@
+id: docusign.monitor
+displayName: DocuSign Monitor
+type: OpenAPI
+version: v2.0
+description: This is the [DocuSign Monitor API](https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification. DocuSign Monitor helps organizations protect their agreements with round-the-clock activity tracking.  The Monitor API delivers this activity tracking information directly to existing security stacks or data visualization  tools—enabling teams to detect unauthorized activity, investigate incidents, and quickly respond to verified threats.  It also provides the flexibility security teams need to customize dashboards and alerts to meet specific business needs.
+idlPath: /docusign.monitor/v2.0/openapi.yaml
+thumbnailPath: /docusign.monitor/v2.0/icon.png
+documentationPath: /docusign.monitor/v2.0/readme.md
+keywords:
+  - Content&Files/Documents
+  - Cost/Freemium
+endpoint:
+  - url: //lens.docusign.net/

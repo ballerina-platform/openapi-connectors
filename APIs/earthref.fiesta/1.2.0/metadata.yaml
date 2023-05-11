@@ -1,0 +1,13 @@
+id: earthref.fiesta
+displayName: EarthRef FIESTA
+type: OpenAPI
+version: 1.2.0
+description: This is the [EarthRef.org's FIESTA API v1.2.0](https://api.earthref.org/v1) OpenAPI Specification.
+idlPath: /earthref.fiesta/1.2.0/openapi.yaml
+thumbnailPath: /earthref.fiesta/1.2.0/icon.png
+documentationPath: /earthref.fiesta/1.2.0/readme.md
+keywords:
+  - ITOperations/GeographicInformationSystems
+  - Cost/Free
+endpoint:
+  - url: https://api.earthref.org

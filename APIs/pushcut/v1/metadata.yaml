@@ -1,0 +1,13 @@
+id: pushcut
+displayName: Pushcut
+type: OpenAPI
+version: v1
+description: This is the [Pushcut API v1](https://www.pushcut.io/webapi.html) OpenAPI specification.
+idlPath: /pushcut/v1/openapi.yaml
+thumbnailPath: /pushcut/v1/icon.png
+documentationPath: /pushcut/v1/readme.md
+keywords:
+  - InternetofThings/DeviceManagement
+  - Cost/Paid
+endpoint:
+  - url: https://api.pushcut.io/v1

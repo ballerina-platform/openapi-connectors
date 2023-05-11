@@ -1,0 +1,13 @@
+id: cloudmersive.barcode
+displayName: Cloudmersive Barcode
+type: OpenAPI
+version: v1
+description: This is the [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification. The Cloudmersive Barcode APIs let you generate barcode images, and recognize values from images of barcodes.
+idlPath: /cloudmersive.barcode/v1/openapi.yaml
+thumbnailPath: /cloudmersive.barcode/v1/icon.png
+documentationPath: /cloudmersive.barcode/v1/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Freemium
+endpoint:
+  - url: https://testapi.cloudmersive.com/

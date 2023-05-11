@@ -1,0 +1,13 @@
+id: shortcut
+displayName: Shortcut
+type: OpenAPI
+version: "3.0"
+description: This is the [Shortcut API v3.0](https://shortcut.com/api/rest/v3) OpenAPI specification.
+idlPath: /shortcut/3.0/openapi.yaml
+thumbnailPath: /shortcut/3.0/icon.png
+documentationPath: /shortcut/3.0/readme.md
+keywords:
+  - Productivity/ProjectManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.app.shortcut.com/

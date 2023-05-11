@@ -1,0 +1,11 @@
+id: commercetools.customer
+displayName: Commercetools Customer
+type: OpenAPI
+version: v1
+description: This is the [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.  The commercetools Platform HTTP API(Customer) offers an interface for programmatic access to retrieve certain information on customer related operations.
+idlPath: /commercetools.customer/v1/openapi.yaml
+thumbnailPath: /commercetools.customer/v1/icon.png
+documentationPath: /commercetools.customer/v1/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Paid

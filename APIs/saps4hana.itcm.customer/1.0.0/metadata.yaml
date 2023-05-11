@@ -1,0 +1,11 @@
+id: saps4hana.itcm.customer
+displayName: SAPS4HANA ITCM Customer
+type: OpenAPI
+version: 1.0.0
+description: This is the [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.  In SAPS4HANA Intelligent Trade Claims Management, the customer service allows you to access their customers retailer and distributor information.
+idlPath: /saps4hana.itcm.customer/1.0.0/openapi.yaml
+thumbnailPath: /saps4hana.itcm.customer/1.0.0/icon.png
+documentationPath: /saps4hana.itcm.customer/1.0.0/readme.md
+keywords:
+  - BusinessManagement/ERP
+  - Cost/Paid

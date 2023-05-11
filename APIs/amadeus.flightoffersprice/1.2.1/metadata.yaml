@@ -1,0 +1,13 @@
+id: amadeus.flightoffersprice
+displayName: Amadeus Flight Offers Price
+type: OpenAPI
+version: 1.2.1
+description: This is the [Amadeus Flight Offers Price API](https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-price) OpenAPI specification.  This [Amadeus Flight Offers Price API](https://developers.amadeus.com/) provides the capability to confirm the availability and final price (including taxes and fees) of flights returned by the Flight Offers Search API.
+idlPath: /amadeus.flightoffersprice/1.2.1/openapi.yaml
+thumbnailPath: /amadeus.flightoffersprice/1.2.1/icon.png
+documentationPath: /amadeus.flightoffersprice/1.2.1/readme.md
+keywords:
+  - Sales&CRM/Scheduling&Booking
+  - Cost/Freemium
+endpoint:
+  - url: https://test.api.amadeus.com/v1

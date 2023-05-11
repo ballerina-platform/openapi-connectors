@@ -1,0 +1,14 @@
+id: nytimes.newswire
+displayName: New York Times Newswire
+type: OpenAPI
+version: 3.0.0
+description: This is the [New York Times Newswire API v3.0.0](https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification. With the Times Newswire API, you can get links and metadata for Times' articles as soon as they are published on NYTimes.com.  The Times Newswire API provides an up-to-the-minute stream of published articles. You can filter results by source (all, nyt, inyt) and section (arts, business, ...).
+idlPath: /nytimes.newswire/3.0.0/openapi.yaml
+thumbnailPath: /nytimes.newswire/3.0.0/icon.png
+documentationPath: /nytimes.newswire/3.0.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/News&Lifestyle
+  - Cost/Free
+endpoint:
+  - url: http://api.nytimes.com/svc/news/v3
+  - url: https://api.nytimes.com/svc/news/v3

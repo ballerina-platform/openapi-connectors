@@ -1,0 +1,14 @@
+id: dataflowkit
+displayName: Dataflow Kit
+type: OpenAPI
+version: "1.3"
+description: This is the [Dataflow Kit API v1.3](https://dataflowkit.com/doc-api) OpenAPI Specification.
+idlPath: /dataflowkit/1.3/openapi.yaml
+thumbnailPath: /dataflowkit/1.3/icon.png
+documentationPath: /dataflowkit/1.3/readme.md
+keywords:
+  - Website&AppBuilding/WebScraper
+  - Cost/Freemium
+endpoint:
+  - url: https://api.dataflowkit.com/v1
+    description: Production server

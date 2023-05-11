@@ -1,0 +1,11 @@
+id: jira.servicemanagement
+displayName: Jira Service Management
+type: OpenAPI
+version: 1001.0.0-SNAPSHOT
+description: This is the [Jira Service Management Cloud REST API](https://developer.atlassian.com/cloud/jira/service-desk/) OpenAPI specification.
+idlPath: /jira.servicemanagement/1001.0.0-SNAPSHOT/openapi.yaml
+thumbnailPath: /jira.servicemanagement/1001.0.0-SNAPSHOT/icon.png
+documentationPath: /jira.servicemanagement/1001.0.0-SNAPSHOT/readme.md
+keywords:
+  - Support//CustomerSupport
+  - Cost/Freemium

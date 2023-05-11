@@ -1,0 +1,13 @@
+id: interzoid.globaltime
+displayName: Interzoid Global Time
+type: OpenAPI
+version: 1.0.0
+description: This is the [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime) OpenAPI specification. This API retrieves the current time for a city or geographic location around the globe.
+idlPath: /interzoid.globaltime/1.0.0/openapi.yaml
+thumbnailPath: /interzoid.globaltime/1.0.0/icon.png
+documentationPath: /interzoid.globaltime/1.0.0/readme.md
+keywords:
+  - ITOperations/CloudServices
+  - Cost/Freemium
+endpoint:
+  - url: https://api.interzoid.com

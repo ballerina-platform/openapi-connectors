@@ -1,0 +1,14 @@
+id: ebay.account
+displayName: eBay Account
+type: OpenAPI
+version: v1.6.3
+description: This is the [eBay Account API v1.6.3](https://developer.ebay.com/api-docs/sell/account/overview.html)   OpenAPI Specification. The Account API provide capability to access configure their eBay seller accounts, including the seller''s policies  (the Fulfillment Policy, Payment Policy, and Return Policy), opt in and out of eBay seller programs, configure sales tax tables,  and get account information.
+idlPath: /ebay.account/v1.6.3/openapi.yaml
+thumbnailPath: /ebay.account/v1.6.3/icon.png
+documentationPath: /ebay.account/v1.6.3/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.ebay.com/sell/account/v1
+    description: Production

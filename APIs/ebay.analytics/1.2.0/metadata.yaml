@@ -1,0 +1,14 @@
+id: ebay.analytics
+displayName: eBay Analytics
+type: OpenAPI
+version: 1.2.0
+description: This is the [eBay Analytics API v1.2.0](https://developer.ebay.com/api-docs/sell/analytics/overview.html) OpenAPI Specification. The Analytics API provides data and information to review information on their listing performance, metrics on their customer service performance, and details on their eBay seller performance rating.
+idlPath: /ebay.analytics/1.2.0/openapi.yaml
+thumbnailPath: /ebay.analytics/1.2.0/icon.png
+documentationPath: /ebay.analytics/1.2.0/readme.md
+keywords:
+  - Commerce/eCommerce
+  - Cost/Freemium
+endpoint:
+  - url: https://api.ebay.com/sell/analytics/v1
+    description: Production

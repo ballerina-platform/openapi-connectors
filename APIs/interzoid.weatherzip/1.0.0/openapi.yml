@@ -1,0 +1,121 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.interzoid.com
+info:
+  x-ballerina-display:
+      label: Interzoid Weather by Zip Code
+      iconPath: "icon.png"
+  contact:
+    email: support@interzoid.com
+    name: API Support
+    url: https://www.interzoid.com
+    x-twitter: interzoid
+  description: >
+    This is a generated connector for [Interzoid Weather by Zip Code API v1.0.0]
+    (https://interzoid.com/services/getweatherzip) OpenAPI specification.
+    This API provides current weather information for US Cities, including temperatures, 
+    wind speeds, wind direction, relative humidity, and visibility.
+    For additional help getting started with the API, 
+    visit [Interzoid Weather by Zip Code API](https://interzoid.com/services/getweatherzip).
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    Create an [Interzoid Account](https://www.interzoid.com/register) 
+    and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+  license:
+    name: Interzoid license
+    url: https://www.interzoid.com/license
+  termsOfService: https://www.interzoid.com/terms
+  title: Interzoid Get Weather By Zip Code API
+  version: 1.0.0
+  x-apisguru-categories:
+    - developer_tools
+  x-logo:
+    url: https://twitter.com/interzoid/profile_image?size=original
+  x-origin:
+    - format: openapi
+      url: https://oas.interzoid.com/api/getweatherzip.json
+      version: "3.0"
+  x-providerName: interzoid.com
+  x-serviceName: getweatherzip
+externalDocs:
+  description: API home page and documentation
+  url: https://www.interzoid.com/services/getweatherzipcode
+security:
+  - ApiKeyAuth : []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: All requests on the Weather Zip API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+      type: apiKey
+      in: query
+      name: license
+  schemas: 
+    WeatherData:
+      description: State data
+      properties:
+        City:
+          type: string
+        Code:
+          type: string
+        Credits:
+          type: string
+        RelativeHumidity:
+          type: string
+        State:
+          type: string
+        TempC:
+          type: string
+        TempF:
+          type: string
+        VisibilityMiles:
+          type: string
+        Weather:
+          type: string
+        WindDir:
+          type: string
+        WindMPH:
+          type: string
+        AirQuality:
+          type: string
+        AirQualityIndex:
+          type: string
+        AirQualityCode:
+          type: string
+        Sunrise:
+          type: string
+        Sunset:
+          type: string
+paths:
+  /getweatherzipcode:
+    get:
+      description: Use a US zip code to retrieve current weather information
+      operationId: getweatherzipcode
+      parameters:
+        - description: Zip code for weather information
+          in: query
+          name: zip
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeatherData'
+          description: Current weather information for zip code
+        "400":
+          description: bad request - insufficient parameters
+        "402":
+          description: credits exhausted
+        "403":
+          description: invalid license API key
+        "404":
+          description: zip code not found
+        "405":
+          description: method not allowed
+        "500":
+          description: internal server error
+      summary: Gets current weather information for a US zip code
+      tags:
+        - Weather by Zip Code

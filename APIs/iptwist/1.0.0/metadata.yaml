@@ -1,0 +1,13 @@
+id: iptwist
+displayName: ipTwist
+type: OpenAPI
+version: 1.0.0
+description: This is the [ipTwist API v1](https://iptwist.com/) OpenAPI Specification.  The reliable, secure, and simple IP geolocation API.
+idlPath: /iptwist/1.0.0/openapi.yaml
+thumbnailPath: /iptwist/1.0.0/icon.png
+documentationPath: /iptwist/1.0.0/readme.md
+keywords:
+  - ITOperations/GeographicInformationSystems
+  - Cost/Freemium
+endpoint:
+  - url: https://iptwist.com

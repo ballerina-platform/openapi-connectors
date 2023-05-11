@@ -1,0 +1,14 @@
+id: azure.iothub
+displayName: Azure IoT Hub
+type: OpenAPI
+version: "2019-11-04"
+description: This is the [Azure IoT Hub API v1.0](https://docs.microsoft.com/en-us/rest/api/iothub/) OpenAPI specification. Azure IoT Hub is a service that offers programmatic access to the device, messaging, and job services, as well as the resource provider, in IoT Hub. You can access messaging services from within an IoT service running in Azure, or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response. Use this API to manage the IoT hubs in your Azure subscription.
+idlPath: /azure.iothub/2019-11-04/openapi.yaml
+thumbnailPath: /azure.iothub/2019-11-04/icon.png
+documentationPath: /azure.iothub/2019-11-04/readme.md
+keywords:
+  - InternetofThings/DeviceManagement
+  - Cost/Paid
+  - Vendor/Microsoft
+endpoint:
+  - url: https://management.azure.com/

@@ -1,0 +1,14 @@
+id: zoho.crm.rest
+displayName: Zoho CRM REST
+type: OpenAPI
+version: v2
+description: This is the [Zoho CRM](https://www.zoho.com/crm/developer/docs/api/v2/modules-api.html) OpenAPI specification.
+idlPath: /zoho.crm.rest/v2/openapi.yaml
+thumbnailPath: /zoho.crm.rest/v2/icon.png
+documentationPath: /zoho.crm.rest/v2/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Paid
+endpoint:
+  - url: https://www.zohoapis.com/crm/v2
+    description: API server

@@ -1,0 +1,5 @@
+## Overview
+This is the [eBay finances API v1.9.0](https://developer.ebay.com/api-docs/sell/finances/overview.html) OpenAPI Specification.  The eBay Developers Program is hosted on the eBay Developer Site. The program provides information and services for  the eBay developer community. This API is used to retrieve seller payouts and monetary transaction details related to those payouts. The finances API is used by sellers in eBay's managed payments program to retrieve seller payout information.  The data provided through this public API is similar to the data that the seller will see under the Payments tab of  Seller Hub in My eBay. With eBay's managed payments program, eBay manages the entire payments process, including the  available payment methods, and shortly after a buyer's payment clears, eBay distributes payouts directly to the  seller's preferred bank account.
+## Prerequisites
+
+  Create a [developer account](https://developer.ebay.com/api-docs/static/creating-edp-account.html)  and obtain tokens following [this guide](https://developer.ebay.com/api-docs/static/oauth-tokens.html).

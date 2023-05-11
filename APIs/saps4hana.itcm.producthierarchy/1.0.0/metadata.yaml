@@ -1,0 +1,11 @@
+id: saps4hana.itcm.producthierarchy
+displayName: SAPS4HANA ITCM Product Hierarchy
+type: OpenAPI
+version: 1.0.0
+description: This is the [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.  In SAPS4HANA Intelligent Trade Claims Management, users can group and organize their products and nodes and assign them to a product hierarchy.
+idlPath: /saps4hana.itcm.producthierarchy/1.0.0/openapi.yaml
+thumbnailPath: /saps4hana.itcm.producthierarchy/1.0.0/icon.png
+documentationPath: /saps4hana.itcm.producthierarchy/1.0.0/readme.md
+keywords:
+  - BusinessManagement/ERP
+  - Cost/Paid

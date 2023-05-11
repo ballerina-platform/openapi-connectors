@@ -1,0 +1,13 @@
+id: uber
+displayName: Uber
+type: OpenAPI
+version: 1.0.0
+description: This is the Uber OpenAPI specification
+idlPath: /uber/1.0.0/openapi.yaml
+thumbnailPath: /uber/1.0.0/icon.png
+documentationPath: /uber/1.0.0/readme.md
+keywords:
+  - Lifestyle&Entertainment/Ride-Hailing
+  - Cost/Paid
+endpoint:
+  - url: https://api.uber.com/v1

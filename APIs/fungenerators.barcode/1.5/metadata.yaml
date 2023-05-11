@@ -1,0 +1,14 @@
+id: fungenerators.barcode
+displayName: Fun Generators Barcode
+type: OpenAPI
+version: "1.5"
+description: This is the [fungenerators BarCode API v1](http://fungenerators.com/api/barcode/) OpenAPI specification. The fungenerators.barcode API provides capability to generate Barcode images for a given barcode number. You can decode Barcode images and get the barcodes in a numberic form as well. Many industry standard barcode types are supported. The best and complete Barcode API on the cloud.
+idlPath: /fungenerators.barcode/1.5/openapi.yaml
+thumbnailPath: /fungenerators.barcode/1.5/icon.png
+documentationPath: /fungenerators.barcode/1.5/readme.md
+keywords:
+  - ITOperations/Security&IdentityTools
+  - Cost/Paid
+endpoint:
+  - url: http://api.fungenerators.com
+  - url: https://api.fungenerators.com

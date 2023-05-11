@@ -1,0 +1,13 @@
+id: livestorm
+displayName: Livestorm
+type: OpenAPI
+version: "1"
+description: This is the [Livestorm API v1](https://developers.livestorm.co/docs) OpenAPI specification.
+idlPath: /livestorm/1/openapi.yaml
+thumbnailPath: /livestorm/1/icon.png
+documentationPath: /livestorm/1/readme.md
+keywords:
+  - Communication/VideoConferencing
+  - Cost/Freemium
+endpoint:
+  - url: https://api.livestorm.co/v1

@@ -1,0 +1,13 @@
+id: gitlab
+displayName: GitLab
+type: OpenAPI
+version: v4
+description: This is the [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
+idlPath: /gitlab/v4/openapi.yaml
+thumbnailPath: /gitlab/v4/icon.png
+documentationPath: /gitlab/v4/readme.md
+keywords:
+  - ITOperations/SourceControl
+  - Cost/Freemium
+endpoint:
+  - url: https://gitlab.com/api/

@@ -1,0 +1,13 @@
+id: capsulecrm
+displayName: Capsule CRM
+type: OpenAPI
+version: v2
+description: This is the [Capsule CRM API v2](https://developer.capsulecrm.com/v2/overview/getting-started) OpenAPI specification.
+idlPath: /capsulecrm/v2/openapi.yaml
+thumbnailPath: /capsulecrm/v2/icon.png
+documentationPath: /capsulecrm/v2/readme.md
+keywords:
+  - Sales&CRM/CustomerRelationshipManagement
+  - Cost/Freemium
+endpoint:
+  - url: https://api.capsulecrm.com

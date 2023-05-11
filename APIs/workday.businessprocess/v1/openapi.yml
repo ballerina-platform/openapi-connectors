@@ -1,0 +1,2054 @@
+openapi: 3.0.1
+info:
+  title: businessProcess
+  description: >-
+    This is a generated connector for [WorkDay Business Process REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    The WorkDay business process service enables applications to access information on event actions and details
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
+  x-ballerina-display:
+    label: Workday Business Process
+    iconPath: "icon.png" 
+  version: v1
+tags:
+- name: eventSteps
+  description: Returns a collection of business process event steps based on the specified
+    parameters. Only event steps that are awaiting action from the processing person
+    are returned.
+- name: events
+  description: "Returns a collection of events based on the specified parameters.\
+    \ You must specify either the worker or initiating worker query parameter. If\
+    \ you did not specify the worker nor the initiating worker parameter, this method\
+    \ returns an empty response. \n\nThis operation returns the most recent results\
+    \ first. The results are sorted in descending order of the creation date of the\
+    \ event.\n\nSecured by the Business Process Security Policy for each event."
+- name: types
+  description: Returns all business process types. Secured by Public Business Processes.
+- name: Prompt Values
+  description: Retrieves instances that can be used as values for other endpoint parameters
+    in this service.
+paths:
+  /eventSteps:
+    get:
+      tags:
+      - eventSteps
+      summary: Retrieves business process event steps.
+      operationId: getBusinessProcessEventSteps
+      description: |-
+        Retrieves a collection of business process event steps. You can filter the event steps by business process, creation date, due date, and step type.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: businessProcess
+        in: query
+        description: The business process type of the event that the step is associated
+          with.
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: createdOnOrAfter
+        in: query
+        description: The last moment the step was updated.
+        schema:
+          type: string
+          format: date
+      - name: createdOnOrBefore
+        in: query
+        description: The last moment the step was updated.
+        schema:
+          type: string
+          format: date
+      - name: dueDateOnOrAfter
+        in: query
+        description: Returns the due date for this step.
+        schema:
+          type: string
+          format: date
+      - name: dueDateOnOrBefore
+        in: query
+        description: Returns the due date for this step.
+        schema:
+          type: string
+          format: date
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      - name: stepType
+        in: query
+        description: Retired. We retire this report field because when there are multiple
+          steps on the business process definition that are associated with this event
+          step, this report field doesn't return the step type for each associated
+          step. We recommend that you use the Step Type report field instead.
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventStepsSummary'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /events:
+    get:
+      tags:
+      - events
+      summary: Retrieves business process events.
+      operationId: getBusinessProcessEvents
+      description: |-
+        Retrieves a collection of business process events based on the specified parameters. You must specify exactly one worker parameter. If a worker parameter is not specified, returns a blank response.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: businessProcess
+        in: query
+        description: The business process type associated with the business process.
+          Returns filterable search results. Use with the Business Process Type data
+          source.
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: completedOnOrAfter
+        in: query
+        description: The date and time the business process was completed.
+        schema:
+          type: string
+          format: date
+      - name: completedOnOrBefore
+        in: query
+        description: The date and time the business process was completed.
+        schema:
+          type: string
+          format: date
+      - name: initiatedOnOrAfter
+        in: query
+        description: The date and time this business process was initiated.
+        schema:
+          type: string
+          format: date
+      - name: initiatedOnOrBefore
+        in: query
+        description: The date and time this business process was initiated.
+        schema:
+          type: string
+          format: date
+      - name: initiator
+        in: query
+        description: The ~worker~ that initiated the business process. Please do not
+          use this field in a condition rule for the initiation step of a process,
+          as it will not return results. This is because there is no initiating ~worker~
+          designated until the process has started. The Initiating ~Worker~ field
+          only gets a value after the event is initiated (after the process is submitted).
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      - name: status
+        in: query
+        description: Transaction Status for Facet Search
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: worker
+        in: query
+        description: Event about ~Worker~ for Facet Search
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventDetails'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /events/{id}/completedSteps:
+    get:
+      tags:
+      - events
+      summary: Retrieves completed steps for a business process event.
+      operationId: getCompletedStepsBusinessProcess
+      description: |-
+        Retrieves all business process steps that are completed for the specified buinesss process event.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CompletedStepsView'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /types:
+    get:
+      tags:
+      - types
+      summary: Retrieves all business process types.
+      operationId: getAllBusinessProcessTypes
+      description: |-
+        Retrieves a collection of business process types.
+
+        Secured by: Public Business Processes
+      parameters:
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BusinessProcessTypeView'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /events/{id}/attachments:
+    get:
+      tags:
+      - events
+      summary: Retrieves attachments for a business process event.
+      operationId: getAttachmentBusinessProcessEvent
+      description: |-
+        Retrieves attachments on the specified business process event that the processing user has permission to view.
+
+        Secured by: Public Business Processes
+
+        Contains attachment(s)
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventAttachmentsView'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /types/{id}:
+    get:
+      tags:
+      - types
+      summary: Retrieves a business process type.
+      operationId: getBusinessProcessTypeByID
+      description: |-
+        Retrieves the business process type specified by the id.
+
+        Secured by: Public Business Processes
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcessTypeDetails'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /eventSteps/{id}:
+    get:
+      tags:
+      - eventSteps
+      summary: Retrieves a business process event step.
+      operationId: getBusinessProcessEventStepByID
+      description: |-
+        Returns a business process event step. Returned results are secured based on processing person's view access to the event to which the step belongs. If the processing person does not have view access to the event, when this API is called, they will not be able to retrieve the event step and receive a 404 error.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventStepsView'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /events/{id}/comments:
+    get:
+      tags:
+      - events
+      summary: Retrieves comments for a business process event.
+      operationId: getCommentsBusinessProcessEvent
+      description: |-
+        Retrieves comments on the specified business process event.
+
+        Secured by: Core Navigation
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comments'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /events/{id}/inProgressSteps:
+    get:
+      tags:
+      - events
+      summary: Retrieves in progress steps for a business process event.
+      operationId: getInProcessStepsBusinessProcessEvent
+      description: |-
+        Retrieves all business process steps that are currently in progress for the specified business process event.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StepsInProgressView'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /eventSteps/{id}/deny:
+    post:
+      tags:
+      - eventSteps
+      summary: Denies a business process event step.
+      operationId: deniesBusinessProcess
+      description: |-
+        Denies the business process event step specified by the ID of the originating event step. The processing person must have view access to the event.  In the request body, specify these required fields: id (the event step you are denying), stepAction{id} (if there are multiple event steps), comment.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessProcessStepsDeny'
+        required: true
+      responses:
+        201:
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcessStepsDeny'
+        400:
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+            Error Code | Validation Message
+            --- | ---
+            A183 | This event step cannot be denied
+            A212 | This event step is not awaiting your action.
+            A234 | A step action is required when multiple values are available
+            A181 | A comment is required
+            A225 | You are not authorized to deny this event step
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: businessProcessStepsDeny
+  /values/sendBack/to/:
+    get:
+      tags:
+      - Prompt Values
+      description: Retrieves instances that can be used as values for other endpoint
+        parameters in this service.
+      operationId: getRetrievesInstances
+      parameters:
+      - name: eventStep
+        in: query
+        description: Please do not add superclasses to, or relationships on this class
+          without first discussing with the BPF team.
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MULTIPLE_INSTANCE_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /events/{id}/remainingSteps:
+    get:
+      tags:
+      - events
+      summary: Retrieves remaining steps for a business process event.
+      operationId: getRemainingStepsBusinessProcessEvent
+      description: |-
+        Retrieves all remaining business process steps for the specified business process event.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RemainingStepView'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /types/{id}/attachmentCategories:
+    get:
+      tags:
+      - types
+      summary: Retrieves attachment categories for a business process type.
+      operationId: getAttachmentCategories
+      description: |-
+        Retrieves all attachment categories for the specified business process type that the processing user can select for the specified event. You can filter by event target.
+
+        Secured by: Public Business Processes
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      - name: eventTarget
+        in: query
+        description: The Workday ID of the event target that this business process
+          is about. You can use a returned id from an API that returns instances of
+          the event target type. For example, if your event target is a worker, use
+          GET /workers in the Staffing service.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: The maximum number of objects in a single response. The default
+          is 20. The maximum is 100.
+        schema:
+          type: integer
+          format: int64
+      - name: offset
+        in: query
+        description: 'The zero-based index of the first object in a response collection.
+          The default is 0. Use offset with the limit parameter to control paging
+          of a response collection. Example: If limit is 5 and offset is 9, the response
+          returns a collection of 5 objects starting with the 10th object.'
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AttachmentCategoryView'
+                  total:
+                    type: integer
+                    format: int64
+                description: collection something or other
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /events/{id}:
+    get:
+      tags:
+      - events
+      summary: Retrieves a business process event.
+      operationId: getBusinessProcessEvent
+      description: |-
+        Retrieves the business process event with the specified id.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Successful response. A successful response can return no matched
+            data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+        400:
+          description: Invalid request. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+  /eventSteps/{id}/approve:
+    post:
+      tags:
+      - eventSteps
+      summary: Approves a business process event step.
+      operationId: approveBusinessProcess
+      description: |-
+        Approves the business process event step specified by the id of the originating event step.  In the request body, specify these required fields: id (the event step you are approving), comment.
+
+        Secured by: Core Navigation, Public Business Processes
+
+        Scope: Adaptive Planning for the Workforce, Adaptive Planning for Financial Plans
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessProcessStepsApprove'
+        required: true
+      responses:
+        201:
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcessStepsApprove'
+        400:
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+            Error Code | Validation Message
+            --- | ---
+            A212 | This event step is not awaiting your action.
+            A190 | This event step type cannot be approved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: businessProcessStepsApprove
+  /eventSteps/{id}/sendBack:
+    post:
+      tags:
+      - eventSteps
+      summary: Sends back a business process event step.
+      operationId: sendBackBusinessProcessEvent
+      description: |-
+        Sends back the business process event step specified by the id of the originating event step.   In the request body, specify these required fields: id (the event step you are sending back), reason.
+
+        Secured by: Public Business Processes
+      parameters:
+      - name: id
+        in: path
+        description: The Workday ID of the resource.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessProcessStepSendBack'
+        required: true
+      responses:
+        201:
+          description: Resource created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcessStepSendBack'
+        400:
+          description: |-
+            Invalid request. (https://community.workday.com/rest/error-messages)
+            Error Code | Validation Message
+            --- | ---
+            A212 | This event step isn't awaiting your action
+            A202 | The step you are sending back to isn't supported for this business process.
+            A227 | The step you are sending back from isn't supported for this business process.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        401:
+          description: Invalid resource or operation. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        403:
+          description: User has insufficient permissions. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        404:
+          description: Resource not found. (https://community.workday.com/rest/error-messages)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VALIDATION_ERROR_MODEL_REFERENCE'
+        default:
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      x-codegen-request-body-name: businessProcessStepSendBack
+components:
+  schemas:
+    INSTANCE_MODEL_REFERENCE:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+          type: string
+          description: wid / id / reference id
+        descriptor:
+          type: string
+          description: A description of the instance
+          readOnly: true
+        href:
+          type: string
+          description: A link to the instance
+          readOnly: true
+    ERROR_MODEL_REFERENCE:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          type: string
+          description: A description of the error
+    VALIDATION_ERROR_MODEL_REFERENCE:
+      allOf:
+      - $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+      - type: object
+        properties:
+          errors:
+            type: array
+            description: An array of validation errors
+            items:
+              $ref: '#/components/schemas/ERROR_MODEL_REFERENCE'
+    FACETS_MODEL_REFERENCE:
+      type: array
+      items:
+        type: object
+        properties:
+          descriptor:
+            type: string
+            description: A description of the facet
+          facetParameter:
+            type: string
+            description: The alias used to select the facet
+          values:
+            type: array
+            description: the facet values
+            items:
+              required:
+              - id
+              type: object
+              properties:
+                count:
+                  type: integer
+                  description: The number of instances returned by this facet
+                  format: int32
+                id:
+                  pattern: ^(?:(?:[0-9a-f]{32})|(?:[0-9]+\$[0-9]+)|(\S+=\S+))$
+                  type: string
+                  description: wid / id / reference id
+                descriptor:
+                  type: string
+                  description: A description of the facet
+                href:
+                  type: string
+                  description: A link to the instance
+                  readOnly: true
+        description: This object represents the possible facets for this resource
+        readOnly: true
+    MULTIPLE_INSTANCE_MODEL_REFERENCE:
+      type: object
+      properties:
+        total:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+    BusinessProcessTypeDetails:
+      allOf:
+      - type: object
+        properties:
+          helpText:
+            type: string
+            description: The help text for the initiation step of a business process.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Rich Text
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    BusinessProcessTypeView:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    AttachmentCategoryView:
+      allOf:
+      - type: object
+        properties:
+          referenceID:
+            type: string
+            description: The Reference ID to use for lookups within our Workday Web
+              Services. For ~supervisory organizations~, this is also the 'Organization
+              ID'
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    BusinessProcessStep:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Status:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    BusinessProcess:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Task:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Event:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    CompletedByPerson:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Questionnaire:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    EventStepsView:
+      allOf:
+      - type: object
+        properties:
+          delayedDate:
+            type: string
+            description: The date the delayed step will trigger.
+            format: date
+            x-workday-type: Date
+          stepEvent:
+            $ref: '#/components/schemas/StepEvent'
+          businessProcessStep:
+            $ref: '#/components/schemas/BusinessProcessStep'
+          parallelStepInboxOrder:
+            type: string
+            description: The order that parallel steps display in the Inbox. This
+              will be populated only if this Business Process Type allows configuration
+              of Parallel Step Inbox Order. If there are multiple steps from the business
+              process definition that are associated to this event step, this field
+              returns no value.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          status:
+            $ref: '#/components/schemas/Status'
+          dueDate:
+            type: string
+            description: Returns the due date for this step.
+            format: date
+            x-workday-type: Date
+          stepType:
+            $ref: '#/components/schemas/StepType'
+          order:
+            type: string
+            description: Retired. We retire this report field because when there are
+              multiple steps on the business process definition that are associated
+              with this event step, this report field doesn't return the order for
+              each associated step. We recommend that you use the Order report field
+              instead.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          stepHelpText:
+            type: string
+            description: This CRF returns the step help text that is configured for
+              the Workflow Step of the Event Record.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Rich Text
+          businessProcess:
+            $ref: '#/components/schemas/BusinessProcess'
+          completedDate:
+            type: string
+            description: The date when this step was completed
+            format: date
+            x-workday-type: Date
+          task:
+            $ref: '#/components/schemas/Task'
+          awaitingPersons:
+            type: array
+            description: The people this event is currently awaiting for action.
+            items:
+              $ref: '#/components/schemas/AwaitingPerson'
+            x-workday-type: Multi-instance
+          overallProcess:
+            $ref: '#/components/schemas/OverallProcess'
+          comments:
+            type: array
+            description: Returns the comments for the business process event step
+            items:
+              $ref: '#/components/schemas/Comments'
+            x-workday-type: Multi-instance
+          event:
+            $ref: '#/components/schemas/Event'
+          completedByPerson:
+            $ref: '#/components/schemas/CompletedByPerson'
+          questionnaire:
+            $ref: '#/components/schemas/Questionnaire'
+          creationDate:
+            type: string
+            description: The date when the event record was created.
+            format: date
+            x-workday-type: Date
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    StepEvent:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    OverallProcess:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    StepType:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    EventStepsSummary:
+      allOf:
+      - type: object
+        properties:
+          stepEvent:
+            $ref: '#/components/schemas/StepEvent'
+          creationDate:
+            type: string
+            description: The date when the event record was created.
+            format: date
+            x-workday-type: Date
+          stepHelpText:
+            type: string
+            description: This CRF returns the step help text that is configured for
+              the Workflow Step of the Event Record.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Rich Text
+          overallProcess:
+            $ref: '#/components/schemas/OverallProcess'
+          delayedDate:
+            type: string
+            description: The date the delayed step will trigger.
+            format: date
+            x-workday-type: Date
+          completedDate:
+            type: string
+            description: The date when this step was completed
+            format: date
+            x-workday-type: Date
+          task:
+            $ref: '#/components/schemas/Task'
+          awaitingPersons:
+            type: array
+            description: The people this event is currently awaiting for action.
+            items:
+              $ref: '#/components/schemas/AwaitingPerson'
+            x-workday-type: Multi-instance
+          businessProcessStep:
+            $ref: '#/components/schemas/BusinessProcessStep'
+          stepType:
+            $ref: '#/components/schemas/StepType'
+          businessProcess:
+            $ref: '#/components/schemas/BusinessProcess'
+          parallelStepInboxOrder:
+            type: string
+            description: The order that parallel steps display in the Inbox. This
+              will be populated only if this Business Process Type allows configuration
+              of Parallel Step Inbox Order. If there are multiple steps from the business
+              process definition that are associated to this event step, this field
+              returns no value.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          completedByPerson:
+            $ref: '#/components/schemas/CompletedByPerson'
+          comments:
+            type: array
+            description: Returns the comments for the business process event step
+            items:
+              $ref: '#/components/schemas/Comments'
+            x-workday-type: Multi-instance
+          status:
+            $ref: '#/components/schemas/Status'
+          order:
+            type: string
+            description: Retired. We retire this report field because when there are
+              multiple steps on the business process definition that are associated
+              with this event step, this report field doesn't return the order for
+              each associated step. We recommend that you use the Order report field
+              instead.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          dueDate:
+            type: string
+            description: Returns the due date for this step.
+            format: date
+            x-workday-type: Date
+          event:
+            $ref: '#/components/schemas/Event'
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    To:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    StatusReadOnly:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+      x-readOnly: true
+    BusinessProcessStepSendBack:
+      allOf:
+      - required:
+        - reason
+        - to
+        type: object
+        properties:
+          reason:
+            type: string
+            description: Returns user's comment for Event Record.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          to:
+            $ref: '#/components/schemas/To'
+          status:
+            $ref: '#/components/schemas/StatusReadOnly'
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    EventStatus:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    BusinessProcessStepsApprove:
+      allOf:
+      - type: object
+        properties:
+          eventStatus:
+            $ref: '#/components/schemas/EventStatus'
+          comment:
+            type: string
+            description: Returns user's comment for Event Record.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    StepAction:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    BusinessProcessStepsDeny:
+      allOf:
+      - type: object
+        properties:
+          comment:
+            type: string
+            description: Returns user's comment for Event Record.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          stepAction:
+            $ref: '#/components/schemas/StepAction'
+          eventStatus:
+            $ref: '#/components/schemas/EventStatus'
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    For_:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    OverallBusinessProcess:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Initiator:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    EventDetails:
+      allOf:
+      - type: object
+        properties:
+          subBusinessProcesses:
+            type: array
+            description: Returns other Business Processes (sub-processes) part of
+              this process, including processes multiple levels down.
+            items:
+              $ref: '#/components/schemas/SubBusinessProcess'
+            x-workday-type: Multi-instance
+          dueDate:
+            type: string
+            description: The date the business process needs to be completed.
+            format: date
+            x-workday-type: Date
+          for:
+            $ref: '#/components/schemas/For_'
+          overallBusinessProcess:
+            $ref: '#/components/schemas/OverallBusinessProcess'
+          completedDate:
+            type: string
+            description: The date and time the business process was completed.
+            format: date
+            x-workday-type: Date
+          creationDate:
+            type: string
+            description: Date the business process was initiated.
+            format: date
+            x-workday-type: Date
+          status:
+            $ref: '#/components/schemas/Status'
+          initiator:
+            $ref: '#/components/schemas/Initiator'
+          effectiveDate:
+            type: string
+            description: The date this business process takes effect.
+            format: date
+            x-workday-type: Date
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    DueDate:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    RemainingStepView:
+      allOf:
+      - type: object
+        properties:
+          completionStep:
+            type: boolean
+            description: Returns true if this step completes the business process.
+            example: true
+            x-workday-type: Boolean
+          stepType:
+            $ref: '#/components/schemas/StepType'
+          groups:
+            type: array
+            description: Returns the security groups that can perform the workflow
+              step.
+            items:
+              $ref: '#/components/schemas/SecurityGroupView'
+            x-workday-type: Multi-instance
+          step:
+            type: string
+            description: Returns the alternate name of the workflow step for the business
+              process definition.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          dueDate:
+            $ref: '#/components/schemas/DueDate'
+          parallelStepInboxOrder:
+            type: string
+            description: This report field controls ordering of parallel steps in
+              Inbox. It will be populated only if this Business Process Type allows
+              configuration of Parallel Step Inbox Order.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          order:
+            type: string
+            description: Returns the order of this step within the business process
+              definition it is part of.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    CompletedStepsView:
+      allOf:
+      - type: object
+        properties:
+          awaitingPersons:
+            type: array
+            description: The people this event is currently awaiting for action.
+            items:
+              $ref: '#/components/schemas/AwaitingPerson'
+            x-workday-type: Multi-instance
+          event:
+            $ref: '#/components/schemas/Event'
+          completedDate:
+            type: string
+            description: The date when this step was completed
+            format: date
+            x-workday-type: Date
+          creationDate:
+            type: string
+            description: The date when the event record was created.
+            format: date
+            x-workday-type: Date
+          status:
+            $ref: '#/components/schemas/Status'
+          completedByPerson:
+            $ref: '#/components/schemas/CompletedByPerson'
+          order:
+            type: string
+            description: Retired. We retire this report field because when there are
+              multiple steps on the business process definition that are associated
+              with this event step, this report field doesn't return the order for
+              each associated step. We recommend that you use the Order report field
+              instead.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          parallelStepInboxOrder:
+            type: string
+            description: The order that parallel steps display in the Inbox. This
+              will be populated only if this Business Process Type allows configuration
+              of Parallel Step Inbox Order. If there are multiple steps from the business
+              process definition that are associated to this event step, this field
+              returns no value.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          comments:
+            type: array
+            description: Returns the comments for the business process event step
+            items:
+              $ref: '#/components/schemas/Comments'
+            x-workday-type: Multi-instance
+          dueDate:
+            type: string
+            description: Returns the due date for this step.
+            format: date
+            x-workday-type: Date
+          id:
+            type: string
+            description: Id of the instance
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+    BusinessProcessStepRef:
+      allOf:
+      - $ref: '#/components/schemas/BusinessProcessStep2'
+      - type: object
+    StepsInProgressView:
+      allOf:
+      - type: object
+        properties:
+          delayedDate:
+            type: string
+            description: The date the delayed step will trigger.
+            format: date
+            x-workday-type: Date
+          dueDate:
+            type: string
+            description: Returns the due date for this step.
+            format: date
+            x-workday-type: Date
+          anonymous:
+            type: boolean
+            description: Returns if the event step has been anonymously assigned.
+            example: true
+            x-workday-type: Boolean
+          businessProcessStep:
+            $ref: '#/components/schemas/BusinessProcessStepRef'
+          order:
+            type: string
+            description: Retired. We retire this report field because when there are
+              multiple steps on the business process definition that are associated
+              with this event step, this report field doesn't return the order for
+              each associated step. We recommend that you use the Order report field
+              instead.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          parallelStepInboxOrder:
+            type: string
+            description: The order that parallel steps display in the Inbox. This
+              will be populated only if this Business Process Type allows configuration
+              of Parallel Step Inbox Order. If there are multiple steps from the business
+              process definition that are associated to this event step, this field
+              returns no value.
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          awaitingPersons:
+            type: array
+            description: The people this event is currently awaiting for action.
+            items:
+              $ref: '#/components/schemas/AwaitingPerson'
+            x-workday-type: Multi-instance
+          creationDate:
+            type: string
+            description: The date when the event record was created.
+            format: date
+            x-workday-type: Date
+          status:
+            $ref: '#/components/schemas/Status'
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    Person:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Comments:
+      allOf:
+      - type: object
+        properties:
+          person:
+            $ref: '#/components/schemas/Person'
+          comment:
+            type: string
+            description: Comment
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          commentDate:
+            type: string
+            description: Gives the moment at which the instance was originally created.
+            format: date
+            x-workday-type: Date
+    SubBusinessProcess:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    UploadedBy:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    Category:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    ContentType:
+      allOf:
+      - $ref: '#/components/schemas/INSTANCE_MODEL_REFERENCE'
+      - type: object
+    EventAttachmentsView:
+      allOf:
+      - type: object
+        properties:
+          uploadedBy:
+            $ref: '#/components/schemas/UploadedBy'
+          description:
+            type: string
+            description: Event attachment description
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          category:
+            $ref: '#/components/schemas/Category'
+          contentType:
+            $ref: '#/components/schemas/ContentType'
+          fileLength:
+            type: integer
+            description: File length of the attachment
+            example: 331862265
+            x-workday-type: Numeric
+          fileName:
+            maxLength: 255
+            type: string
+            description: File name of the attachment
+            example: Lorem ipsum dolor sit amet, cum choro singulis consectetuer ut,
+              ubique iisque contentiones ex duo. Quo lorem etiam eu.
+            x-workday-type: Text
+          uploadDate:
+            type: string
+            description: Returns Date the Business Process Attachment was updated.
+            format: date
+            x-workday-type: Date
+          id:
+            type: string
+            description: Id of the instance
+    AwaitingPerson:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    BusinessProcessStep2:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+    SecurityGroupView:
+      allOf:
+      - type: object
+        properties:
+          descriptor:
+            type: string
+            description: A preview of the instance
+            example: Lorem ipsum dolor sit ame
+          id:
+            type: string
+            description: Id of the instance
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://<tenantauthorizationhostname>
+          scopes: {}

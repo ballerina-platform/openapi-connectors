@@ -32,7 +32,7 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
-          branch: release/file-update
+          branch: release/hash-update
           base: main
           title: Update file hashes
           body: |

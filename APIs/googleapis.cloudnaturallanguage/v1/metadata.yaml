@@ -1,7 +1,8 @@
 id: googleapis.cloudnaturallanguage
+displayName: Google Cloud Natural Language
 type: OpenAPI
 version: v1
-description: v1
+description: This is the [Google Cloud Natural Language API v1](https://cloud.google.com/natural-language/) OpenAPI specification.
 idlPath: /googleapis.cloudnaturallanguage/v1/openapi.yaml
 thumbnailPath: /googleapis.cloudnaturallanguage/v1/icon.png
 documentationPath: /googleapis.cloudnaturallanguage/v1/readme.md

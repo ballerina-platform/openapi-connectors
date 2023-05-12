@@ -1,7 +1,8 @@
 id: googleapis.cloudscheduler
+displayName: Google Cloud Scheduler
 type: OpenAPI
 version: v1
-description: v1
+description: This is the [Google Cloud Scheduler REST API v1](https://cloud.google.com/scheduler/docs/reference/rest) OpenAPI specification.
 idlPath: /googleapis.cloudscheduler/v1/openapi.yaml
 thumbnailPath: /googleapis.cloudscheduler/v1/icon.png
 documentationPath: /googleapis.cloudscheduler/v1/readme.md

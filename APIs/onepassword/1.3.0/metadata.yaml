@@ -1,5 +1,6 @@
 id: onepassword
 displayName: 1Password
+type: OpenAPI
 version: 1.3.0
 description: This is the [1Password Connect API v1.0](https://1password.com/) OpenAPI specification. 1Password is the easiest way to store and use strong passwords. Log in to sites and fill forms securely with a single click.
 idlPath: /onepassword/1.3.0/openapi.yaml

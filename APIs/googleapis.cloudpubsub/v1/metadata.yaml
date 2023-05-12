@@ -1,7 +1,8 @@
 id: googleapis.cloudpubsub
+displayName: Google Cloud Pub/Sub
 type: OpenAPI
 version: v1
-description: v1
+description: This is the [Google Cloud Pub/Sub API v1](https://cloud.google.com/pubsub/docs/reference/rest) OpenAPI specification.
 idlPath: /googleapis.cloudpubsub/v1/openapi.yaml
 thumbnailPath: /googleapis.cloudpubsub/v1/icon.png
 documentationPath: /googleapis.cloudpubsub/v1/readme.md

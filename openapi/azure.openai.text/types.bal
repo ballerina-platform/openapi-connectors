@@ -6,7 +6,7 @@ public type ConnectionConfig record {|
     # Provides Auth configurations needed when communicating with a remote HTTP endpoint.
     http:BearerTokenConfig|ApiKeysConfig auth;
     # The HTTP version understood by the client
-    http:HttpVersion httpVersion = http:HTTP_1_1;
+    http:HttpVersion httpVersion = http:HTTP_2_0;
     # Configurations related to HTTP/1.x protocol
     ClientHttp1Settings http1Settings?;
     # Configurations related to HTTP/2 protocol
@@ -89,7 +89,7 @@ public type Inline_response_200_choices record {
     string text?;
     int index?;
     Inline_response_200_logprobs? logprobs?;
-    string finish_reason?;
+    string? finish_reason?;
 };
 
 public type Deploymentid_completions_body record {

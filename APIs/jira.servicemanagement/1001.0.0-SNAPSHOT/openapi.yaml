@@ -2,12 +2,11 @@ openapi: 3.0.1
 info:
   title: Service Management Public REST API
   description: |-
-    This is a generated connector for [Jira Service Management Cloud REST API](https://developer.atlassian.com/cloud/jira/service-desk/) OpenAPI specification. 
+    This is [Jira Service Management Cloud REST API](https://developer.atlassian.com/cloud/jira/service-desk/) OpenAPI specification. 
     The Jira Service Management Cloud REST APIs are for developers who want to integrate Jira Service Management with other applications or administrators that want to automate their workflows and processes.
   termsOfService: https://www.atlassian.com/legal/customer-agreement
   version: 1001.0.0-SNAPSHOT
   x-ballerina-init-description: |-
-    The connector initialization requires setting the API credentials. 
     Create an [Atlassian Account](https://id.atlassian.com/signup) 
     and obtain tokens by following [this guide](https://developer.atlassian.com/cloud/jira/platform/basic-auth-for-rest-apis/).
   x-ballerina-display:

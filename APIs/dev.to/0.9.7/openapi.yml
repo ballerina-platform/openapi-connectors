@@ -11,13 +11,12 @@ info:
     name: DEV Team
     url: https://dev.to/contact
   description: >
-    This is a generated connector for [DEV API v0.9.7](https://developers.forem.com/api/) OpenAPI specification.
+    This is [DEV API v0.9.7](https://developers.forem.com/api/) OpenAPI specification.
     Access Forem articles, users and other resources via API.
     For a real-world example of Forem in action, check out [DEV](https://www.dev.to).
     All endpoints that don't require authentication are CORS enabled.
     Dates and date times, unless otherwise specified, must be inthe [RFC 3339](https://tools.ietf.org/html/rfc3339) format.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [DEVto Account](https://dev.to/settings/account) 
     and obtain tokens by log into [DEV Account](https://www.interzoid.com/account).
   termsOfService: https://dev.to/terms

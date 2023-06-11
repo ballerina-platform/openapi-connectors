@@ -3,10 +3,9 @@ info:
   title: Commercetools
   version: v1
   description: >-
-    This is a generated connector for [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification. 
+    This is [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification. 
     The commercetools Platform HTTP API(Audit Log) offers an interface for programmatic access to tracks creations, deletions, and updates of platform resources.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create and configure an OAuth2 client credentials by following [this guide](https://docs.commercetools.com/api/authorization).
   x-ballerina-display:
     label: Commercetools Audit Log

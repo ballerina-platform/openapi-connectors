@@ -5,11 +5,10 @@ info:
     label: ShipStation
     iconPath: "icon.png"
   description: |
-    This is a generated connector for [ShipStation API v1.0](https://www.shipstation.com/docs/api/) OpenAPI specification.
+    This is [ShipStation API v1.0](https://www.shipstation.com/docs/api/) OpenAPI specification.
     ShipStation strives to streamline shipping for online sellers, no matter where they sell their products online.
   contact: {}
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [ShipStation account](https://www.shipstation.com/step1/) and obtain tokens by following [this guide](https://www.shipstation.com/docs/api/requirements/#authentication).
   version: "1.0"
   

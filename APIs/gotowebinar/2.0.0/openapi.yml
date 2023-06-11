@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: GoToWebinar 2.0 REST API
   description: |
-    This is a generated connector for [GoToWebinar API v2.0](https://developer.goto.com/GoToWebinarV2) OpenAPI specification.  
+    This is [GoToWebinar API v2.0](https://developer.goto.com/GoToWebinarV2) OpenAPI specification.  
     The GoToWebinar API provides the capability to schedule webinars and customize webinars with panelists, polls, questions and surveys.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [LogMeIn account](https://accounts.logme.in/registration.aspx) and obtain tokens by following [this guide](https://developer.goto.com/guides/HowTos/02_HOW_createClient/).
   x-ballerina-display:
     label: GoTo Webinar

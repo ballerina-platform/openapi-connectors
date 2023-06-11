@@ -16,10 +16,10 @@ info:
   x-providerName: mozilla.com
   x-serviceName: kinto
   description: |
-    This is a generated connector for [Kinto v1.22](https://docs.kinto-storage.org/en/stable/api/index.html) OpenAPI specification.
+    This is [Kinto v1.22](https://docs.kinto-storage.org/en/stable/api/index.html) OpenAPI specification.
     The Kinto API provides the capability to store and retrieve JSON data.
   x-ballerina-init-description: |
-    The connector initialization does not require setting the API credentials. 
+    Does not require setting the API credentials. 
   x-ballerina-display:
       label: Kinto
       iconPath: "icon.png"

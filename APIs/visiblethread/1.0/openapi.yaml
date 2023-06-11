@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: VisibleThread API
   description: >
-    This is a generated connector for [VisibleThread API v1.0](https://api.visiblethread.com/example/index.html) OpenAPI specification. 
+    This is [VisibleThread API v1.0](https://api.visiblethread.com/example/index.html) OpenAPI specification. 
     The VisibleThread API provides services for analyzing or searching documents and web pages.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Contact support@visiblethread.com to request an API key.
   x-ballerina-display:
     label: VisibleThread

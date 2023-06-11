@@ -11,7 +11,6 @@ info:
     label: "Spotify"
     iconPath: "icon.png"
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Please create a [Spotify account](www.spotify.com) and obtain tokens following [this guide](https://developer.spotify.com/documentation/general/guides/authorization-guide/). Configure required scopes when obtaining the tokens. 
 externalDocs:
   description: Find more info on the official Spotify Web API Reference

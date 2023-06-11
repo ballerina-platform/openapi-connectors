@@ -7,11 +7,10 @@ info:
     iconPath: "icon.png"
   contact:
     email: developer@yodlee.com
-  description: This is a generated connector for [Yodlee Core API v1.1.0](https://www.yodlee.com/) OpenAPI specification
+  description: This is [Yodlee Core API v1.1.0](https://www.yodlee.com/) OpenAPI specification
     Envestnet | Yodlee API (“Yodlee API”) is a flexible RESTful API that allows developers to access personal financial data from the Envestnet | Yodlee financial data platform that can be used to develop various financial management applications. 
     Yodlee API 1.1 is designed to work with FastLink 3.0.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Yodlee account](https://www.yodlee.com/) and obtain OAuth tokens following [this guide](https://developer.yodlee.com/docs/api/1.1/getting-started-with-cc).
   license:
     name: Yodlee Developer License

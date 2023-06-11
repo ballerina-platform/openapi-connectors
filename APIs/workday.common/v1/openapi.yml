@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: common
   description: >-
-    This is a generated connector for [WorkDay Common Service REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    This is [WorkDay Common Service REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
     The WorkDay common service enables applications to access REST service for common resources shared by multiple product areas.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
   x-ballerina-display:
     label: Workday Common

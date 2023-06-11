@@ -6,7 +6,7 @@ info:
   title: GoDaddy Abuse API
   version: v1
   description: >-
-    This is a generated connector for [GoDaddy Certificates API v1](https://developer.godaddy.com/doc/endpoint/certificates) OpenAPI specification.
+    This is [GoDaddy Certificates API v1](https://developer.godaddy.com/doc/endpoint/certificates) OpenAPI specification.
     <strong>GoDaddy Abuse API Terms of Use:</strong><p>GoDaddy’s Abuse API is
     provided to simplify and standardize the abuse reporting experience. To help
     us streamline the review of abuse reports, you acknowledge and agree that
@@ -52,8 +52,7 @@ info:
     about GoDaddy’s Abuse API or any of the terms and conditions set forth
     above, please contact abuseapisupport@godaddy.com.</p>
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials.  Create a
-    [GoDaddy account](https://sg.godaddy.com/) and obtain tokens by following
+    Create a [GoDaddy account](https://sg.godaddy.com/) and obtain tokens by following
     [this guide](https://developer.godaddy.com/getstarted).
 servers:
   - url: https://api.ote-godaddy.com/

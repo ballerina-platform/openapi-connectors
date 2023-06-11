@@ -12,7 +12,7 @@ info:
     url: https://www.isendpro.com/
     x-twitter: isendpro
   description: |
-    This is a generated connector for [iSendPro v1.1.1](https://www.isendpro.com/docs/?type=7) OpenAPI specification.
+    This is [iSendPro v1.1.1](https://www.isendpro.com/docs/?type=7) OpenAPI specification.
     [1] List of features:
     - sending SMS to one or more recipients,
     - HLR lookup,
@@ -43,7 +43,7 @@ info:
       version: "3.0"
   x-providerName: isendpro.com
   x-ballerina-init-description: | 
-    The connector initialization doesn't require setting the API credentials.
+    Doesn't require setting the API credentials.
     Create an [iSendPro account](https://en.isendpro.com/signup.php) and obtain tokens by following this [guide](https://www.isendpro.com/docs/?type=7#prerequis_english)
     Operations require passing the token as a parameter.
 paths:

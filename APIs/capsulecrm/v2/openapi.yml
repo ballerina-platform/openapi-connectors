@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: Capsule CRM API
   description: |
-    This is a generated connector for [Capsule CRM API v2](https://developer.capsulecrm.com/v2/overview/getting-started) OpenAPI specification.
+    This is [Capsule CRM API v2](https://developer.capsulecrm.com/v2/overview/getting-started) OpenAPI specification.
     Capsule CRM keeps track of the people and companies you do business with, opportunities in the pipeline and what needs to be done.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Capsule CRM account](https://capsulecrm.com) and obtain tokens by following [this guide](https://developer.capsulecrm.com/v2/overview/authentication).
   x-ballerina-display:
     label: Capsule CRM

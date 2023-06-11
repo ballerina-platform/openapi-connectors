@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: 
-    This is a generated connector for [Google Cloud Billing Account API v1](https://cloud.google.com/billing/v1/getting-started) OpenAPI specification.
+    This is [Google Cloud Billing Account API v1](https://cloud.google.com/billing/v1/getting-started) OpenAPI specification.
     The Google Cloud Billing Account API allows developers to manage billing for their Google Cloud Platform projects programmatically.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:
     name: Creative Commons Attribution 3.0

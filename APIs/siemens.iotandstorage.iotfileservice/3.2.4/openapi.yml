@@ -7,7 +7,6 @@ info:
   version: 3.2.4
   x-visibility: external
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Siemens MindSphere](https://siemens.mindsphere.io/en) account and
     obtain tokens by following [this
     guide](https://developer.mindsphere.io/concepts/concept-roles-scopes.html#iot-file-service)

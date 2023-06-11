@@ -8,7 +8,7 @@ info:
   contact:
     x-twitter: clever
   description: | 
-    This is a generated connector for [Clever Data API v1.2](https://dev.clever.com/v1.2/docs/secure-sync) OpenAPI specification.
+    This is [Clever Data API v1.2](https://dev.clever.com/v1.2/docs/secure-sync) OpenAPI specification.
     Clever Data API provides the capability to retrieve information from Clever data store.
   title: Data API
   version: 1.2.0
@@ -22,7 +22,6 @@ info:
       version: "3.0"
   x-providerName: clever.com
   x-ballerina-init-description: | 
-    The connector initialization requires setting the API credentials.
     Create a [Clever account](https://clever.com/signup) and obtain tokens by following this [guide](https://dev.clever.com/v1.2/docs/getting-started).
 security:
   - oauth: []

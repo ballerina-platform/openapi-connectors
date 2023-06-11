@@ -2,13 +2,12 @@ openapi: 3.0.3
 info:
   title: IRIS API
   description: |
-    This is a generated connector for [IRIS Helpdesk API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+    This is [IRIS Helpdesk API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
     Connect with the Helpdesk API to work with your ticket data.  
     Helpdesk tickets are organized by ticket types.
     Ticket types have properties such as assigned users, expected time to completion (SLA), and visibility to help you segment tickets based on job descriptions.
     Get detailed helpdesk ticket information, perform updates, and manage attached files with ease by using the Helpdesk API.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [IRIS account](https://www.iriscrm.com) and obtain tokens by following [this guide](https://www.iriscrm.com/api/#section/Generate-an-API-token).
   x-ballerina-display:
     label: IRIS Helpdesk

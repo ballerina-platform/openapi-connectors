@@ -5,7 +5,7 @@ info:
     iconPath: "icon.png"
   title: Logistics API
   description: >-
-    This is a generated connector for [eBay logistics API v1_beta.0.0](https://developer.ebay.com/api-docs/sell/logistics/static/overview.html) OpenAPI Specification.
+    This is [eBay logistics API v1_beta.0.0](https://developer.ebay.com/api-docs/sell/logistics/static/overview.html) OpenAPI Specification.
     This is an API available only to select developers
     approved by business units.The Logistics API
     resources offer the following capabilities: shipping_quote
@@ -24,7 +24,6 @@ info:
     shipping label. Sellers must set up a payment method via their eBay account before they can use the methods in
     this API to create a shipment and the associated shipping label.
   x-ballerina-init-description: >- 
-    The connector initialization requires setting the API credentials. 
     Create a [developer account](https://developer.ebay.com/api-docs/static/creating-edp-account.html) 
     and obtain tokens following [this guide](https://developer.ebay.com/api-docs/static/oauth-tokens.html).
   contact:

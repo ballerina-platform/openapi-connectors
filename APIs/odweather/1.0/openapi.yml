@@ -8,10 +8,10 @@ info:
   contact:
     email: matiasbonet@oceandrivers.com
   description: |
-    This is a generated connector for [ODWeather API v1.0](https://api.oceandrivers.com/) OpenAPI specification.
+    This is [ODWeather API v1.0](https://api.oceandrivers.com/) OpenAPI specification.
     The ODWeather API provides the capability to access the real time and forecast ocean information.
   x-ballerina-init-description: |
-    The connector initialization does not require setting the API credentials. 
+    Does not require setting the API credentials. 
   title: ODWeather
   version: "1.0"
   x-apisguru-categories:

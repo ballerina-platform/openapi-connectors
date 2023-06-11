@@ -3,11 +3,10 @@ info:
   title: Facebook Marketing API
   version: v12.0
   description: >
-    This is a generated connector for [Facebook Marketing API v12.0](https://developers.facebook.com/docs/marketing-apis) OpenAPI specification. 
+    This is [Facebook Marketing API v12.0](https://developers.facebook.com/docs/marketing-apis) OpenAPI specification. 
     Facebook is an American online social media and social networking service owned by Facebook, Inc.Facebook Marketing 
     APIs are a collection of Graph API endpoints that can be used to help you advertise on Facebook.
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create a [Facebook account](https://facebook.com/) and obtain tokens by following [this guide](https://developers.facebook.com/docs/marketing-apis/overview/authentication).
   x-ballerina-display:
     label: Facebook Ads

@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: OptiTune REST API
   description: |
-    This is a generated connector for [OptiTune API v1](https://manage.opti-tune.com/help/site/articles/api/default.html) OpenAPI specification.
+    This is [OptiTune API v1](https://manage.opti-tune.com/help/site/articles/api/default.html) OpenAPI specification.
     A complete API for interacting with all objects on an OptiTune Management Server
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [OptiTune account](https://manage.opti-tune.com) and obtain tokens by following [this guide](https://manage.opti-tune.com/help/site/articles/api/default.html#authentication).
   x-ballerina-display:
     label: OptiTune 

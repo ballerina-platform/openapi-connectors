@@ -3,10 +3,9 @@ openapi: 3.0.0
 info:
   title: ProdPad
   description: >
-    This is a generated connector for [ProdPad API v1.0](https://www.prodpad.com/) OpenAPI specification. 
+    This is [ProdPad API v1.0](https://www.prodpad.com/) OpenAPI specification. 
     ProdPad is product management software that helps product managers develop product strategy. Easily manage teams, customers and roadmaps.  
   x-ballerina-init-description: > 
-    The connector initialization requires setting the API credentials.
     Create a [ProdPad account](https://www.prodpad.com/) and obtain tokens by following [this guide](https://help.prodpad.com/article/763-generating-an-api-key).
   x-ballerina-display:
     label: ProdPad 

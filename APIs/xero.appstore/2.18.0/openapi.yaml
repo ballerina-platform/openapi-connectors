@@ -3,10 +3,9 @@ info:
   version: "2.18.0"
   title: Xero AppStore API
   description: >
-    This is a generated connector for [Xero AppStore API v2.18.0](https://developer.xero.com/documentation/api/xero-app-store/overview) OpenAPI specification.
+    This is [Xero AppStore API v2.18.0](https://developer.xero.com/documentation/api/xero-app-store/overview) OpenAPI specification.
     The Xero AppStore API is a collection of endpoints for Xero Partners to interact with the App Store Billing platform.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens by following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
   x-ballerina-display:
     label: Xero AppStore

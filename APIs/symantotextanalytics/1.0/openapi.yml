@@ -6,7 +6,6 @@ info:
     Symanto psycholinguistic text analytics API provides capability to access operations related to the deepest understanding of people through psychology &
     AI
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Symanto account](https://www.symanto.com/) and obtain OAuth tokens following [this guide](https://symanto-research.github.io/symanto-docs/#authentication)
   x-ballerina-display:
     label: Symanto Text Analytics

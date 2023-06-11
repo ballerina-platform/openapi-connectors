@@ -2,7 +2,7 @@ id: covid19
 displayName: COVID-19
 type: OpenAPI
 version: 3.0.0
-description: This is the [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification. Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
+description: This is the [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification. COVID-19 API provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
 idlPath: /covid19/3.0.0/openapi.yaml
 thumbnailPath: /covid19/3.0.0/icon.png
 documentationPath: /covid19/3.0.0/readme.md

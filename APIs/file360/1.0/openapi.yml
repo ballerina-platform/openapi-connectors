@@ -13,7 +13,6 @@ info:
     email: support@opentext.com
   version: "1.0"
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create an [OpenText account](https://login.opentext.com/register) and obtain an API key.
   x-ballerina-display:
     label: file360

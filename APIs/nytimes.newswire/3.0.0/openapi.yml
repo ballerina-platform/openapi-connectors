@@ -7,14 +7,13 @@ info:
     label: New York Times Newswire
     iconPath: "icon.png"
   description: >
-    This is a generated connector for [New York Times Newswire API v3.0.0](https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification.
+    This is [New York Times Newswire API v3.0.0](https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification.
     With the Times Newswire API, you can get links and metadata for Times' articles as soon as they are published on NYTimes.com. 
     The Times Newswire API provides an up-to-the-minute stream of published articles. You can filter results by source (all, nyt, inyt) and section (arts, business, ...).
   termsOfService: http://developer.nytimes.com/tou
   title: Times Newswire API
   version: 3.0.0
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   x-apiClientRegistration:
     url: http://developer.nytimes.com/signup

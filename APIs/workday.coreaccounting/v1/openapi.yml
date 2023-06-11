@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: coreAccounting
   description: >-
-    This is a generated connector for [WorkDay Connect Service REST API
+    This is [WorkDay Connect Service REST API
     v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html)
     OpenAPI specification.
     The Core Accounting service enables applications to access and configure
@@ -10,7 +10,6 @@ info:
     accounting.
   version: v1
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Follow [this guide] https://credentials.workday.com/docs/authentication/ and
     obtain tokens.
   x-ballerina-display:

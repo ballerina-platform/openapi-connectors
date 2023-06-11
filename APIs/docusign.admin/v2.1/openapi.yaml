@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: DocuSign Admin API
   description: >-
-    This is a generated connector for [DocuSign Admin API](https://developers.docusign.com/docs/admin-api/) OpenAPI specification.
+    This is [DocuSign Admin API](https://developers.docusign.com/docs/admin-api/) OpenAPI specification.
     An API for an organization administrator to manage organizations, accounts and users which enables you to automate user management with your existing systems while ensuring governance and compliance.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/developers
   contact:
@@ -11,7 +11,6 @@ info:
     email: devcenter@docusign.com
   version: v2.1
   x-ballerina-init-description: 
-      The connector initialization requires setting the API credentials.
       Create a [DocuSign account](https://www.docusign.com/) and obtain tokens by following [this guide](https://developers.docusign.com/docs/admin-api/admin101/auth/).
   x-ballerina-display:
     label: DocuSign Admin

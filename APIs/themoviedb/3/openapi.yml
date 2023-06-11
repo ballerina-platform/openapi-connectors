@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: The Movie Database (TMDB)
   description: |-
-    This is a generated connector for [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
+    This is [The Movie Database (TMDB) API v3](https://www.themoviedb.org/documentation/api) OpenAPI specification.
     The Movie Database (TMDB) API provide data about movies and tv shows around the world.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Request a [TMDB Account](https://www.themoviedb.org/signup) and obtain tokens following [this guide](https://developers.themoviedb.org/3/getting-started/introduction).
   version: "3"
   x-ballerina-display:

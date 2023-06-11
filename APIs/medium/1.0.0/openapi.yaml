@@ -2,12 +2,11 @@ openapi: 3.0.1
 info:
   title: Medium.com - API Specification
   description: >-
-    This is a generated connector for [Medium API v1](https://github.com/Medium/medium-api-docs) OpenAPI Specification.
+    This is [Medium API v1](https://github.com/Medium/medium-api-docs) OpenAPI Specification.
     Medium’s Publishing API provides capability to access the Medium network, create your content on Medium from 
     anywhere you write, and expand your audience and your influence.
   version: 1.0.0
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials. 
     Create a [Medium account](https://medium.com/) and obtain tokens following [this guide](https://github.com/Medium/medium-api-docs#2-authentication).
   x-ballerina-display:
     label: Medium

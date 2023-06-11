@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: Alfresco Content Services REST API
   description: >
-    This is a generated connector for [Alfresco API](https://docs.alfresco.com/content-services) OpenAPI Specification.
+    This is [Alfresco API](https://docs.alfresco.com/content-services) OpenAPI Specification.
     The Alfresco REST API enable you to access to the core features of Alfresco Content Services.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Please create a [Alfresco devoloper account](https://www.alfresco.com/try-alfresco) and [obtain tokens](https://docs.alfresco.com/process-services/1.10/config/authenticate/).
   x-ballerina-display:
     label: Alfresco

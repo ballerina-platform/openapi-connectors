@@ -4,12 +4,11 @@ info:
     label: ServiceNow
     iconPath: "icon.png"
   title: ServiceNow REST API
-  description: This is a generated connector for [ServiceNow REST API Quebec version]
+  description: This is [ServiceNow REST API Quebec version]
                (https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest) OpenAPI Specification.
                ServiceNow provides extensive access to instances through a set of RESTful APIs.
   version: 1.0.0
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [ServiceNow instance](https://developer.servicenow.com/dev.do) and obtain tokens by following
     [this guide](https://docs.servicenow.com/bundle/quebec-platform-administration/page/administer/security/task/t_SettingUpOAuth.html).
 security:

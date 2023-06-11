@@ -2,13 +2,12 @@ openapi: 3.0.3
 info:
   title: IRIS API
   description: |
-    This is a generated connector for [IRIS Merchants API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+    This is [IRIS Merchants API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
     Populate your data warehouse programmatically through this Merchants API and interact with your merchant services portfolio.  
     Data points include merchant demographics, deposits, transactions, retrievals, chargebacks, and statements across supported processors.
     Each merchant account is accessible by users through a set of permissions controlled on the User Class level.
     Segment your portfolio of merchants by filters such as processor, data source, and processing status.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [IRIS account](https://www.iriscrm.com) and obtain tokens by following [this guide](https://www.iriscrm.com/api/#section/Generate-an-API-token).
   x-ballerina-display:
     label: IRIS Merchants

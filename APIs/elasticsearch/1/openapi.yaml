@@ -1,10 +1,9 @@
 openapi: 3.0.1
 info:
   title: Elastic Cloud API
-  description: This is a generated connector for [Elastic Cloud API](https://cloud.elastic.co/api/v1/api-docs/spec.json) OpenAPI Specification.
+  description: This is [Elastic Cloud API](https://cloud.elastic.co/api/v1/api-docs/spec.json) OpenAPI Specification.
   version: "1"
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Please create a [Elastic](https://cloud.elastic.co/) account and obtain tokens by following [this guide](https://www.elastic.co/guide/en/elasticsearch/reference/7.16/setting-up-authentication.html).
   x-ballerina-display:
    label: Elasticsearch

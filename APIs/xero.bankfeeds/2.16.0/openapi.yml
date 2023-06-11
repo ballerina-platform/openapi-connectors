@@ -3,12 +3,11 @@ info:
   version: "2.16.0"
   title: Xero Bank Feeds API
   description: |
-    This is a generated connector for [Xero Bank Feeds API v2.16.0](https://developer.xero.com/documentation/api/bankfeeds/overview) OpenAPI specification.
+    This is [Xero Bank Feeds API v2.16.0](https://developer.xero.com/documentation/api/bankfeeds/overview) OpenAPI specification.
     The Bank Feeds API is a closed API that is only available to financial institutions that have an established financial services partnership with Xero.
     If you're an existing financial services partner that wants access, contact your local Partner Manager.
     If you're a financial institution who wants to provide bank feeds to your business customers, contact xero to become a financial services partner.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens by following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
   x-ballerina-display:
     label: Xero Bank Feeds

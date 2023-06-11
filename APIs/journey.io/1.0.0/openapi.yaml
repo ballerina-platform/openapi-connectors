@@ -4,10 +4,9 @@ info:
       label: journey.io
       iconPath: "icon.png"
   title: journy.io API docs
-  description: "This is a generated connector for [Journey.io API v1.0.0](https://www.journey.io/) OpenAPI specification.
+  description: "This is [Journey.io API v1.0.0](https://www.journey.io/) OpenAPI specification.
   The journy.io API is organized around REST. Our API has predictable resource-oriented URLs, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs."
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Journy.io account](https://www.journey.io) and obtain the API Key following [this guide](https://developers.journy.io/#section/Authentication).
   version: 1.0.0
   x-logo:

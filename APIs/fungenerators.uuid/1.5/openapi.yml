@@ -2,7 +2,6 @@ openapi: 3.0.0
 info:
   termsOfService: https://fungenerators.com/terms
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials. 
     Create a [fungenerators account](https://fungenerators.com/) and obtain tokens by following [this guide](https://fungenerators.com/api/uuid/#authentication).
   description: >-
     This is the [fungenerators UUID API v1.5](https://fungenerators.com/api/uuid/) OpenAPI Specification.

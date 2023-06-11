@@ -6,7 +6,7 @@ info:
     url: >-
       https://www.zuora.com/wp-content/uploads/2016/10/zuora-dev-logo-api-ref.svg
   description: >
-    This is a generated connector for [Zuora Collections API V1](https://www.zuora.com/developer/collect-api/#) OpenAPI specification.
+    This is [Zuora Collections API V1](https://www.zuora.com/developer/collect-api/#) OpenAPI specification.
     This reference provides detailed descriptions about functions, requests, and responses of
     the APIs for the following two component apps. Rest APIs for other component
     apps will  be included in this reference when they are released.
@@ -15,7 +15,6 @@ info:
     - Configurable Payment Retry
     - Statement Generator
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Zuora account](https://www.zuora.com/) and obtain tokens by following [this guide](https://www.zuora.com/developer/collect-api/#section/Authentication).
   x-ballerina-display:
     label: Zuora Collection

@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: GoToMeeting REST API
   description: |
-    This is a generated connector for [GoToMeeting API v1.0](https://developer.goto.com/GoToMeetingV1) OpenAPI specification.  
+    This is [GoToMeeting API v1.0](https://developer.goto.com/GoToMeetingV1) OpenAPI specification.  
     The GoToMeeting API provides the capability to organize meetings.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [LogMeIn account](https://accounts.logme.in/registration.aspx) and obtain tokens by following [this guide](https://developer.goto.com/guides/HowTos/02_HOW_createClient/).
   x-ballerina-display:
     label: GoTo Meeting

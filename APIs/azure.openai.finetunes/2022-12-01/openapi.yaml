@@ -6,7 +6,6 @@ info:
   title: Azure OpenAI API version 2022-12-01
   description: APIs for fine-tuning and managing deployments of OpenAI models.
   x-ballerina-init-description: >
-     The connector initialization requires setting the API credentials.
      Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account, an [Azure OpenAI resource](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/how-to/create-resource) and refer [this guide](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#authentication) to learn how to generate and use tokens
   version: 2022-12-01
 servers:

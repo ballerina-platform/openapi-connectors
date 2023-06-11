@@ -10,16 +10,15 @@ info:
     name: API Support
     url: https://www.interzoid.com
     x-twitter: interzoid
-  description: This is a generated connector for [Interzoid Zip Code Detailed Info API v1.0.0]
+  description: This is [Interzoid Zip Code Detailed Info API v1.0.0]
                (https://www.interzoid.com/services/getzipcodeinfo) OpenAPI specification.
-                The Interzoid Zip Code Detailed Info connector module provides detailed 
+                The Interzoid Zip Code Detailed Info provides detailed 
                 information for a given zip code, including city, state, latitude, 
                 longitude, area size, and various population demographics.
                 For additional help getting started with the API, 
                 visit [Interzoid Zip Code Detailed Info API]
                 (https://www.interzoid.com/services/getzipcodeinfo).
   x-ballerina-init-description: |-
-    The connector initialization requires setting the API credentials.
     Create an [Interzoid Account](https://www.interzoid.com/register) 
     and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
   license:

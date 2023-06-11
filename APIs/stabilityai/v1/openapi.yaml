@@ -4,7 +4,6 @@ info:
     label: StabilityAI
     iconPath: "icon.png"
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Satbility AI](https://beta.dreamstudio.ai/generate/) account and follow [Satbility AI Authentication](https://platform.stability.ai/docs/getting-started/authentication/) to obtain the API key.
   termsOfService: https://platform.stability.ai/docs/terms-of-service
   description: |

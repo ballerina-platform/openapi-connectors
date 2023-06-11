@@ -2,7 +2,7 @@ id: sakari
 displayName: Sakari
 type: OpenAPI
 version: 1.0.1
-description: This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification. Sakari provides an advanced platform to drive large scale customized SMS communication To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
+description: This is [Sakari](https://sakari.io/) OpenAPI Specification. Sakari provides an advanced platform to drive large scale customized SMS communication To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
 idlPath: /sakari/1.0.1/openapi.yaml
 thumbnailPath: /sakari/1.0.1/icon.png
 documentationPath: /sakari/1.0.1/readme.md

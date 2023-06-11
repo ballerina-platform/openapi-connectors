@@ -3,12 +3,11 @@ openapi: 3.0.0
 info:
   title: Recurly V3 API
   description: |
-    This is a generated connector for [Recurly API V3](https://developers.recurly.com/api/v2021-02-25/index.html) OpenAPI specification.
+    This is [Recurly API V3](https://developers.recurly.com/api/v2021-02-25/index.html) OpenAPI specification.
     Recurly is a subscription management platform delivering a competitive advantage for leading brands worldwide. 
     Trusted by Sling TV, BarkBox, Asana, and thousands more to drive recurring revenue.
     Onboard and manage customers through Recurly API.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Recurly account](https://recurly.com) and obtain tokens by following [this guide](https://developers.recurly.com/api/v2021-02-25/index.html#section/Authentication).
   x-ballerina-display:
     label: Recurly

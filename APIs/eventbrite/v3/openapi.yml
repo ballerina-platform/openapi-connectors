@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: Eventbrite API
   description: |
-    This is a generated connector for [Eventbrite API v3](https://www.eventbrite.com/platform/api) OpenAPI specification.
+    This is [Eventbrite API v3](https://www.eventbrite.com/platform/api) OpenAPI specification.
     Eventbrite is an Event Management System with an API which allows creating and managing events including venue management, marketing, selling tickets, and financial management.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create an [Eventbrite account](https://www.eventbrite.com/platform) and obtain tokens by following [this guide](https://www.eventbrite.com/platform/api#/introduction/authentication).
   x-ballerina-display:
     label: Eventbrite

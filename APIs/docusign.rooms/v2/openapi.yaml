@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: DocuSign Rooms API - v2
   description: >-
-    This is a generated connector for [DocuSign Rooms API](https://developers.docusign.com/docs/rooms-api/) OpenAPI specification. 
+    This is [DocuSign Rooms API](https://developers.docusign.com/docs/rooms-api/) OpenAPI specification. 
     DocuSign Rooms streamlines real estate and mortgage workflows by connecting all parties in a digital, secure, and central workspace. With the DocuSign Rooms API, it’s easy to integrate Rooms functionality into your own solutions.
   termsOfService: https://www.docusign.com/company/terms-and-conditions/web
   contact:
@@ -11,7 +11,6 @@ info:
     email: devcenter@docusign.com
   version: v2
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create a [DocuSign account](https://www.docusign.com/) and obtain tokens by following [this guide](https://developers.docusign.com/docs/rooms-api/rooms101/auth/).
   x-ballerina-display:
     label: DocuSign Rooms

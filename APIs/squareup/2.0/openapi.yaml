@@ -7,7 +7,7 @@ info:
     name: Square Developer Platform
     url: https://squareup.com/developers
   description: > 
-    This is a generated connector for [Square Connect API 2.0](https://squareup.com/us/en) OpenAPI Specification.
+    This is [Square Connect API 2.0](https://squareup.com/us/en) OpenAPI Specification.
   x-ballerina-display:
    label: SquareUp
    iconPath: "icon.png"
@@ -18,7 +18,7 @@ info:
   title: Square Connect API
   version: "2.0"
   x-ballerina-init-description: >
-     The connector initialization requires setting the API credentials. Please create a Squareup account and obtain tokens.
+    Please create a Squareup account and obtain tokens.
   x-apisguru-categories:
     - payment
   x-logo:

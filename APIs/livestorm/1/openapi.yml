@@ -2,13 +2,12 @@ openapi: 3.0.0
 info:
   title: Livestorm - Public API
   description: |
-    This is a generated connector for [Livestorm API v1](https://developers.livestorm.co/docs) OpenAPI specification.
+    This is [Livestorm API v1](https://developers.livestorm.co/docs) OpenAPI specification.
     Client endpoint for Livestorm Public API.
     Livestorm is a browser based online web conferencing software used to share real-time live streams. 
     It can be used to power remote live meetings, product demos, sales webinars, online lessons, onboarding sessions, more.
     In addition, all request and response bodies, including errors, are encoded in JSON format.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create an [Livestorm Account](https://app.livestorm.co/#/signup) and obtain tokens following [this guide](https://support.livestorm.co/category/4-getting-started).
   termsOfService: https://livestorm.co/terms/
   contact:

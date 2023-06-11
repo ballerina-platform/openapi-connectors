@@ -4,10 +4,9 @@ info:
     label: PocketSmith
     iconPath: "icon.png"
   title: PocketSmith
-  description: This is a generated connector for [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
+  description: This is [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
     The public PocketSmith API. It's a powerful interface for online money management with cash flow forecasts as well as superb historical tracking.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [PocketSmith account](https://www.pocketsmith.com/) and obtain OAuth tokens following [this guide](https://developers.pocketsmith.com/docs/oauth).
   contact:
     name: API Support

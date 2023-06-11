@@ -7,7 +7,6 @@ info:
     You can also manage components of Adobe Analytics, such as the creation of segments or calculated metrics. 
   version: 'v1 - Build: 2019-10-03_20:32:29.323'
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create an [Adobe Developer account](https://developer.adobe.com) and obtain tokens by following [this guide](https://developer.adobe.com/analytics-apis/docs/2.0/guides/).
   x-ballerina-display:
     label: Adobe Analytics

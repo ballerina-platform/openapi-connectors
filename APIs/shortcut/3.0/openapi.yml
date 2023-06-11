@@ -2,12 +2,11 @@ openapi: 3.0.1
 info:
   title: Shortcut API
   description: |
-    This is a generated connector for [Shortcut API v3.0](https://shortcut.com/api/rest/v3) OpenAPI specification.
+    This is [Shortcut API v3.0](https://shortcut.com/api/rest/v3) OpenAPI specification.
     The Shortcut API bring the flow to your software team's workflow. Plan, collaborate, build, and measure success with Shortcut.
     The Shortcut API provides a greater amount of control over your organization’s Shortcut data than what is possible using the Shortcut web app. 
     You can use this API to build custom integrations or automate even more of your organization’s workflow.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Shortcut account](https://shortcut.com) and obtain tokens by following [this guide](https://shortcut.com/api/rest/v3#Authentication).
   x-ballerina-display:
     label: Shortcut

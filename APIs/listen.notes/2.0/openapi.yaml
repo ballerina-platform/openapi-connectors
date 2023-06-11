@@ -2,13 +2,12 @@ openapi: 3.0.1
 info:
   title: 'Listen API: Podcast Search & Directory API'
   description: >-
-    This is a generated connector for [Listen Notes API v2.0](https://www.listennotes.com/) OpenAPI specification. 
+    This is [Listen Notes API v2.0](https://www.listennotes.com/) OpenAPI specification. 
     Simple & no-nonsense podcast search & directory API. Search all podcasts and episodes by people, places, or topics.
   x-ballerina-display:
     label: Listen Notes
     iconPath: "icon.png"
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create a [Listen Notes account](https://www.listennotes.com/) and obtain tokens by following [this guide](https://help.listennotes.com/en/articles/3416436-how-to-get-an-api-token-of-listen-notes-api).
   termsOfService: https://www.listennotes.com/api/terms/
   contact:

@@ -8,7 +8,6 @@ info:
     All HubSpot objects store data in default and custom properties. These endpoints provide access to read and modify object properties in HubSpot.
   version: v3
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [HubSpot account](https://www.hubspot.com/) and obtain OAuth tokens following [this guide](https://developers.hubspot.com/docs/api/working-with-oauth4).
 servers:
   - url: 'https://api.hubapi.com'

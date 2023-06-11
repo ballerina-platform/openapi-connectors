@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: >-
-    This is a generated connector for [Google BigQuery Data Transfer API v2.0](https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest) OpenAPI specification.
+    This is [Google BigQuery Data Transfer API v2.0](https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest) OpenAPI specification.
     The BigQuery Data Transfer API schedule queries or transfer external data from SaaS applications to Google BigQuery on a regular basis.
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials.
     Create an [google account](https://accounts.google.com/signup) and obtain tokens following [this guide](https://developers.google.com/identity/protocols/oauth2)
   license:
     name: Creative Commons Attribution 3.0

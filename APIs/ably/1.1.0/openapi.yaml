@@ -11,13 +11,12 @@ info:
     url: https://www.ably.io/contact
     x-twitter: ablyrealtime
   description: 
-    This is a generated connector for [Ably REST API v1.1.0](https://ably.com/documentation/rest-api) OpenAPI specification.
+    This is [Ably REST API v1.1.0](https://ably.com/documentation/rest-api) OpenAPI specification.
     The [Ably REST API](https://www.ably.io/documentation/rest-api) provides a way for a wide range of server and client devices to communicate with the Ably service over REST. 
     The REST API does not provide a realtime long-lived connection to Ably, but in all other respects is a simple subset of the full [realtime messaging API](https://ably.com/documentation/realtime).
   title: Ably REST API
   version: 1.1.0
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create an [Ably account](https://ably.com/) and obtain tokens following [this guide](https://ably.com/documentation/core-features/versions/v1.1/authentication).
   x-apisguru-categories:
     - cloud

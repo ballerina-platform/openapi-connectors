@@ -5,10 +5,9 @@ info:
     label: BeezUP Merchant
     iconPath: icon.png
   description: >-
-    This is a generated connector for [BeezUP Merchant API v2.0](https://api-docs.beezup.com/swagger-ui/) OpenAPI specification.
+    This is [BeezUP Merchant API v2.0](https://api-docs.beezup.com/swagger-ui/) OpenAPI specification.
     BeezUP Merchant API provides capability to read and write BeezUP data such as accounts, stores, product catalog, channel search etc.
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials. 
     Create a [BeezUP account](www.beezup.com) and obtain tokens by following
     [this guide](https://api-docs.beezup.com/swagger-ui/).
   contact:

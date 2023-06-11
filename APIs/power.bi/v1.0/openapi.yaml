@@ -3,10 +3,9 @@ info:
   title: Power BI Client
   version: v1.0
   description: >
-    This is a generated connector for [Power BI API v1.0](https://powerbi.microsoft.com/en-us/) OpenAPI specification.
+    This is [Power BI API v1.0](https://powerbi.microsoft.com/en-us/) OpenAPI specification.
     Power BI REST API provides service endpoints for embedding, administration, and user resources.
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create an [Azure account](https://azure.microsoft.com/en-us/) and obtain tokens by following [this guide](https://docs.microsoft.com/en-us/power-bi/developer/embedded/register-app?tabs=manual%2CAzure).
   x-ballerina-display:
     label: Power BI

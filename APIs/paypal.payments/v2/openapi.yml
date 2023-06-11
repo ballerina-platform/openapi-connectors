@@ -2,11 +2,10 @@ openapi: 3.0.0
 info:
   title: Paypal Payments API
   description: |
-    This is a generated connector for [Paypal Payments API v2](https://developer.paypal.com/docs/api/payments/v2/) OpenAPI specification.
+    This is [Paypal Payments API v2](https://developer.paypal.com/docs/api/payments/v2/) OpenAPI specification.
     Call the Payments API to authorize payments, capture authorized payments, refund payments that have already been captured, and show payment information. 
     Use the Payments API in conjunction with the Orders API.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Paypal account](https://www.paypal.com) and obtain tokens by following [this guide](https://developer.paypal.com/docs/api/overview/#get-credentials).
   x-ballerina-display:
     label: Paypal Payments

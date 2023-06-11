@@ -12,7 +12,7 @@ info:
     BIN lookup API, the free api service from bintable.com to lookup card information using it's BIN. 
     The service maintains updated database based on the comunity and other third party services to make sure all BINs in the database are accurate and up to date.
   x-ballerina-init-description: >
-    The connector initialization doesn't require setting the API credentials.
+    Doesn't require setting the API credentials.
     Create a [BINTable Account](https://bintable.com/get-api) and obtain the API key.
     Some operations may require passing the token as a parameter.
   license:

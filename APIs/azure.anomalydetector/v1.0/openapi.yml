@@ -5,7 +5,7 @@ info:
     iconPath: "icon.png"
   title: Anomaly Detector
   description: >
-    This is a generated connector for [Azure Anomaly Detector API v1](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) OpenAPI specification.
+    This is [Azure Anomaly Detector API v1](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) OpenAPI specification.
     "The Anomaly Detection service detects anomalies automatically in time\
     \ series data. It supports several functionalities, \r\none is for detecting the\
     \ whole series with model trained by the time series, another is detecting the\
@@ -18,7 +18,6 @@ info:
     \ to \r\ncontinuing to improve the anomaly detection service to provide precise\
     \ results."
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Azure Anomaly Detector account](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) and 
     obtain API key following [this guide](https://docs.microsoft.com/en-us/azure/search/search-security-api-keys).
   version: v1.0

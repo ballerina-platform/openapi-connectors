@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: Automata Market Intelligence API
   description: |
-    This is a generated connector for [Automata API v1.0.1](https://byautomata.io/api/) OpenAPI specification.
+    This is [Automata API v1.0.1](https://byautomata.io/api/) OpenAPI specification.
     The Automata API provides the capability to identify the market intelligence.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Obtain tokens by following [this guide](https://apis.byautomata.io/?ref=api_landing_0).
   x-ballerina-display:
     label: Automata

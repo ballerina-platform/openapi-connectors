@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: Ronin API
   description: |
-    This is a generated connector for [Ronin API v1](https://www.roninapp.com/api) OpenAPI specification.
+    This is [Ronin API v1](https://www.roninapp.com/api) OpenAPI specification.
     Ronin is a full featured time tracking and invoicing application. It allows you to easily manage almost all aspects of your online projects, though it has a focus on the billing side.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Ronin account](https://www.roninapp.com) and obtain tokens by following [this guide](https://www.roninapp.com/api).
   x-ballerina-display:
     label: Ronin

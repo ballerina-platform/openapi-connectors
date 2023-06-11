@@ -3,10 +3,9 @@ info:
   version: "2.16.0"
   title: Xero Finance API
   description: |
-    This is a generated connector for [Xero Finance API v2.16.0](https://developer.xero.com/documentation/api/finance/overview) OpenAPI specification.
+    This is [Xero Finance API v2.16.0](https://developer.xero.com/documentation/api/finance/overview) OpenAPI specification.
     The Finance API is a collection of endpoints which customers can use in the course of a loan application, which may assist lenders to gain the confidence they need to provide capital.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens by following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
   x-ballerina-display:
     label: Xero Finance

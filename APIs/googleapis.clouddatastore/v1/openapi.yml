@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: |
-    This is a generated connector for [Google Cloud Datastore REST API v1](https://cloud.google.com/datastore/docs/reference/data/rest) OpenAPI specification.
+    This is [Google Cloud Datastore REST API v1](https://cloud.google.com/datastore/docs/reference/data/rest) OpenAPI specification.
     The Google Cloud Datastore API provides the capability to access the schemaless NoSQL database to provide fully managed, robust, scalable storage for your application.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:
     name: Creative Commons Attribution 3.0

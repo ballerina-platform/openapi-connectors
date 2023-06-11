@@ -6,8 +6,8 @@ info:
   contact:
     x-twitter: WhatsApp
   description: | 
-    This is a generated connector for [WhatsApp Business v2.21.4](https://developers.facebook.com/docs/whatsapp/) OpenAPI Specification.
-    WhatsApp Business connector supports to communicate with customers all over the world via WhatsApp.
+    This is [WhatsApp Business v2.21.4](https://developers.facebook.com/docs/whatsapp/) OpenAPI Specification.
+    WhatsApp Business API supports to communicate with customers all over the world via WhatsApp.
   title: WhatsApp Business API
   version: "1.0"
   x-apisguru-categories:
@@ -21,7 +21,6 @@ info:
   x-providerName: whatsapp.local
   x-unofficialSpec: true
   x-ballerina-init-description: | 
-    The connector initialization requires setting the API credentials.
     Create [WhatsApp Business account](https://developers.facebook.com/docs/whatsapp/getting-started#before) and install client by following [this guide](https://developers.facebook.com/docs/whatsapp/getting-started#client-setup).
 security:
   - bearerAuth: []

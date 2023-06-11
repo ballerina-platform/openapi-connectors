@@ -8,11 +8,10 @@ info:
   version: v1
   title: Godaddy Domains API
   description: >-
-    This is a generated connector for [GoDaddy Domains API v1](https://developer.godaddy.com/doc/endpoint/domains) OpenAPI specification. The GoDaddy Domains API provides capability to access GoDaddy
+    This is [GoDaddy Domains API v1](https://developer.godaddy.com/doc/endpoint/domains) OpenAPI specification. The GoDaddy Domains API provides capability to access GoDaddy
     operations related to domains.
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials.  Create a
-    [GoDaddy](https://sg.godaddy.com/) and obtain tokens by following [this
+    Create a [GoDaddy](https://sg.godaddy.com/) and obtain tokens by following [this
     guide](https://developer.godaddy.com/getstarted).  
 tags:
   - name: v1

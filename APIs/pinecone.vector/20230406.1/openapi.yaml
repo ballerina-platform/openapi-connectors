@@ -4,9 +4,8 @@ info:
     label: Pinecone Vector
     iconPath: "icon.png"
   title: Pinecone Vector API
-  description: This is a generated connector for the `Vector Operations` under [Pinecone Vector Database API](https://docs.pinecone.io/reference) OpenAPI specification. Pinecone is a fully managed vector database which supports building developer-friendly, easily scalable, and high-performance vector search applications without infrastructure hassles. 
+  description: This is the `Vector Operations` under [Pinecone Vector Database API](https://docs.pinecone.io/reference) OpenAPI specification. Pinecone is a fully managed vector database which supports building developer-friendly, easily scalable, and high-performance vector search applications without infrastructure hassles. 
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a new project in [Pinecone](https://www.pinecone.io/) and obtain an API Key.
   contact:
     name: Pinecone.io

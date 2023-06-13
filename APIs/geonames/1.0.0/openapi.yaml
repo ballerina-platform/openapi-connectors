@@ -6,10 +6,9 @@ info:
     label: Geonames
     iconPath: "icon.png"
   description:
-    This is a generated connector for [Geonames API](https://www.geonames.org/export/JSON-webservices.html) OpenAPI specification. 
+    This is [Geonames API](https://www.geonames.org/export/JSON-webservices.html) OpenAPI specification. 
     Geonames is a geographical database where users can retrieve geo location information.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Geonames account](https://www.geonames.org/login) and obtain tokens by following [this guide](https://www.geonames.org/export/web-services.html). 
   title: Geonames API
   version: 1.0.0

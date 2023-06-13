@@ -6,14 +6,13 @@ info:
     label: Weaviate
     iconPath: "icon.png"
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a Cluster using [Weaviate Cloud Service](https://weaviate.io/developers/weaviate/quickstart/installation#weaviate-cloud-services) or deploy using [Docker/Kubernetes](https://weaviate.io/developers/weaviate/quickstart/installation#running-weaviate-with-docker) and obtain the [OIDC Authentication key](https://weaviate.io/developers/weaviate/configuration/authentication).
   contact:
     email: hello@weaviate.io
     name: Weaviate
     url: https://github.com/weaviate
   description: 
-    This is a generated connector for [Weaviate Vector Search Engine API](https://weaviate.io/developers/weaviate/api) OpenAPI specification. 
+    This is [Weaviate Vector Search Engine API](https://weaviate.io/developers/weaviate/api) OpenAPI specification. 
     Weaviate API provide access to the manipulations of weaviate schema, objects and search vectors based on various criterias.
   title: Weaviate
   version: 1.19.0-prealpha-oas3

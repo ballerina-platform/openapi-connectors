@@ -10,10 +10,10 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: |
-    This is a generated connector for [Google Abusive Experience Report API v1](https://developers.google.com/abusive-experience-report/) OpenAPI specification.
+    This is [Google Abusive Experience Report API v1](https://developers.google.com/abusive-experience-report/) OpenAPI specification.
     Views Abusive Experience Report data, and gets a list of sites that have a significant number of abusive experiences.
   x-ballerina-init-description: >
-    The connector initialization doesn't require setting the API credentials. 
+    Doesn't require setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/abusive-experience-report/v1/how-tos/authorizing).
     Some operations may require passing the token as a parameter.
   license:

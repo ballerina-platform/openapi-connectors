@@ -9,7 +9,7 @@ info:
     label: World Bank
     iconPath: "icon.png"
   x-ballerina-init-description: >
-    The connector initialization doesn't require setting the API credentials.
+    Doesn't require setting the API credentials.
 servers:
   - description: Indicators represent data like total population, gross domestic product, energy use, and many more
     url: http://api.worldbank.org/v2/

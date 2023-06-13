@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: absenceManagement
   description: >-
-    This is a generated connector for [WorkDay AbsenceManagement REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    This is [WorkDay AbsenceManagement REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
     The Absence Management service enables applications to access worker information about leaves of absence and time off details.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
   x-ballerina-display:
     label: Workday Absence Management

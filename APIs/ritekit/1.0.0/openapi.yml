@@ -3,10 +3,9 @@ servers:
   - url: https://api.ritekit.com
 info:
   description: |
-    This is a generated connector for [RitKit API v1.0](https://documenter.getpostman.com/view/2010712/SzS7Qku5?version=latest) OpenAPI specification.  
+    This is [RitKit API v1.0](https://documenter.getpostman.com/view/2010712/SzS7Qku5?version=latest) OpenAPI specification.  
     The RiteKit API provides the capability to perform social media marketing through hashtag suggestions, auto hashtagging, emoji suggestions, etc.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials.
     Create a [RitKit account](https://ritekit.com/) and obtain tokens by following [this guide](https://documenter.getpostman.com/view/2010712/SzS7Qku5?version=latest#intro).
   title: RiteKit API
   version: 1.0.0

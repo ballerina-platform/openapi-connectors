@@ -6,7 +6,7 @@ info:
     This Azure SQL Database management API provides a RESTful set of web APIs that interact with Azure SQL Database services to manage your databases.
     The API enables users to create, retrieve, update, and delete databases, servers, and other entities.
   x-ballerina-init-description: >
-    The connector initialization requires setting the Azure SQL DB instance. 
+     Requires setting the Azure SQL DB instance. 
     Create a [Azure SQL DB](https://docs.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage) application
     obtain tokens by using [this](https://docs.microsoft.com/en-us/azure/azure-sql/database/logins-create-manage)
   x-ballerina-display:

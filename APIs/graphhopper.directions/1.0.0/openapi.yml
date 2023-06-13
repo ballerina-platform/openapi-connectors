@@ -5,11 +5,10 @@ info:
     label: GraphHopper Directions
     iconPath: "icon.png"
   x-ballerina-init-description: >- 
-    The connector initialization requires setting the API credentials.
     Create an [GraphHopper account](https://support.graphhopper.com/a/solutions/articles/44001976025) and obtain tokens following 
     [this guide](https://docs.graphhopper.com/#section/Authentication).
   description: |
-    This is a generated connector for [GraphHopper Directions API v1.0.0](https://docs.graphhopper.com/) OpenAPI Specification. 
+    This is [GraphHopper Directions API v1.0.0](https://docs.graphhopper.com/) OpenAPI Specification. 
     With the [GraphHopper Directions API](https://www.graphhopper.com/products/) you can integrate A-to-B route planning, turn-by-turn navigation,
     route optimization, isochrone calculations and other tools in your application.
   version: 1.0.0

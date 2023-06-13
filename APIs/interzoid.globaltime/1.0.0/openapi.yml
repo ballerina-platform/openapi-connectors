@@ -8,10 +8,9 @@ info:
   version: "1.0.0"
   title: Interzoid Get Global Time API
   description: > 
-    This is a generated connector for [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime) OpenAPI specification.
+    This is [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime) OpenAPI specification.
     This API retrieves the current time for a city or geographic location around the globe.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
   contact:
     name: API Support

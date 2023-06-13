@@ -2,11 +2,10 @@ openapi: 3.0.0
 info:
   title: Paypal Orders API
   description: |
-    This is a generated connector for [Paypal Orders API v2](https://developer.paypal.com/docs/api/orders/v2/) OpenAPI specification.
+    This is [Paypal Orders API v2](https://developer.paypal.com/docs/api/orders/v2/) OpenAPI specification.
     An order represents a payment between two or more parties. 
     Use the Orders API to create, update, retrieve, authorize, and capture orders.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Paypal account](https://www.paypal.com) and obtain tokens by following [this guide](https://developer.paypal.com/docs/api/overview/#get-credentials).
   x-ballerina-display:
     label: Paypal Orders

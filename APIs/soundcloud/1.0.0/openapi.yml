@@ -17,11 +17,10 @@ info:
     url: "https://a-v2.sndcdn.com/assets/images/sc-icons/ios-a62dfc8fe7.png"
   x-providerName: soundcloud.com
   x-ballerina-init-description: >-
-   The connector initialization requires setting the API credentials. 
    Create an [SoundCloud account](https://soundcloud.com/) 
    and obtain tokens following [this guide](https://developers.soundcloud.com/docs/api/guide).
   description: >-
-    This is a generated connector for [SoundCloud API v1.0.0](https://developers.soundcloud.com/) OpenAPI Specification.
+    This is [SoundCloud API v1.0.0](https://developers.soundcloud.com/) OpenAPI Specification.
     SoundCloud API provides capability to access the online audio distribution platform and music sharing website that enables 
     you to upload,promote, and share audio, as well as a digital signal processor enabling listeners to stream audio. 
 tags:

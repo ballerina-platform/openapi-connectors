@@ -3,10 +3,9 @@ info:
   version: "2.16.0"
   title: Xero Projects API
   description: >
-    This is a generated connector for [Xero Projects API v2.16.0](https://developer.xero.com/documentation/api/projects/overview) OpenAPI specification.
+    This is [Xero Projects API v2.16.0](https://developer.xero.com/documentation/api/projects/overview) OpenAPI specification.
     The Xero Projects API is a collection of endpoints which businesses to track time and costs on projects/jobs and report on profitability.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Xero account](https://developer.xero.com/app/manage) and obtain tokens by following [this guide](https://developer.xero.com/documentation/getting-started-guide/).
   x-ballerina-display:
     label: Xero Projects

@@ -5,14 +5,13 @@ info:
     iconPath: "icon.png"
   title: GoDaddy Aftermarket API
   description: >-
-    This is a generated connector for [GoDaddy Aftermarket API
+    This is [GoDaddy Aftermarket API
     v1](https://developer.godaddy.com/doc/endpoint/aftermarket) OpenAPI
     specification. The GoDaddy Aftermarket API provides capability to access
     GoDaddy operations related to GoDaddy Auctions.
   version: v1
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials.  Create a
-    [GoDaddy Shoppers](https://sg.godaddy.com/) and obtain tokens by following
+    Create a [GoDaddy Shoppers](https://sg.godaddy.com/) and obtain tokens by following
     [this guide](https://developer.godaddy.com/getstarted).  
 servers:
   - url: https://api.ote-godaddy.com/

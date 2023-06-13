@@ -9,10 +9,9 @@ info:
   contact:
     email: support@rumble.run
   description: |
-    This is a generated connector for [Rumble API v1](https://www.rumble.run/docs/) OpenAPI specification.
+    This is [Rumble API v1](https://www.rumble.run/docs/) OpenAPI specification.
     The Rumble API provides the capability to scan your IT and OT environments to provide a foundation for your asset inventory, attack surface reduction, and incident response programs.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [Rumble account](https://console.rumble.run/register) and obtain tokens by following [this guide](https://www.rumble.run/docs/organization-api/).
   license:
     name: Commercial

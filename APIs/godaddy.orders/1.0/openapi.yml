@@ -5,14 +5,13 @@ info:
     iconPath: "icon.png"
   title: GoDaddy Orders API
   description: >-
-    This is a generated connector for [GoDaddy Orders API
+    This is [GoDaddy Orders API
     v1](https://developer.godaddy.com/doc/endpoint/orders) OpenAPI
     specification.
     The GoDaddy Orders API provides capability to access GoDaddy operations
     related to orders.
   version: '1.0'
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials. 
     Create a [GoDaddy](https://sg.godaddy.com/) and obtain tokens by following
     [this guide](https://developer.godaddy.com/getstarted).
 servers:

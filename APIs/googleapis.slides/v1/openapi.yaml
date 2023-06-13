@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: >
-    This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification.
+    This is [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification.
     Reads and writes Google Slides presentations.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:
     name: Creative Commons Attribution 3.0

@@ -16,10 +16,10 @@ info:
     1.0.0:
       - Initial version
   description: >-
-    This is a generated connector for [Amadeus Flight Offers Price API](https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-price) OpenAPI specification. 
+    This is [Amadeus Flight Offers Price API](https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-price) OpenAPI specification. 
     This [Amadeus Flight Offers Price API](https://developers.amadeus.com/) provides the capability to confirm the availability and final price (including taxes and fees) of flights returned by the Flight Offers Search API.
   x-ballerina-init-description: >
-    The connector initialization requires clientId and clientSecret. 
+    Requires clientId and clientSecret. 
     Please create [Amadeus](https://developers.amadeus.com/register) account and Obtain clientId and clientSecret following [this guide](https://developers.amadeus.com/get-started/get-started-with-self-service-apis-335)
   x-ballerina-display:
     label: Amadeus Flight Offers Price

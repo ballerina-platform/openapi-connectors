@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: GoToTraining REST API
   description: |
-    This is a generated connector for [GoToTraining API v1.0](https://developer.goto.com/GoToTrainingV1) OpenAPI specification.  
+    This is [GoToTraining API v1.0](https://developer.goto.com/GoToTrainingV1) OpenAPI specification.  
     The GoToTraining API provides the capability to schedule training sessions and customize the trainings with panelists, polls, questions and surveys.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [LogMeIn account](https://accounts.logme.in/registration.aspx) and obtain tokens by following [this guide](https://developer.goto.com/guides/HowTos/02_HOW_createClient/).
   x-ballerina-display:
     label: GoTo Training

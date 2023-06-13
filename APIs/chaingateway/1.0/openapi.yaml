@@ -5,13 +5,12 @@ info:
     iconPath: "icon.png"
   title: Chaingateway.io
   description: |-
-    This is a generated connector for [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.
+    This is [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification.
     This is the REST API to build the bridge between Ethereum and the real world. 
     All of the integrations communicates with chaingateway.io through this API.
   contact: {}
   version: '1.0'
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Chaingateway.io Account](https://chaingateway.io/register) and obtain tokens following [this guide](https://chaingateway.io/docs-ethereum#apikey).
 servers:
   - url: 'https://eu.eth.chaingateway.io/v1'

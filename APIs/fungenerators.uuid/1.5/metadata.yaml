@@ -2,7 +2,7 @@ id: fungenerators.uuid
 displayName: Fun Generators UUID
 type: OpenAPI
 version: "1.5"
-description: This is a generated connector from [fungenerators UUID API v1.5](https://fungenerators.com/api/uuid/) OpenAPI Specification. A full featured, REST based UUID generator with json/xml/jsonp result support. You can try them out right here. [Click here to subscribe](http://fungenerators.com/api/uuid/)
+description: This is  [fungenerators UUID API v1.5](https://fungenerators.com/api/uuid/) OpenAPI Specification. A full featured, REST based UUID generator with json/xml/jsonp result support. You can try them out right here. [Click here to subscribe](http://fungenerators.com/api/uuid/)
 idlPath: /fungenerators.uuid/1.5/openapi.yaml
 thumbnailPath: /fungenerators.uuid/1.5/icon.png
 documentationPath: /fungenerators.uuid/1.5/readme.md

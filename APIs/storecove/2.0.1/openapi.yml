@@ -8,7 +8,7 @@ info:
   contact:
     email: apisupport@storecove.nl
   description: | 
-    This is a generated connector for [Storcove API v2](https://app.storecove.com/docs) OpenAPI Specification.
+    This is [Storcove API v2](https://app.storecove.com/docs) OpenAPI Specification.
     Storecove API  provides the capability to do e-invoice management operations.
   title: Storecove API
   version: 2.0.1
@@ -23,7 +23,6 @@ info:
       version: "3.0"
   x-providerName: storecove.com
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials.
     Create [Storcove account](https://www.storecove.com) and obtain tokens by following [this guide](https://app.storecove.com/docs#_getting_started).
 security:
   - Bearer: []

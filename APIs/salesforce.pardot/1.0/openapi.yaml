@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: Salesforce Pardot V5 Synchronous API
   description: |
-    This is a generated connector for [Salesforce Pardot API v5](https://developer.salesforce.com/docs/marketing/pardot/guide/version5overview.html) OpenAPI specification.
+    This is [Salesforce Pardot API v5](https://developer.salesforce.com/docs/marketing/pardot/guide/version5overview.html) OpenAPI specification.
     The version 5 of the Pardot API to read and update a variety of assets and objects, like File and Layout Template objects.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Salesforce account](https://www.salesforce.com) and obtain tokens following [this guide](https://developer.salesforce.com/docs/marketing/pardot/guide/authentication.html).
   x-ballerina-display:
     label: Salesforce Pardot

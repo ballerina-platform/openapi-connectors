@@ -14,7 +14,6 @@ info:
   title: Movie Reviews API
   version: 2.0.0
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [NYTimes account](https://developer.nytimes.com/accounts/login) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   x-apiClientRegistration:
     url: http://developer.nytimes.com/signup

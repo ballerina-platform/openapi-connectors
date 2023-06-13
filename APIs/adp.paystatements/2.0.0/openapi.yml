@@ -2,13 +2,12 @@ openapi: 3.0.0
 info:
   title: ADP Pay Statements v1
   description: |
-    This is a generated connector for [ADP Pay Statements API v1](https://developers.adp.com/articles/api/pay-statements-v1-api) OpenAPI specification.
+    This is [ADP Pay Statements API v1](https://developers.adp.com/articles/api/pay-statements-v1-api) OpenAPI specification.
     The ADP Pay Statements API provides the capability to describe the details of a payment made to a payee. 
     These details include the net and gross payment amounts, deductions, earnings, and year-to-date payroll accruals. 
     The Pay Statements APIs can be used to retrieve the list of a specified number of pay statements for an associate or to get details for a specific statement.
   version: 2.0.0
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials.
     Create an [ADP account](https://www.adp.com/) and obtain tokens by following [this guide](https://developers.adp.com/articles/guide/auth-process-data-conn-request-access-token).
   x-ballerina-display:
     label: ADP Pay Statements

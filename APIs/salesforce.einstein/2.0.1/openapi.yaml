@@ -3,12 +3,11 @@ servers:
   - url: "https://api.einstein.ai"
 info:
   description: >-
-    This is a generated connector for [Einstein Vision and Einstein Language API](https://metamind.readme.io/reference#predictive-vision-service-api) OpenAPI specification.
+    This is [Einstein Vision and Einstein Language API](https://metamind.readme.io/reference#predictive-vision-service-api) OpenAPI specification.
     Allows you to access the Einstein Vision and Einstein Language services via the standard REST API calls. Use the APIs to programmatically work with datasets, labels, examples, models, and predictions.
   title: "Einstein Vision and Einstein Language"
   version: "2.0.1"
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create a [Einstein API Account](https://api.einstein.ai/signup) and obtain tokens by following [this guide](https://metamind.readme.io/docs/generate-an-oauth-token-using-your-key).
   x-ballerina-display:
     label: Salesforce Einstein Vision And Lang

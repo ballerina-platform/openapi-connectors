@@ -2,11 +2,10 @@ openapi: 3.0.1
 info:
   title: Onboarding API
   description: >
-    This is a generated connector for [Brex Onboarding API v0.1](https://developer.brex.com/openapi/onboarding_api/) OpenAPI specification. 
+    This is [Brex Onboarding API v0.1](https://developer.brex.com/openapi/onboarding_api/) OpenAPI specification. 
     Onboarding APIs allows partners to refer their customers to Brex to streamline the process of creating new accounts 
     for these customers. By submitting information for referrals, it removes the need for customers to enter in this information again.
   x-ballerina-init-description: > 
-    The connector initialization requires setting the API credentials.
     Create a [Brex account](https://www.brex.com/) and obtain tokens by following [this guide](https://developer.brex.com/docs/authentication/).
   x-ballerina-display:
     label: brex.onboarding 

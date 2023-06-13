@@ -2,13 +2,12 @@ openapi: 3.0.1
 info:
   title: NetSuite OpenAir REST API
   description: > 
-    This is a generated connector for [OpenAir API v1.0](https://www.openair.com/download/OpenAirRESTAPIGuide.pdf) OpenAPI specification.
+    This is [OpenAir API v1.0](https://www.openair.com/download/OpenAirRESTAPIGuide.pdf) OpenAPI specification.
     The OpenAir REST API provides an interface for integration applications to exchange information with [OpenAir](https://docs.oracle.com/cloud/openair/index.html).
     OpenAir REST API currently supports the following resources: Expense reports, Receipts, Attachments, Job codes, Contacts 
   version: 1.0.0
 
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [OpenAir account](https://www.openair.com/) and obtain tokens by following [this guide](https://www.openair.com/download/OpenAirRESTAPIGuide.pdf).
   x-ballerina-display:
     label: openair

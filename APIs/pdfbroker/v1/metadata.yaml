@@ -2,7 +2,7 @@ id: pdfbroker
 displayName: PdfBroker
 type: OpenAPI
 version: v1
-description: This is a generated connector from [PdfBroker.io API v1](https://www.pdfbroker.io/docs) OpenAPI Specification. PdfBroker.io is an api for creating pdf files from Xsl-Fo or Html and other useful pdf utilities.
+description: This is [PdfBroker.io API v1](https://www.pdfbroker.io/docs) OpenAPI Specification. PdfBroker.io is an api for creating pdf files from Xsl-Fo or Html and other useful pdf utilities.
 idlPath: /pdfbroker/v1/openapi.yaml
 thumbnailPath: /pdfbroker/v1/icon.png
 documentationPath: /pdfbroker/v1/readme.md

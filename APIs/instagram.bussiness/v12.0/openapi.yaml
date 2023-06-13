@@ -3,11 +3,10 @@ info:
   title: Instagram Graph API
   version: v12.0
   description: >
-    This is a generated connector for [Instagram Graph API v12.0](https://developers.facebook.com/docs/instagram-api) OpenAPI specification. 
+    This is [Instagram Graph API v12.0](https://developers.facebook.com/docs/instagram-api) OpenAPI specification. 
     Instagram is a free photo-sharing application that enables its users to take photos, apply filters, and share them on social networks.
     The Instagram Graph API is a collection of Facebook Graph API endpoints that allow apps to access data in Instagram Professional accounts (both Business and Creator accounts).
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create an [Instagram account](https://www.instagram.com/?hl=en) and obtain tokens by following [this guide](https://developers.facebook.com/docs/instagram-api/overview).
   x-ballerina-display:
     label: Instagram For Bussiness

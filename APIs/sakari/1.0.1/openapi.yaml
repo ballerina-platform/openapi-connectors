@@ -12,7 +12,6 @@ info:
     Sakari provides an advanced platform to drive large scale customized SMS communication
     To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Please create a [Sakari account](https://api.sakari.io) and obtain tokens following [this guide](https://developer.sakari.io/docs#section/Finding-your-client-id-client-secret-and-account-id)
   version: "1.0.1"
   title: Sakari

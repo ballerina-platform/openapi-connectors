@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Public API
   description: |
-    This is a generated connector for [Optirtc Public API v1.0](https://docs.optirtc.com/api/opti-publicapi-v1.html) OpenAPI specification.
+    This is [Optirtc Public API v1.0](https://docs.optirtc.com/api/opti-publicapi-v1.html) OpenAPI specification.
     The Opti Public API provides a simple, read-only interface to access metadata and the last 3 days of real-time data points of all metrics in an Opti Platform Account:
     * **Web developers** can use the Public API to display real-time metrics from Opti facilities on their own websites - no backend database required.
     * **Systems integrators** can use the Public API to pull data into their own GIS or ETL systems, for example, to connect real-time stormwater conditions to their existing asset management software.
@@ -10,7 +10,6 @@ info:
     To learn about how Opti's data-driven products are enhancing community resilience to heavy rainfall across North America, see the [Opti Home Page](https://www.optirtc.com).
     OptiRTC provides simple examples of using open-source technologies to interact with the OptiRTC Public API. Find out more on our [Github page.](https://github.com/OptiRTC/OptiRTC-API-examples)
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Optirtc account](https://www.optirtc.com) and obtain tokens by following [this guide](https://docs.optirtc.com/api/opti-publicapi-v1.html#section/Authentication).
   x-ballerina-display:
     label: Optirtc Public 

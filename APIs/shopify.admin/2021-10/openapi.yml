@@ -2,12 +2,11 @@ openapi: 3.0.0
 info:
   title: Shopify Admin API
   description: |
-    This is a generated connector for [Shopify Admin API v2021-10](https://shopify.dev/api/admin-rest) OpenAPI specification.
+    This is [Shopify Admin API v2021-10](https://shopify.dev/api/admin-rest) OpenAPI specification.
     The Admin API lets you build apps and integrations that extend and enhance the Shopify admin.
     As the primary way that apps and services interact with Shopify, the Admin API allows you to add your own features to the Shopify user experience. 
     Read and write Shopify store information, including products, inventory, orders, shipping, and more.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Shopify account](https://www.shopify.com) and obtain tokens by following [this guide](https://shopify.dev/apps/auth/oauth).
   x-ballerina-display:
     label: Shopify Admin

@@ -10,11 +10,10 @@ info:
   x-logo:
     url: /v4/header-logo.png
   description: >
-    This is a generated connector for [Bitly API v4.0.0](https://dev.bitly.com/api-reference) OpenAPI specification.
+    This is [Bitly API v4.0.0](https://dev.bitly.com/api-reference) OpenAPI specification.
     Bitly is the most widely trusted link management platform in the world. 
     By using the Bitly API, you will exercise the full power of your links through automated link customization, mobile deep linking, and click analytics.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Bitly account](https://dev.bitly.com/) and obtain tokens by following [this guide](https://dev.bitly.com/docs/getting-started/introduction).
   x-ballerina-display:
     label: Bitly

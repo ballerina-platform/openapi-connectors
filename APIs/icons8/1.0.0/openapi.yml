@@ -3,10 +3,9 @@ servers:
   - url: https://api.icons8.com
 info:
   description: |
-    This is a generated connector for [Icons8 API v3.0](https://developers.icons8.com/docs/getting-started) OpenAPI specification.  
+    This is [Icons8 API v3.0](https://developers.icons8.com/docs/getting-started) OpenAPI specification.  
     The Icons8 API provides the capability to search and obtain icons.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials.
     Create an [Icons8 account](https://icons8.com/) and obtain tokens by following [this guide](https://developers.icons8.com/).
   title: Use a [New Version](https://icons8.github.io/icons8-docs/) Instead
   version: 1.0.0

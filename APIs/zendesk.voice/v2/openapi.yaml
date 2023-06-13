@@ -2,11 +2,10 @@ openapi: 3.0.1
 info:
   title: Zendesk Talk API
   description: >
-    This is a generated connector for [Zendesk Talk API v2](https://developer.zendesk.com/api-reference/voice/talk-api/introduction/) OpenAPI specification.
+    This is [Zendesk Talk API v2](https://developer.zendesk.com/api-reference/voice/talk-api/introduction/) OpenAPI specification.
     Zendesk Talk API in conjunction with the Support API to work with Talk agents, groups, and tickets.
   version: "v2"
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Zendesk account](https://www.zendesk.com/) and obtain tokens by following [this guide](https://developer.zendesk.com/api-reference/ticketing/introduction/#security-and-authentication).
   x-ballerina-display:
     label: Zendesk Voice

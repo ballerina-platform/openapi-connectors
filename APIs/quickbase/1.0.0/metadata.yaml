@@ -2,7 +2,7 @@ id: quickbase
 displayName: Quickbase
 type: OpenAPI
 version: 1.0.0
-description: This is a generated connector from [Quickbase API v1](https://developer.quickbase.com/) OpenAPI Specification. The Quickbase JSON RESTful API provides secure access to Quickbase apps and allow users to manage access using  Quickbase roles. Users can automate the app lifecycle using the Quickbase API.
+description: This is [Quickbase API v1](https://developer.quickbase.com/) OpenAPI Specification. The Quickbase JSON RESTful API provides secure access to Quickbase apps and allow users to manage access using  Quickbase roles. Users can automate the app lifecycle using the Quickbase API.
 idlPath: /quickbase/1.0.0/openapi.yaml
 thumbnailPath: /quickbase/1.0.0/icon.png
 documentationPath: /quickbase/1.0.0/readme.md

@@ -9,7 +9,7 @@ info:
   contact:
     url: https://dataflowkit.com/
   description: |
-    This is a generated connector for [Dataflow Kit API v1.3](https://dataflowkit.com/doc-api) OpenAPI Specification.
+    This is [Dataflow Kit API v1.3](https://dataflowkit.com/doc-api) OpenAPI Specification.
     Render Javascript driven pages, while we internally manage Headless Chrome and proxies for you. 
     - Build a custom web scraper with our Visual point-and-click toolkit.
     - Scrape the most popular Search engines result pages (SERP).
@@ -20,7 +20,6 @@ info:
     The API key can be found in the [DFK Dashboard](https://account.dataflowkit.com) after _free registration_.
     Pass a secret API Key to all API requests to the server as the `api_key` query parameter. 
   x-ballerina-init-description: | 
-    The connector initialization requires setting the API credentials.
     Create a [Dataflow Kit account](https://account.dataflowkit.com/signup) and obtain tokens by following [this guide](https://dataflowkit.com/doc-api#section/Authentication).
   termsOfService: https://dataflowkit.com/terms
   title: Dataflow Kit Web Scraper

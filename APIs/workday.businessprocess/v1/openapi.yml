@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: businessProcess
   description: >-
-    This is a generated connector for [WorkDay Business Process REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    This is [WorkDay Business Process REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
     The WorkDay business process service enables applications to access information on event actions and details
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Follow [this guide] https://credentials.workday.com/docs/authentication/ and obtain tokens.
   x-ballerina-display:
     label: Workday Business Process

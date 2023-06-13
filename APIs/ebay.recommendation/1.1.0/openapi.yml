@@ -5,11 +5,10 @@ info:
     iconPath: "icon.png"
   title: Recommendation API
   description: >
-      This is a generated connector for [Ebay Recommendation API v1.1.0](https://developer.ebay.com) OpenAPI specification. 
+      This is [Ebay Recommendation API v1.1.0](https://developer.ebay.com) OpenAPI specification. 
       'The <b>Recommendation API</b> returns information that sellers can use to optimize the configuration of their listings on eBay. <br><br>Currently, the API contains a single method, <b>findListingRecommendations</b>. 
       This method provides information that sellers can use to configure Promoted Listings ad campaigns to maximize the visibility of their items in the eBay marketplace.'
   x-ballerina-init-description: >
-      The connector initialization requires setting the API credentials.
       Create [eBay developer account](https://developer.ebay.com/join/) and obtain tokens by following [this guide](https://developer.ebay.com/api-docs/static/oauth-tokens.html).
   contact:
     name: 'eBay Inc,'

@@ -5,11 +5,10 @@ info:
     iconPath: "icon.png"
   title: Shipwire Warehouses API
   description: |
-    This is a generated connector for [Shipwire Warehouses API v3.0](https://www.shipwire.com/developers/warehouse/) OpenAPI specification.
+    This is [Shipwire Warehouses API v3.0](https://www.shipwire.com/developers/warehouse/) OpenAPI specification.
     The Warehouse API is used to manage Shipwire Anywhere warehouses and dropship locations. 
     Use it to create a new warehouse, to update an existing warehouse, or to get information about already created warehouses.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Shipwire account](https://www.shipwire.com) and obtain tokens by following [this guide](https://www.shipwire.com/developers/getting-started).
   version: "3.0"
 servers:

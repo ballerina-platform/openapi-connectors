@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: |
-    This is a generated connector for [Google Cloud Talent Solution API v4](https://cloud.google.com/talent-solution/job-search/docs/) OpenAPI specification.
+    This is [Google Cloud Talent Solution API v4](https://cloud.google.com/talent-solution/job-search/docs/) OpenAPI specification.
     Cloud Talent Solution provides the capability to create, read, update, and delete job postings, as well as search jobs based on keywords and filters.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:
     name: Creative Commons Attribution 3.0

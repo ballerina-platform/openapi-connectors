@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: Reckon One API v2
   description: |
-    This is a generated connector for [Reckon One API v2](https://developer.reckon.com/api-details#api=reckon-one-api-v2) OpenAPI specification.
+    This is [Reckon One API v2](https://developer.reckon.com/api-details#api=reckon-one-api-v2) OpenAPI specification.
     Reckon One is a new generation, modular cloud accounting solution that scales with your business – perfect for startups. This is version 2 of the Reckon One API.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create an [Reckon account](https://developer.reckon.com) and obtain tokens by following [this guide](https://developer.reckon.com/get-started).
   x-ballerina-display:
     label: Reckon One

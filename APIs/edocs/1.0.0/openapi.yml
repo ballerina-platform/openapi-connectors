@@ -13,7 +13,6 @@ info:
     name: OpenText License
     url: https://www.opentext.com/file_source/OpenText/en_US/PDF/opentext-legal-license-model-schedule-en.pdf
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create an [OpenText account](https://login.opentext.com/register) and obtain an API key.
   x-ballerina-display:
     label: eDocs

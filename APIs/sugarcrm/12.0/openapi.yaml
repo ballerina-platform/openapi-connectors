@@ -5,10 +5,9 @@ info:
     label: SugarCRM
     iconPath: "icon.png"
   description: | 
-    This is a generated connector for [SugarCRM REST API v12.0](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/) OpenAPI Specification.
+    This is [SugarCRM REST API v12.0](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/) OpenAPI Specification.
     SugarCRM REST API provides capabilities to effectively manage the customer lifecycle with a set of modules that support each stage of the funnel.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials.
     Create [SugarCRM account](https://www.sugarcrm.com/au/?utm_source=google.com&utm_medium=organic) and obtain tokens by following [this guide](https://support.sugarcrm.com/Documentation/Sugar_Developer/Sugar_Developer_Guide_12.0/Integration/Web_Services/REST_API/#Authentication).
   termsOfService: https://support.sugarcrm.com/Resources/Sugar_Cloud_Policy_Guide/
   contact:

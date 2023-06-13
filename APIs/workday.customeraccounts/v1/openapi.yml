@@ -2,12 +2,11 @@ openapi: 3.0.1
 info:
   title: customerAccounts
   description: >-
-    This is a generated connector for [WorkDay Customer Accounts REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    This is [WorkDay Customer Accounts REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
     The customer accounts service enables applications to access  customer accounts information including customers, invoices,
     adjustments, and payments.
   version: v1
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Follow [this guide] https://credentials.workday.com/docs/authentication/ and
     obtain tokens.
   x-ballerina-display:

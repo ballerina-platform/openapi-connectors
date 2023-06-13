@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: SAP SuccessFactors Litmos
   description: 
-    This is a generated connector for [SAP SuccessFactors Litmos API v1.0](https://api.sap.com/api/ScreeningHits/resource) OpenAPI specification. 
+    This is [SAP SuccessFactors Litmos API v1.0](https://api.sap.com/api/ScreeningHits/resource) OpenAPI specification. 
     Litmos is a cloud-based solution that unifies virtual, classroom, mobile,
     and social learning. Our solutions empower training departments, sales and service
     leaders, safety and compliance managers, and HR teams to collaborate, author,
@@ -11,7 +11,6 @@ info:
     teams can focus their energy on aligning training with the company's strategic
     agenda.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create and configure an API key credentials by following [this guide](https://support.litmos.com/hc/en-us/articles/227734667-Overview-Developer-API).
   x-ballerina-display:
     label: SAP SuccessFactors Litmos

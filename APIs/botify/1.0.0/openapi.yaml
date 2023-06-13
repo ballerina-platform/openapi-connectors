@@ -6,10 +6,9 @@ info:
     label: Botify
     iconPath: "icon.png"
   description: |
-    This is a generated connector for [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
+    This is [Botify API v1.0.0](https://developers.botify.com/reference) OpenAPI specification.
     API for Internet Archive's Search-related services.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Request a [Botify Account](https://www.botify.com/request-a-demo) and obtain tokens following [this guide](https://www.botify.com/blog/seo-guide-botify-api).
   title: Botify API
   version: 1.0.0

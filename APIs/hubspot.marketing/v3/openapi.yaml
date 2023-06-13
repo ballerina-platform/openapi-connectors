@@ -7,7 +7,6 @@ info:
   description: This is the [HubSpot](https://www.hubspot.com/) OpenAPI specification.
     These APIs allow you to interact with HubSpot's Marketing Events Extension. 
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [HubSpot account](https://www.hubspot.com/) and obtain the API Key following [this guide](https://knowledge.hubspot.com/integrations/how-do-i-get-my-hubspot-api-key?_ga=2.57958890.1140639136.1626730652-1097354510.162640933).
   version: v3
 servers:

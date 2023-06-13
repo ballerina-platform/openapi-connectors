@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: |
-    This is a generated connector for [Youtube Reporting API v1](https://developers.google.com/youtube/reporting) OpenAPI specification.
+    This is [Youtube Reporting API v1](https://developers.google.com/youtube/reporting) OpenAPI specification.
     The Youtube Reporting API provides the capability to schedule reporting jobs containing your YouTube Analytics data and download the resulting bulk data reports in the form of CSV files.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).    
   license:
     name: Creative Commons Attribution 3.0

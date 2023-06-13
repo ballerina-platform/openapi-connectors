@@ -6,12 +6,11 @@ info:
   title: Shippit
   version: 3.0.20201008
   description: |
-    This is a generated connector for [Shippit API v3.0.20201008](https://developer.shippit.com) OpenAPI specification.
+    This is [Shippit API v3.0.20201008](https://developer.shippit.com) OpenAPI specification.
     Shippit powers simpler delivery for e-commerce retailers of all shapes and sizes.
     It fulfil orders and track shipments anywhere you are, anytime you like. 
     It’s cloud-based multi-carrier shipping software for retailers that takes the guesswork out of shipping decisions.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Shippit account](https://www.shippit.com) and obtain tokens by following [this guide](https://developer.shippit.com/#section/Authentication).
   termsOfService: https://www.shippit.com/terms/
   contact:

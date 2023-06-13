@@ -9,10 +9,9 @@ info:
   title: Zoho CRM REST
   version: v2
   description: |
-    This is a generated connector for [Zoho CRM](https://www.zoho.com/crm/developer/docs/api/v2/modules-api.html) OpenAPI specification.
+    This is [Zoho CRM](https://www.zoho.com/crm/developer/docs/api/v2/modules-api.html) OpenAPI specification.
     Zoho CRM REST API provides the capability to unify customer data from across different applications and databases.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [Zoho account](https://www.zoho.com/crm/signup.html) and obtain tokens.
 security:
   - OAuth2: []

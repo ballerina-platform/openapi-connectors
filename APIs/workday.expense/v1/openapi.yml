@@ -2,11 +2,10 @@ openapi: 3.0.1
 info:
   title: expense
   description: >-
-    This is a generated connector for [WorkDay Expense REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+    This is [WorkDay Expense REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
     This API enables applications to access operations to extend the functionality of Workday Expenses.
   version: v1
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Follow [this guide](https://credentials.workday.com/docs/authentication/) and
     obtain tokens.
   x-ballerina-display:

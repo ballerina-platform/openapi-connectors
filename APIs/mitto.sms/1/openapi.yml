@@ -2,11 +2,10 @@ openapi: 3.0.1
 info:
   title: SMS and Bulk SMS APIs
   description: |
-    This is a generated connector for [Mitto SMS and Bulk SMS APIs v1](https://docs.mitto.ch/sms-api-reference/) OpenAPI specification.
+    This is [Mitto SMS and Bulk SMS APIs v1](https://docs.mitto.ch/sms-api-reference/) OpenAPI specification.
     Send individual SMS reliably and securely, or send them in bulk. 
     You can choose from different servers to test with based on where you want to send a message to.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Mitto account](https://docs.mitto.ch) and obtain tokens by following [this guide](https://docs.mitto.ch/sms-api/#authentication).
   x-ballerina-display:
     label: Mitto SMS

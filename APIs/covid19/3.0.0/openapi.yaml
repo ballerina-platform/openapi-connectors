@@ -6,7 +6,7 @@ info:
   title: Novel COVID-19 API - Disease.sh - An open API for disease-related statistics
   description: >
     This is the [Novel COVID-19 API version 3.0.0](https://disease.sh/docs/) OpenAPI Specification.
-    Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
+    COVID-19 API provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
   license:
     name: GNU V3
     url: 'https://github.com/disease-sh/API/blob/master/LICENSE'
@@ -14,7 +14,7 @@ info:
     label: COVID-19
     iconPath: "icon.png"
   x-ballerina-init-description: |
-    The connector initialization doesn't require setting the API credentials.
+    Doesn't require setting the API credentials.
 tags:
   - name: 'COVID-19: Worldometers'
     description: (COVID-19 data sourced from Worldometers, updated every 10 minutes)

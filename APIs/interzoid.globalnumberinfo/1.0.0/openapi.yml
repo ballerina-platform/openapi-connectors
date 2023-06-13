@@ -8,12 +8,11 @@ info:
   version: "1.0.0"
   title: Interzoid Get Global Phone Number Information API
   description: >
-    This is a generated connector for [Interzoid Global Phone Number Information API v1.0.0](https://interzoid.com/services/getglobalnumberinfo) OpenAPI specification.
+    This is [Interzoid Global Phone Number Information API v1.0.0](https://interzoid.com/services/getglobalnumberinfo) OpenAPI specification.
     This API provides geographic information for a global telephone number, including city and country information, primary languages spoken, and mobile device identification.
     For additional help getting started with the API, 
     visit [Interzoid Global Phone Number Information API](https://interzoid.com/services/getglobalnumberinfo)
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Interzoid Account](https://www.interzoid.com/register) 
     and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
   contact:

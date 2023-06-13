@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Monitor API
   description: >-
-    This is a generated connector for [DocuSign Monitor API](https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification.
+    This is [DocuSign Monitor API](https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification.
     DocuSign Monitor helps organizations protect their agreements with round-the-clock activity tracking. 
     The Monitor API delivers this activity tracking information directly to existing security stacks or data visualization 
     tools—enabling teams to detect unauthorized activity, investigate incidents, and quickly respond to verified threats. 
@@ -14,7 +14,6 @@ info:
     email: devcenter@docusign.com
   version: v2.0
   x-ballerina-init-description: 
-    The connector initialization requires setting the API credentials.
     Create a [DocuSign account](https://www.docusign.com/) and obtain tokens by following [this guide](https://developers.docusign.com/docs/monitor-api/monitor101/auth/).
   x-ballerina-display:
     label: DocuSign Monitor

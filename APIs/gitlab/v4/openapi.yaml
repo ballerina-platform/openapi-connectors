@@ -11,10 +11,9 @@ info:
     label: GitLab
     iconPath: "icon.png"
   description: |
-    This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
+    This is [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
     Client endpoint for GitLab API currently supports operations related to access requests and access tokens in GitLab.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [GitLab](https://about.gitlab.com/) account and obtain tokens following [this](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) guide.
   version: v4
   title: GitLab API

@@ -4,10 +4,9 @@ info:
     name: Who Hosts This
     url: https://www.who-hosts-this.com/Contact
   description:
-    This is a generated connector for [Who Hosts This API v0.0.1](https://www.who-hosts-this.com/Documentation) OpenAPI specification. 
+    This is [Who Hosts This API v0.0.1](https://www.who-hosts-this.com/Documentation) OpenAPI specification. 
     The Who Hosts This API provides services to get discover the hosting provider for any web site.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Who Hosts This Account](https://www.who-hosts-this.com/Profile?cmd=RegisterForm) and obtain token by following [this link](https://www.who-hosts-this.com/APIKey).
   x-ballerina-display:
     label: Who Hosts This

@@ -8,10 +8,9 @@ info:
     email: feedback@pushcut.io
     url: https://www.pushcut.io
   description: |
-    This is a generated connector for [Pushcut API v1](https://www.pushcut.io/webapi.html) OpenAPI specification.
+    This is [Pushcut API v1](https://www.pushcut.io/webapi.html) OpenAPI specification.
     API to send Pushcut notifications, execute Automation Server actions, and register custom webhooks as online actions.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Pushcut account](https://www.pushcut.io) and obtain tokens by following [this guide](https://www.pushcut.io/help).
   x-ballerina-display:
     label: Pushcut

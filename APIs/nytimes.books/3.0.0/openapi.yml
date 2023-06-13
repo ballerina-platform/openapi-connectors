@@ -6,11 +6,10 @@ info:
     label: New York Times Books
     iconPath: "icon.png"
   description: >
-    This is a generated connector for [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
+    This is [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
     The Books API provides information about book reviews and The New York Times bestsellers lists.
     For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [New York Times Account](https://developer.nytimes.com/accounts/create) and obtain tokens following [this guide](https://developer.nytimes.com/get-started).
   termsOfService: http://developer.nytimes.com/tou
   title: Books API

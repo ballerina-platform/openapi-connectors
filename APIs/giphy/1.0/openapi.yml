@@ -8,7 +8,7 @@ info:
   contact:
     email: support@giphy.com
   description: |
-    This is a generated connector for [Giphy API v1](https://developers.giphy.com/docs/api/) OpenAPI Specification.
+    This is [Giphy API v1](https://developers.giphy.com/docs/api/) OpenAPI Specification.
     Giphy API provides functions to get GIFs and stickers.
   termsOfService: https://developers.giphy.com/
   title: Giphy API
@@ -23,7 +23,6 @@ info:
       version: "3.0"
   x-providerName: giphy.com
   x-ballerina-init-description: | 
-    The connector initialization requires setting the API credentials.
     Create a [Giphy account](https://giphy.com/login) and obtain tokens by following [this guide](https://support.giphy.com/hc/en-us/articles/360020283431-Request-A-GIPHY-API-Key).
 externalDocs:
   description: Official Giphy Documentation

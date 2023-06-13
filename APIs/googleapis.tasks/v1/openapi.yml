@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: |
-    This is a generated connector for [Google Tasks API v1](https://developers.google.com/tasks/get_started) OpenAPI specification.
+    This is [Google Tasks API v1](https://developers.google.com/tasks/get_started) OpenAPI specification.
     The Google Tasks API lets you manage your tasks and task lists.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:
     name: Creative Commons Attribution 3.0

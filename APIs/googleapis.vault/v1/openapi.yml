@@ -10,7 +10,7 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: | 
-    This is a generated connector for [Google Vault API v1](https://developers.google.com/vault/reference/rest) OpenAPI specification.
+    This is [Google Vault API v1](https://developers.google.com/vault/reference/rest) OpenAPI specification.
     The Google Vault API provides the capability to do Retention and eDiscovery for Google Workspace. 
     To work with Vault resources, the account must have the [required Vault privileges](https://support.google.com/vault/answer/2799699) and access to the matter. 
     To access a matter, the account must have created the matter, have the matter shared with them, or have the **View All Matters** privilege.
@@ -38,7 +38,6 @@ info:
   x-providerName: googleapis.com
   x-serviceName: vault
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials. 
     Create a [Google Workspace account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
 externalDocs:
   url: https://developers.google.com/vault

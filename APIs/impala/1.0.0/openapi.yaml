@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: Impala Hotel Booking API
   description: |
-    This is a generated connector for [Impala API v1.0.0](https://docs.impala.travel/docs/booking-api/branches/v1.003/YXBpOjQwMDYwNDY-impala-hotel-booking-api) OpenAPI specification.  
+    This is [Impala API v1.0.0](https://docs.impala.travel/docs/booking-api/branches/v1.003/YXBpOjQwMDYwNDY-impala-hotel-booking-api) OpenAPI specification.  
     The Impala API provides the capability to search, book or sell hotels rooms.
     Add room selling to your app with ease, or expand your existing hotel
     portfolio. Access all the marketing material you need to sell a room, from
@@ -10,7 +10,6 @@ info:
     correct. Impala allows you to start selling hotel rooms and earn a
     commission with every booking in hours.
   x-ballerina-init-description: |
-    The connector initialization requires setting the API credentials.
     Create an [Impala](https://impala.travel/signup/) account and obtain tokens using [this guide](https://docs.impala.travel/docs/booking-api/ZG9jOjEwMjE0Mg-book-a-hotel-through-the-api-in-just-5-minutes).
   version: 1.0.0
   x-ballerina-display:

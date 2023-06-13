@@ -4,7 +4,7 @@ info:
     label: PagerDuty
     iconPath: "icon.png"
   description: >
-    This is a generated connector for [Pagerduty REST API v2](https://developer.pagerduty.com/api-reference/) OpenAPI specification.
+    This is [Pagerduty REST API v2](https://developer.pagerduty.com/api-reference/) OpenAPI specification.
     The Pagerduty REST API provides capability to programmatically interact with a PagerDuty account.
     This document describes the PagerDuty REST APIs.
     For guides and examples please visit our [Documentation.](https://developer.pagerduty.com/docs/get-started/getting-started/)
@@ -17,7 +17,6 @@ info:
   title: PagerDuty API
   version: 2.0.0
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Pagerduty account](https://developer.pagerduty.com/sign-up/) and obtain tokens by following [this guide](https://support.pagerduty.com/docs/generating-api-keys#section-generating-a-general-access-rest-api-key).
 security:
   - api_key: []

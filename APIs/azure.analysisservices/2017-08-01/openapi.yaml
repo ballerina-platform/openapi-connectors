@@ -6,7 +6,6 @@ info:
     The Azure Analysis Services Web API provides a RESTful set of web services
     that enables users to create, retrieve, update, and delete Analysis Services servers
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Azure Analysis Services account](https://azure.microsoft.com/en-us/services/analysis-services/) and obtain OAuth tokens following [this guide](https://docs.microsoft.com/en-us/azure/analysis-services/analysis-services-manage-users#authentication).
   x-ballerina-display:
     label: Azure Analysis Services

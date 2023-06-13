@@ -5,10 +5,9 @@ info:
     iconPath: "icon.png"
   title: Avaza API Documentation
   description:
-    This is a generated connector for [Avaza API v1](https://api.avaza.com/swagger/ui/index) OpenAPI specification. 
+    This is [Avaza API v1](https://api.avaza.com/swagger/ui/index) OpenAPI specification. 
     Avaza API allows to collaborate on projects, chat, schedule resources, track time, manage expenses & invoice customers.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Avaza account](https://signup.avaza.com/account/signup) and obtain tokens by following [this guide](https://www.avaza.com/avaza-api-oauth2-authentication/).  
   version: v1
 servers:

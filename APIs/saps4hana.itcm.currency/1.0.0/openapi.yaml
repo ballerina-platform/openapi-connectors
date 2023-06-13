@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: Currency Service
   description: >
-    This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
+    This is [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification. 
     SAPS4HANA Intelligent Trade Claims Management uses currency codes and their languages to properly display monetary value and decimal or comma placement.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create and configure an OAuth2 client credentials by following [this guide](https://help.sap.com/viewer/b865ed651e414196b39f8922db2122c7/LATEST/en-US/7aefa21a65f94b25b7e639c3931b6f83.html).
   x-ballerina-display:
     label: SAPS4HANA ITCM Currency

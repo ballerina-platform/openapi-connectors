@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: >
-    This is a generated connector for [Google OAuth2 API v2.0](https://developers.google.com/identity/protocols/oauth2/) OpenAPI specification.
+    This is [Google OAuth2 API v2.0](https://developers.google.com/identity/protocols/oauth2/) OpenAPI specification.
     Obtains end-user authorization grants for use with other Google APIs.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens following [this guide](https://developers.google.com/identity/protocols/oauth2)
   license:
     name: Creative Commons Attribution 3.0

@@ -7,7 +7,6 @@ info:
   description: This is the [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
     The Cloudmersive Security APIs help you detect and block security threats.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [Cloudmersive account](https://account.cloudmersive.com/login) and obtain tokens following [this guide](https://account.cloudmersive.com/keys).
   version: v1
 servers:

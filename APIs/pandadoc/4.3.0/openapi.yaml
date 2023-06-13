@@ -13,7 +13,6 @@ info:
     label: PandaDoc
     iconPath: "icon.png"
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     You can start using PandaDoc API with our [free sandbox plan](https://signup.pandadoc.com/?ss=api-dev&plan=rec_plans_v5_api_dev_mn_free), which allows you to open all the available features. 
     The [sandbox API key](https://developers.pandadoc.com/reference/api-key-authentication-process#sandbox-key) you can generate on the Developer Dashboard with predefined rate limits.
 servers:

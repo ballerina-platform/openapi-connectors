@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: Team API
   description: >
-    This is a generated connector for [Brex Team API v0.1](https://developer.brex.com/openapi/team_api/) OpenAPI specification. 
+    This is [Brex Team API v0.1](https://developer.brex.com/openapi/team_api/) OpenAPI specification. 
     Team API lets you manage users, departments, locations and cards.
   x-ballerina-init-description: > 
-    The connector initialization requires setting the API credentials.
     Create a [Brex account](https://www.brex.com/) and obtain tokens by following [this guide](https://developer.brex.com/docs/authentication/).
   x-ballerina-display:
     label: brex.team

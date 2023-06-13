@@ -10,10 +10,9 @@ info:
     url: https://google.com
     x-twitter: youtube
   description: |
-    This is a generated connector for [Google Apps Script API v1](https://developers.google.com/apps-script/api/) OpenAPI specification.
+    This is [Google Apps Script API v1](https://developers.google.com/apps-script/api/) OpenAPI specification.
     Manages and executes Google Apps Script projects.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Google account](https://accounts.google.com/signup) and obtain tokens by following [this guide](https://developers.google.com/identity/protocols/oauth2).
   license:
     name: Creative Commons Attribution 3.0

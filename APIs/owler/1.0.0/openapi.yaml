@@ -7,7 +7,6 @@ info:
   description: >
     Search for information on companies using a website or company name and get access to Company Data, News, Blog Posts, Competitor Lists and much more.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create an [Owler account](https://corp.owler.com/) and obtain the API key.
   version: 1.0.0
   x-apisguru-categories:

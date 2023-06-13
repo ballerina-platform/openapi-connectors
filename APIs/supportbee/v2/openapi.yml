@@ -2,10 +2,9 @@ openapi: 3.0.0
 info:
   title: SupportBee API
   description: |
-    This is a generated connector for [SupportBee API v1](https://supportbee.com/api) OpenAPI specification.
+    This is [SupportBee API v1](https://supportbee.com/api) OpenAPI specification.
     SupportBee’s support ticket system enables teams to organize, prioritize and collaborate on customer support emails.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [SupportBee account](https://supportbee.com) and obtain tokens by following [this guide](https://supportbee.com/api#authentication).
   x-ballerina-display:
     label: SupportBee

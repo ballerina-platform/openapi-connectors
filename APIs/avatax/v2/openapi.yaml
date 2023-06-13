@@ -2,10 +2,9 @@ openapi: 3.0.1
 info:
   title: AvaTax API
   description: >
-    This is a generated connector for [Avalara AvaTax API v2](https://developer.avalara.com/api-reference/avatax/rest/v2/) OpenAPI specification.
+    This is [Avalara AvaTax API v2](https://developer.avalara.com/api-reference/avatax/rest/v2/) OpenAPI specification.
     Avalara AvaTax is sales tax software that automates tax calculations and the tax filing process.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create an [Avalara account](https://buy.avalara.com/signup) and obtain tokens following [this guide](https://developer.avalara.com/avatax/).
   x-ballerina-display:
     label: AvaTax

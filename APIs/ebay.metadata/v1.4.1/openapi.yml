@@ -5,11 +5,10 @@ info:
     iconPath: "icon.png"
   title: Metadata API
   description: > 
-    This is a generated connector for [eBay Metadata API v1.4.1](https://developer.ebay.com) OpenAPI specification. 
+    This is [eBay Metadata API v1.4.1](https://developer.ebay.com) OpenAPI specification. 
     'The Metadata API has operations that retrieve configuration details pertaining to the different eBay marketplaces. 
     In addition to marketplace information, the API also has operations that get information that helps sellers list items on eBay.'
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials.
     Create a [developer account](https://developer.ebay.com/api-docs/static/creating-edp-account.html) and obtain tokens following [this guide](https://developer.ebay.com/api-docs/static/oauth-tokens.html).
   contact:
     name: 'eBay Inc,'

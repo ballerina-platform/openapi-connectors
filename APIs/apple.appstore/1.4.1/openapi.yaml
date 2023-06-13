@@ -8,10 +8,9 @@ info:
     label: Apple App Store
     iconPath: "icon.png"
   description: >-
-    This is a generated connector for [App Store Connect API v1.4.1](https://developer.apple.com/documentation/appstoreconnectapi) OpenAPI Specification.
+    This is [App Store Connect API v1.4.1](https://developer.apple.com/documentation/appstoreconnectapi) OpenAPI Specification.
     The App Store Connect API enables the automation of actions you take in App Store Connect. 
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials.
     Create a [App Store Connect account](https://appstoreconnect.apple.com/) 
     and obtain tokens following [this guide](https://developer.apple.com/documentation/appstoreconnectapi/creating_api_keys_for_app_store_connect_api).
   title: App Store Connect API

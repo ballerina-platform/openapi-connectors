@@ -3,14 +3,11 @@ info:
   title: QuickBooks Online API
   version: v3
   description: >
-    This is a generated connector for [QuickBooks Online API v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification. 
+    This is [QuickBooks Online API v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification. 
     The QuickBooks Online Accounting API utilizes the REST
     architecture. It lets you seamlessly integrate your app with QuickBooks
     Online and the Intuit Financial Ecosystem 
   x-ballerina-init-description: >-
-    The connector initialization requires setting the API credentials.
-    Gets invoked to initialize the connector. During initialization you can pass either http:BearerTokenConfig if you have a bearer 
-    token or http:OAuth2RefreshTokenGrantConfig if you have Oauth tokens.
     Create a [QuickBooks account](https://quickbooks.intuit.com/global/) and 
     obtain credentials following [this guide](https://developer.intuit.com/app/developer/qbo/docs/get-started/start-developing-your-app).
     Tokens can be obtained by using [OAuth 2.0 Playground](https://developer.intuit.com/app/developer/playground).

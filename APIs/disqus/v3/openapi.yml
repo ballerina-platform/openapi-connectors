@@ -2,11 +2,10 @@ openapi: 3.0.0
 info:
   title: Disqus API
   description: |
-    This is a generated connector for [Disqus API v1](https://disqus.com/api/docs) OpenAPI specification.
+    This is [Disqus API v1](https://disqus.com/api/docs) OpenAPI specification.
     Disqus is a service for web comments and discussions. 
     Disqus makes commenting easier and more interactive, helping publishers power online discussions.
   x-ballerina-init-description: >
-    The connector initialization requires setting the API credentials. 
     Create a [Disqus account](https://disqus.com) and obtain tokens by following [this guide](https://help.disqus.com/en/articles/1717212-using-the-api).
   x-ballerina-display:
     label: Disqus

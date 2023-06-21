@@ -5,7 +5,7 @@ The `ballerinax/openai.chat` package is a [Ballerina](https://ballerina.io/) con
 
 |                             | Version         |
 |-----------------------------|-----------------|
-| OpenAI API                  | 1.2.0           |
+| OpenAI API                  | 2.0.0           |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., visit the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library).

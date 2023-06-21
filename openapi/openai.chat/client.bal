@@ -53,10 +53,9 @@ public isolated client class Client {
         self.clientEp = httpEp;
         return;
     }
-    # Creates a completion for the chat message
+    # Creates a model response for the given chat conversation.
     #
     # + return - OK 
-    @display {label: "Create Chat Completion"}
     resource isolated function post chat/completions(CreateChatCompletionRequest payload) returns CreateChatCompletionResponse|error {
         string resourcePath = string `/chat/completions`;
         http:Request request = new;

@@ -1,5 +1,5 @@
 ## Overview
-This is a community-maintained [Ballerina](https://ballerina.io) connector for the [OpenAI Completions API](https://platform.openai.com/docs/api-reference/completions). The OpenAI Completions API provides a way to access new Text AI models developed by OpenAI for a variety of tasks.
+This is a community-maintained [Ballerina](https://ballerina.io) connector for the [OpenAI Completions API](https://platform.openai.com/docs/api-reference/completions). It serves as a powerful bridge, connecting your Ballerina applications to the cutting-edge Text AI models developed by OpenAI. This makes it an invaluable tool for those seeking to incorporate advanced AI functionalities into their projects.
 
 [API Documentation](https://lib.ballerina.io/ballerinax/openai.text/latest)
 

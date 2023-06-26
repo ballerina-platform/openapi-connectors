@@ -1,5 +1,5 @@
 ## Overview
-This is a community-maintained [Ballerina](https://ballerina.io) connector for the [OpenAI Chat API](https://platform.openai.com/docs/api-reference/chat). The OpenAI Chat API provides a way to access the state-of-the-art ChatGPT models developed by OpenAI for a variety of tasks.
+This is a community-maintained [Ballerina](https://ballerina.io) connector for the [OpenAI Chat API](https://platform.openai.com/docs/api-reference/chat). It provides a way to access the state-of-the-art ChatGPT models developed by OpenAI. This connector is an indispensable tool for developers aiming to harness the advanced conversational AI capabilities of ChatGPT models in their Ballerina applications.
 
 [API Documentation](https://lib.ballerina.io/ballerinax/openai.chat/latest)
 

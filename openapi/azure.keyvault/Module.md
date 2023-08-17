@@ -19,13 +19,13 @@ import ballerinax/azure.keyvault;
 ### Step 2 - Create a new connector instance
 You can now make the connection configuration using the access token.
 ```ballerina
-keyvault:ClientConfig clientConfig = {
+keyvault:ConnectionConfig connectionConfig = {
     auth : {
         token: token
     }
 };
 
-keyvault:Client baseClient = check new Client(clientConfig, serviceUrl = "{vaultBaseUrl}");
+keyvault:Client baseClient = check new Client(connectionConfig, serviceUrl = "{vaultBaseUrl}");
 ```
 ### Step 3 - Invoke connector operation
 

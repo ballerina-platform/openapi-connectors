@@ -297,8 +297,8 @@ modules = [
 
 [[package]]
 org = "ballerinax"
-name = "openai.chat"
-version = "1.1.2"
+name = "azure.keyvault"
+version = "1.6.0"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
 	{org = "ballerina", name = "http"},
@@ -306,6 +306,6 @@ dependencies = [
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "openai.chat", moduleName = "openai.chat"}
+	{org = "ballerinax", packageName = "azure.keyvault", moduleName = "azure.keyvault"}
 ]
 

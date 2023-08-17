@@ -23,7 +23,7 @@ public type ConnectionConfig record {|
     # Configurations related to client authentication
     http:BearerTokenConfig auth;
     # The HTTP version understood by the client
-    http:HttpVersion httpVersion = http:HTTP_2_0;
+    http:HttpVersion httpVersion = http:HTTP_1_1;
     # Configurations related to HTTP/1.x protocol
     ClientHttp1Settings http1Settings?;
     # Configurations related to HTTP/2 protocol
@@ -142,7 +142,7 @@ public type IssuerAttributes record {
 # A list of keys that have been deleted in this vault.
 public type DeletedKeyListResult record {
     # The URL to get the next set of deleted keys.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of deleted keys in the vault along with a link to the next page of deleted keys
     DeletedKeyItem[] value?;
 };
@@ -397,7 +397,7 @@ public type PendingCertificateSigningRequestResult record {
 # The deleted SAS definition list result
 public type DeletedSasDefinitionListResult record {
     # The URL to get the next set of deleted SAS definitions.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of the deleted SAS definitions in the vault along with a link to the next page of deleted sas definitions
     DeletedSasDefinitionItem[] value?;
 };
@@ -581,7 +581,7 @@ public type KeyImportParameters record {
 # The storage account SAS definition list result.
 public type SasDefinitionListResult record {
     # The URL to get the next set of SAS definitions.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of SAS definitions along with a link to the next page of SAS definitions.
     SasDefinitionItem[] value?;
 };
@@ -613,7 +613,7 @@ public type CertificateUpdateParameters record {
 # A list of certificates that have been deleted in this vault.
 public type DeletedCertificateListResult record {
     # The URL to get the next set of deleted certificates.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of deleted certificates in the vault along with a link to the next page of deleted certificates
     DeletedCertificateItem[] value?;
 };
@@ -674,7 +674,7 @@ public type SasDefinitionItem record {
 # The storage accounts list result.
 public type StorageListResult record {
     # The URL to get the next set of storage accounts.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of storage accounts in the key vault along with a link to the next page of storage accounts.
     StorageAccountItem[] value?;
 };
@@ -699,7 +699,7 @@ public type CertificateAttributes Attributes;
 # The certificate list result.
 public type CertificateListResult record {
     # The URL to get the next set of certificates.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of certificates in the key vault along with a link to the next page of certificates.
     CertificateItem[] value?;
 };
@@ -730,7 +730,7 @@ public type KeyAttributes Attributes;
 # The key list result.
 public type KeyListResult record {
     # The URL to get the next set of keys.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of keys in the key vault along with a link to the next page of keys.
     KeyItem[] value?;
 };
@@ -813,7 +813,7 @@ public type DeletedSecretItem SecretItem;
 # The deleted secret list result
 public type DeletedSecretListResult record {
     # The URL to get the next set of deleted secrets.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of the deleted secrets in the vault along with a link to the next page of deleted secrets
     DeletedSecretItem[] value?;
 };
@@ -889,7 +889,7 @@ public type SecretAttributes Attributes;
 # The secret list result.
 public type SecretListResult record {
     # The URL to get the next set of secrets.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of secrets in the key vault along with a link to the next page of secrets.
     SecretItem[] value?;
 };
@@ -897,7 +897,7 @@ public type SecretListResult record {
 # The certificate issuer list result.
 public type CertificateIssuerListResult record {
     # The URL to get the next set of certificate issuers.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of certificate issuers in the key vault along with a link to the next page of certificate issuers.
     CertificateIssuerItem[] value?;
 };
@@ -917,7 +917,7 @@ public type AdministratorDetails record {
 # The deleted storage account list result
 public type DeletedStorageListResult record {
     # The URL to get the next set of deleted storage accounts.
-    string nextLink?;
+    string? nextLink?;
     # A response message containing a list of the deleted storage accounts in the vault along with a link to the next page of deleted storage accounts
     DeletedStorageAccountItem[] value?;
 };

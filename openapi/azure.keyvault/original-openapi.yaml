@@ -27,8 +27,6 @@ info:
   x-tags:
   - Azure
   - Microsoft
-x-ballerina-http-configurations:
-  httpVersion: "1.1"
 paths:
   /certificates:
     get:
@@ -5319,7 +5317,6 @@ components:
           type: string
           description: The URL to get the next set of certificate issuers.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of certificate issuers
@@ -5382,7 +5379,6 @@ components:
           type: string
           description: The URL to get the next set of certificates.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of certificates in the
@@ -5549,7 +5545,6 @@ components:
           type: string
           description: The URL to get the next set of deleted certificates.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of deleted certificates
@@ -5575,7 +5570,6 @@ components:
           type: string
           description: The URL to get the next set of deleted keys.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of deleted keys in the
@@ -5601,7 +5595,6 @@ components:
           type: string
           description: The URL to get the next set of deleted SAS definitions.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of the deleted SAS definitions
@@ -5626,7 +5619,6 @@ components:
           type: string
           description: The URL to get the next set of deleted secrets.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of the deleted secrets
@@ -5652,7 +5644,6 @@ components:
           type: string
           description: The URL to get the next set of deleted storage accounts.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of the deleted storage
@@ -5972,7 +5963,6 @@ components:
           type: string
           description: The URL to get the next set of keys.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of keys in the key vault
@@ -6374,7 +6364,6 @@ components:
           type: string
           description: The URL to get the next set of SAS definitions.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of SAS definitions along
@@ -6475,7 +6464,6 @@ components:
           type: string
           description: The URL to get the next set of secrets.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of secrets in the key
@@ -6688,7 +6676,6 @@ components:
           type: string
           description: The URL to get the next set of storage accounts.
           readOnly: true
-          nullable: true
         value:
           type: array
           description: A response message containing a list of storage accounts in

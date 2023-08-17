@@ -6,7 +6,7 @@ name = "openai.images"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/openai.images"
-version = "1.0.5"
+version = "1.0.6"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

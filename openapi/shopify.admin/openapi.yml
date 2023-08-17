@@ -3338,7 +3338,9 @@ components:
           type: integer
           description: The unique identifier for the refund that the order adjustment is associated with.
         amount:
-          type: integer
+          oneOf:
+            - type: integer
+            - type: string
           description: The value of the discrepancy between the calculated refund and the actual refund. If the kind property's value is shipping_refund, then amount returns the value of shipping charges refunded to the customer.
         tax_amount:
           type: string

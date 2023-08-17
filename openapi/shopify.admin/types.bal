@@ -134,7 +134,7 @@ public type OrderAdjustment record {
     # The unique identifier for the refund that the order adjustment is associated with.
     int? refund_id?;
     # The value of the discrepancy between the calculated refund and the actual refund. If the kind property's value is shipping_refund, then amount returns the value of shipping charges refunded to the customer.
-    int? amount?;
+    int|string? amount?;
     # The taxes that are added to amount, such as applicable shipping taxes added to a shipping refund.
     string? tax_amount?;
     # The order adjustment type. Valid values are shipping_refund and refund_discrepancy.

@@ -6,7 +6,7 @@ name = "shopify.admin"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/shopify.admin"
-version = "2.4.1"
+version = "2.4.2"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

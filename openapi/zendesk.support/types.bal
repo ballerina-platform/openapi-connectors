@@ -74,87 +74,6 @@ public type ProxyConfig record {|
     string password = "";
 |};
 
-# Ticket comments represent the conversation between requesters, collaborators, and agents
-public type Comment record {
-    # author_id
-    int author_id?;
-    # body
-    string body?;
-    # html_body
-    string html_body?;
-    # public
-    boolean 'public?;
-};
-
-public type Ticket record {
-    # Permission for agents to add add attachments to a comment. Defaults to true
-    boolean? allow_attachments?;
-    # Is false if channelback is disabled, true otherwise. Only applicable for channels framework ticket
-    boolean? allow_channelback?;
-    # The agent currently assigned to the ticket
-    int? assignee_id?;
-    # Enterprise only. The id of the brand this ticket is associated with
-    int? brand_id?;
-    # When this ticket record was created
-    string? created_at?;
-    # Read-only first comment on the ticket. When creating a ticket, use comment to set the description
-    string? description?;
-    # If this is a ticket of type "task" it has a due date. Due date format uses ISO 8601 format
-    string? due_at?;
-    # An id you can use to link Zendesk Support tickets to local records
-    string? external_id?;
-    # The topic in the Zendesk Web portal this ticket originated from, if any. The Web portal is deprecated
-    int? forum_topic_id?;
-    # The group this ticket is assigned to
-    int? group_id?;
-    # Is true if a ticket is a problem type and has one or more incidents linked to it. Otherwise, the value is false.
-    boolean? has_incidents?;
-    # Automatically assigned when the ticket is created
-    int? id?;
-    # Is true if any comments are public, false otherwise
-    boolean? is_public?;
-    # The organization of the requester. You can only specify the ID of an organization associated with the requester
-    int? organization_id?;
-    # The urgency with which the ticket should be addressed. Allowed values are "urgent", "high", "normal", or "low"
-    string? priority?;
-    # For tickets of type "incident", the ID of the problem the incident is linked to
-    int? problem_id?;
-    # The dynamic content placeholder, if present, or the "subject" value
-    string? raw_subject?;
-    # The original recipient e-mail address of the ticket
-    string? recipient?;
-    # The user who requested this ticket
-    int? requester_id?;
-    # The state of the ticket. Allowed values are "new", "open", "pending", "hold", "solved", or "closed"The state of the ticket. Allowed values are "new", "open", "pending", "hold", "solved", or "closed".
-    string? status?;
-    # The value of the subject field for this ticket
-    string? subject?;
-    # The user who submitted the ticket. The submitter always becomes the author of the first comment on the ticket
-    int? submitter_id?;
-    # Enterprise only. The id of the ticket form to render for the ticket
-    int ticket_form_id?;
-    # The type of this ticket. Allowed values are "problem", "incident", "question", or "task"	The type of this ticket. Allowed values are "problem", "incident", "question", or "task".
-    string? 'type?;
-    # When this record last got updated
-    string? updated_at?;
-    # The API url of this ticket
-    string? url?;
-    # The id of a closed ticket when creating a follow-up ticket
-    int? via_followup_source_id?;
-};
-
-# The ticket information to create
-public type TicketInfo record {
-    # via_followup_source_id
-    int via_followup_source_id?;
-    # subject
-    string subject?;
-    # Priority of ticket. Allowed values are "urgent", "high", "normal", or "low"
-    string priority?;
-    # Ticket comments represent the conversation between requesters, collaborators, and agents
-    Comment comment?;
-};
-
 public type Organization record {
     # The API url of this organization
     string url?;
@@ -260,20 +179,22 @@ public type User record {
 };
 
 # The information for create ticket request
-public type UpdateTicketInfo record {
-    # The information for create ticket request
-    TicketInfoUpdate ticket?;
-};
-
-# The information for create ticket request
 public type TicketInfoUpdate record {
-    TicketinfoupdateTicket ticket?;
+    TicketInfoUpdate_ticket ticket?;
 };
 
 # The information for create user request
 public type CreateUserInfo record {
     # The user information to create
     UserInfo user?;
+};
+
+# Agent or end users email CCs to add or delete from the ticket
+public type EmailCC record {
+    string user_id?;
+    string action?;
+    string user_email?;
+    string user_name?;
 };
 
 # The user information to create
@@ -291,7 +212,7 @@ public type UserInfo record {
 };
 
 public type Users record {
-    UsersUsers[] users?;
+    Users_users[] users?;
     # next_page
     int? next_page?;
     # previous_page
@@ -306,13 +227,27 @@ public type CreateTicketInfo record {
     TicketInfo ticket?;
 };
 
-public type TicketinfoupdateTicket record {
-    # subject
-    string subject?;
-    # Priority of ticket. Allowed values are "urgent", "high", "normal", or "low"
-    string priority?;
-    # Ticket comments represent the conversation between requesters, collaborators, and agents
-    Comment comment?;
+# More information about the source of the ticket
+public type Source record {
+    string rel?;
+    SourceDetail 'from?;
+    SourceDetail to?;
+};
+
+public type Users_users record {
+    # id
+    int id?;
+    # url
+    string url?;
+    # name
+    string name?;
+    # email
+    string email?;
+};
+
+# Ticket comments represent the conversation between requesters, collaborators, and agents
+public type TicketResponse record {
+    Ticket ticket?;
 };
 
 public type Tickets record {
@@ -337,13 +272,198 @@ public type OrganizationInfo record {
     string name?;
 };
 
-public type UsersUsers record {
-    # id
+# Ticket comments represent the conversation between requesters, collaborators, and agents
+public type Comment record {
+    # author_id
+    int author_id?;
+    # body
+    string body?;
+    # html_body
+    string html_body?;
+    # public
+    boolean 'public?;
+};
+
+public type Ticket record {
+    # Permission for agents to add add attachments to a comment. Defaults to true
+    boolean? allow_attachments?;
+    # Is false if channelback is disabled, true otherwise. Only applicable for channels framework ticket
+    boolean? allow_channelback?;
+    # The agent currently assigned to the ticket
+    int? assignee_id?;
+    # Enterprise only. The id of the brand this ticket is associated with
+    int? brand_id?;
+    # When this ticket record was created
+    string? created_at?;
+    # Read-only first comment on the ticket. When creating a ticket, use comment to set the description
+    string? description?;
+    # If this is a ticket of type "task" it has a due date. Due date format uses ISO 8601 format
+    string? due_at?;
+    # An id you can use to link Zendesk Support tickets to local records
+    string? external_id?;
+    # The topic in the Zendesk Web portal this ticket originated from, if any. The Web portal is deprecated
+    int? forum_topic_id?;
+    # The group this ticket is assigned to
+    int? group_id?;
+    # Is true if a ticket is a problem type and has one or more incidents linked to it. Otherwise, the value is false.
+    boolean? has_incidents?;
+    # Automatically assigned when the ticket is created
+    int? id?;
+    # Is true if any comments are public, false otherwise
+    boolean? is_public?;
+    # The organization of the requester. You can only specify the ID of an organization associated with the requester
+    int? organization_id?;
+    # The urgency with which the ticket should be addressed. Allowed values are "urgent", "high", "normal", or "low"
+    string? priority?;
+    # For tickets of type "incident", the ID of the problem the incident is linked to
+    int? problem_id?;
+    # The dynamic content placeholder, if present, or the "subject" value
+    string? raw_subject?;
+    # The original recipient e-mail address of the ticket
+    string? recipient?;
+    # The user who requested this ticket
+    int? requester_id?;
+    # The state of the ticket. Allowed values are "new", "open", "pending", "hold", "solved", or "closed"The state of the ticket. Allowed values are "new", "open", "pending", "hold", "solved", or "closed".
+    string? status?;
+    # The value of the subject field for this ticket
+    string? subject?;
+    # The user who submitted the ticket. The submitter always becomes the author of the first comment on the ticket
+    int? submitter_id?;
+    # Enterprise only. The id of the ticket form to render for the ticket
+    int ticket_form_id?;
+    # The type of this ticket. Allowed values are "problem", "incident", "question", or "task"	The type of this ticket. Allowed values are "problem", "incident", "question", or "task".
+    string? 'type?;
+    # When this record last got updated
+    string? updated_at?;
+    # The API url of this ticket
+    string? url?;
+    # The id of a closed ticket when creating a follow-up ticket
+    int? via_followup_source_id?;
+};
+
+# The ticket information to create
+public type TicketInfo record {
+    # The email address of the agent to assign the ticket to
+    string assignee_email?;
+    # The agent currently assigned to the ticket
+    int assignee_id?;
+    # An array of the IDs of attribute values to be associated with the ticket
+    int[] attribute_value_ids?;
+    # The ids of users currently CC'ed on the ticket
+    int[] collaborator_ids?;
+    # Custom fields for the ticket
+    CustomField[] custom_fields?;
+    # The custom ticket status id of the ticket
+    int custom_status_id?;
+    # If this is a ticket of type "task" it has a due date. Due date format uses ISO 8601 format.
+    string due_at?;
+    # An array of objects that represent agent or end users email CCs to add or delete from the ticket
+    EmailCC[] email_ccs?;
+    # An id you can use to link Zendesk Support tickets to local records
+    string external_id?;
+    # An array of objects that represent agent followers to add or delete from the ticket
+    Follower[] followers?;
+    # The group this ticket is assigned to
+    int group_id?;
+    # The organization of the requester. You can only specify the ID of an organization associated with the requester.
+    int organization_id?;
+    # Priority of ticket. Allowed values are "urgent", "high", "normal", or "low".
+    string priority?;
+    # For tickets of type "incident", the ID of the problem the incident is linked to
+    int problem_id?;
+    # The user who requested this ticket
+    int requester_id?;
+    # Optional boolean. When true and an update_stamp date is included, protects against ticket update collisions and returns a message to let you know if one occurs.
+    boolean safe_update?;
+    # The ids of the sharing agreements used for this ticket
+    int[] sharing_agreement_ids?;
+    # The state of the ticket. Allowed values are "new", "open", "pending", "hold", "solved", or "closed".
+    string status?;
+    # The value of the subject field for this ticket
+    string subject?;
+    # The array of tags applied to this ticket
+    string[] tags?;
+    # The type of this ticket. Allowed values are "problem", "incident", "question", or "task".
+    string 'type?;
+    # Datetime of last update received from API. See the safe_update property
+    string updated_stamp?;
+    # Enterprise only. The id of the brand this ticket is associated with
+    int brand_id?;
+    # Users to add as cc's when creating a ticket.
+    (string|int|Collaborator)[] collaborators?;
+    # The ids of agents or end users currently CC'ed on the ticket.
+    int[] email_cc_ids?;
+    # The ids of agents currently following the ticket.
+    int[] follower_ids?;
+    # List of macro IDs to be recorded in the ticket audit
+    int[] macro_ids?;
+    # The dynamic content placeholder, if present, or the "subject" value
+    string raw_subject?;
+    # The original recipient e-mail address of the ticket
+    string recipient?;
+    # The user who submitted the ticket
+    int submitter_id?;
+    # Enterprise only. The id of the ticket form to render for the ticket
+    int ticket_form_id?;
+    # How or why an action or event was created
+    Via via?;
+    # The id of a closed ticket when creating a follow-up ticket
+    int via_followup_source_id?;
+    # Ticket comments represent the conversation between requesters, collaborators, and agents
+    Comment comment?;
+};
+
+# The information for create ticket request
+public type UpdateTicketInfo record {
+    # The information for create ticket request
+    TicketInfoUpdate ticket?;
+};
+
+# Agent followers to add or delete from the ticket
+public type Follower record {
+    string user_id?;
+    string action?;
+    string user_email?;
+    string user_name?;
+};
+
+public type SourceDetail record {
     int id?;
-    # url
-    string url?;
-    # name
+    string title?;
+};
+
+# How or why an action or event was created
+public type Via record {
+    string|int channel?;
+    # More information about the source of the ticket
+    Source 'source?;
+};
+
+public type TicketInfoUpdate_ticket record {
+    # subject
+    string subject?;
+    # Priority of ticket. Allowed values are "urgent", "high", "normal", or "low"
+    string priority?;
+    # Ticket comments represent the conversation between requesters, collaborators, and agents
+    Comment comment?;
+};
+
+public type UserResponse record {
+    User user?;
+};
+
+# Details of a collaborator
+public type Collaborator record {
     string name?;
-    # email
     string email?;
+};
+
+public type OrganizationResponse record {
+    Organization organization?;
+};
+
+# Custom fields for the ticket
+public type CustomField record {
+    int id?;
+    string value?;
 };

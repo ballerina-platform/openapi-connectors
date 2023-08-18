@@ -13,7 +13,6 @@
 // KIND, either express or implied.  See the License for the
 // specific language governing permissions and limitations
 // under the License.
-
 import ballerina/http;
 
 # This is a generated connector for [Zendesk Support API v2](https://developer.zendesk.com/api-reference/) OpenAPI specification.
@@ -67,12 +66,12 @@ public isolated client class Client {
     #
     # + payload - The information for create user request 
     # + return - Returns detail of user created 
-    remote isolated function createUser(CreateUserInfo payload) returns User|error {
+    remote isolated function createUser(CreateUserInfo payload) returns UserResponse|error {
         string resourcePath = string `/api/v2/users.json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
-        User response = check self.clientEp->post(resourcePath, request);
+        UserResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Search Users.
@@ -88,20 +87,20 @@ public isolated client class Client {
     }
     # Get User By Id.
     #
-    # + userId - User Id 
+    # + user_id - User Id 
     # + return - Returns user belong to the user id 
-    remote isolated function getUserById(string userId) returns User|error {
-        string resourcePath = string `/api/v2/users/${getEncodedUri(userId)}.json`;
-        User response = check self.clientEp->get(resourcePath);
+    remote isolated function getUserById(string user_id) returns UserResponse|error {
+        string resourcePath = string `/api/v2/users/${getEncodedUri(user_id)}.json`;
+        UserResponse response = check self.clientEp->get(resourcePath);
         return response;
     }
     # Delete User By Id.
     #
-    # + userId - User Id 
+    # + user_id - User Id 
     # + return - Returns detail of user deleted 
-    remote isolated function deleteUserById(string userId) returns User|error {
-        string resourcePath = string `/api/v2/users/${getEncodedUri(userId)}.json`;
-        User response = check self.clientEp-> delete(resourcePath);
+    remote isolated function deleteUserById(string user_id) returns UserResponse|error {
+        string resourcePath = string `/api/v2/users/${getEncodedUri(user_id)}.json`;
+        UserResponse response = check self.clientEp-> delete(resourcePath);
         return response;
     }
     # List Tickets.
@@ -116,23 +115,23 @@ public isolated client class Client {
     #
     # + payload - The information for create ticket request 
     # + return - Returns detail of created ticket 
-    remote isolated function createTicket(CreateTicketInfo payload) returns Ticket|error {
+    remote isolated function createTicket(CreateTicketInfo payload) returns TicketResponse|error {
         string resourcePath = string `/api/v2/tickets.json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
-        Ticket response = check self.clientEp->post(resourcePath, request);
+        TicketResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
     # Update Ticket.
     #
-    # + ticketId - Ticket Id 
+    # + ticket_id - Ticket Id 
     # + payload - The information for update ticket request 
     # + return - Returns deatil of updated ticket by ticket id 
-    remote isolated function updateTicket(string ticketId, UpdateTicketInfo payload) returns json|error {
-        string resourcePath = string `/api/v2/tickets/${getEncodedUri(ticketId)}`;
+    remote isolated function updateTicket(string ticket_id, UpdateTicketInfo payload) returns json|error {
+        string resourcePath = string `/api/v2/tickets/${getEncodedUri(ticket_id)}`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
         json response = check self.clientEp->put(resourcePath, request);
         return response;
@@ -141,12 +140,12 @@ public isolated client class Client {
     #
     # + payload - The information for create organization request 
     # + return - Organization created 
-    remote isolated function createOrganization(CreateOrganizationInfo payload) returns Organization|error {
+    remote isolated function createOrganization(CreateOrganizationInfo payload) returns OrganizationResponse|error {
         string resourcePath = string `/api/v2/organizations.json`;
         http:Request request = new;
-        json jsonBody = check payload.cloneWithType(json);
+        json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
-        Organization response = check self.clientEp->post(resourcePath, request);
+        OrganizationResponse response = check self.clientEp->post(resourcePath, request);
         return response;
     }
 }

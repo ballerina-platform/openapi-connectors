@@ -25,7 +25,7 @@ boolean remote = false;
 boolean buildAll = false;
 boolean testTool = false;
 boolean testConnectorGeneration = false;
-String clientMethod = "remote"
+String clientMethod = "remote";
 
 if (project.hasProperty("remote")){
     remote = new Boolean(project.property("remote").toString())
@@ -43,7 +43,7 @@ if (project.hasProperty("testConnectorGeneration")){
     testConnectorGeneration = new Boolean(project.property("testConnectorGeneration").toString())
 }
 if (project.hasProperty("clientMethod")){
-    clientMethod = new Boolean(project.property("clientMethod").toString())
+    clientMethod = new String(project.property("clientMethod").toString())
 }
 
 String toolTestsDirPath = project.projectDir.absolutePath + "/tool-tests";
@@ -167,18 +167,18 @@ task generateNbuildLatestOpenAPIConnectors {
         def generationFailedConnectors = []  // List to store generation failed connectors
         def compilationFailedConnectors = []  // List to store compilation failed connectors
 
-
         for (String path : ballerinaPackages) {
             println "----- Connector : " + path
             try {
                 exec {
-                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.* --mode client"
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.* --mode client --client-methods ${clientMethod}"
                     workingDir(path)
                 }
                 println "Connector generation is successful for " + path
             } catch (Exception genEx) {
                 println "Failed to re-generate the connector [" + path + "]. Error : " + genEx.toString()
                 generationFailedConnectors << path  // Add the failed connector to the list
+                continue
             }
 
             try {
@@ -210,8 +210,9 @@ task generateNbuildLatestOpenAPIConnectors {
 
         if (generationFailedConnectors.size() > 0 || compilationFailedConnectors.size() > 0) {
             // Throw an exception to fail the build
-            throw new GradleException("${failedConnectors.size()} connectors failed regeneration & 
-                    ${failedConnectors.size()} connectors failed compilation. See the summary above.")
+            throw new GradleException("${failedConnectors.size()} connectors failed regeneration & " +
+                            "${failedConnectors.size()} connectors failed compilation. See the summary above.")
+
         }
 
         if (generationFailedConnectors.size() == 0 && compilationFailedConnectors.size() == 0) {

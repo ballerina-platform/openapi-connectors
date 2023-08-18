@@ -18,7 +18,7 @@ on:
         options: ['remote', 'resource']
 
 jobs:
-  test_openapi_tool_nightly:
+  regenerate_connectors_with_nightly:
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
     container:
@@ -33,9 +33,9 @@ jobs:
           JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
           GRADLE_USER_HOME: ~/.gradle
         run: |
-          ./gradlew build -PtestTool=true -PclientMethod=${{ github.event.inputs.client_method }}
+          ./gradlew build -PtestConnectorGeneration=true -PclientMethod=${{ github.event.inputs.client_method }}
 
-  test_openapi_tool_with_specified_version:
+  regenerate_connectors_with_specified_version:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     container:
@@ -50,4 +50,4 @@ jobs:
           JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
           GRADLE_USER_HOME: ~/.gradle
         run: |
-          ./gradlew build -PtestTool=true -PclientMethod=${{ github.event.inputs.client_method }}
+          ./gradlew build -PtestConnectorGeneration=true -PclientMethod=${{ github.event.inputs.client_method }}

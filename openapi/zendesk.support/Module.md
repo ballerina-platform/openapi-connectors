@@ -44,7 +44,7 @@ zensupport:Client baseClient = check new Client(clientConfig, serviceUrl = "<htt
                                     role: "agent"
                                 } 
                             };
-        zensupport:User userResult = check baseClient->createUser(user);
+        zensupport:UserResponse userResult = check baseClient->createUser(user);
         log:printInfo(userResult.toString());
     }
     ``` 

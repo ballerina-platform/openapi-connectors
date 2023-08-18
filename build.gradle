@@ -24,6 +24,9 @@ boolean release = false;
 boolean remote = false;
 boolean buildAll = false;
 boolean testTool = false;
+boolean testConnectorGeneration = false;
+String clientMethod = "remote"
+
 if (project.hasProperty("remote")){
     remote = new Boolean(project.property("remote").toString())
 }
@@ -35,6 +38,12 @@ if (project.hasProperty("buildAll")){
 }
 if (project.hasProperty("testTool")){
     testTool = new Boolean(project.property("testTool").toString())
+}
+if (project.hasProperty("testConnectorGeneration")){
+    testConnectorGeneration = new Boolean(project.property("testConnectorGeneration").toString())
+}
+if (project.hasProperty("clientMethod")){
+    clientMethod = new Boolean(project.property("clientMethod").toString())
 }
 
 String toolTestsDirPath = project.projectDir.absolutePath + "/tool-tests";
@@ -50,7 +59,7 @@ if (buildAll){
 }
 
 task codeBuild {
-    if (!testTool) {
+    if (!testTool && !testConnectorGeneration) {
         println "Task: Building connectors..."
         for (String path : updatedBallerinaPackages) {
             Utils.executePrechecks(path);
@@ -148,6 +157,37 @@ task testOpenAPITool {
         exec {
             commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack"
             workingDir(toolTestsDirPath + "/17-with-tests")
+        }
+    }
+}
+
+task generateNbuildLatestOpenAPIConnectors {
+    if (testConnectorGeneration) {
+        println "Task: Re-generate and build connectors..."
+        for (String path : ballerinaPackages) {
+            println "----- Conenector : " + path
+            try {
+                exec {
+                    def clientCmd = (clientMethod == "remote") ? "--client-methods remote" : ""
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.* --mode client ${clientCmd}"
+                    workingDir(path)
+                }
+                println "Connector generation is success for " + path
+                
+            } catch (Exception ex) {
+                println "Failed to re-generate the connector [" + path + "]. Error : " + ex.toString(); 
+                continue
+            }
+
+            try {
+                exec {
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack ${path}"
+                    }
+                    println "bal pack success for " + path
+            } catch (Exception ex) {
+                println "Failed to build the re-generate the connector [" + path + "]. Error : " + ex.toString(); 
+                
+            }
         }
     }
 }

@@ -1,9 +1,9 @@
 name: Regenerate Connectors
 
 on:
-  # Run nightly at 2:00 AM
-  schedule:
-    - cron: '0 2 * * *'
+  # # Run nightly at 2:00 AM
+  # schedule:
+  #   - cron: '0 2 * * *'
   # Trigger manually with specified Ballerina Docker version
   workflow_dispatch:
     inputs:
@@ -18,22 +18,22 @@ on:
         options: ['remote', 'resource']
 
 jobs:
-  regenerate_connectors_with_nightly:
-    if: github.event_name == 'schedule'
-    runs-on: ubuntu-latest
-    container:
-      image: ballerina/ballerina:nightly
-      options: --user root
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+  # regenerate_connectors_with_nightly:
+  #   if: github.event_name == 'schedule'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: ballerina/ballerina:nightly
+  #     options: --user root
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v2
       
-      - name: Build with Gradle
-        env:
-          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
-          GRADLE_USER_HOME: ~/.gradle
-        run: |
-          ./gradlew build -PtestConnectorGeneration=true -PclientMethod=${{ github.event.inputs.client_method }}
+  #     - name: Build with Gradle
+  #       env:
+  #         JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+  #         GRADLE_USER_HOME: ~/.gradle
+  #       run: |
+  #         ./gradlew build -PtestConnectorGeneration=true -PclientMethod=${{ github.event.inputs.client_method }}
 
   regenerate_connectors_with_specified_version:
     if: github.event_name == 'workflow_dispatch'

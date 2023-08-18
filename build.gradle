@@ -164,30 +164,58 @@ task testOpenAPITool {
 task generateNbuildLatestOpenAPIConnectors {
     if (testConnectorGeneration) {
         println "Task: Re-generate and build connectors..."
+        def generationFailedConnectors = []  // List to store generation failed connectors
+        def compilationFailedConnectors = []  // List to store compilation failed connectors
+
+
         for (String path : ballerinaPackages) {
-            println "----- Conenector : " + path
+            println "----- Connector : " + path
             try {
                 exec {
-                    def clientCmd = (clientMethod == "remote") ? "--client-methods remote" : ""
-                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.* --mode client ${clientCmd}"
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.* --mode client"
                     workingDir(path)
                 }
-                println "Connector generation is success for " + path
-                
-            } catch (Exception ex) {
-                println "Failed to re-generate the connector [" + path + "]. Error : " + ex.toString(); 
-                continue
+                println "Connector generation is successful for " + path
+            } catch (Exception genEx) {
+                println "Failed to re-generate the connector [" + path + "]. Error : " + genEx.toString()
+                generationFailedConnectors << path  // Add the failed connector to the list
             }
 
             try {
                 exec {
                     commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack ${path}"
-                    }
-                    println "bal pack success for " + path
-            } catch (Exception ex) {
-                println "Failed to build the re-generate the connector [" + path + "]. Error : " + ex.toString(); 
-                
+                }
+                println "bal pack success for " + path
+            } catch (Exception buildEx) {
+                println "Failed to build the re-generate the connector [" + path + "]. Error : " + buildEx.toString()
+                compilationFailedConnectors << path  // Add the failed connector to the list
             }
+        }
+
+        // Print summary of re-generation failed connectors
+        if (generationFailedConnectors.size() > 0) {
+            println "Summary: ${generationFailedConnectors.size()} connectors failed re-generation:"
+            generationFailedConnectors.each { connector ->
+                println "- $connector"
+            }
+        } 
+        
+        // Print summary of compilation failed connectors
+        if (compilationFailedConnectors.size() > 0) {
+            println "Summary: ${compilationFailedConnectors.size()} connectors failed compilation:"
+            compilationFailedConnectors.each { connector ->
+                println "- $connector"
+            }
+        } 
+
+        if (generationFailedConnectors.size() > 0 || compilationFailedConnectors.size() > 0) {
+            // Throw an exception to fail the build
+            throw new GradleException("${failedConnectors.size()} connectors failed regeneration & 
+                    ${failedConnectors.size()} connectors failed compilation. See the summary above.")
+        }
+
+        if (generationFailedConnectors.size() == 0 && compilationFailedConnectors.size() == 0) {
+            println "All connectors executed successfully."
         }
     }
 }

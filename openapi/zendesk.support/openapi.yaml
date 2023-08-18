@@ -3,7 +3,7 @@ info:
   title: Zendesk Support API
   description: >
     This is a generated connector for [Zendesk Support API v2](https://developer.zendesk.com/api-reference/) OpenAPI specification.
-    
+
     Zendesk Support is a simple system for tracking, prioritizing and solving customer support tickets.
   version: "v2"
   x-ballerina-init-description: >
@@ -24,7 +24,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Users'
+                $ref: "#/components/schemas/Users"
     post:
       summary: Create User.
       operationId: createUser
@@ -33,7 +33,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateUserInfo'
+              $ref: "#/components/schemas/CreateUserInfo"
         required: true
       responses:
         200:
@@ -41,7 +41,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/UserResponse"
   /api/v2/search.json:
     get:
       summary: Search Users.
@@ -74,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/UserResponse"
     delete:
       summary: Delete User By Id.
       operationId: deleteUserById
@@ -91,7 +91,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: "#/components/schemas/UserResponse"
   /api/v2/tickets.json:
     get:
       summary: List Tickets.
@@ -102,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tickets'
+                $ref: "#/components/schemas/Tickets"
     post:
       summary: Create Ticket.
       operationId: createTicket
@@ -111,7 +111,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateTicketInfo'
+              $ref: "#/components/schemas/CreateTicketInfo"
         required: true
       responses:
         200:
@@ -119,7 +119,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ticket'
+                $ref: "#/components/schemas/TicketResponse"
   /api/v2/tickets/{ticket_id}:
     put:
       summary: Update Ticket.
@@ -136,7 +136,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateTicketInfo'
+              $ref: "#/components/schemas/UpdateTicketInfo"
         required: true
       responses:
         200:
@@ -152,19 +152,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrganizationInfo'
+              $ref: "#/components/schemas/CreateOrganizationInfo"
         required: true
       responses:
         200:
           description: Organization created
           content:
-            application/json: 
+            application/json:
               schema:
-                $ref: '#/components/schemas/Organization'
+                $ref: "#/components/schemas/OrganizationResponse"
         422:
           description: Unprocessable Entity
           content:
-              application/json: {}
+            application/json: {}
 components:
   securitySchemes:
     basicAuth:
@@ -177,30 +177,218 @@ components:
       properties:
         ticket:
           type: object
-          $ref: '#/components/schemas/TicketInfo'
+          $ref: "#/components/schemas/TicketInfo"
     TicketInfo:
       type: object
       description: The ticket information to create
       properties:
-        via_followup_source_id:
-          type: integer
-          description: via_followup_source_id
-        subject:
+        assignee_email:
           type: string
-          description: subject
+          description: The email address of the agent to assign the ticket to
+        assignee_id:
+          type: integer
+          description: The agent currently assigned to the ticket
+        attribute_value_ids:
+          type: array
+          items:
+            type: integer
+          description: An array of the IDs of attribute values to be associated with the ticket
+        collaborator_ids:
+          type: array
+          items:
+            type: integer
+          description: The ids of users currently CC'ed on the ticket
+        custom_fields:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/CustomField"
+          description: Custom fields for the ticket
+        custom_status_id:
+          type: integer
+          description: The custom ticket status id of the ticket
+        due_at:
+          type: string
+          description: If this is a ticket of type "task" it has a due date. Due date format uses ISO 8601 format.
+        email_ccs:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/EmailCC"
+          description: An array of objects that represent agent or end users email CCs to add or delete from the ticket
+        external_id:
+          type: string
+          description: An id you can use to link Zendesk Support tickets to local records
+        followers:
+          type: array
+          items:
+            type: object
+            $ref: "#/components/schemas/Follower"
+          description: An array of objects that represent agent followers to add or delete from the ticket
+        group_id:
+          type: integer
+          description: The group this ticket is assigned to
+        organization_id:
+          type: integer
+          description: The organization of the requester. You can only specify the ID of an organization associated with the requester.
         priority:
           type: string
-          description: Priority of ticket. Allowed values are "urgent", "high", "normal", or "low"
+          description: Priority of ticket. Allowed values are "urgent", "high", "normal", or "low".
+        problem_id:
+          type: integer
+          description: For tickets of type "incident", the ID of the problem the incident is linked to
+        requester_id:
+          type: integer
+          description: The user who requested this ticket
+        safe_update:
+          type: boolean
+          description: Optional boolean. When true and an update_stamp date is included, protects against ticket update collisions and returns a message to let you know if one occurs.
+        sharing_agreement_ids:
+          type: array
+          items:
+            type: integer
+          description: The ids of the sharing agreements used for this ticket
+        status:
+          type: string
+          description: The state of the ticket. Allowed values are "new", "open", "pending", "hold", "solved", or "closed".
+        subject:
+          type: string
+          description: The value of the subject field for this ticket
+        tags:
+          type: array
+          items:
+            type: string
+          description: The array of tags applied to this ticket
+        type:
+          type: string
+          description: The type of this ticket. Allowed values are "problem", "incident", "question", or "task".
+        updated_stamp:
+          type: string
+          description: Datetime of last update received from API. See the safe_update property
+        brand_id:
+          type: integer
+          description: Enterprise only. The id of the brand this ticket is associated with
+        collaborators:
+          type: array
+          items:
+            oneOf:
+              - type: string
+              - type: integer
+              - $ref: "#/components/schemas/Collaborator"
+          description: Users to add as cc's when creating a ticket.
+        email_cc_ids:
+          type: array
+          items:
+            type: integer
+          description: The ids of agents or end users currently CC'ed on the ticket.
+        follower_ids:
+          type: array
+          items:
+            type: integer
+          description: The ids of agents currently following the ticket.
+        macro_ids:
+          type: array
+          items:
+            type: integer
+          description: List of macro IDs to be recorded in the ticket audit
+        raw_subject:
+          type: string
+          description: The dynamic content placeholder, if present, or the "subject" value
+        recipient:
+          type: string
+          description: The original recipient e-mail address of the ticket
+        submitter_id:
+          type: integer
+          description: The user who submitted the ticket
+        ticket_form_id:
+          type: integer
+          description: Enterprise only. The id of the ticket form to render for the ticket
+        via:
+          type: object
+          description: How or why an action or event was created
+          $ref: "#/components/schemas/Via"
+        via_followup_source_id:
+          type: integer
+          description: The id of a closed ticket when creating a follow-up ticket
         comment:
           type: object
-          $ref: '#/components/schemas/Comment'
+          $ref: "#/components/schemas/Comment"
+    Collaborator:
+      description: Details of a collaborator
+      type: object
+      properties: 
+        name: 
+          type: string
+        email:
+          type: string
+    CustomField:
+      description: Custom fields for the ticket
+      type: object
+      properties:
+        id:
+          type: integer
+        value:
+          type: string
+    EmailCC:
+      description: Agent or end users email CCs to add or delete from the ticket
+      type: object
+      properties:
+        user_id:
+          type: string
+        action:
+          type: string
+        user_email:
+          type: string
+        user_name:
+          type: string
+    Follower:
+      description: Agent followers to add or delete from the ticket
+      type: object
+      properties:
+        user_id:
+          type: string
+        action:
+          type: string
+        user_email:
+          type: string
+        user_name:
+          type: string
+    Via:
+      description: How or why an action or event was created
+      type: object
+      properties:
+        channel:
+          oneOf:
+            - type: string
+            - type: integer
+        source:
+          type: object
+          $ref: "#/components/schemas/Source"
+    Source:
+      description: More information about the source of the ticket
+      type: object
+      properties:
+        rel:
+          type: string
+        from:
+          type: object
+          $ref: "#/components/schemas/SourceDetail"
+        to:
+          type: object
+          $ref: "#/components/schemas/SourceDetail"
+    SourceDetail:
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
     CreateUserInfo:
       description: The information for create user request
       type: object
       properties:
         user:
           type: object
-          $ref: '#/components/schemas/UserInfo'
+          $ref: "#/components/schemas/UserInfo"
     UserInfo:
       description: The user information to create
       type: object
@@ -217,7 +405,7 @@ components:
         organization:
           type: object
           description: The user's organization information
-          $ref: '#/components/schemas/OrganizationInfo'
+          $ref: "#/components/schemas/OrganizationInfo"
         role:
           type: string
           description: The user's role. Possible values are "end-user", "agent", or "admin"
@@ -234,7 +422,7 @@ components:
       properties:
         ticket:
           type: object
-          $ref: '#/components/schemas/TicketInfoUpdate'
+          $ref: "#/components/schemas/TicketInfoUpdate"
     TicketInfoUpdate:
       description: The information for create ticket request
       type: object
@@ -250,7 +438,7 @@ components:
               description: Priority of ticket. Allowed values are "urgent", "high", "normal", or "low"
             comment:
               type: object
-              $ref: '#/components/schemas/Comment'
+              $ref: "#/components/schemas/Comment"
     Comment:
       description: Ticket comments represent the conversation between requesters, collaborators, and agents
       type: object
@@ -267,6 +455,13 @@ components:
         public:
           type: boolean
           description: public
+    TicketResponse:
+      description: Ticket comments represent the conversation between requesters, collaborators, and agents
+      type: object
+      properties:
+        ticket:
+          type: object
+          $ref: "#/components/schemas/Ticket"
     Ticket:
       type: object
       properties:
@@ -324,7 +519,7 @@ components:
           nullable: true
         organization_id:
           type: integer
-          description: The organization of the requester. You can only specify the ID of an organization associated with the requester 
+          description: The organization of the requester. You can only specify the ID of an organization associated with the requester
           nullable: true
         priority:
           type: string
@@ -383,7 +578,7 @@ components:
         tickets:
           type: array
           items:
-            $ref: '#/components/schemas/Ticket'
+            $ref: "#/components/schemas/Ticket"
         next_page:
           type: integer
           description: next_page
@@ -395,6 +590,12 @@ components:
         count:
           type: integer
           description: count
+    OrganizationResponse:
+      type: object
+      properties:
+        organization:
+          type: object
+          $ref: "#/components/schemas/Organization"
     Organization:
       type: object
       properties:
@@ -425,7 +626,7 @@ components:
           description: The time the organization was updated
         domain_names:
           type: array
-          items: 
+          items:
             type: string
           description: An array of domain names associated with this organization
         details:
@@ -442,7 +643,7 @@ components:
           nullable: true
         tags:
           type: array
-          items: 
+          items:
             type: string
           description: The tags of the organization
         organization_fields:
@@ -454,7 +655,13 @@ components:
       properties:
         organization:
           type: object
-          $ref: '#/components/schemas/OrganizationInfo'
+          $ref: "#/components/schemas/OrganizationInfo"
+    UserResponse:
+      type: object
+      properties:
+        user:
+          type: object
+          $ref: "#/components/schemas/User"
     User:
       type: object
       properties:
@@ -600,30 +807,30 @@ components:
     Users:
       type: object
       properties:
-          users:
-            type: array
-            items:
-              properties:
-                id:
-                  type: integer
-                  description: id
-                url:
-                  type: string
-                  description: url
-                name:
-                  type: string
-                  description: name
-                email:
-                  type: string
-                  description: email
-          next_page:
-            type: integer
-            description: next_page
-            nullable: true
-          previous_page:
-            type: integer
-            description: previous_page
-            nullable: true
-          count:
-            type: integer
-            description: count
+        users:
+          type: array
+          items:
+            properties:
+              id:
+                type: integer
+                description: id
+              url:
+                type: string
+                description: url
+              name:
+                type: string
+                description: name
+              email:
+                type: string
+                description: email
+        next_page:
+          type: integer
+          description: next_page
+          nullable: true
+        previous_page:
+          type: integer
+          description: previous_page
+          nullable: true
+        count:
+          type: integer
+          description: count

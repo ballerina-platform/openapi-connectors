@@ -220,9 +220,3 @@ task generateNbuildLatestOpenAPIConnectors {
         }
     }
 }
-
-gradle.buildFinished {
-    if (gradle.buildFinished.buildResult.failure) {
-        throw new GradleException("Workflow failed due to build failure.")
-    }
-}

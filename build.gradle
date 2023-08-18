@@ -210,13 +210,19 @@ task generateNbuildLatestOpenAPIConnectors {
 
         if (generationFailedConnectors.size() > 0 || compilationFailedConnectors.size() > 0) {
             // Throw an exception to fail the build
-            throw new GradleException("${failedConnectors.size()} connectors failed regeneration & " +
-                            "${failedConnectors.size()} connectors failed compilation. See the summary above.")
+            throw new GradleException("${generationFailedConnectors.size()} connectors failed regeneration & " +
+                            "${compilationFailedConnectors.size()} connectors failed compilation. See the summary above.")
 
         }
 
         if (generationFailedConnectors.size() == 0 && compilationFailedConnectors.size() == 0) {
             println "All connectors executed successfully."
         }
+    }
+}
+
+gradle.buildFinished {
+    if (gradle.buildFinished.buildResult.failure) {
+        throw new GradleException("Workflow failed due to build failure.")
     }
 }

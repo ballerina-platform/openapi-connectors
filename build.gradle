@@ -24,6 +24,10 @@ boolean release = false;
 boolean remote = false;
 boolean buildAll = false;
 boolean testTool = false;
+boolean testConnectorGeneration = false;
+String clientMethod = "remote";
+String customDistributionPath = null;
+
 if (project.hasProperty("remote")){
     remote = new Boolean(project.property("remote").toString())
 }
@@ -35,6 +39,15 @@ if (project.hasProperty("buildAll")){
 }
 if (project.hasProperty("testTool")){
     testTool = new Boolean(project.property("testTool").toString())
+}
+if (project.hasProperty("testConnectorGeneration")){
+    testConnectorGeneration = new Boolean(project.property("testConnectorGeneration").toString())
+}
+if (project.hasProperty("clientMethod")){
+    clientMethod = new String(project.property("clientMethod").toString())
+}
+if (project.hasProperty("customDistributionPath")){
+    customDistributionPath = new String(project.property("customDistributionPath").toString())
 }
 
 String toolTestsDirPath = project.projectDir.absolutePath + "/tool-tests";
@@ -50,7 +63,7 @@ if (buildAll){
 }
 
 task codeBuild {
-    if (!testTool) {
+    if (!testTool && !testConnectorGeneration) {
         println "Task: Building connectors..."
         for (String path : updatedBallerinaPackages) {
             Utils.executePrechecks(path);
@@ -151,3 +164,105 @@ task testOpenAPITool {
         }
     }
 }
+
+task generateNbuildLatestOpenAPIConnectors {
+    if (testConnectorGeneration) {
+        println "Task: Re-generate and build connectors..." 
+
+        def generationFailedConnectors = []  // List to store generation failed connectors
+        def compilationFailedConnectors = []  // List to store compilation failed connectors
+
+        if (customDistributionPath == null || customDistributionPath == "") {
+            println "Custom distribution path is not provided. Using the default distribution path."
+        } else {
+            println "Using the custom distribution path : " + customDistributionPath
+            ballerinaDistributionPath = customDistributionPath;
+        }
+
+        for (String path : ballerinaPackages) {
+            def connector = path;
+
+            // Extract the connector name from the path
+            def regex = /\/openapi\/(.*?)$/
+            def matcher = (path =~ regex)
+            if (matcher.find()) {
+                connector = matcher.group(1)
+            }
+            
+            // Re-generate the connector
+            println "--- Generating the connector : " + connector
+            try {
+                exec {
+                    workingDir(path)
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.* --mode client --client-methods ${clientMethod}"     
+                }
+                println "Connector generation is successful for " + connector
+            } catch (Exception genEx) {
+                println "Failed to re-generate the connector [" + connector + "]. Error : " + genEx.toString()
+                generationFailedConnectors << connector  // Add the failed connector to the list
+                continue
+            }
+
+            // Build the connector
+            try {
+                exec {
+                    commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal pack ${path}"
+                }
+                println "bal pack success for " + connector
+            } catch (Exception buildEx) {
+                println "Failed to build the re-generate the connector [" + connector + "]. Error : " + buildEx.toString()
+                compilationFailedConnectors << connector  // Add the failed connector to the list
+            }
+        }
+
+        // Generate the summary report
+        def summary = constructSummaryReport(ballerinaDistributionPath, ballerinaPackages.size(), generationFailedConnectors, compilationFailedConnectors)
+        def reportFile = file("${project.projectDir}/.github/reports/summary.txt")
+        reportFile.text = summary
+
+        if (generationFailedConnectors.size() == 0 && compilationFailedConnectors.size() == 0) {
+            println "All connectors executed successfully."
+        }
+    }
+}
+
+def constructSummaryReport(ballerinaDistributionPath, totalConnectors, generationFailedConnectors, compilationFailedConnectors) {
+    def summary = "# Summary \n\n"
+    summary += "Date and Time: ${new Date()}\n"
+    summary += "Ballerina Version: ${getBallerinaVersion(ballerinaDistributionPath).toString()}\n"
+    summary += "Total Connectors Run: ${totalConnectors}\n\n"
+
+    if (generationFailedConnectors.size() > 0 || compilationFailedConnectors.size() > 0) {
+        summary += "Failed Connectors:\n\n"
+        if (generationFailedConnectors.size() > 0) {
+            summary += "Generation Failed Connectors (count: ${generationFailedConnectors.size()}) :\n"
+            generationFailedConnectors.each { connector ->
+                summary += "- ${connector}\n"
+            }
+        }
+        if (compilationFailedConnectors.size() > 0) {
+            summary += "Compilation Failed Connectors (count: ${compilationFailedConnectors.size()}) :\n"
+            compilationFailedConnectors.each { connector ->
+                summary += "- ${connector}\n"
+            }
+        }
+    } else {
+        summary += "All connectors executed successfully.\n"
+    }
+
+    return summary
+}
+
+
+def getBallerinaVersion(ballerinaDistributionPath) {
+    def command = ballerinaDistributionPath + "/bin/bal -v"
+    println "Command: " + command
+    def process = command.execute()
+    process.waitFor()
+
+    def output = process.text.trim()
+    def ballerinaVersion = output.split('\n').find { it.startsWith("Ballerina") }
+    
+    return ballerinaVersion
+}
+

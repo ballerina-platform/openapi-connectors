@@ -27,6 +27,7 @@ boolean testTool = false;
 boolean testConnectorGeneration = false;
 String clientMethod = "remote";
 String customDistributionPath = null;
+String connectorList = null;
 
 if (project.hasProperty("remote")){
     remote = new Boolean(project.property("remote").toString())
@@ -48,6 +49,9 @@ if (project.hasProperty("clientMethod")){
 }
 if (project.hasProperty("customDistributionPath")){
     customDistributionPath = new String(project.property("customDistributionPath").toString())
+}
+if (project.hasProperty("connectorList")){
+    connectorList = new String(project.property("connectorList").toString())
 }
 
 String toolTestsDirPath = project.projectDir.absolutePath + "/tool-tests";
@@ -171,12 +175,27 @@ task generateNbuildLatestOpenAPIConnectors {
 
         def generationFailedConnectors = []  // List to store generation failed connectors
         def compilationFailedConnectors = []  // List to store compilation failed connectors
+        def execConnectors = 0;
 
         if (customDistributionPath == null || customDistributionPath == "") {
             println "Custom distribution path is not provided. Using the default distribution path."
         } else {
             println "Using the custom distribution path : " + customDistributionPath
             ballerinaDistributionPath = customDistributionPath;
+        }
+
+        if (connectorList != null && connectorList != "") {
+            println "Connector list is provided. Using the provided connector list."
+            def selectedConnectorPath = []
+            for (String connector : connectorList.split(",")) {
+                def path = openApiPackageDirPath + "/" + connector.trim();
+                if (ballerinaPackages.contains(path)) {
+                    selectedConnectorPath.add(path)
+                } else {
+                    println "Connector [" + connector + "] is not found in the repository."
+                }
+            }
+            ballerinaPackages = selectedConnectorPath;
         }
 
         for (String path : ballerinaPackages) {
@@ -193,6 +212,7 @@ task generateNbuildLatestOpenAPIConnectors {
             println "--- Generating the connector : " + connector
             try {
                 exec {
+                    execConnectors++;
                     workingDir(path)
                     commandLine 'sh', '-c', "${ballerinaDistributionPath}/bin/bal openapi -i openapi.* --mode client --client-methods ${clientMethod}"     
                 }
@@ -216,8 +236,8 @@ task generateNbuildLatestOpenAPIConnectors {
         }
 
         // Generate the summary report
-        def summary = constructSummaryReport(ballerinaDistributionPath, ballerinaPackages.size(), generationFailedConnectors, compilationFailedConnectors)
-        def reportFile = file("${project.projectDir}/.github/reports/summary.txt")
+        def summary = constructSummaryReport(ballerinaDistributionPath, ballerinaPackages.size(), generationFailedConnectors, compilationFailedConnectors, execConnectors, clientMethod)
+        def reportFile = file("${project.projectDir}/.github/summary.log")
         reportFile.text = summary
 
         if (generationFailedConnectors.size() == 0 && compilationFailedConnectors.size() == 0) {
@@ -226,11 +246,13 @@ task generateNbuildLatestOpenAPIConnectors {
     }
 }
 
-def constructSummaryReport(ballerinaDistributionPath, totalConnectors, generationFailedConnectors, compilationFailedConnectors) {
+def constructSummaryReport(ballerinaDistributionPath, totalConnectors, generationFailedConnectors, compilationFailedConnectors, execConnectors, clientMethod) {
     def summary = "# Summary \n\n"
     summary += "Date and Time: ${new Date()}\n"
     summary += "Ballerina Version: ${getBallerinaVersion(ballerinaDistributionPath).toString()}\n"
-    summary += "Total Connectors Run: ${totalConnectors}\n\n"
+    summary += "Client Methid Type: ${clientMethod}\n"
+    summary += "Total Connectors in the Repository: ${totalConnectors}\n"
+    summary += "Number of Connectors Executed: ${execConnectors}\n\n"
 
     if (generationFailedConnectors.size() > 0 || compilationFailedConnectors.size() > 0) {
         summary += "Failed Connectors:\n\n"
@@ -256,13 +278,10 @@ def constructSummaryReport(ballerinaDistributionPath, totalConnectors, generatio
 
 def getBallerinaVersion(ballerinaDistributionPath) {
     def command = ballerinaDistributionPath + "/bin/bal -v"
-    println "Command: " + command
     def process = command.execute()
     process.waitFor()
-
     def output = process.text.trim()
     def ballerinaVersion = output.split('\n').find { it.startsWith("Ballerina") }
-    
     return ballerinaVersion
 }
 

@@ -13,11 +13,11 @@ on:
         default: 'remote'
         options: ['remote', 'resource']
       artifact_id:
-        description: Artifact Id 
+        description: Artifact Id of the custom Ballerina distribution
         required: false
         default: ''
       connector_list:
-        description: Comma separated list of connectors that are needed to regenerate
+        description: Comma separated list of connectors to regenerate
         required: false
         default: ''
    

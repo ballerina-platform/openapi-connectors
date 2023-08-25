@@ -169,7 +169,7 @@ task testOpenAPITool {
     }
 }
 
-task generateNbuildLatestOpenAPIConnectors {
+task generateAndBuildLatestOpenAPIConnectors {
     if (testConnectorGeneration) {
         println "Task: Re-generate and build connectors..." 
 
@@ -248,9 +248,9 @@ task generateNbuildLatestOpenAPIConnectors {
 
 def constructSummaryReport(ballerinaDistributionPath, totalConnectors, generationFailedConnectors, compilationFailedConnectors, execConnectors, clientMethod) {
     def summary = "# Summary \n\n"
-    summary += "Date and Time: ${new Date()}\n"
+    summary += "Timestamp: ${new Date()}\n"
     summary += "Ballerina Version: ${getBallerinaVersion(ballerinaDistributionPath).toString()}\n"
-    summary += "Client Methid Type: ${clientMethod}\n"
+    summary += "Client Method Type: ${clientMethod}\n"
     summary += "Total Connectors in the Repository: ${totalConnectors}\n"
     summary += "Number of Connectors Executed: ${execConnectors}\n\n"
 
@@ -269,12 +269,11 @@ def constructSummaryReport(ballerinaDistributionPath, totalConnectors, generatio
             }
         }
     } else {
-        summary += "All connectors executed successfully.\n"
+        summary += "All connectors are regenerated and compiled successfully.\n"
     }
-
+    
     return summary
 }
-
 
 def getBallerinaVersion(ballerinaDistributionPath) {
     def command = ballerinaDistributionPath + "/bin/bal -v"

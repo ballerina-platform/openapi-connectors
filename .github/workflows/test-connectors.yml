@@ -7,15 +7,15 @@ on:
         description: Ballerina Docker version
         required: true
         default: 'nightly'
+      artifact_id:
+        description: Artifact Id of the custom Ballerina distribution
+        required: false
+        default: ''
       client_method:
         description: Expected Client Method Type
         required: true
         default: 'remote'
         options: ['remote', 'resource']
-      artifact_id:
-        description: Artifact Id of the custom Ballerina distribution
-        required: false
-        default: ''
       connector_list:
         description: Comma separated list of connectors to regenerate
         required: false

@@ -1,0 +1,58 @@
+name: Regenerate Connectors
+
+on:
+  workflow_dispatch:
+    inputs:
+      bal_docker_version:
+        description: Ballerina Docker version
+        required: true
+        default: 'nightly'
+      artifact_id:
+        description: Artifact Id of the custom Ballerina distribution
+        required: false
+        default: ''
+      client_method:
+        description: Expected Client Method Type
+        required: true
+        default: 'remote'
+        options: ['remote', 'resource']
+      connector_list:
+        description: Comma separated list of connectors to regenerate
+        required: false
+        default: ''
+   
+jobs:
+  regenerate_connectors_with_specified_version:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    container:
+      image: ballerina/ballerina:${{ github.event.inputs.bal_docker_version }}
+      options: --user root
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build with Gradle
+        env:
+          JAVA_OPTS: -DBALLERINA_DEV_COMPILE_BALLERINA_ORG=true
+          GRADLE_USER_HOME: ~/.gradle
+        run: |
+          if [[ ${{ github.event.inputs.artifact_id }} != '' ]]; then
+            wget --header="Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -O ballerina.zip "https://api.github.com/repos/ballerina-platform/ballerina-distribution/actions/artifacts/${{ github.event.inputs.artifact_id }}/zip"
+            unzip -o ballerina.zip
+            balDistZip=$(find . -name 'ballerina-*.zip' | head -n 1)
+            echo "Unzipping ${balDistZip}"
+            unzip -o "${balDistZip}"
+            EXTRACTED_DISTRIBUTION_PATH="${balDistZip%.zip}"
+            ABSOLUTE_EXTRACTED_DISTRIBUTION_PATH=$(realpath "$EXTRACTED_DISTRIBUTION_PATH")
+            echo "Start generation flow..."
+            ./gradlew build -PtestConnectorGeneration=true -PclientMethod=${{ github.event.inputs.client_method }} -PcustomDistributionPath=$ABSOLUTE_EXTRACTED_DISTRIBUTION_PATH -PconnectorList=${{ github.event.inputs.connector_list }}
+          else
+            echo "Start generation flow..."
+            ./gradlew build -PtestConnectorGeneration=true -PclientMethod=${{ github.event.inputs.client_method }} -PconnectorList=${{ github.event.inputs.connector_list }}
+          fi
+          
+      - name: Upload Summary Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: summary-report
+          path: .github/summary.log

@@ -207,15 +207,10 @@ public type PeopleRequestAttribute record {
     string utm_campaign?;
 };
 
-# 
 public type InlineResponse2003AttributesRegistrantDetail record {
-    # 
     string event_id?;
-    # 
     int created_at?;
-    # 
     int updated_at?;
-    # 
     InlineResponse2003AttributesRegistrantDetailFields[] fields?;
 };
 
@@ -242,31 +237,18 @@ public type InlineResponse2011 record {
 
 # Attributes
 public type InlineResponse2002Attributes record {
-    # 
     string? event_type_id?;
-    # 
     string status?;
-    # 
     string timezone?;
-    # 
     string room_link?;
-    # 
     int attendees_count?;
-    # 
     int? duration?;
-    # 
     int estimated_started_at?;
-    # 
     int? started_at?;
-    # 
     int? ended_at?;
-    # 
     int? canceled_at?;
-    # 
     int created_at?;
-    # 
     int updated_at?;
-    # 
     int? registrants_count?;
 };
 
@@ -325,13 +307,9 @@ public type PeopleAttribute record {
 };
 
 public type InlineResponse2003AttributesRegistrantDetailFields record {
-    # 
     string id?;
-    # 
     string 'type?;
-    # 
     string? value?;
-    # 
     boolean required?;
 };
 
@@ -433,31 +411,18 @@ public type InlineResponse2002 record {
 
 # Attributes
 public type InlineResponse2003Attributes record {
-    # 
     string role?;
-    # 
     int? created_at?;
-    # 
     int? updated_at?;
-    # 
     string? timezone?;
-    # 
     string? first_name?;
-    # 
     string? last_name?;
-    # 
     string? email?;
-    # 
     string? avatar_link?;
-    # 
     InlineResponse2003AttributesRegistrantDetail? registrant_detail?;
-    # 
     int messages_count?;
-    # 
     int questions_count?;
-    # 
     int votes_count?;
-    # 
     int up_votes_count?;
 };
 

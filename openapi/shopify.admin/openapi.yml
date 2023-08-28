@@ -2722,7 +2722,9 @@ components:
           type: string
           description: The latitude of the billing address.
         longitude:
-          type: string
+          oneOf:
+            - type: float
+            - type: string
           description: The longitude of the billing address.
         name:
           type: string

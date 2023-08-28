@@ -860,9 +860,9 @@ public type CustomerAddress record {
     # The last name of the person associated with the payment method.
     string? last_name?;
     # The latitude of the billing address.
-    string? latitude?;
+    float|string? latitude?;
     # The longitude of the billing address.
-    string? longitude?;
+    float|string? longitude?;
     # The full name of the person associated with the payment method.
     string? name?;
     # The phone number at the billing address.

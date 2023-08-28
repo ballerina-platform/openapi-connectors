@@ -814,66 +814,57 @@ paths:
                     type: array
                     description: Data
                     items:
-                      allOf:
-                      - "$ref": "#/components/schemas/Event"
-                      - type: object
-                        properties:
-                          attributes:
-                            type: object
-                            description: Attributes
-                            properties:
-                              event_type_id:
-                                type: string
-                                nullable: true
-                                description: ''
-                              status:
-                                type: string
-                                nullable: false
-                                description: ''
-                              timezone:
-                                type: string
-                                nullable: false
-                                description: ''
-                              room_link:
-                                type: string
-                                nullable: false
-                                description: ''
-                              attendees_count:
-                                type: integer
-                                nullable: false
-                                description: ''
-                              duration:
-                                type: integer
-                                nullable: true
-                                description: ''
-                              estimated_started_at:
-                                type: integer
-                                nullable: false
-                                description: ''
-                              started_at:
-                                type: integer
-                                nullable: true
-                                description: ''
-                              ended_at:
-                                type: integer
-                                nullable: true
-                                description: ''
-                              canceled_at:
-                                type: integer
-                                nullable: true
-                                description: ''
-                              created_at:
-                                type: integer
-                                nullable: false
-                                description: ''
-                              updated_at:
-                                type: integer
-                                nullable: false
-                                description: ''
-                              registrants_count:
-                                type: integer
-                                nullable: true
-                                description: ''
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Event ID
+                        type:
+                          type: string
+                          description: Event type
+                        attributes:
+                          type: object
+                          description: Attributes
+                          properties:
+                            event_type_id:
+                              type: string
+                              nullable: true
+                            status:
+                              type: string
+                              nullable: false
+                            timezone:
+                              type: string
+                              nullable: false
+                            room_link:
+                              type: string
+                              nullable: false
+                            attendees_count:
+                              type: integer
+                              nullable: false
+                            duration:
+                              type: integer
+                              nullable: true
+                            estimated_started_at:
+                              type: integer
+                              nullable: false
+                            started_at:
+                              type: integer
+                              nullable: true
+                            ended_at:
+                              type: integer
+                              nullable: true
+                            canceled_at:
+                              type: integer
+                              nullable: true
+                            created_at:
+                              type: integer
+                              nullable: false
+                            updated_at:
+                              type: integer
+                              nullable: false
+                            registrants_count:
+                              type: integer
+                              nullable: true
                   meta:
                     "$ref": "#/components/schemas/Meta"
                 required:
@@ -1270,102 +1261,85 @@ paths:
                     type: array
                     description: Data
                     items:
-                      allOf:
-                      - "$ref": "#/components/schemas/Event"
-                      - type: object
-                        properties:
-                          attributes:
-                            type: object
-                            description: Attributes
-                            properties:
-                              role:
-                                type: string
-                                nullable: false
-                                description: ''
-                              created_at:
-                                type: integer
-                                nullable: true
-                                description: ''
-                              updated_at:
-                                type: integer
-                                nullable: true
-                                description: ''
-                              timezone:
-                                type: string
-                                nullable: true
-                                description: ''
-                              first_name:
-                                type: string
-                                nullable: true
-                                description: ''
-                              last_name:
-                                type: string
-                                nullable: true
-                                description: ''
-                              email:
-                                type: string
-                                nullable: true
-                                description: ''
-                              avatar_link:
-                                type: string
-                                nullable: true
-                                description: ''
-                              registrant_detail:
-                                type: object
-                                nullable: true
-                                description: ''
-                                properties:
-                                  event_id:
-                                    type: string
-                                    nullable: false
-                                    description: ''
-                                  created_at:
-                                    type: integer
-                                    nullable: false
-                                    description: ''
-                                  updated_at:
-                                    type: integer
-                                    nullable: false
-                                    description: ''
-                                  fields:
-                                    type: array
-                                    nullable: false
-                                    description: ''
-                                    items:
-                                      type: object
-                                      properties:
-                                        id:
-                                          type: string
-                                          nullable: false
-                                          description: ''
-                                        type:
-                                          type: string
-                                          nullable: false
-                                          description: ''
-                                        value:
-                                          type: string
-                                          nullable: true
-                                          description: ''
-                                        required:
-                                          type: boolean
-                                          nullable: false
-                                          description: ''
-                              messages_count:
-                                type: integer
-                                nullable: false
-                                description: ''
-                              questions_count:
-                                type: integer
-                                nullable: false
-                                description: ''
-                              votes_count:
-                                type: integer
-                                nullable: false
-                                description: ''
-                              up_votes_count:
-                                type: integer
-                                nullable: false
-                                description: ''
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Event ID
+                        type:
+                          type: string
+                          description: Event type
+                        attributes:
+                          type: object
+                          description: Attributes
+                          properties:
+                            role:
+                              type: string
+                              nullable: false
+                            created_at:
+                              type: integer
+                              nullable: true
+                            updated_at:
+                              type: integer
+                              nullable: true
+                            timezone:
+                              type: string
+                              nullable: true
+                            first_name:
+                              type: string
+                              nullable: true
+                            last_name:
+                              type: string
+                              nullable: true
+                            email:
+                              type: string
+                              nullable: true
+                            avatar_link:
+                              type: string
+                              nullable: true
+                            registrant_detail:
+                              type: object
+                              nullable: true
+                              properties:
+                                event_id:
+                                  type: string
+                                  nullable: false
+                                created_at:
+                                  type: integer
+                                  nullable: false
+                                updated_at:
+                                  type: integer
+                                  nullable: false
+                                fields:
+                                  type: array
+                                  nullable: false
+                                  items:
+                                    type: object
+                                    properties:
+                                      id:
+                                        type: string
+                                        nullable: false
+                                      type:
+                                        type: string
+                                        nullable: false
+                                      value:
+                                        type: string
+                                        nullable: true
+                                      required:
+                                        type: boolean
+                                        nullable: false
+                            messages_count:
+                              type: integer
+                              nullable: false
+                            questions_count:
+                              type: integer
+                              nullable: false
+                            votes_count:
+                              type: integer
+                              nullable: false
+                            up_votes_count:
+                              type: integer
+                              nullable: false
                   meta:
                     "$ref": "#/components/schemas/Meta"
                 required:

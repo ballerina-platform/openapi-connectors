@@ -1586,8 +1586,20 @@ public type ImportationsResponse record {
     ImportationReporting[] importations?;
 };
 
+# The catalog column detected during the first parsing step
 public type DetectedCatalogColumn record {
-    *CatalogColumn;
+    # IF true, the product values of this column will be not taken in account during the importation process
+    boolean ignored = false;
+    # Describe how you want to manage the duplication of the product value
+    DuplicateProductValueConfiguration duplicateProductValueConfiguration?;
+    # The catalog column identifier
+    ColumnId id;
+    # The catalog column name
+    CatalogColumnName catalogColumnName;
+    # Column named by the user
+    UserColumName userColumName;
+    # Indicates the configuration applied on the column (catalog or custom) during the importation process.
+    ColumnConfiguration configuration;
     DetectedCatalogColumnLinks links;
 };
 

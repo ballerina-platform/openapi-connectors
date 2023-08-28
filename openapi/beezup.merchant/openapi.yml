@@ -15277,15 +15277,33 @@ components:
         unmap:
           $ref: '#/components/schemas/links.Importation_UnmapCatalogColumnLink'
     detectedCatalogColumn:
-      allOf:
-        - $ref: '#/components/schemas/catalogColumn'
-        - required:
-            - links
-          type: object
-          properties:
-            links:
-              $ref: '#/components/schemas/detectedCatalogColumnLinks'
-          description: The catalog column detected during the first parsing step
+        required:
+          - catalogColumnName
+          - configuration
+          - id
+          - links
+          - userColumName
+        type: object
+        properties:
+          ignored:
+            type: boolean
+            description: >-
+              IF true, the product values of this column will be not taken in
+              account during the importation process
+            default: false
+          duplicateProductValueConfiguration:
+            $ref: '#/components/schemas/duplicateProductValueConfiguration'
+          id:
+            $ref: '#/components/schemas/columnId'
+          catalogColumnName:
+            $ref: '#/components/schemas/catalogColumnName'
+          userColumName:
+            $ref: '#/components/schemas/userColumName'
+          configuration:
+            $ref: '#/components/schemas/columnConfiguration'
+          links:
+            $ref: '#/components/schemas/detectedCatalogColumnLinks'
+        description: The catalog column detected during the first parsing step
     productValues:
       type: object
       additionalProperties:

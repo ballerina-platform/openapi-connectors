@@ -2608,19 +2608,17 @@ components:
           type: number
           format: double
         points:
-          allOf:
-            - description: |
-                The geometry of the route. The format depends on the value of `points_encoded`.
-            - anyOf:
-                - $ref: '#/components/schemas/EncodedLineString'
-                - $ref: '#/components/schemas/LineString'
+          anyOf:
+            - $ref: '#/components/schemas/EncodedLineString'
+            - $ref: '#/components/schemas/LineString'
+          description: |
+            The geometry of the route. The format depends on the value of `points_encoded`.
         snapped_waypoints:
-          allOf:
-            - description: |
-                The snapped input points. The format depends on the value of `points_encoded`.
-            - anyOf:
-                - $ref: '#/components/schemas/EncodedLineString'
-                - $ref: '#/components/schemas/LineString'
+          description: |
+              The snapped input points. The format depends on the value of `points_encoded`.
+          anyOf:
+            - $ref: '#/components/schemas/EncodedLineString'
+            - $ref: '#/components/schemas/LineString'
         points_encoded:
           description: |
             Whether the `points` and `snapped_waypoints` fields are polyline-encoded strings rather than JSON arrays

@@ -284,7 +284,7 @@ components:
                           type: object
                           $ref: "#/components/schemas/Money"
         sellerToImpalaPayment:
-          type: obejct
+          type: object
           $ref: "#/components/schemas/Money"
         sellerCommissionPercentage:
           type: number
@@ -544,7 +544,7 @@ components:
           type: object
           $ref: "#/components/schemas/Money"
         notes: 
-          type: obejct
+          type: object
           properties:
             fromGuest:
               type: string
@@ -714,7 +714,7 @@ components:
                     max: 
                       type: number
     Restriction:
-      type: obejct
+      type: object
       properties: 
         lengthOfStay:
           type: object

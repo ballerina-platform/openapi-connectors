@@ -150,6 +150,15 @@ public type EventAttribute record {
     Field[]? fields?;
 };
 
+public type InlineResponse2002Data record {
+    # Event ID
+    string id?;
+    # Event type
+    string 'type?;
+    # Attributes
+    InlineResponse2002Attributes attributes?;
+};
+
 # Add Session data
 public type SessionData record {
     # Event type
@@ -198,16 +207,49 @@ public type PeopleRequestAttribute record {
     string utm_campaign?;
 };
 
+public type InlineResponse2003AttributesRegistrantDetail record {
+    string event_id?;
+    int created_at?;
+    int updated_at?;
+    InlineResponse2003AttributesRegistrantDetailFields[] fields?;
+};
+
 # Register participant response
 public type InlineResponse2012 record {
     # Event session
     People data?;
 };
 
+public type InlineResponse2003Data record {
+    # Event ID
+    string id?;
+    # Event type
+    string 'type?;
+    # Attributes
+    InlineResponse2003Attributes attributes?;
+};
+
 # Create session response
 public type InlineResponse2011 record {
     # Event session
     Session data?;
+};
+
+# Attributes
+public type InlineResponse2002Attributes record {
+    string? event_type_id?;
+    string status?;
+    string timezone?;
+    string room_link?;
+    int attendees_count?;
+    int? duration?;
+    int estimated_started_at?;
+    int? started_at?;
+    int? ended_at?;
+    int? canceled_at?;
+    int created_at?;
+    int updated_at?;
+    int? registrants_count?;
 };
 
 # Owner attributes
@@ -262,6 +304,13 @@ public type PeopleAttribute record {
     string email?;
     # Avatar url link
     string avatar_link?;
+};
+
+public type InlineResponse2003AttributesRegistrantDetailFields record {
+    string id?;
+    string 'type?;
+    string? value?;
+    boolean required?;
 };
 
 # Event session
@@ -348,96 +397,33 @@ public type EventsBody record {
 
 public type InlineResponse2003 record {
     # Data
-    record {
-        *Event;
-        # Attributes
-        record {
-            # 
-            string role?;
-            # 
-            int? created_at?;
-            # 
-            int? updated_at?;
-            # 
-            string? timezone?;
-            # 
-            string? first_name?;
-            # 
-            string? last_name?;
-            # 
-            string? email?;
-            # 
-            string? avatar_link?;
-            # 
-            record {
-                # 
-                string event_id?;
-                # 
-                int created_at?;
-                # 
-                int updated_at?;
-                # 
-                record {
-                    # 
-                    string id?;
-                    # 
-                    string 'type?;
-                    # 
-                    string? value?;
-                    # 
-                    boolean required?;
-                }[] fields?;
-            } registrant_detail?;
-            # 
-            int messages_count?;
-            # 
-            int questions_count?;
-            # 
-            int votes_count?;
-            # 
-            int up_votes_count?;
-        } attributes?;
-    }[] data;
+    InlineResponse2003Data[] data;
     # Metadata
     Meta meta?;
 };
 
 public type InlineResponse2002 record {
     # Data
-    record {
-        *Event;
-        # Attributes
-        record {
-            # 
-            string? event_type_id?;
-            # 
-            string status?;
-            # 
-            string timezone?;
-            # 
-            string room_link?;
-            # 
-            int attendees_count?;
-            # 
-            int? duration?;
-            # 
-            int estimated_started_at?;
-            # 
-            int? started_at?;
-            # 
-            int? ended_at?;
-            # 
-            int? canceled_at?;
-            # 
-            int created_at?;
-            # 
-            int updated_at?;
-            # 
-            int? registrants_count?;
-        } attributes?;
-    }[] data;
+    InlineResponse2002Data[] data;
     # Metadata
     Meta meta?;
+};
+
+# Attributes
+public type InlineResponse2003Attributes record {
+    string role?;
+    int? created_at?;
+    int? updated_at?;
+    string? timezone?;
+    string? first_name?;
+    string? last_name?;
+    string? email?;
+    string? avatar_link?;
+    InlineResponse2003AttributesRegistrantDetail? registrant_detail?;
+    int messages_count?;
+    int questions_count?;
+    int votes_count?;
+    int up_votes_count?;
 };
 
 # Event request attributes

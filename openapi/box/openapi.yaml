@@ -16300,6 +16300,55 @@ components:
             type: string
             description: The new name of this item as it will appear in the downloaded `zip` archive.
             example: 3aa6a7.pdf
+    Metadata:
+      allOf:
+        - $ref: "#/components/schemas/Metadata--Base"
+      description: |-
+        An instance of a metadata template, which has been applied to a file or
+        folder.
+      title: Metadata instance
+      type: object
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+    Metadata--Base:
+      description: The base representation of a metadata instance.
+      properties:
+        $parent:
+          description: |-
+            The identifier of the item that this metadata instance
+            has been attached to. This combines the `type` and the `id`
+            of the parent in the form `{type}_{id}`.
+          example: folder_59449484661,
+          type: string
+        $scope:
+          description: |-
+            An ID for the scope in which this template
+            has been applied. This will be `enterprise_{enterprise_id}` for templates
+            defined for use in this enterprise, and `global` for general templates
+            that are available to all enterprises using Box.
+          example: enterprise_27335
+          type: string
+        $template:
+          description: The name of the template
+          example: marketingCollateral
+          type: string
+        $version:
+          description: |-
+            The version of the metadata instance. This version starts at 0 and
+            increases every time a user-defined property is modified.
+          example: 1
+          type: integer
+      title: Metadata instance (Base)
+      type: object
+      x-box-resource-id: metadata--base
+      x-box-sanitized: true
+      x-box-tag: file_metadata
+      x-box-variant: base
+      x-box-variants:
+        - base
+        - standard
+        - full
 security:
   - OAuth2Security: []
 tags:

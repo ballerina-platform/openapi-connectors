@@ -1971,34 +1971,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     Conflict:
       description: The request conflicts with the current state of the server.
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              error:
-                type: object
-                properties:
-                  code:
-                    type: integer
-                    readOnly: true
-                  message:
-                    type: string
-                    readOnly: true
-                    description: Error message string
-                  errors:
-                    type: array
-                    readOnly: true
-                    items:
-                      type: string
-                      readOnly: true
-                      description: Human-readable error details
-                example:
-                  message: Not Found
-                  code: 2100
+            $ref: '#/components/schemas/Conflict'
     Forbidden:
       description: |
         Caller is not authorized to view the requested resource.
@@ -2006,31 +1985,31 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     InternalServerError:
       description: Internal Server Error the PagerDuty server experienced an error.
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     NotAllowed:
       description: The request was received and recognized by the server, but its HTTP method was rejected for the requested resource.
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     NotFound:
       description: The requested resource was not found.
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     TooManyRequests:
       description: Too many requests have been made, the rate limit has been reached.
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     PaymentRequired:
       description: |
         Account does not have the abilities to perform the action. Please review the response for the required abilities.
@@ -2038,7 +2017,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     Unauthorized:
       description: |
         Caller did not supply credentials or did not provide the correct credentials.
@@ -2046,19 +2025,19 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     UnprocessableEntity:
       description: Unprocessable Entity. Some arguments failed validation checks.
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     RequestEntityTooLarge:
       description: Caller provided a request that is too large to process.
       content:
         application/json:
           schema:
-            $ref: '#/components/responses/Conflict/content/application~1json/schema'
+            $ref: '#/components/schemas/Conflict'
     WebhookBadRequest:
       description: |
         Caller provided invalid arguments. Please review the response for error
@@ -2083,6 +2062,29 @@ components:
       in: header
       description: The API Key with format `Token token=<API_KEY>`
   schemas:
+    Conflict:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+              readOnly: true
+            message:
+              type: string
+              readOnly: true
+              description: Error message string
+            errors:
+              type: array
+              readOnly: true
+              items:
+                type: string
+                readOnly: true
+                description: Human-readable error details
+          example:
+            message: Not Found
+            code: 2100
     StatusUpdateNotificationRule:
       type: object
       description: A rule for contacting the user for Incident Status Updates.

@@ -6,7 +6,7 @@ name = "box"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/box"
-version = "1.5.1"
+version = "1.5.2"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

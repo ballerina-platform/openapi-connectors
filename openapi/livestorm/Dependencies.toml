@@ -294,14 +294,14 @@ modules = [
 
 [[package]]
 org = "ballerinax"
-name = "shopify.admin"
-version = "2.5.0"
+name = "livestorm"
+version = "2.6.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "url"},
 	{org = "ballerinai", name = "observe"}
 ]
 modules = [
-	{org = "ballerinax", packageName = "shopify.admin", moduleName = "shopify.admin"}
+	{org = "ballerinax", packageName = "livestorm", moduleName = "livestorm"}
 ]
 

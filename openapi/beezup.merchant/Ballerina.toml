@@ -6,5 +6,5 @@ name = "beezup.merchant"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/beezup.merchant"
-version = "1.5.1"
+version = "1.6.0"
 authors = ["Ballerina"]

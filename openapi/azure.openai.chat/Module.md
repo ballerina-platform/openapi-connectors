@@ -38,7 +38,7 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
     >**Note:** These operations are in the form of remote operations.
 
 
-   Following is an example of creating a conversation with an OpenAI gpt-35-turbo model:
+   Following is an example of creating a conversation with an Azure OpenAI chat model:
 
     ```ballerina
     public function main() returns error? {
@@ -48,13 +48,64 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
             serviceUrl = serviceUrl
         );
 
-        chat:Chat_completions_body chatBody = {
+        chat:CreateChatCompletionRequest chatBody = {
             messages: [{role: "user", content: "What is Ballerina?"}]  
         };
 
-        chat:Inline_response_200 chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-03-15-preview", chatBody);
+        chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-08-01-preview", chatBody);
 
         io:println(chatResult);
+    }
+    ```
+
+    Following is a sample of using function calling with an Azure OpenAI chat model:
+
+    ```ballerina
+    public function main() returns error? {
+
+        final chat:Client chatClient = check new (
+            config = {auth: {apiKey: apiKey}},
+            serviceUrl = serviceUrl
+        );
+
+        chat:ChatCompletionRequestMessage[] messages = [{role: "user", content: "What is the weather in Seattle?"}];
+
+        chat:ChatCompletionFunctions[] functions = [
+            {
+                name: "get_current_weather",
+                description: "Get the current weather in a given location",
+                parameters: {
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "The city or town to get the weather for"
+                        },
+                        "unit": {
+                            "type": "string",
+                            "enum": ["celsius", "fahrenheit"]
+                        }
+                    },
+                    "required": ["location"]
+                }
+            }
+        ];
+
+        chat:CreateChatCompletionRequest chatBody = {messages, functions};
+
+        chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-08-01-preview", chatBody);
+
+        io:println(chatResult);
+
+        chat:ChatCompletionRequestMessage_function_call? functionCall = chatResult.choices[0].message?.function_call;
+
+        if functionCall is chat:ChatCompletionRequestMessage_function_call {
+            messages.push({role: "assistant", content: (), function_call: functionCall});
+            
+            // Invoke the function [functionCall.name] with the arguments [functionCall.arguments] and get the output [functionOutput]
+
+            messages.push({role: "function", name: functionCall.name, content: functionOutput.toString()});
+        }
     }
     ```
 

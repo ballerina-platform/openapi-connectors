@@ -1,0 +1,13 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["Education/Student Services", "Cost/Paid"]
+org = "ballerinax"
+name = "ellucian.studentcharges"
+icon = "icon.png"
+distribution = "2201.1.1"
+repository = "https://github.com/ballerina-platform/ballerinax-openapi-connectors"
+version = "1.0.0"
+authors = ["Ballerina"]
+
+[build-options]
+observabilityIncluded = true

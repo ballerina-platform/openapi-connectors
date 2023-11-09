@@ -19,6 +19,8 @@ import ballerina/http;
 public isolated client class Client {
     final http:Client clientEp;
     # Gets invoked to initialize the `connector`.
+    # The connector initialization doesn't require setting the API credentials. 
+    # Create a [IP2Location.io account](https://www.ip2location.io/sign-up) and obtain tokens by navigating to the [IP2Location.io Dashboard](https://www.ip2location.io/log-in).
     #
     # + config - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
@@ -52,7 +54,7 @@ public isolated client class Client {
     }
     # Geolocate user's location information via IP address
     #
-    # + 'key - API key.
+    # + 'key - IP2Location.io API key.
     # + ip - IP address (IPv4 or IPv6) for reverse IP location lookup purposes. If not present, the server IP address will be used for the location lookup.
     # + format - Format of the response message.
     # + lang - Translation information. The translation only applicable for continent, country, region and city name. This parameter is only available for Plus and Security plan only.

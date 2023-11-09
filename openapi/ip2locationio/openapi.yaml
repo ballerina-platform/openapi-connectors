@@ -18,13 +18,17 @@ info:
       url: https://api.swaggerhub.com/apis/ip2location/ip2location-io-ip-geolocation-api/1.0
       version: "3.0"
   x-providerName: ip2location.io
+  x-ballerina-init-description: >
+    The connector initialization doesn't require setting the API credentials. 
+  
+    Create a [IP2Location.io account](https://www.ip2location.io/sign-up) and obtain tokens by navigating to the [IP2Location.io Dashboard](https://www.ip2location.io/log-in).
 paths:
   /:
     get:
       operationId: getGeolocationInfo
       summary: Geolocate user's location information via IP address
       parameters:
-        - description: API key.
+        - description: IP2Location.io API key.
           in: query
           name: key
           required: true

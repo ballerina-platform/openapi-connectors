@@ -1,0 +1,10 @@
+[package]
+license = ["Apache-2.0"]
+keywords = ["IT Operations/Cloud Services", "Cost/Free"]
+org = "ballerinax"
+name = "ip2locationio"
+version = "1.0.0"
+icon = "icon.png"
+authors = ["IP2Location"]
+distribution = "2201.8.2"
+repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/ip2locationio"

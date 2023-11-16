@@ -28,10 +28,10 @@ paths:
       description: "https://www.roninapp.com/api/clients"
       parameters: []
       requestBody:
-        description: The data required to create a client. 
+        description: The data required to create a client.
         content:
           application/json:
-            schema: 
+            schema:
               $ref: '#/components/schemas/CreateClientRequest'
       tags:
         - "clients"
@@ -40,7 +40,7 @@ paths:
           description: "Created client"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/ClientObject'
       operationId: "create_client"
     get:
@@ -72,7 +72,7 @@ paths:
           description: "An object with a property clients which is an array of Client objects."
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Clients'
       operationId: "list_clients"
   /api/v2/clients/{id}.json:
@@ -93,14 +93,14 @@ paths:
           description: "A client object"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/ClientObject'
       operationId: "get_client"
   /api/v2/clients/{client_id}/contacts.json:
     post:
       summary: "Creates a new contact. Contacts represent individuals belonging to Clients. In many cases, if a Contact is a Client, the Contact is where the email and other important information for the client whereas the Client is just a shell container."
       description: "https://www.roninapp.com/api/contacts"
-      parameters: 
+      parameters:
         - in: "path"
           name: "client_id"
           description: "The client ID"
@@ -108,10 +108,10 @@ paths:
             type: string
           required: true
       requestBody:
-        description: The data required to create a contact. 
+        description: The data required to create a contact.
         content:
           application/json:
-            schema: 
+            schema:
               $ref: '#/components/schemas/CreateContactRequest'
       tags:
         - "contacts"
@@ -120,7 +120,7 @@ paths:
           description: "Created contact"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Contact'
       operationId: "create_contact"
     get:
@@ -152,7 +152,7 @@ paths:
           description: "An object with a property contacts which is an array of Contact objects."
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Contacts'
       operationId: "list_contacts_by_client"
   /api/v2/contacts.json:
@@ -179,7 +179,7 @@ paths:
           description: "An object with a property contacts which is an array of Contact objects."
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Contacts'
       operationId: "list_contacts"
   /api/v2/contacts/{id}.json:
@@ -200,7 +200,7 @@ paths:
           description: "A contact object"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Contact'
       operationId: "get_contact"
   /api/v2/estimates.json:
@@ -209,10 +209,10 @@ paths:
       description: "https://www.roninapp.com/api/estimates"
       parameters: []
       requestBody:
-        description: The data required to create an estimate. 
+        description: The data required to create an estimate.
         content:
           application/json:
-            schema: 
+            schema:
               $ref: '#/components/schemas/CreateEstimateRequest'
       tags:
         - "estimates"
@@ -221,7 +221,7 @@ paths:
           description: "Created estimate"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Estimate'
       operationId: "create_estimate"
     get:
@@ -241,7 +241,7 @@ paths:
           description: "An object with a property estimates which is an array of Estimate objects."
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Estimates'
       operationId: "list_estimates"
   /api/v2/estimates/{id}.json:
@@ -262,7 +262,7 @@ paths:
           description: "An estimate object"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Estimate'
       operationId: "get_estimate"
   /api/v2/invoices.json:
@@ -271,10 +271,10 @@ paths:
       description: "https://www.roninapp.com/api/invoices"
       parameters: []
       requestBody:
-        description: The data required to create an invoice. 
+        description: The data required to create an invoice.
         content:
           application/json:
-            schema: 
+            schema:
               $ref: '#/components/schemas/CreateInvoiceRequest'
       tags:
         - "invoices"
@@ -283,7 +283,7 @@ paths:
           description: "Created invoice"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Invoice'
       operationId: "create_invoice"
     get:
@@ -309,7 +309,7 @@ paths:
           description: "An object with a property invoices which is an array of Invoice objects."
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Invoices'
       operationId: "list_invoices"
   /api/v2/invoices/{id}.json:
@@ -330,7 +330,7 @@ paths:
           description: "An invoice object"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Invoice'
       operationId: "get_invoice"
   /api/v2/projects.json:
@@ -339,10 +339,10 @@ paths:
       description: "https://www.roninapp.com/api/projects"
       parameters: []
       requestBody:
-        description: The data required to create a project. 
+        description: The data required to create a project.
         content:
           application/json:
-            schema: 
+            schema:
               $ref: '#/components/schemas/CreateProjectRequest'
       tags:
         - "projects"
@@ -351,7 +351,7 @@ paths:
           description: "Created project"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Project'
       operationId: "create_project"
     get:
@@ -377,7 +377,7 @@ paths:
           description: "An object with a property projects which is an array of Project objects."
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Projects'
       operationId: "list_projects"
   /api/v2/projects/{id}.json:
@@ -398,7 +398,7 @@ paths:
           description: "An project object"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Projects'
       operationId: "get_project"
   /api/v2/task.json:
@@ -407,10 +407,10 @@ paths:
       description: "https://www.roninapp.com/api/tasks"
       parameters: []
       requestBody:
-        description: The data required to create a task. 
+        description: The data required to create a task.
         content:
           application/json:
-            schema: 
+            schema:
               $ref: '#/components/schemas/CreateTaskRequest'
       tags:
         - "tasks"
@@ -419,7 +419,7 @@ paths:
           description: "Created task"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Task'
       operationId: "create_task"
     get:
@@ -433,7 +433,7 @@ paths:
           description: "An object with a property tasks which is an array of Task objects."
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Tasks'
       operationId: "list_tasks"
   /api/v2/tasks/{id}.json:
@@ -454,13 +454,13 @@ paths:
           description: "An task object"
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/components/schemas/Task'
       operationId: "get_task"
     put:
       summary: "Updates a new task. Tasks are TODO items that can be added to projects and assigned to staff members."
       description: "https://www.roninapp.com/api/tasks"
-      parameters: 
+      parameters:
         - in: "path"
           name: "id"
           description: "The task ID"
@@ -468,10 +468,10 @@ paths:
             type: string
           required: true
       requestBody:
-        description: The data required to update a task. 
+        description: The data required to update a task.
         content:
           application/json:
-            schema: 
+            schema:
               $ref: '#/components/schemas/UpdateTaskRequest'
       tags:
         - "tasks"
@@ -1027,6 +1027,7 @@ components:
         tax2_label:
           type: string
           description: Secondary tax label
+          nullable: true
         summary:
           type: string
           description: Summary
@@ -1053,6 +1054,7 @@ components:
         tax3_label:
           type: string
           description: Tertiary tax label
+          nullable: true
         tax3:
           type: number
           description: Tertiary tax
@@ -1066,6 +1068,10 @@ components:
       type: object
       properties:
         price:
+          oneOf:
+            - type: string
+            - type: number
+              format: float
           type: string
           description: Price
         title:
@@ -1238,7 +1244,7 @@ components:
         budget:
           type: number
           description: Budget
-      description: Projects represent hubs of work, tasks, logged hours, expenses, and invoices related to a Client. budget_type can be 0 (total budgeted hours) or 1 (total budgeted amount). project_type can be 0 (hourly rate project) or 2 (fixed amount project). Rate the total cost of the project in the latter case. 
+      description: Projects represent hubs of work, tasks, logged hours, expenses, and invoices related to a Client. budget_type can be 0 (total budgeted hours) or 1 (total budgeted amount). project_type can be 0 (hourly rate project) or 2 (fixed amount project). Rate the total cost of the project in the latter case.
     CreateTaskRequest:
       type: object
       properties:
@@ -1350,7 +1356,7 @@ components:
             $ref: '#/components/schemas/Task'
           description: An array of Task objects.
       description: An object with a property tasks which is an array of Task objects.
-    
+
 
   securitySchemes:
     basicAuth:

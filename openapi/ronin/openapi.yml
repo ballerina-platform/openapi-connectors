@@ -530,6 +530,7 @@ components:
         number:
           type: string
           description: The unique number for the client
+          nullable: true
         name:
           type: string
           description: The name of the client
@@ -551,12 +552,15 @@ components:
         website:
           type: string
           description: The website of the client
+          nullable: true
         address_2:
           type: string
           description: The address2 of the client
+          nullable: true
         description:
           type: string
           description: The description about the client
+          nullable: true
         state:
           type: string
           description: The state of the client

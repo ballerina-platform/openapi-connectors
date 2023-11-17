@@ -345,7 +345,7 @@ public type UpdateTaskRequest record {
 # Clients represent companies, groups, organizations or other contact containers. All contacts must belong to a client. Clients are also the main containers for Projects and Invoices.
 public type ClientObject record {
     # The unique number for the client
-    string number?;
+    string? number?;
     # The name of the client
     string name?;
     # The city of the client
@@ -359,11 +359,11 @@ public type ClientObject record {
     # Client ID
     int id?;
     # The website of the client
-    string website?;
+    string? website?;
     # The address2 of the client
-    string address_2?;
+    string? address_2?;
     # The description about the client
-    string description?;
+    string? description?;
     # The state of the client
     string state?;
 };

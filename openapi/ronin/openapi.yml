@@ -1076,7 +1076,6 @@ components:
             - type: string
             - type: number
               format: float
-          type: string
           description: Price
         title:
           type: string

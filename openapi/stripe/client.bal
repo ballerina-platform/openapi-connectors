@@ -1,20 +1,38 @@
-// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
-//
-// WSO2 Inc. licenses this file to you under the Apache License,
-// Version 2.0 (the "License"); you may not use this file except
-// in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-
 import ballerina/http;
+
+# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
+public type ClientConfig record {|
+    # Configurations related to client authentication
+    http:BearerTokenConfig|http:CredentialsConfig auth;
+    # The HTTP version understood by the client
+    string httpVersion = "1.1";
+    # Configurations related to HTTP/1.x protocol
+    http:ClientHttp1Settings http1Settings = {};
+    # Configurations related to HTTP/2 protocol
+    http:ClientHttp2Settings http2Settings = {};
+    # The maximum time to wait (in seconds) for a response before closing the connection
+    decimal timeout = 60;
+    # The choice of setting `forwarded`/`x-forwarded` header
+    string forwarded = "disable";
+    # Configurations associated with Redirection
+    http:FollowRedirects? followRedirects = ();
+    # Configurations associated with request pooling
+    http:PoolConfiguration? poolConfig = ();
+    # HTTP caching related configurations
+    http:CacheConfig cache = {};
+    # Specifies the way of handling compression (`accept-encoding`) header
+    http:Compression compression = http:COMPRESSION_AUTO;
+    # Configurations associated with the behaviour of the Circuit Breaker
+    http:CircuitBreakerConfig? circuitBreaker = ();
+    # Configurations associated with retrying
+    http:RetryConfig? retryConfig = ();
+    # Configurations associated with cookies
+    http:CookieConfig? cookieConfig = ();
+    # Configurations associated with inbound response size limits
+    http:ResponseLimitConfigs responseLimits = {};
+    # SSL/TLS-related options
+    http:ClientSecureSocket? secureSocket = ();
+|};
 
 # This is a generated connector for [Stripe API v1](https://stripe.com/docs/api) OpenAPI Specification.
 # Stripe offers payment processing software and application programming interfaces for e-commerce websites and mobile applications. 
@@ -27,33 +45,11 @@ public isolated client class Client {
     # Create a [Stripe](https://dashboard.stripe.com/login) account and obtain API Key following [this guide](https://stripe.com/docs/api/authentication). 
     # Provide obtained API Key as the token at connector initialization. Configure required permissions when generating the API Key.
     #
-    # + config - The configurations to be used when initializing the `connector` 
+    # + clientConfig - The configurations to be used when initializing the `connector` 
     # + serviceUrl - URL of the target service 
     # + return - An error if connector initialization failed 
-    public isolated function init(ConnectionConfig config, string serviceUrl = "https://api.stripe.com/") returns error? {
-        http:ClientConfiguration httpClientConfig = {auth: config.auth, httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
-        do {
-            if config.http1Settings is ClientHttp1Settings {
-                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
-                httpClientConfig.http1Settings = {...settings};
-            }
-            if config.http2Settings is http:ClientHttp2Settings {
-                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
-            }
-            if config.cache is http:CacheConfig {
-                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
-            }
-            if config.responseLimits is http:ResponseLimitConfigs {
-                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
-            }
-            if config.secureSocket is http:ClientSecureSocket {
-                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
-            }
-            if config.proxy is http:ProxyConfig {
-                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
-            }
-        }
-        http:Client httpEp = check new (serviceUrl, httpClientConfig);
+    public isolated function init(ClientConfig clientConfig, string serviceUrl = "https://api.stripe.com/") returns error? {
+        http:Client httpEp = check new (serviceUrl, clientConfig);
         self.clientEp = httpEp;
         return;
     }
@@ -146,7 +142,7 @@ public isolated client class Client {
     # + return - Successful response. 
     remote isolated function deleteCustomer(string customer) returns DeletedCustomer|error {
         string resourcePath = string `/v1/customers/${getEncodedUri(customer)}`;
-        DeletedCustomer response = check self.clientEp-> delete(resourcePath);
+        DeletedCustomer response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # <p>You can list all invoices, or list the invoices for a specific customer. The invoices are returned sorted by creation date, with the most recently created invoices appearing first.</p>
@@ -221,7 +217,7 @@ public isolated client class Client {
     # + return - Successful response. 
     remote isolated function deleteInvoice(string invoice) returns DeletedInvoice|error {
         string resourcePath = string `/v1/invoices/${getEncodedUri(invoice)}`;
-        DeletedInvoice response = check self.clientEp-> delete(resourcePath);
+        DeletedInvoice response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # <p>Stripe automatically creates and then attempts to collect payment on invoices for customers on subscriptions according to your <a href="https://dashboard.stripe.com/account/billing/automatic">subscriptions settings</a>. However, if you’d like to attempt payment on an invoice out of the normal collection schedule or for some other reason, you can do so.</p>
@@ -640,7 +636,7 @@ public isolated client class Client {
         string resourcePath = string `/v1/subscriptions/${getEncodedUri(subscriptionExposedId)}`;
         map<anydata> queryParam = {"invoice_now": invoiceNow, "prorate": prorate};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
-        Subscription response = check self.clientEp-> delete(resourcePath);
+        Subscription response = check self.clientEp->delete(resourcePath);
         return response;
     }
     # <p>Retrieves the list of your subscription schedules.</p>

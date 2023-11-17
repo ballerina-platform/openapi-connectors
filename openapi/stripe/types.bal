@@ -1,291 +1,3 @@
-// Copyright (c) 2022 WSO2 LLC. (http://www.wso2.org) All Rights Reserved.
-//
-// WSO2 Inc. licenses this file to you under the Apache License,
-// Version 2.0 (the "License"); you may not use this file except
-// in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-
-import ballerina/http;
-import ballerina/constraint;
-
-# Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
-@display {label: "Connection Config"}
-public type ConnectionConfig record {|
-    # Configurations related to client authentication
-    http:BearerTokenConfig|http:CredentialsConfig auth;
-    # The HTTP version understood by the client
-    http:HttpVersion httpVersion = http:HTTP_2_0;
-    # Configurations related to HTTP/1.x protocol
-    ClientHttp1Settings http1Settings?;
-    # Configurations related to HTTP/2 protocol
-    http:ClientHttp2Settings http2Settings?;
-    # The maximum time to wait (in seconds) for a response before closing the connection
-    decimal timeout = 60;
-    # The choice of setting `forwarded`/`x-forwarded` header
-    string forwarded = "disable";
-    # Configurations associated with request pooling
-    http:PoolConfiguration poolConfig?;
-    # HTTP caching related configurations
-    http:CacheConfig cache?;
-    # Specifies the way of handling compression (`accept-encoding`) header
-    http:Compression compression = http:COMPRESSION_AUTO;
-    # Configurations associated with the behaviour of the Circuit Breaker
-    http:CircuitBreakerConfig circuitBreaker?;
-    # Configurations associated with retrying
-    http:RetryConfig retryConfig?;
-    # Configurations associated with inbound response size limits
-    http:ResponseLimitConfigs responseLimits?;
-    # SSL/TLS-related options
-    http:ClientSecureSocket secureSocket?;
-    # Proxy server related options
-    http:ProxyConfig proxy?;
-    # Enables the inbound payload validation functionality which provided by the constraint package. Enabled by default
-    boolean validation = true;
-|};
-
-# Provides settings related to HTTP/1.x protocol.
-public type ClientHttp1Settings record {|
-    # Specifies whether to reuse a connection for multiple requests
-    http:KeepAlive keepAlive = http:KEEPALIVE_AUTO;
-    # The chunking behaviour of the request
-    http:Chunking chunking = http:CHUNKING_AUTO;
-    # Proxy server related options
-    ProxyConfig proxy?;
-|};
-
-# Proxy server configurations to be used with the HTTP client endpoint.
-public type ProxyConfig record {|
-    # Host name of the proxy server
-    string host = "";
-    # Proxy server port
-    int port = 0;
-    # Proxy server username
-    string userName = "";
-    # Proxy server password
-    @display {label: "", kind: "password"}
-    string password = "";
-|};
-
-@constraint:String {maxLength: 5000}
-public type CustomerPreferredlocalesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type ProductImagesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type V1pricesbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type TaxratearrayItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type TaxratesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PaymentmethodattachbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type SubscriptionitemsitembodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type InvoiceitemthresholdreasonLineitemidsItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PaymentmethoddetailsinteracpresentPreferredlocalesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccounttaxidsItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type DefaulttaxratesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type InvoicesinvoicebodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type V1customersbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type V1customersbodyPreferredlocalesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type SetupintentPaymentmethodtypesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountrequirementsCurrentlydueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountrequirementsEventuallydueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountrequirementsPastdueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountrequirementsPendingverificationItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type InvoicevoidbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type GelatodocumentreportFilesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PersonrequirementsCurrentlydueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PersonrequirementsEventuallydueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PersonrequirementsPastdueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PersonrequirementsPendingverificationItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type SchedulecancelbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type SchedulereleasebodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type SubscriptionitemusagerecordsbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type V1productsbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountcapabilityrequirementsCurrentlydueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountcapabilityrequirementsEventuallydueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountcapabilityrequirementsPastdueItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type AccountcapabilityrequirementsPendingverificationItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PaymentmethoddetachbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type ReportingreporttypeDefaultcolumnsItemsString string;
-
-public type CustomfieldsItemsObject record {
-    @constraint:String {maxLength: 30}
-    string name;
-    @constraint:String {maxLength: 30}
-    string value;
-};
-
-@constraint:String {maxLength: 5000}
-public type V1invoicesbodyDefaulttaxratesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type V1invoicesbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type SubscriptiondefaulttaxratesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type InvoicesendbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CountryspecverificationfielddetailsAdditionalItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CountryspecverificationfielddetailsMinimumItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type NetworksAvailableItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type SubscriptionschedulesschedulebodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PaymentmethodspaymentmethodbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CouponappliestoProductsItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type V1paymentmethodsbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CheckoutsessionPaymentmethodtypesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type InvoicemarkuncollectiblebodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type WebhookendpointEnabledeventsItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type Subscriptiondefaulttaxrates1ItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type ProductsidbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type FinancialreportingfinancereportrunrunparametersColumnsItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type V1subscriptionsbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type InvoicepaybodyExpandItemsString string;
-
-public type QuoteDefaulttaxratesItemsNull string|TaxRate;
-
-public type QuoteDiscountsItemsNull string|Discount;
-
-public type InvoiceAccounttaxidsItemsNull string|TaxId|DeletedTaxId;
-
-public type InvoiceDiscountsItemsNull string|Discount|DeletedDiscount;
-
-@constraint:String {maxLength: 5000}
-public type V1subscriptionschedulesbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CountryspecSupportedpaymentcurrenciesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CountryspecSupportedpaymentmethodsItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CountryspecSupportedtransfercountriesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CustomerscustomerbodyExpandItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type CustomerscustomerbodyPreferredlocalesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PortalsubscriptionupdateproductPricesItemsString string;
-
-@constraint:String {maxLength: 5000}
-public type PaymentintentPaymentmethodtypesItemsString string;
-
-public type InvoiceitemDiscountsItemsNull string|Discount;
-
-@constraint:String {maxLength: 5000}
-public type SubscriptionssubscriptionexposedidbodyExpandItemsString string;
-
-public type LineitemDiscountsItemsNull string|Discount;
-
-@constraint:String {maxLength: 5000}
-public type PricespricebodyExpandItemsString string;
-
 # 
 public type NotificationEventRequest record {
     # ID of the API request that caused the event. If null, the event was automatic (e.g., Stripe's automatic subscription handling). Request logs are available in the [dashboard](https://dashboard.stripe.com/logs), but currently not in the API.
@@ -340,7 +52,6 @@ public type Customer record {
     # The customer's email address.
     string? email?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The prefix for the customer used to generate unique invoice numbers.
     string? invoice_prefix?;
@@ -359,7 +70,7 @@ public type Customer record {
     # The customer's phone number.
     string? phone?;
     # The customer's preferred locales (languages), ordered by preference.
-    CustomerPreferredlocalesItemsString[]? preferred_locales?;
+    string[]? preferred_locales?;
     # Mailing and shipping address for the customer. Appears on invoices emailed to this customer.
     Shipping? shipping?;
     # The customer's payment sources, if any.
@@ -401,16 +112,14 @@ public type Product record {
     # The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
     string? description?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # A list of up to 8 URLs of images for this product, meant to be displayable to the customer.
-    ProductImagesItemsString[] images;
+    string[] images;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata;
     # The product's name, meant to be displayable to the customer. Whenever this product is sold via a subscription, name will show up on associated invoice line item descriptions.
-    @constraint:String {maxLength: 5000}
     string name;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -453,7 +162,6 @@ public type IdentityVerificationSession record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # If present, this property tells you the last error encountered when processing the verification.
     GelatoSessionLastError? last_error?;
@@ -536,10 +244,8 @@ public type SourceReceiverFlow record {
     # The total amount that was returned to the customer. The amount returned is expressed in the source's currency.
     int amount_returned;
     # Type of refund attribute method, one of `email`, `manual`, or `none`.
-    @constraint:String {maxLength: 5000}
     string refund_attributes_method;
     # Type of refund attribute status, one of `missing`, `requested`, or `available`.
-    @constraint:String {maxLength: 5000}
     string refund_attributes_status;
 };
 
@@ -551,17 +257,14 @@ public type V1PricesBody record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Specifies which fields in the response should be expanded.
-    V1pricesbodyExpandItemsString[] expand?;
+    string[] expand?;
     # A lookup key used to retrieve prices dynamically from a static string.
-    @constraint:String {maxLength: 5000}
     string lookup_key?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {} metadata?;
     # A brief description of the price, hidden from customers.
-    @constraint:String {maxLength: 5000}
     string nickname?;
     # The ID of the product that this price will belong to.
-    @constraint:String {maxLength: 5000}
     string product?;
     # These fields can be used to create a new product that this price will belong to.
     InlineProductParams product_data?;
@@ -586,25 +289,18 @@ public type V1PricesBody record {
 # 
 public type PaymentIntentNextActionWechatPayRedirectToAndroidApp record {
     # app_id is the APP ID registered on WeChat open platform
-    @constraint:String {maxLength: 5000}
     string app_id;
     # nonce_str is a random string
-    @constraint:String {maxLength: 5000}
     string nonce_str;
     # package is static value
-    @constraint:String {maxLength: 5000}
     string package;
     # an unique merchant ID assigned by Wechat Pay
-    @constraint:String {maxLength: 5000}
     string partner_id;
     # an unique trading ID assigned by Wechat Pay
-    @constraint:String {maxLength: 5000}
     string prepay_id;
     # A signature
-    @constraint:String {maxLength: 5000}
     string sign;
     # Specifies the current time in epoch format
-    @constraint:String {maxLength: 5000}
     string timestamp;
 };
 
@@ -645,7 +341,7 @@ public type AccountBusinessProfile record {
     string? url?;
 };
 
-public type TaxRateArray TaxratearrayItemsString[];
+public type TaxRateArray string[];
 
 public type InvoiceSettingsCustomFields CustomFieldParams[];
 
@@ -653,14 +349,12 @@ public type GetInvoicesUpcomingRequestBody record {
     ItemBillingThresholdsParam|string billing_thresholds?;
     boolean clear_usage?;
     boolean deleted?;
-    @constraint:String {maxLength: 5000}
     string id?;
     record {}|string metadata?;
-    @constraint:String {maxLength: 5000}
     string price?;
     RecurringPriceData1 price_data?;
     int quantity?;
-    TaxratesItemsString[]|string tax_rates?;
+    string[]|string tax_rates?;
 };
 
 # 
@@ -698,28 +392,22 @@ public type InlineProductParams record {
     # Whether the product is currently available for purchase. Defaults to true.
     boolean active?;
     # The ID of the product that this price will belong to.
-    @constraint:String {maxLength: 5000}
     string id?;
     # Set of key-value pairs that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to metadata
     record {} metadata?;
     # The product’s name, meant to be displayable to the customer. Whenever this product is sold via a subscription, name will show up on associated invoice line item descriptions
-    @constraint:String {maxLength: 5000}
     string name;
     # An arbitrary string to be displayed on your customer’s credit card or bank statement. While most banks display this information consistently, some may display it incorrectly or not at all
-    @constraint:String {maxLength: 22}
     string statement_descriptor?;
     # A tax code ID
-    @constraint:String {maxLength: 5000}
     string tax_code?;
     # A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions
-    @constraint:String {maxLength: 12}
     string unit_label?;
 };
 
 # 
 public type AccountSepaDebitPaymentsSettings record {
     # SEPA creditor identifier that identifies the company making the payment.
-    @constraint:String {maxLength: 5000}
     string creditor_id?;
 };
 
@@ -736,7 +424,6 @@ public type PaymentIntentNextActionVerifyWithMicrodeposits record {
     # The timestamp when the microdeposits are expected to land.
     int arrival_date;
     # The URL for the hosted verification page, which allows customers to verify their bank account.
-    @constraint:String {maxLength: 5000}
     string hosted_verification_url;
 };
 
@@ -760,10 +447,9 @@ public type SubscriptionScheduleCurrentPhase record {
 
 public type PaymentMethodAttachBody record {
     # The ID of the customer to which to attach the PaymentMethod.
-    @constraint:String {maxLength: 5000}
     string customer;
     # Specifies which fields in the response should be expanded.
-    PaymentmethodattachbodyExpandItemsString[] expand?;
+    string[] expand?;
 };
 
 # 
@@ -785,7 +471,6 @@ public type AccountTosAcceptance record {
     # The IP address from which the account representative accepted their service agreement
     string? ip?;
     # The user's service agreement type
-    @constraint:String {maxLength: 5000}
     string service_agreement?;
     # The user agent of the browser from which the account representative accepted their service agreement
     string? user_agent?;
@@ -827,7 +512,6 @@ public type Transfer record {
     # If the destination is a Stripe account, this will be the ID of the payment that the destination account received for the transfer.
     string|Charge destination_payment?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -880,7 +564,6 @@ public type SubscriptionSchedule record {
     # Behavior of the subscription schedule and underlying subscription when it ends. Possible values are `release` and `cancel`.
     string end_behavior;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -919,7 +602,6 @@ public type DeletedBankAccount record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -938,7 +620,6 @@ public type FileLink record {
     # The file object this link points to.
     string|File file;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -974,7 +655,7 @@ public type SubscriptionItemsItemBody record {
     # Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. When updating, pass an empty string to remove previously-defined thresholds.
     BillingThresholds|string billing_thresholds?;
     # Specifies which fields in the response should be expanded.
-    SubscriptionitemsitembodyExpandItemsString[] expand?;
+    string[] expand?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     AdditionalProperties|string metadata?;
     # Indicates if a customer is on or off-session while an invoice payment is attempted.
@@ -988,7 +669,6 @@ public type SubscriptionItemsItemBody record {
     # Use `error_if_incomplete` if you want Stripe to return an HTTP 402 status code if a subscription's invoice cannot be paid. For example, if a payment method requires 3DS authentication due to SCA regulation and further user action is needed, this parameter does not update the subscription and returns an error instead. This was the default behavior for API versions prior to 2019-03-14. See the [changelog](https://stripe.com/docs/upgrades#2019-03-14) to learn more.
     string payment_behavior?;
     # The ID of the price object. When changing a subscription item's price, `quantity` is set to 1 unless a `quantity` parameter is provided.
-    @constraint:String {maxLength: 5000}
     string price?;
     # Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline.
     RecurringPriceData price_data?;
@@ -1017,7 +697,6 @@ public type LegalEntityPersonVerification record {
     # 
     LegalEntityPersonVerificationDocument document?;
     # The state of verification for the person. Possible values are `unverified`, `pending`, or `verified`.
-    @constraint:String {maxLength: 5000}
     string status;
 };
 
@@ -1036,7 +715,7 @@ public type LegalEntityCompanyVerificationDocument record {
 # 
 public type InvoiceItemThresholdReason record {
     # The IDs of the line items that triggered the threshold invoice.
-    InvoiceitemthresholdreasonLineitemidsItemsString[] line_item_ids;
+    string[] line_item_ids;
     # The quantity threshold boundary that applied to the given line item.
     int usage_gte;
 };
@@ -1106,10 +785,8 @@ public type BillingPortalSession record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # The ID of the customer for this session.
-    @constraint:String {maxLength: 5000}
     string customer;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -1120,10 +797,8 @@ public type BillingPortalSession record {
     # The account for which the session was created on behalf of. When specified, only subscriptions and invoices with this `on_behalf_of` account appear in the portal. For more information, see the [docs](https://stripe.com/docs/connect/charges-transfers#on-behalf-of). Use the [Accounts API](https://stripe.com/docs/api/accounts/object#account_object-settings-branding) to modify the `on_behalf_of` account's branding settings, which the portal displays.
     string? on_behalf_of?;
     # The URL to redirect customers to when they click on the portal's link to return to your website.
-    @constraint:String {maxLength: 5000}
     string return_url;
     # The short-lived URL of the session that gives customers access to the customer portal.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1198,7 +873,6 @@ public type BankAccount record {
     # Name of the bank associated with the routing number (e.g., `WELLS FARGO`).
     string? bank_name?;
     # Two-letter ISO code representing the country the bank account is located in.
-    @constraint:String {maxLength: 5000}
     string country;
     # Three-letter [ISO code for the currency](https://stripe.com/docs/payouts) paid out to the bank account.
     string currency;
@@ -1209,10 +883,8 @@ public type BankAccount record {
     # Uniquely identifies this particular bank account. You can use this attribute to check whether two bank accounts are the same.
     string? fingerprint?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The last four digits of the bank account number.
-    @constraint:String {maxLength: 5000}
     string last4;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata?;
@@ -1223,7 +895,6 @@ public type BankAccount record {
     # For bank accounts, possible values are `new`, `validated`, `verified`, `verification_failed`, or `errored`. A bank account that hasn't had any activity or validation performed is `new`. If Stripe can determine that the bank account exists, its status will be `validated`. Note that there often isn’t enough information to know (e.g., for smaller credit unions), and the validation is not always run. If customer bank account verification has succeeded, the bank account status will be `verified`. If the verification failed for any reason, such as microdeposit failure, the status will be `verification_failed`. If a transfer sent to this bank account fails, we'll set the status to `errored` and will not continue to send transfers until the bank details are updated.
     # 
     # For external accounts, possible values are `new` and `errored`. Validations aren't run against external accounts because they're only used for payouts. This means the other statuses don't apply. If a transfer fails, the status is set to `errored` and transfers are stopped until account details are updated.
-    @constraint:String {maxLength: 5000}
     string status;
 };
 
@@ -1295,7 +966,6 @@ public type InlineResponse2001 Customer|DeletedCustomer;
 # 
 public type SourceMandateNotificationBacsDebitData record {
     # Last 4 digits of the account number associated with the debit.
-    @constraint:String {maxLength: 5000}
     string last4?;
 };
 
@@ -1308,7 +978,6 @@ public type SubscriptionList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1328,7 +997,6 @@ public type InlineResponse2003 record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1340,7 +1008,6 @@ public type InlineResponse2002 record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1353,7 +1020,6 @@ public type RadarListListItemList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1362,7 +1028,6 @@ public type DeletedProduct record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -1375,20 +1040,16 @@ public type RadarValueListItem record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # The name or email address of the user who added this item to the value list.
-    @constraint:String {maxLength: 5000}
     string created_by;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The value of the item.
-    @constraint:String {maxLength: 5000}
     string value;
     # The identifier of the value list this item belongs to.
-    @constraint:String {maxLength: 5000}
     string value_list;
 };
 
@@ -1397,7 +1058,6 @@ public type DeletedCustomer record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -1408,7 +1068,6 @@ public type DeletedInvoiceitem record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -1423,10 +1082,8 @@ public type ShippingMethod record {
     # The estimated delivery date for the given shipping method. Can be either a specific date or a range.
     DeliveryEstimate? delivery_estimate?;
     # An arbitrary string attached to the object. Often useful for displaying to users.
-    @constraint:String {maxLength: 5000}
     string description;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
 };
 
@@ -1437,7 +1094,6 @@ public type PaymentMethodOptionsIdeal record {
 # 
 public type CustomerTaxLocation record {
     # The customer's country as identified by Stripe Tax.
-    @constraint:String {maxLength: 5000}
     string country;
     # The data source used to infer the customer's location.
     string 'source;
@@ -1480,7 +1136,7 @@ public type PaymentMethodDetailsInteracPresent record {
     # Identifies which network this charge was processed on. Can be `amex`, `cartes_bancaires`, `diners`, `discover`, `interac`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
     string? network?;
     # EMV tag 5F2D. Preferred languages specified by the integrated circuit chip.
-    PaymentmethoddetailsinteracpresentPreferredlocalesItemsString[]? preferred_locales?;
+    string[]? preferred_locales?;
     # How card details were read in this transaction.
     string? read_method?;
     # A collection of fields required to be displayed on receipts. Only required for EMV transactions.
@@ -1495,7 +1151,6 @@ public type UsageEventsResourceUsageRecordSummaryList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1504,7 +1159,6 @@ public type DeletedSubscriptionItem record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -1523,9 +1177,7 @@ public type QuotesResourceTotalDetails record {
 };
 
 public type CustomFieldParams record {
-    @constraint:String {maxLength: 30}
     string name;
-    @constraint:String {maxLength: 30}
     string value;
 };
 
@@ -1538,29 +1190,22 @@ public type RefundList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
 # 
 public type ApiErrors record {
     # For card errors, the ID of the failed charge.
-    @constraint:String {maxLength: 5000}
     string charge?;
     # For some errors that could be handled programmatically, a short string indicating the [error code](https://stripe.com/docs/error-codes) reported.
-    @constraint:String {maxLength: 5000}
     string code?;
     # For card errors resulting from a card issuer decline, a short string indicating the [card issuer's reason for the decline](https://stripe.com/docs/declines#issuer-declines) if they provide one.
-    @constraint:String {maxLength: 5000}
     string decline_code?;
     # A URL to more information about the [error code](https://stripe.com/docs/error-codes) reported.
-    @constraint:String {maxLength: 5000}
     string doc_url?;
     # A human-readable message providing more details about the error. For card errors, these messages can be shown to your users.
-    @constraint:String {maxLength: 40000}
     string message?;
     # If the error is parameter-specific, the parameter related to the error. For example, you can use this to display a message near the correct form field.
-    @constraint:String {maxLength: 5000}
     string param?;
     # A PaymentIntent guides you through the process of collecting a payment from your customer.
     # We recommend that you create exactly one PaymentIntent for each order or
@@ -1581,7 +1226,6 @@ public type ApiErrors record {
     # Related guides: [Payment Methods](https://stripe.com/docs/payments/payment-methods) and [More Payment Scenarios](https://stripe.com/docs/payments/more-payment-scenarios).
     PaymentMethod payment_method?;
     # If the error is specific to the type of payment method, the payment method type that had a problem. This field is only populated for invoice-related errors.
-    @constraint:String {maxLength: 5000}
     string payment_method_type?;
     # A SetupIntent guides you through the process of setting up and saving a customer's payment credentials for future payments.
     # For example, you could use a SetupIntent to set up and save your customer's card without immediately collecting a payment.
@@ -1651,7 +1295,6 @@ public type IssuingCardholder record {
     # The cardholder's email address.
     string? email?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Additional information about an `individual` cardholder.
     IssuingCardholderIndividual? individual?;
@@ -1660,7 +1303,6 @@ public type IssuingCardholder record {
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata;
     # The cardholder's name. This will be printed on cards issued to them.
-    @constraint:String {maxLength: 5000}
     string name;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -1679,29 +1321,22 @@ public type IssuingCardholder record {
 # If this is an `acss_debit` PaymentMethod, this hash contains details about the ACSS Debit payment method.
 public type PaymentMethodParam record {
     # Customer’s bank account number
-    @constraint:String {maxLength: 5000}
     string account_number;
     # Institution number of the customer’s bank
-    @constraint:String {maxLength: 5000}
     string institution_number;
     # Transit number of the customer’s bank
-    @constraint:String {maxLength: 5000}
     string transit_number;
 };
 
 # 
 public type DeliveryEstimate record {
     # If `type` is `"exact"`, `date` will be the expected delivery date in the format YYYY-MM-DD.
-    @constraint:String {maxLength: 5000}
     string date?;
     # If `type` is `"range"`, `earliest` will be be the earliest delivery date in the format YYYY-MM-DD.
-    @constraint:String {maxLength: 5000}
     string earliest?;
     # If `type` is `"range"`, `latest` will be the latest delivery date in the format YYYY-MM-DD.
-    @constraint:String {maxLength: 5000}
     string latest?;
     # The type of estimate. Must be either `"range"` or `"exact"`.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -1741,17 +1376,14 @@ public type FileFileLinkList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
 # 
 public type ChargeFraudDetails record {
     # Assessments from Stripe. If set, the value is `fraudulent`.
-    @constraint:String {maxLength: 5000}
     string stripe_report?;
     # Assessments reported by you. If set, possible values of are `safe` and `fraudulent`.
-    @constraint:String {maxLength: 5000}
     string user_report?;
 };
 
@@ -1788,7 +1420,6 @@ public type DefaultSettingsParams record {
     # Either charge_automatically, or send_invoice. When charging automatically, Stripe will attempt to pay the underlying subscription at the end of each billing cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions. Defaults to charge_automatically on creation
     string collection_method?;
     # ID of the default payment method for the subscription schedule. It must belong to the customer associated with the subscription schedule. If not set, invoices will use the default payment method in the customer’s invoice settings
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
     # All invoices will be billed using the specified settings
     SubscriptionSchedulesParam invoice_settings?;
@@ -1798,7 +1429,7 @@ public type DefaultSettingsParams record {
 
 public type InvoicesInvoiceBody record {
     # The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
-    AccounttaxidsItemsString[]|string account_tax_ids?;
+    string[]|string account_tax_ids?;
     # A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/billing/invoices/connect#collecting-fees).
     int application_fee_amount?;
     # Controls whether Stripe will perform [automatic collection](https://stripe.com/docs/billing/invoices/workflow/#auto_advance) of the invoice.
@@ -1812,24 +1443,20 @@ public type InvoicesInvoiceBody record {
     # The number of days from which the invoice is created until it is due. Only valid for invoices where `collection_method=send_invoice`. This field can only be updated on `draft` invoices.
     int days_until_due?;
     # ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings.
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
     # ID of the default payment source for the invoice. It must belong to the customer associated with the invoice and be in a chargeable state. If not set, defaults to the subscription's default source, if any, or to the customer's default source.
-    @constraint:String {maxLength: 5000}
     string default_source?;
     # The tax rates that will apply to any line item that does not have `tax_rates` set. Pass an empty string to remove previously-defined tax rates.
-    DefaulttaxratesItemsString[]|string default_tax_rates?;
+    string[]|string default_tax_rates?;
     # An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard.
-    @constraint:String {maxLength: 1500}
     string description?;
     # The discounts that will apply to the invoice. Pass an empty string to remove previously-defined discounts.
     DiscountsDataParam|string discounts?;
     # The date on which payment for this invoice is due. Only valid for invoices where `collection_method=send_invoice`. This field can only be updated on `draft` invoices.
     int due_date?;
     # Specifies which fields in the response should be expanded.
-    InvoicesinvoicebodyExpandItemsString[] expand?;
+    string[] expand?;
     # Footer to be displayed on the invoice.
-    @constraint:String {maxLength: 5000}
     string footer?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string metadata?;
@@ -1838,7 +1465,6 @@ public type InvoicesInvoiceBody record {
     # Configuration settings for the PaymentIntent that is generated when the invoice is finalized.
     PaymentSettings payment_settings?;
     # Extra information about a charge for the customer's credit card statement. It must contain at least one letter. If not specified and this invoice is part of a subscription, the default `statement_descriptor` will be set to the first subscription item's product's `statement_descriptor`.
-    @constraint:String {maxLength: 22}
     string statement_descriptor?;
     # If specified, the funds from the invoice will be transferred to the destination and the ID of the resulting transfer will be found on the invoice's charge. This will be unset if you POST an empty value.
     DiscountsDataParam|string transfer_data?;
@@ -1857,7 +1483,6 @@ public type Invoicelineslist1 record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1893,7 +1518,6 @@ public type AccountLink record {
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The URL for the account link.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -1960,7 +1584,6 @@ public type PaymentMethodDetailsCardChecks record {
 public type SubscriptionItemCreateParams record {
     ItemBillingThresholdsParam|string billing_thresholds?;
     record {} metadata?;
-    @constraint:String {maxLength: 5000}
     string price?;
     RecurringPriceData1 price_data?;
     int quantity?;
@@ -1985,26 +1608,20 @@ public type Period1 record {
 };
 
 public type TokenParamas record {
-    @constraint:String {maxLength: 5000}
     string token;
 };
 
 # 
 public type SourceTransactionChfCreditTransferData record {
     # Reference associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string reference?;
     # Sender's country address.
-    @constraint:String {maxLength: 5000}
     string sender_address_country?;
     # Sender's line 1 address.
-    @constraint:String {maxLength: 5000}
     string sender_address_line1?;
     # Sender's bank account IBAN.
-    @constraint:String {maxLength: 5000}
     string sender_iban?;
     # Sender's name.
-    @constraint:String {maxLength: 5000}
     string sender_name?;
 };
 
@@ -2015,7 +1632,6 @@ public type DefaultSettingsParams1 record {
     string billing_cycle_anchor?;
     BillingThresholdParams|string billing_thresholds?;
     string collection_method?;
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
     SubscriptionSchedulesParam1 invoice_settings?;
     TransferDataSpecs|string transfer_data?;
@@ -2029,7 +1645,6 @@ public type CardList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -2069,7 +1684,6 @@ public type SourceTypeThreeDSecure record {
 
 public type RecurringPriceData1 record {
     string currency;
-    @constraint:String {maxLength: 5000}
     string product;
     RecurringAdhoc recurring;
     string tax_behavior?;
@@ -2082,41 +1696,32 @@ public type V1CustomersBody record {
     CustomerAdresss|string address?;
     # An integer amount in %s that represents the customer's current balance, which affect the customer's future invoices. A negative amount represents a credit that decreases the amount due on an invoice; a positive amount increases the amount due on an invoice.
     int balance?;
-    @constraint:String {maxLength: 5000}
     string coupon?;
     # An arbitrary string that you can attach to a customer object. It is displayed alongside the customer in the dashboard.
-    @constraint:String {maxLength: 5000}
     string description?;
     # Customer's email address. It's displayed alongside the customer in your dashboard and can be useful for searching and tracking. This may be up to *512 characters*.
-    @constraint:String {maxLength: 512}
     string email?;
     # Specifies which fields in the response should be expanded.
-    V1customersbodyExpandItemsString[] expand?;
+    string[] expand?;
     # The prefix for the customer used to generate unique invoice numbers. Must be 3–12 uppercase letters or numbers.
-    @constraint:String {maxLength: 5000}
     string invoice_prefix?;
     # Default invoice settings for this customer.
     CustomerParam invoice_settings?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     AdditionalProperties|string metadata?;
     # The customer's full name or business name.
-    @constraint:String {maxLength: 256}
     string name?;
     # The sequence to be used on the customer's next invoice. Defaults to 1.
     int next_invoice_sequence?;
-    @constraint:String {maxLength: 5000}
     string payment_method?;
     # The customer's phone number.
-    @constraint:String {maxLength: 20}
     string phone?;
     # Customer's preferred languages, ordered by preference.
-    V1customersbodyPreferredlocalesItemsString[] preferred_locales?;
+    string[] preferred_locales?;
     # The API ID of a promotion code to apply to the customer. The customer will have a discount applied on all recurring payments. Charges you create through the API will not have the discount.
-    @constraint:String {maxLength: 5000}
     string promotion_code?;
     # The customer's shipping information. Appears on invoices emailed to this customer.
     CustomerAddressWithName|string shipping?;
-    @constraint:String {maxLength: 5000}
     string 'source?;
     # Tax details about the customer.
     TaxParam tax?;
@@ -2150,7 +1755,6 @@ public type DeletedRadarValueList record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -2196,7 +1800,6 @@ public type SetupIntent record {
     # An arbitrary string attached to the object. Often useful for displaying to users.
     string? description?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The error encountered in the previous SetupIntent confirmation.
     ApiErrors? last_setup_error?;
@@ -2219,7 +1822,7 @@ public type SetupIntent record {
     # Payment-method-specific configuration for this SetupIntent.
     SetupIntentPaymentMethodOptions? payment_method_options?;
     # The list of payment method types (e.g. card) that this SetupIntent is allowed to set up.
-    SetupintentPaymentmethodtypesItemsString[] payment_method_types;
+    string[] payment_method_types;
     # ID of the single_use Mandate generated by the SetupIntent.
     string|Mandate? single_use_mandate?;
     # [Status](https://stripe.com/docs/payments/intents#intent-statuses) of this SetupIntent, one of `requires_payment_method`, `requires_confirmation`, `requires_action`, `processing`, `canceled`, or `succeeded`.
@@ -2227,7 +1830,6 @@ public type SetupIntent record {
     # Indicates how the payment method is intended to be used in the future.
     # 
     # Use `on_session` if you intend to only reuse the payment method when the customer is in your checkout flow. Use `off_session` if your customer may or may not be in your checkout flow. If not provided, this value defaults to `off_session`.
-    @constraint:String {maxLength: 5000}
     string usage;
 };
 
@@ -2246,7 +1848,6 @@ public type IssuingDispute record {
     # Evidence for the dispute. Evidence contains exactly two non-null fields: the reason for the dispute and the associated evidence field for the selected reason
     IssuingDisputeEvidence evidence;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -2267,7 +1868,6 @@ public type CardIssuingAccountTermsOfService record {
     # The IP address from which the account representative accepted the service agreement.
     string? ip?;
     # The user agent of the browser from which the account representative accepted the service agreement.
-    @constraint:String {maxLength: 5000}
     string user_agent?;
 };
 
@@ -2276,7 +1876,6 @@ public type DeletedPerson record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -2341,7 +1940,6 @@ public type SubscriptionItemList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -2368,10 +1966,8 @@ public type TaxRate record {
     # An arbitrary string attached to the tax rate for your internal use only. It will not be visible to your customers.
     string? description?;
     # The display name of the tax rates as it will appear to your customer on their receipt email, PDF, and the hosted invoice page.
-    @constraint:String {maxLength: 5000}
     string display_name;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # This specifies if the tax rate is inclusive or exclusive.
     boolean inclusive;
@@ -2416,13 +2012,10 @@ public type AccountDashboardSettings record {
 # 
 public type SourceMandateNotificationSepaDebitData record {
     # SEPA creditor ID.
-    @constraint:String {maxLength: 5000}
     string creditor_identifier?;
     # Last 4 digits of the account number associated with the debit.
-    @constraint:String {maxLength: 5000}
     string last4?;
     # Mandate reference associated with the debit.
-    @constraint:String {maxLength: 5000}
     string mandate_reference?;
 };
 
@@ -2443,7 +2036,6 @@ public type Coupon record {
     # If `duration` is `repeating`, the number of months the coupon applies. Null if coupon `duration` is `forever` or `once`.
     int? duration_in_months?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -2482,7 +2074,6 @@ public type DeletedAccount record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -2503,18 +2094,14 @@ public type PaymentMethodBancontact record {
 # 
 public type PlatformTaxFee record {
     # The Connected account that incurred this charge.
-    @constraint:String {maxLength: 5000}
     string account;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The payment object that caused this tax to be inflicted.
-    @constraint:String {maxLength: 5000}
     string source_transaction;
     # The type of tax (VAT).
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -2537,10 +2124,8 @@ public type AlipayAccount record {
     # The ID of the customer associated with this Alipay Account.
     string|Customer|DeletedCustomer? customer?;
     # Uniquely identifies the account and will be the same across all Alipay account objects that are linked to the same Alipay account.
-    @constraint:String {maxLength: 5000}
     string fingerprint;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -2557,7 +2142,6 @@ public type AlipayAccount record {
     # Whether this Alipay account object has ever been used for a payment.
     boolean used;
     # The username for the Alipay account.
-    @constraint:String {maxLength: 5000}
     string username;
 };
 
@@ -2574,17 +2158,17 @@ public type AccountRequirements record {
     # Date by which the fields in `currently_due` must be collected to keep the account enabled. These fields may disable the account sooner if the next threshold is reached before they are collected.
     int? current_deadline?;
     # Fields that need to be collected to keep the account enabled. If not collected by `current_deadline`, these fields appear in `past_due` as well, and the account is disabled.
-    AccountrequirementsCurrentlydueItemsString[]? currently_due?;
+    string[]? currently_due?;
     # If the account is disabled, this string describes why. Can be `requirements.past_due`, `requirements.pending_verification`, `listed`, `platform_paused`, `rejected.fraud`, `rejected.listed`, `rejected.terms_of_service`, `rejected.other`, `under_review`, or `other`.
     string? disabled_reason?;
     # Fields that are `currently_due` and need to be collected again because validation or verification failed.
     AccountRequirementsError[]? errors?;
     # Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set.
-    AccountrequirementsEventuallydueItemsString[]? eventually_due?;
+    string[]? eventually_due?;
     # Fields that weren't collected by `current_deadline`. These fields need to be collected to enable the account.
-    AccountrequirementsPastdueItemsString[]? past_due?;
+    string[]? past_due?;
     # Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due`, `currently_due`, or `past_due`.
-    AccountrequirementsPendingverificationItemsString[]? pending_verification?;
+    string[]? pending_verification?;
 };
 
 public type CreatedFilterOptions record {
@@ -2614,17 +2198,11 @@ public type PaymentMethodDetailsCardInstallmentsPlan record {
 };
 
 public type OptionalFieldsAddress record {
-    @constraint:String {maxLength: 5000}
     string city?;
-    @constraint:String {maxLength: 5000}
     string country?;
-    @constraint:String {maxLength: 5000}
     string line1?;
-    @constraint:String {maxLength: 5000}
     string line2?;
-    @constraint:String {maxLength: 5000}
     string postal_code?;
-    @constraint:String {maxLength: 5000}
     string state?;
 };
 
@@ -2633,20 +2211,16 @@ public type PortalBusinessProfile record {
     # The messaging shown to customers in the portal.
     string? headline?;
     # A link to the business’s publicly available privacy policy.
-    @constraint:String {maxLength: 5000}
     string privacy_policy_url;
     # A link to the business’s publicly available terms of service.
-    @constraint:String {maxLength: 5000}
     string terms_of_service_url;
 };
 
 # If this is an `au_becs_debit` PaymentMethod, this hash contains details about the bank account.
 public type Param record {
     # The account number for the bank account
-    @constraint:String {maxLength: 5000}
     string account_number;
     # Bank-State-Branch number of the bank account
-    @constraint:String {maxLength: 5000}
     string bsb_number;
 };
 
@@ -2663,7 +2237,6 @@ public type BitcoinReceiver record {
     # The amount of bitcoin that has been sent by the customer to this receiver.
     int bitcoin_amount_received;
     # This URI can be displayed to the customer as a clickable link (to activate their bitcoin client) or as a QR code (for mobile wallets).
-    @constraint:String {maxLength: 5000}
     string bitcoin_uri;
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
@@ -2678,10 +2251,8 @@ public type BitcoinReceiver record {
     # This flag is initially false and updates to true when the customer sends the `bitcoin_amount` to this receiver.
     boolean filled;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # A bitcoin address that is specific to this receiver. The customer can send bitcoin to this address to fill the receiver.
-    @constraint:String {maxLength: 5000}
     string inbound_address;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -2735,7 +2306,6 @@ public type Sku record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The URL of an image for this SKU, meant to be displayable to the customer.
     string? image?;
@@ -2784,14 +2354,12 @@ public type PaymentMethodDetailsAfterpayClearpay record {
 # 
 public type SourceMandateNotificationAcssDebitData record {
     # The statement descriptor associate with the debit.
-    @constraint:String {maxLength: 5000}
     string statement_descriptor?;
 };
 
 # 
 public type SigmaScheduledQueryRunError record {
     # Information about the run failure.
-    @constraint:String {maxLength: 5000}
     string message;
 };
 
@@ -2824,7 +2392,6 @@ public type AutomaticTaxConfig record {
 # 
 public type UsageRecordSummary record {
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The invoice in which this usage period has been billed for.
     string? invoice?;
@@ -2835,7 +2402,6 @@ public type UsageRecordSummary record {
     # 
     Period period;
     # The ID of the subscription item this summary is describing.
-    @constraint:String {maxLength: 5000}
     string subscription_item;
     # The total usage within this usage period.
     int total_usage;
@@ -2885,42 +2451,30 @@ public type Token record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # Type of the token: `account`, `bank_account`, `card`, or `pii`.
-    @constraint:String {maxLength: 5000}
     string 'type;
     # Whether this token has already been used (tokens can be used only once).
     boolean used;
 };
 
 public type CustomerCardDetails record {
-    @constraint:String {maxLength: 5000}
     string address_city?;
-    @constraint:String {maxLength: 5000}
     string address_country?;
-    @constraint:String {maxLength: 5000}
     string address_line1?;
-    @constraint:String {maxLength: 5000}
     string address_line2?;
-    @constraint:String {maxLength: 5000}
     string address_state?;
-    @constraint:String {maxLength: 5000}
     string address_zip?;
-    @constraint:String {maxLength: 5000}
     string cvc?;
     int exp_month;
     int exp_year;
     record {} metadata?;
-    @constraint:String {maxLength: 5000}
     string name?;
-    @constraint:String {maxLength: 5000}
     string number;
-    @constraint:String {maxLength: 5000}
     string 'object?;
 };
 
@@ -3001,10 +2555,8 @@ public type IssuingCardholderIndividual record {
     # The date of birth of this cardholder.
     IssuingCardholderIndividualDob? dob?;
     # The first name of this cardholder.
-    @constraint:String {maxLength: 5000}
     string first_name;
     # The last name of this cardholder.
-    @constraint:String {maxLength: 5000}
     string last_name;
     # Government-issued ID document for this cardholder.
     IssuingCardholderVerification? verification?;
@@ -3012,7 +2564,6 @@ public type IssuingCardholderIndividual record {
 
 public type OneTimePriceData record {
     string currency;
-    @constraint:String {maxLength: 5000}
     string product;
     string tax_behavior?;
     int unit_amount?;
@@ -3032,17 +2583,11 @@ public type PaymentSettings1 record {
 };
 
 public type BillingDetailsAddress record {
-    @constraint:String {maxLength: 5000}
     string city?;
-    @constraint:String {maxLength: 5000}
     string country?;
-    @constraint:String {maxLength: 5000}
     string line1?;
-    @constraint:String {maxLength: 5000}
     string line2?;
-    @constraint:String {maxLength: 5000}
     string postal_code?;
-    @constraint:String {maxLength: 5000}
     string state?;
 };
 
@@ -3099,7 +2644,6 @@ public type SetupAttemptPaymentMethodDetails record {
     # 
     SetupAttemptPaymentMethodDetailsSofort sofort?;
     # The type of the payment method used in the SetupIntent (e.g., `card`). An additional hash is included on `payment_method_details` with a name matching this value. It contains confirmation-specific information for the payment method.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -3110,7 +2654,6 @@ public type Capability record {
     # The account for which the capability enables functionality.
     string|Account account;
     # The identifier for the capability.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -3138,7 +2681,6 @@ public type OrdersResourceOrderReturnList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -3179,7 +2721,6 @@ public type SetupAttemptPaymentMethodDetailsAcssDebit record {
 };
 
 public type DataParams record {
-    @constraint:String {maxLength: 5000}
     string 'type;
     string value;
 };
@@ -3211,7 +2752,6 @@ public type IssuingDisputeDuplicateEvidence record {
 # 
 public type Application record {
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The name of the application.
     string? name?;
@@ -3227,7 +2767,6 @@ public type Application record {
 # Related guide: [Handling Identity Verification with the API](https://stripe.com/docs/connect/identity-verification-api#person-information).
 public type Person record {
     # The account the person is associated with.
-    @constraint:String {maxLength: 5000}
     string account;
     # 
     Address address?;
@@ -3248,7 +2787,6 @@ public type Person record {
     # The person's gender (International regulations require either "male" or "female").
     string? gender?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Whether the person's `id_number` was provided.
     boolean id_number_provided?;
@@ -3291,7 +2829,7 @@ public type QuotesResourceStatusTransitions record {
 
 public type InvoiceVoidBody record {
     # Specifies which fields in the response should be expanded.
-    InvoicevoidbodyExpandItemsString[] expand?;
+    string[] expand?;
 };
 
 # A discount represents the actual application of a coupon to a particular
@@ -3311,7 +2849,6 @@ public type Discount record {
     # If the coupon has a duration of `repeating`, the date that this discount will end. If the coupon has a duration of `once` or `forever`, this attribute will be null.
     int? end?;
     # The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
-    @constraint:String {maxLength: 5000}
     string id;
     # The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
     string? invoice?;
@@ -3352,7 +2889,7 @@ public type GelatoDocumentReport record {
     # Expiration date of the document.
     GelatoDataDocumentReportExpirationDate? expiration_date?;
     # Array of [File](https://stripe.com/docs/api/files) ids containing images for this document.
-    GelatodocumentreportFilesItemsString[]? files?;
+    string[]? files?;
     # First name as it appears in the document.
     string? first_name?;
     # Issued date of the document.
@@ -3412,12 +2949,10 @@ public type TransferSchedule record {
     # The number of days charges for the account will be held before being paid out.
     int delay_days;
     # How frequently funds will be paid out. One of `manual` (payouts only created via API call), `daily`, `weekly`, or `monthly`.
-    @constraint:String {maxLength: 5000}
     string interval;
     # The day of the month funds will be paid out. Only shown if `interval` is monthly. Payouts scheduled between the 29th and 31st of the month are sent on the last day of shorter months.
     int monthly_anchor?;
     # The day of the week funds will be paid out, of the style 'monday', 'tuesday', etc. Only shown if `interval` is weekly.
-    @constraint:String {maxLength: 5000}
     string weekly_anchor?;
 };
 
@@ -3436,7 +2971,6 @@ public type TransferDataSpecs2 record {
 # 
 public type CheckoutAcssDebitMandateOptions record {
     # A URL for custom mandate text
-    @constraint:String {maxLength: 5000}
     string custom_mandate_url?;
     # Description of the interval. Only required if the 'payment_schedule' parameter is 'interval' or 'combined'.
     string? interval_description?;
@@ -3478,11 +3012,9 @@ public type PhaseConfigurationParams1 record {
     string billing_cycle_anchor?;
     BillingThresholdParams|string billing_thresholds?;
     string collection_method?;
-    @constraint:String {maxLength: 5000}
     string coupon?;
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
-    DefaulttaxratesItemsString[]|string default_tax_rates?;
+    string[]|string default_tax_rates?;
     int|string end_date?;
     SubscriptionSchedulesParam1 invoice_settings?;
     ConfigurationItemParams[] items;
@@ -3499,7 +3031,6 @@ public type SourceCodeVerificationFlow record {
     # The number of attempts remaining to authenticate the source object with a verification code.
     int attempts_remaining;
     # The status of the code verification, either `pending` (awaiting verification, `attempts_remaining` should be greater than 0), `succeeded` (successful verification) or `failed` (failed verification, cannot be verified anymore as `attempts_remaining` should be 0).
-    @constraint:String {maxLength: 5000}
     string status;
 };
 
@@ -3514,12 +3045,10 @@ public type IssuerFraudRecord record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
-    @constraint:String {maxLength: 5000}
     string fraud_type;
     # If true, the associated charge is subject to [liability shift](https://stripe.com/docs/payments/3d-secure#disputed-payments).
     boolean has_liability_shift;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -3569,12 +3098,10 @@ public type PaymentIntentNextActionRedirectToUrl record {
 # Related guide: [Fleet Management](https://stripe.com/docs/terminal/creating-locations).
 public type TerminalConnectionToken record {
     # The id of the location that this connection token is scoped to. Note that location scoping only applies to internet-connected readers. For more details, see [the docs on scoping connection tokens](https://stripe.com/docs/terminal/readers/fleet-management#connection-tokens).
-    @constraint:String {maxLength: 5000}
     string location?;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # Your application should pass this token to the Stripe Terminal SDK.
-    @constraint:String {maxLength: 5000}
     string secret;
 };
 
@@ -3673,7 +3200,6 @@ public type FeeRefund record {
     # ID of the application fee that was refunded.
     string|ApplicationFee fee;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata?;
@@ -3686,33 +3212,27 @@ public type CardInvoicePaymentMethodOptionsParam record {
 };
 
 public type CustomerBankAccountDetails record {
-    @constraint:String {maxLength: 5000}
     string account_holder_name?;
-    @constraint:String {maxLength: 5000}
     string account_holder_type?;
-    @constraint:String {maxLength: 5000}
     string account_number;
-    @constraint:String {maxLength: 5000}
     string country;
     string currency?;
-    @constraint:String {maxLength: 5000}
     string 'object?;
-    @constraint:String {maxLength: 5000}
     string routing_number?;
 };
 
 # 
 public type PersonRequirements record {
     # Fields that need to be collected to keep the person's account enabled. If not collected by the account's `current_deadline`, these fields appear in `past_due` as well, and the account is disabled.
-    PersonrequirementsCurrentlydueItemsString[] currently_due;
+    string[] currently_due;
     # Fields that are `currently_due` and need to be collected again because validation or verification failed.
     AccountRequirementsError[] errors;
     # Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well, and the account's `current_deadline` becomes set.
-    PersonrequirementsEventuallydueItemsString[] eventually_due;
+    string[] eventually_due;
     # Fields that weren't collected by the account's `current_deadline`. These fields need to be collected to enable the person's account.
-    PersonrequirementsPastdueItemsString[] past_due;
+    string[] past_due;
     # Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due`, `currently_due`, or `past_due`.
-    PersonrequirementsPendingverificationItemsString[] pending_verification;
+    string[] pending_verification;
 };
 
 # 
@@ -3720,10 +3240,8 @@ public type AccountRequirementsError record {
     # The code for the type of error.
     string code;
     # An informative message that indicates the error type and provides additional details about the error.
-    @constraint:String {maxLength: 5000}
     string reason;
     # The specific user onboarding requirement field (in the requirements hash) that needs to be resolved.
-    @constraint:String {maxLength: 5000}
     string requirement;
 };
 
@@ -3744,7 +3262,6 @@ public type DeletedApplePayDomain record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -3826,7 +3343,7 @@ public type RecurringAdhoc record {
 
 public type ScheduleCancelBody record {
     # Specifies which fields in the response should be expanded.
-    SchedulecancelbodyExpandItemsString[] expand?;
+    string[] expand?;
     # If the subscription schedule is `active`, indicates if a final invoice will be generated that contains any un-invoiced metered usage and new/pending proration invoice items. Defaults to `true`.
     boolean invoice_now?;
     # If the subscription schedule is `active`, indicates if the cancellation should be prorated. Defaults to `true`.
@@ -3850,7 +3367,6 @@ public type DeletedAlipayAccount record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -3887,7 +3403,6 @@ public type CustomerResourceCustomerList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -3922,10 +3437,8 @@ public type MandateBacsDebit record {
     # The status of the mandate on the Bacs network. Can be one of `pending`, `revoked`, `refused`, or `accepted`.
     string network_status;
     # The unique reference identifying the mandate on the Bacs network.
-    @constraint:String {maxLength: 5000}
     string reference;
     # The URL that will contain the mandate that the customer has signed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -3952,7 +3465,6 @@ public type Recipient record {
     string? description?;
     string? email?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -3966,7 +3478,6 @@ public type Recipient record {
     string 'object;
     string|Account rolled_back_from?;
     # Type of the recipient, one of `individual` or `corporation`.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -3977,7 +3488,6 @@ public type ChargeOutcome record {
     # An enumerated value providing a more detailed explanation of the outcome's `type`. Charges blocked by Radar's default block rule have the value `highest_risk_level`. Charges placed in review by Radar's default review rule have the value `elevated_risk_level`. Charges authorized, blocked, or placed in review by custom rules have the value `rule`. See [understanding declines](https://stripe.com/docs/declines) for more details.
     string? reason?;
     # Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are `normal`, `elevated`, `highest`. For non-card payments, and card-based payments predating the public assignment of risk levels, this field will have the value `not_assessed`. In the event of an error in the evaluation, this field will have the value `unknown`. This field is only available with Radar.
-    @constraint:String {maxLength: 5000}
     string risk_level?;
     # Stripe Radar's evaluation of the riskiness of the payment. Possible values for evaluated payments are between 0 and 100. For non-card payments, card-based payments predating the public assignment of risk scores, or in the event of an error during evaluation, this field will not be present. This field is only available with Radar for Fraud Teams.
     int risk_score?;
@@ -3986,14 +3496,12 @@ public type ChargeOutcome record {
     # A human-readable description of the outcome type and reason, designed for you (the recipient of the payment), not your customer.
     string? seller_message?;
     # Possible values are `authorized`, `manual_review`, `issuer_declined`, `blocked`, and `invalid`. See [understanding declines](https://stripe.com/docs/declines) and [Radar reviews](https://stripe.com/docs/radar/reviews) for details.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
 # You can [create physical or virtual cards](https://stripe.com/docs/issuing/cards) that are issued to cardholders.
 public type IssuingCard record {
     # The brand of the card.
-    @constraint:String {maxLength: 5000}
     string brand;
     # The reason why the card was canceled.
     string? cancellation_reason?;
@@ -4006,24 +3514,20 @@ public type IssuingCard record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # The card's CVC. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
-    @constraint:String {maxLength: 5000}
     string cvc?;
     # The expiration month of the card.
     int exp_month;
     # The expiration year of the card.
     int exp_year;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The last 4 digits of the card number.
-    @constraint:String {maxLength: 5000}
     string last4;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata;
     # The full unredacted card number. For security reasons, this is only available for virtual cards, and will be omitted unless you explicitly request it with [the `expand` parameter](https://stripe.com/docs/api/expanding_objects). Additionally, it's only available via the ["Retrieve a card" endpoint](https://stripe.com/docs/api/issuing/cards/retrieve), not via "List all cards" or any other endpoint.
-    @constraint:String {maxLength: 5000}
     string number?;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -4045,7 +3549,7 @@ public type IssuingCard record {
 
 public type ScheduleReleaseBody record {
     # Specifies which fields in the response should be expanded.
-    SchedulereleasebodyExpandItemsString[] expand?;
+    string[] expand?;
     # Keep any cancellation on the subscription that the schedule has set
     boolean preserve_cancel_date?;
 };
@@ -4086,7 +3590,6 @@ public type ScheduledQueryRun record {
     # The file object representing the results of the query.
     File? file?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -4095,13 +3598,10 @@ public type ScheduledQueryRun record {
     # Time at which the result expires and is no longer available for download.
     int result_available_until;
     # SQL for the query.
-    @constraint:String {maxLength: 100000}
     string sql;
     # The query's execution status, which will be `completed` for successful runs, and `canceled`, `failed`, or `timed_out` otherwise.
-    @constraint:String {maxLength: 5000}
     string status;
     # Title of the query.
-    @constraint:String {maxLength: 5000}
     string title;
 };
 
@@ -4109,7 +3609,7 @@ public type SubscriptionItemUsageRecordsBody record {
     # Valid values are `increment` (default) or `set`. When using `increment` the specified `quantity` will be added to the usage at the specified timestamp. The `set` action will overwrite the usage quantity at that timestamp. If the subscription has [billing thresholds](https://stripe.com/docs/api/subscriptions/object#subscription_object-billing_thresholds), `increment` is the only allowed value.
     string action?;
     # Specifies which fields in the response should be expanded.
-    SubscriptionitemusagerecordsbodyExpandItemsString[] expand?;
+    string[] expand?;
     # The usage quantity for the specified timestamp.
     int quantity;
     # The timestamp for the usage event. This timestamp must be within the current billing period of the subscription of the provided `subscription_item`.
@@ -4132,7 +3632,6 @@ public type Price record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -4181,17 +3680,11 @@ public type SetupIntentPaymentMethodOptions record {
 };
 
 public type CustomerAdresss record {
-    @constraint:String {maxLength: 5000}
     string city?;
-    @constraint:String {maxLength: 5000}
     string country?;
-    @constraint:String {maxLength: 5000}
     string line1?;
-    @constraint:String {maxLength: 5000}
     string line2?;
-    @constraint:String {maxLength: 5000}
     string postal_code?;
-    @constraint:String {maxLength: 5000}
     string state?;
 };
 
@@ -4218,7 +3711,6 @@ public type PaymentMethodDetailsCardWalletVisaCheckout record {
 # 
 public type TaxDeductedAtSource record {
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -4227,7 +3719,6 @@ public type TaxDeductedAtSource record {
     # The start of the invoicing period. This TDS applies to Stripe fees collected during this invoicing period.
     int period_start;
     # The TAN that was supplied to Stripe when TDS was assessed
-    @constraint:String {maxLength: 5000}
     string tax_deduction_account_number;
 };
 
@@ -4240,19 +3731,16 @@ public type V1ProductsBody record {
     # Whether the product is currently available for purchase. Defaults to `true`.
     boolean active?;
     # The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
-    @constraint:String {maxLength: 40000}
     string description?;
     # Specifies which fields in the response should be expanded.
-    V1productsbodyExpandItemsString[] expand?;
+    string[] expand?;
     # An identifier will be randomly generated by Stripe. You can optionally override this ID, but the ID must be unique across all products in your Stripe account.
-    @constraint:String {maxLength: 5000}
     string id?;
     # A list of up to 8 URLs of images for this product, meant to be displayable to the customer.
     string[] images?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {} metadata?;
     # The product's name, meant to be displayable to the customer. Whenever this product is sold via a subscription, name will show up on associated invoice line item descriptions.
-    @constraint:String {maxLength: 5000}
     string name;
     # The dimensions of this product for shipping purposes.
     PackageDimensionsSpecs package_dimensions?;
@@ -4262,34 +3750,28 @@ public type V1ProductsBody record {
     # 
     # This may be up to 22 characters. The statement description may not include `<`, `>`, `\`, `"`, `'` characters, and will appear on your customer's statement in capital letters. Non-ASCII characters are automatically stripped.
     #  It must contain at least one letter.
-    @constraint:String {maxLength: 22}
     string statement_descriptor?;
     # A [tax code](https://stripe.com/docs/tax/tax-codes) ID.
     string tax_code?;
     # A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions.
-    @constraint:String {maxLength: 12}
     string unit_label?;
     # A URL of a publicly-accessible webpage for this product.
-    @constraint:String {maxLength: 5000}
     string url?;
 };
 
 public type InvoiceItemPreviewParams record {
     int amount?;
     string currency?;
-    @constraint:String {maxLength: 5000}
     string description?;
     boolean discountable?;
     DiscountsDataParam|string discounts?;
-    @constraint:String {maxLength: 5000}
     string invoiceitem?;
     record {}|string metadata?;
     Period1 period?;
-    @constraint:String {maxLength: 5000}
     string price?;
     OneTimePriceData price_data?;
     int quantity?;
-    TaxratesItemsString[]|string tax_rates?;
+    string[]|string tax_rates?;
     int unit_amount?;
     string unit_amount_decimal?;
 };
@@ -4337,7 +3819,6 @@ public type File record {
     # A filename for the file, suitable for saving to a filesystem.
     string? filename?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # A list of [file links](https://stripe.com/docs/api#file_links) that point at this file.
     FileFileLinkList? links?;
@@ -4370,7 +3851,7 @@ public type AccountCapabilityRequirements record {
     # Date by which the fields in `currently_due` must be collected to keep the capability enabled for the account. These fields may disable the capability sooner if the next threshold is reached before they are collected.
     int? current_deadline?;
     # Fields that need to be collected to keep the capability enabled. If not collected by `current_deadline`, these fields appear in `past_due` as well, and the capability is disabled.
-    AccountcapabilityrequirementsCurrentlydueItemsString[] currently_due;
+    string[] currently_due;
     # If the capability is disabled, this string describes why. Can be `requirements.past_due`, `requirements.pending_verification`, `listed`, `platform_paused`, `rejected.fraud`, `rejected.listed`, `rejected.terms_of_service`, `rejected.other`, `under_review`, or `other`.
     # 
     # `rejected.unsupported_business` means that the account's business is not supported by the capability. For example, payment methods may restrict the businesses they support in their terms of service:
@@ -4382,26 +3863,22 @@ public type AccountCapabilityRequirements record {
     # Fields that are `currently_due` and need to be collected again because validation or verification failed.
     AccountRequirementsError[] errors;
     # Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set.
-    AccountcapabilityrequirementsEventuallydueItemsString[] eventually_due;
+    string[] eventually_due;
     # Fields that weren't collected by `current_deadline`. These fields need to be collected to enable the capability on the account.
-    AccountcapabilityrequirementsPastdueItemsString[] past_due;
+    string[] past_due;
     # Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due`, `currently_due`, or `past_due`.
-    AccountcapabilityrequirementsPendingverificationItemsString[] pending_verification;
+    string[] pending_verification;
 };
 
 # 
 public type SourceTransactionAchCreditTransferData record {
     # Customer data associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string customer_data?;
     # Bank account fingerprint associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string fingerprint?;
     # Last 4 digits of the account number associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string last4?;
     # Routing number associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string routing_number?;
 };
 
@@ -4427,13 +3904,12 @@ public type InlineResponse200 record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
 public type PaymentMethodDetachBody record {
     # Specifies which fields in the response should be expanded.
-    PaymentmethoddetachbodyExpandItemsString[] expand?;
+    string[] expand?;
 };
 
 # 
@@ -4468,12 +3944,10 @@ public type ReportingReportType record {
     # Earliest time for which this Report Type is available. Measured in seconds since the Unix epoch.
     int data_available_start;
     # List of column names that are included by default when this Report Type gets run. (If the Report Type doesn't support the `columns` parameter, this will be null.)
-    ReportingreporttypeDefaultcolumnsItemsString[]? default_columns?;
+    string[]? default_columns?;
     # The [ID of the Report Type](https://stripe.com/docs/reporting/statements/api#available-report-types), such as `balance.summary.1`.
-    @constraint:String {maxLength: 5000}
     string id;
     # Human-readable name of the Report Type
-    @constraint:String {maxLength: 5000}
     string name;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -4485,12 +3959,8 @@ public type ReportingReportType record {
 
 # Default invoice settings for this customer.
 public type CustomerParam record {
-    record {@constraint:String {maxLength: 30}
-        string name; @constraint:String {maxLength: 30}
-        string value;}[]|string custom_fields?;
-    @constraint:String {maxLength: 5000}
+    record {string name; string value;}[]|string custom_fields?;
     string default_payment_method?;
-    @constraint:String {maxLength: 5000}
     string footer?;
 };
 
@@ -4569,7 +4039,6 @@ public type SetupIntentNextActionVerifyWithMicrodeposits record {
     # The timestamp when the microdeposits are expected to land.
     int arrival_date;
     # The URL for the hosted verification page, which allows customers to verify their bank account.
-    @constraint:String {maxLength: 5000}
     string hosted_verification_url;
 };
 
@@ -4582,13 +4051,12 @@ public type CreditNoteLinesList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
 public type V1InvoicesBody record {
     # The account tax IDs associated with the invoice. Only editable when the invoice is a draft.
-    AccounttaxidsItemsString[]|string account_tax_ids?;
+    string[]|string account_tax_ids?;
     # A fee in %s that will be applied to the invoice and transferred to the application owner's Stripe account. The request must be made with an OAuth key or the Stripe-Account header in order to take an application fee. For more information, see the application fees [documentation](https://stripe.com/docs/billing/invoices/connect#collecting-fees).
     int application_fee_amount?;
     # Controls whether Stripe will perform [automatic collection](https://stripe.com/docs/billing/invoices/workflow/#auto_advance) of the invoice. When `false`, the invoice's state will not automatically advance without an explicit action.
@@ -4600,29 +4068,24 @@ public type V1InvoicesBody record {
     # A list of up to 4 custom fields to be displayed on the invoice.
     InvoiceSettingsCustomFields|string custom_fields?;
     # The ID of the customer who will be billed.
-    @constraint:String {maxLength: 5000}
     string customer;
     # The number of days from when the invoice is created until it is due. Valid only for invoices where `collection_method=send_invoice`.
     int days_until_due?;
     # ID of the default payment method for the invoice. It must belong to the customer associated with the invoice. If not set, defaults to the subscription's default payment method, if any, or to the default payment method in the customer's invoice settings.
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
     # ID of the default payment source for the invoice. It must belong to the customer associated with the invoice and be in a chargeable state. If not set, defaults to the subscription's default source, if any, or to the customer's default source.
-    @constraint:String {maxLength: 5000}
     string default_source?;
     # The tax rates that will apply to any line item that does not have `tax_rates` set.
-    V1invoicesbodyDefaulttaxratesItemsString[] default_tax_rates?;
+    string[] default_tax_rates?;
     # An arbitrary string attached to the object. Often useful for displaying to users. Referenced as 'memo' in the Dashboard.
-    @constraint:String {maxLength: 1500}
     string description?;
     # The coupons to redeem into discounts for the invoice. If not specified, inherits the discount from the invoice's customer. Pass an empty string to avoid inheriting any discounts.
     DiscountsDataParam|string discounts?;
     # The date on which payment for this invoice is due. Valid only for invoices where `collection_method=send_invoice`.
     int due_date?;
     # Specifies which fields in the response should be expanded.
-    V1invoicesbodyExpandItemsString[] expand?;
+    string[] expand?;
     # Footer to be displayed on the invoice.
-    @constraint:String {maxLength: 5000}
     string footer?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string metadata?;
@@ -4631,16 +4094,14 @@ public type V1InvoicesBody record {
     # Configuration settings for the PaymentIntent that is generated when the invoice is finalized.
     PaymentSettings payment_settings?;
     # Extra information about a charge for the customer's credit card statement. It must contain at least one letter. If not specified and this invoice is part of a subscription, the default `statement_descriptor` will be set to the first subscription item's product's `statement_descriptor`.
-    @constraint:String {maxLength: 22}
     string statement_descriptor?;
     # The ID of the subscription to invoice, if any. If not set, the created invoice will include all pending invoice items for the customer. If set, the created invoice will only include pending invoice items for that subscription and pending invoice items not associated with any subscription. The subscription's billing cycle and regular subscription events won't be affected.
-    @constraint:String {maxLength: 5000}
     string subscription?;
     # If specified, the funds from the invoice will be transferred to the destination and the ID of the resulting transfer will be found on the invoice's charge.
     TransferDataSpecs1 transfer_data?;
 };
 
-public type SubscriptionDefaultTaxRates SubscriptiondefaulttaxratesItemsString[]|string;
+public type SubscriptionDefaultTaxRates string[]|string;
 
 public type DueDate RangeQuerySpecs|int;
 
@@ -4656,7 +4117,7 @@ public type GelatoDataVerifiedOutputsDate record {
 
 public type InvoiceSendBody record {
     # Specifies which fields in the response should be expanded.
-    InvoicesendbodyExpandItemsString[] expand?;
+    string[] expand?;
 };
 
 # Pending Updates store the changes pending from a previous update that will be applied
@@ -4689,7 +4150,6 @@ public type TransferReversalList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -4708,9 +4168,9 @@ public type IssuingCardholderAuthorizationControls record {
 # 
 public type CountrySpecVerificationFieldDetails record {
     # Additional fields which are only required for some users.
-    CountryspecverificationfielddetailsAdditionalItemsString[] additional;
+    string[] additional;
     # Fields which every account must eventually provide.
-    CountryspecverificationfielddetailsMinimumItemsString[] minimum;
+    string[] minimum;
 };
 
 # A Reader represents a physical device for accepting payment details.
@@ -4722,12 +4182,10 @@ public type TerminalReader record {
     # Type of reader, one of `bbpos_chipper2x` or `verifone_P400`.
     string device_type;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The local IP address of the reader.
     string? ip_address?;
     # Custom label given to the reader for easier identification.
-    @constraint:String {maxLength: 5000}
     string label;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -4738,7 +4196,6 @@ public type TerminalReader record {
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # Serial number of the reader.
-    @constraint:String {maxLength: 5000}
     string serial_number;
     # The networking status of the reader.
     string? status?;
@@ -4755,7 +4212,6 @@ public type DeletedWebhookEndpoint record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -4848,10 +4304,8 @@ public type TransformQuantity record {
 # 
 public type InvoiceSettingCustomField record {
     # The name of the custom field.
-    @constraint:String {maxLength: 5000}
     string name;
     # The value of the custom field.
-    @constraint:String {maxLength: 5000}
     string value;
 };
 
@@ -4874,7 +4328,6 @@ public type DeletedPlan record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -4883,7 +4336,7 @@ public type DeletedPlan record {
 # 
 public type Networks record {
     # All available networks for the card.
-    NetworksAvailableItemsString[] available;
+    string[] available;
     # The preferred network for the card.
     string? preferred?;
 };
@@ -4944,11 +4397,10 @@ public type PaymentMethodSofort record {
 
 public type ConfigurationItemParams record {
     ItemBillingThresholdsParam|string billing_thresholds?;
-    @constraint:String {maxLength: 5000}
     string price?;
     RecurringPriceData1 price_data?;
     int quantity?;
-    TaxratesItemsString[]|string tax_rates?;
+    string[]|string tax_rates?;
 };
 
 # 
@@ -4956,7 +4408,6 @@ public type DeletedTerminalLocation record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -4968,7 +4419,7 @@ public type SubscriptionSchedulesScheduleBody record {
     # Configures how the subscription schedule behaves when it ends. Possible values are `release` or `cancel` with the default being `release`. `release` will end the subscription schedule and keep the underlying subscription running.`cancel` will end the subscription schedule and cancel the underlying subscription.
     string end_behavior?;
     # Specifies which fields in the response should be expanded.
-    SubscriptionschedulesschedulebodyExpandItemsString[] expand?;
+    string[] expand?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string metadata?;
     # List representing phases of the subscription schedule. Each phase can be customized to have different durations, plans, and coupons. If there are multiple phases, the `end_date` of one phase will always equal the `start_date` of the next phase. Note that past phases can be omitted.
@@ -5002,7 +4453,6 @@ public type DeletedCard record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -5029,7 +4479,6 @@ public type LoginLink record {
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The URL for the login link.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -5038,7 +4487,6 @@ public type DeletedTaxId record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -5063,7 +4511,6 @@ public type SkuInventory record {
     # The count of inventory available. Will be present if and only if `type` is `finite`.
     int? quantity?;
     # Inventory type. Possible values are `finite`, `bucket` (not quantified), and `infinite`.
-    @constraint:String {maxLength: 5000}
     string 'type;
     # An indicator of the inventory available. Possible values are `in_stock`, `limited`, and `out_of_stock`. Will be present if and only if `type` is `bucket`.
     string? value?;
@@ -5108,9 +4555,7 @@ public type Tier record {
 # Default invoice settings for this customer.
 public type CustomerParam1 record {
     InvoiceSettingsCustomFields|string custom_fields?;
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
-    @constraint:String {maxLength: 5000}
     string footer?;
 };
 
@@ -5143,7 +4588,6 @@ public type TransferReversal record {
     # Linked payment refund for the transfer reversal.
     string|Refund? destination_payment_refund?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata?;
@@ -5174,14 +4618,12 @@ public type EphemeralKey record {
     # Time at which the key will expire. Measured in seconds since the Unix epoch.
     int expires;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The key's secret. You can use this value to make authorized requests to the Stripe API.
-    @constraint:String {maxLength: 5000}
     string secret?;
 };
 
@@ -5191,7 +4633,7 @@ public type PaymentMethodsPaymentMethodBody record {
     # If this is a `card` PaymentMethod, this hash contains the user's card details.
     UpdateApiParam card?;
     # Specifies which fields in the response should be expanded.
-    PaymentmethodspaymentmethodbodyExpandItemsString[] expand?;
+    string[] expand?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string metadata?;
 };
@@ -5215,15 +4657,12 @@ public type Refund record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # An arbitrary string attached to the object. Often useful for displaying to users. (Available on non-card refunds only)
-    @constraint:String {maxLength: 5000}
     string description?;
     # If the refund failed, this balance transaction describes the adjustment made on your account balance that reverses the initial balance transaction.
     string|BalanceTransaction failure_balance_transaction?;
     # If the refund failed, the reason for refund failure if known. Possible values are `lost_or_stolen_card`, `expired_or_canceled_card`, or `unknown`.
-    @constraint:String {maxLength: 5000}
     string failure_reason?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata?;
@@ -5256,7 +4695,6 @@ public type TaxIDsList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -5265,13 +4703,10 @@ public type SourceRedirectFlow record {
     # The failure reason for the redirect, either `user_abort` (the customer aborted or dropped out of the redirect flow), `declined` (the authentication failed or the transaction was declined), or `processing_error` (the redirect failed due to a technical error). Present only if the redirect status is `failed`.
     string? failure_reason?;
     # The URL you provide to redirect the customer to after they authenticated their payment.
-    @constraint:String {maxLength: 5000}
     string return_url;
     # The status of the redirect, either `pending` (ready to be used by your customer to authenticate the transaction), `succeeded` (succesful authentication, cannot be reused) or `not_required` (redirect should not be used) or `failed` (failed authentication, cannot be reused).
-    @constraint:String {maxLength: 5000}
     string status;
     # The URL provided to you to redirect a customer to as part of a `redirect` authentication flow.
-    @constraint:String {maxLength: 2048}
     string url;
 };
 
@@ -5279,14 +4714,12 @@ public type SubscriptionItemUpdateParams record {
     record {int usage_gte;}|string billing_thresholds?;
     boolean clear_usage?;
     boolean deleted?;
-    @constraint:String {maxLength: 5000}
     string id?;
     record {}|string metadata?;
-    @constraint:String {maxLength: 5000}
     string price?;
     RecurringPriceData1 price_data?;
     int quantity?;
-    TaxratesItemsString[]|string tax_rates?;
+    string[]|string tax_rates?;
 };
 
 # 
@@ -5300,7 +4733,6 @@ public type SetupIntentNextAction record {
     # 
     SetupIntentNextActionRedirectToUrl redirect_to_url?;
     # Type of the next action to perform, one of `redirect_to_url`, `use_stripe_sdk`, `alipay_handle_redirect`, or `oxxo_display_details`.
-    @constraint:String {maxLength: 5000}
     string 'type;
     # When confirming a SetupIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
     record {} use_stripe_sdk?;
@@ -5319,7 +4751,6 @@ public type PaymentMethodOptionsCardInstallments record {
 };
 
 public type AddInvoiceItemEntry record {
-    @constraint:String {maxLength: 5000}
     string price?;
     OneTimePriceData price_data?;
     int quantity?;
@@ -5336,13 +4767,10 @@ public type PaymentPagesPaymentPageResourcesShippingAddressCollection record {
 # 
 public type SourceTransactionSepaCreditTransferData record {
     # Reference associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string reference?;
     # Sender's bank account IBAN.
-    @constraint:String {maxLength: 5000}
     string sender_iban?;
     # Sender's name.
-    @constraint:String {maxLength: 5000}
     string sender_name?;
 };
 
@@ -5359,7 +4787,6 @@ public type Topup record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-    @constraint:String {maxLength: 5000}
     string currency;
     # An arbitrary string attached to the object. Often useful for displaying to users.
     string? description?;
@@ -5370,7 +4797,6 @@ public type Topup record {
     # Message to user further explaining reason for top-up failure if available.
     string? failure_message?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -5395,9 +4821,7 @@ public type Topup record {
 
 public type CustomerShippingAddress record {
     OptionalFieldsAddress address;
-    @constraint:String {maxLength: 5000}
     string name;
-    @constraint:String {maxLength: 5000}
     string phone?;
 };
 
@@ -5424,7 +4848,6 @@ public type SourceOwner record {
 # 
 public type PaymentMethodDetailsBoleto record {
     # Uniquely identifies this customer tax_id (CNPJ or CPF)
-    @constraint:String {maxLength: 5000}
     string tax_id;
 };
 
@@ -5433,7 +4856,7 @@ public type DiscountsDataParam DiscountsDataParam1[];
 # Contains information about what this coupon applies to
 public type CouponAppliesTo record {
     # A list of product IDs this coupon applies to
-    CouponappliestoProductsItemsString[] products;
+    string[] products;
 };
 
 # The line items purchased by the customer.
@@ -5445,7 +4868,6 @@ public type PaymentPagesCheckoutSessionListLineItems record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -5469,12 +4891,11 @@ public type V1PaymentMethodsBody record {
     # If this is a `card` PaymentMethod, this hash contains the user's card details. For backwards compatibility, you can alternatively provide a Stripe token (e.g., for Apple Pay, Amex Express Checkout, or legacy Checkout) into the card hash with format `card: {token: "tok_visa"}`. When providing a card number, you must meet the requirements for [PCI compliance](https://stripe.com/docs/security#validating-pci-compliance). We strongly recommend using Stripe.js instead of interacting with this API directly.
     CardDetailsParams|TokenParamas card?;
     # The `Customer` to whom the original PaymentMethod is attached.
-    @constraint:String {maxLength: 5000}
     string customer?;
     # If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
     Param3 eps?;
     # Specifies which fields in the response should be expanded.
-    V1paymentmethodsbodyExpandItemsString[] expand?;
+    string[] expand?;
     # If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
     Param4 fpx?;
     # If this is a `giropay` PaymentMethod, this hash contains details about the Giropay payment method.
@@ -5492,7 +4913,6 @@ public type V1PaymentMethodsBody record {
     # If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
     Param6 p24?;
     # The PaymentMethod to share.
-    @constraint:String {maxLength: 5000}
     string payment_method?;
     # If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
     Param7 sepa_debit?;
@@ -5523,15 +4943,12 @@ public type Created RangeQuerySpecs|int;
 # Related guide: [Default Stripe Lists](https://stripe.com/docs/radar/lists#managing-list-items).
 public type RadarValueList record {
     # The name of the value list for use in rules.
-    @constraint:String {maxLength: 5000}
     string alias;
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # The name or email address of the user who created this value list.
-    @constraint:String {maxLength: 5000}
     string created_by;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The type of items in the value list. One of `card_fingerprint`, `card_bin`, `email`, `ip_address`, `country`, `string`, or `case_sensitive_string`.
     string item_type;
@@ -5542,7 +4959,6 @@ public type RadarValueList record {
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata;
     # The name of the value list.
-    @constraint:String {maxLength: 5000}
     string name;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -5589,7 +5005,6 @@ public type ApmsSourcesSourceList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -5634,7 +5049,6 @@ public type CheckoutSession record {
     # Describes whether Checkout should collect the customer's billing address.
     string? billing_address_collection?;
     # The URL the customer will be directed to if they decide to cancel payment and return to your website.
-    @constraint:String {maxLength: 5000}
     string cancel_url;
     # A unique string to reference the Checkout Session. This can be a
     # customer ID, a cart ID, or similar, and can be used to reconcile the
@@ -5658,7 +5072,6 @@ public type CheckoutSession record {
     string? customer_email?;
     # Unique identifier for the object. Used to pass to `redirectToCheckout`
     # in Stripe.js.
-    @constraint:String {maxLength: 5000}
     string id;
     # The line items purchased by the customer.
     PaymentPagesCheckoutSessionListLineItems line_items?;
@@ -5678,7 +5091,7 @@ public type CheckoutSession record {
     CheckoutSessionPaymentMethodOptions? payment_method_options?;
     # A list of the types of payment methods (e.g. card) this Checkout
     # Session is allowed to accept.
-    CheckoutsessionPaymentmethodtypesItemsString[] payment_method_types;
+    string[] payment_method_types;
     # The payment status of the Checkout Session, one of `paid`, `unpaid`, or `no_payment_required`.
     # You can use this value to decide when to fulfill your customer's order.
     string payment_status;
@@ -5697,7 +5110,6 @@ public type CheckoutSession record {
     string|Subscription? subscription?;
     # The URL the customer will be directed to after the payment or
     # subscription creation is successful.
-    @constraint:String {maxLength: 5000}
     string success_url;
     # 
     PaymentPagesCheckoutSessionTaxIdCollection tax_id_collection?;
@@ -5712,7 +5124,6 @@ public type DeletedSku record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -5725,11 +5136,9 @@ public type PhaseConfigurationParams record {
     string billing_cycle_anchor?;
     record {int amount_gte?; boolean reset_billing_cycle_anchor?;}|string billing_thresholds?;
     string collection_method?;
-    @constraint:String {maxLength: 5000}
     string coupon?;
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
-    DefaulttaxratesItemsString[]|string default_tax_rates?;
+    string[]|string default_tax_rates?;
     int end_date?;
     SubscriptionSchedulesParam1 invoice_settings?;
     ConfigurationItemParams[] items;
@@ -5748,7 +5157,6 @@ public type InvoicesList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -5785,7 +5193,6 @@ public type LegalEntityCompany record {
     # Whether the company's business ID number was provided.
     boolean tax_id_provided?;
     # The jurisdiction in which the `tax_id` is registered (Germany-based companies only).
-    @constraint:String {maxLength: 5000}
     string tax_id_registrar?;
     # Whether the company's business VAT number was provided.
     boolean vat_id_provided?;
@@ -5840,7 +5247,6 @@ public type Dispute record {
     # 
     DisputeEvidenceDetails evidence_details;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # If true, it is still possible to refund the disputed payment. Once the payment has been fully refunded, no further funds will be withdrawn from your Stripe account as a result of this dispute.
     boolean is_charge_refundable;
@@ -5853,7 +5259,6 @@ public type Dispute record {
     # ID of the PaymentIntent that was disputed.
     string|PaymentIntent? payment_intent?;
     # Reason given by cardholder for dispute. Possible values are `bank_cannot_process`, `check_returned`, `credit_not_processed`, `customer_initiated`, `debit_not_authorized`, `duplicate`, `fraudulent`, `general`, `incorrect_account_details`, `insufficient_funds`, `product_not_received`, `product_unacceptable`, `subscription_canceled`, or `unrecognized`. Read more about [dispute reasons](https://stripe.com/docs/disputes/categories).
-    @constraint:String {maxLength: 5000}
     string reason;
     # Current status of dispute. Possible values are `warning_needs_response`, `warning_under_review`, `warning_closed`, `needs_response`, `under_review`, `charge_refunded`, `won`, or `lost`.
     string status;
@@ -5890,7 +5295,6 @@ public type Dispute record {
 # guaranteed only for 30 days.
 public type Event record {
     # The connected account that originated the event.
-    @constraint:String {maxLength: 5000}
     string account?;
     # The Stripe API version used to render `data`. *Note: This property is populated only for events on or after October 31, 2014*.
     string? api_version?;
@@ -5899,7 +5303,6 @@ public type Event record {
     # 
     NotificationEventData data;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -5910,7 +5313,6 @@ public type Event record {
     # Information on the API request that instigated the event.
     NotificationEventRequest? request?;
     # Description of the event (e.g., `invoice.created` or `charge.refunded`).
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -5939,7 +5341,6 @@ public type Quotesresourcelistlineitems1 record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -5954,12 +5355,10 @@ public type BitcoinTransaction record {
     # Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) to which this transaction was converted.
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The receiver to which this transaction was sent.
-    @constraint:String {maxLength: 5000}
     string receiver;
 };
 
@@ -6069,7 +5468,7 @@ public type PaymentMethodDetailsSofort record {
 
 public type InvoiceMarkUncollectibleBody record {
     # Specifies which fields in the response should be expanded.
-    InvoicemarkuncollectiblebodyExpandItemsString[] expand?;
+    string[] expand?;
 };
 
 # 
@@ -6127,7 +5526,6 @@ public type PaymentMethodDetailsAcssDebit record {
     # Last four digits of the bank account number.
     string? last4?;
     # ID of the mandate used to make this payment.
-    @constraint:String {maxLength: 5000}
     string mandate?;
     # Transit number of the bank account.
     string? transit_number?;
@@ -6140,7 +5538,6 @@ public type SourceOrder record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # The email address of the customer placing the order.
-    @constraint:String {maxLength: 5000}
     string email?;
     # List of items constituting the order.
     SourceOrderItem[]? items?;
@@ -6206,9 +5603,8 @@ public type WebhookEndpoint record {
     # An optional description of what the webhook is used for.
     string? description?;
     # The list of events to enable for this endpoint. `['*']` indicates that all events are enabled, except those that require explicit selection.
-    WebhookendpointEnabledeventsItemsString[] enabled_events;
+    string[] enabled_events;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -6217,32 +5613,27 @@ public type WebhookEndpoint record {
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The endpoint's secret, used to generate [webhook signatures](https://stripe.com/docs/webhooks/signatures). Only returned at creation.
-    @constraint:String {maxLength: 5000}
     string secret?;
     # The status of the webhook. It can be `enabled` or `disabled`.
-    @constraint:String {maxLength: 5000}
     string status;
     # The URL of the webhook endpoint.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
-public type SubscriptionDefaultTaxRates1 Subscriptiondefaulttaxrates1ItemsString[]|string;
+public type SubscriptionDefaultTaxRates1 string[]|string;
 
 public type ProductsIdBody record {
     # Whether the product is available for purchase.
     boolean active?;
     # The product's description, meant to be displayable to the customer. Use this field to optionally store a long form explanation of the product being sold for your own rendering purposes.
-    @constraint:String {maxLength: 40000}
     string description?;
     # Specifies which fields in the response should be expanded.
-    ProductsidbodyExpandItemsString[] expand?;
+    string[] expand?;
     # A list of up to 8 URLs of images for this product, meant to be displayable to the customer.
     string[]|string images?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     AdditionalProperties|string metadata?;
     # The product's name, meant to be displayable to the customer. Whenever this product is sold via a subscription, name will show up on associated invoice line item descriptions.
-    @constraint:String {maxLength: 5000}
     string name?;
     # The dimensions of this product for shipping purposes.
     PackageDimentionsSpecs|string package_dimensions?;
@@ -6252,12 +5643,10 @@ public type ProductsIdBody record {
     # 
     # This may be up to 22 characters. The statement description may not include `<`, `>`, `\`, `"`, `'` characters, and will appear on your customer's statement in capital letters. Non-ASCII characters are automatically stripped.
     #  It must contain at least one letter. May only be set if `type=service`.
-    @constraint:String {maxLength: 22}
     string statement_descriptor?;
     # A [tax code](https://stripe.com/docs/tax/tax-codes) ID.
     string|string tax_code?;
     # A label that represents units of this product in Stripe and on customers’ receipts and invoices. When set, this will be included in associated invoice line item descriptions. May only be set if `type=service`.
-    @constraint:String {maxLength: 12}
     string unit_label?;
     # A URL of a publicly-accessible webpage for this product.
     string url?;
@@ -6288,7 +5677,6 @@ public type IssuingTransaction record {
     # If you've disputed the transaction, the ID of the dispute.
     string|IssuingDispute? dispute?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -6313,9 +5701,8 @@ public type IssuingTransaction record {
 # 
 public type FinancialReportingFinanceReportRunRunParameters record {
     # The set of output columns requested for inclusion in the report run.
-    FinancialreportingfinancereportrunrunparametersColumnsItemsString[] columns?;
+    string[] columns?;
     # Connected account ID by which to filter the report run.
-    @constraint:String {maxLength: 5000}
     string connected_account?;
     # Currency of objects to be included in the report run.
     string currency?;
@@ -6324,23 +5711,18 @@ public type FinancialReportingFinanceReportRunRunParameters record {
     # Starting timestamp of data to be included in the report run.
     int interval_start?;
     # Payout ID by which to filter the report run.
-    @constraint:String {maxLength: 5000}
     string payout?;
     # Category of balance transactions to be included in the report run.
-    @constraint:String {maxLength: 5000}
     string reporting_category?;
     # Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
-    @constraint:String {maxLength: 5000}
     string timezone?;
 };
 
 # 
 public type IssuingAuthorizationMerchantData record {
     # A categorization of the seller's type of business. See our [merchant categories guide](https://stripe.com/docs/issuing/merchant-categories) for a list of possible values.
-    @constraint:String {maxLength: 5000}
     string category;
     # The merchant category code for the seller’s business
-    @constraint:String {maxLength: 5000}
     string category_code;
     # City where the seller is located
     string? city?;
@@ -6349,7 +5731,6 @@ public type IssuingAuthorizationMerchantData record {
     # Name of the seller
     string? name?;
     # Identifier assigned to the seller by the card brand
-    @constraint:String {maxLength: 5000}
     string network_id;
     # Postal code where the seller is located
     string? postal_code?;
@@ -6403,7 +5784,6 @@ public type GelatoSessionDocumentOptions record {
 # details.
 public type ExchangeRate record {
     # Unique identifier for the object. Represented as the three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) in lowercase.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -6414,10 +5794,8 @@ public type ExchangeRate record {
 # 
 public type IssuingTransactionFuelData record {
     # The type of fuel that was purchased. One of `diesel`, `unleaded_plus`, `unleaded_regular`, `unleaded_super`, or `other`.
-    @constraint:String {maxLength: 5000}
     string 'type;
     # The units for `volume_decimal`. One of `us_gallon` or `liter`.
-    @constraint:String {maxLength: 5000}
     string unit;
     # The cost in cents per each unit of fuel, represented as a decimal string with at most 12 decimal places.
     string unit_cost_decimal;
@@ -6438,7 +5816,6 @@ public type DeletedDiscount record {
     # Always true for a deleted object
     boolean deleted;
     # The ID of the discount object. Discounts cannot be fetched by ID. Use `expand[]=discounts` in API calls to expand discount IDs in an array.
-    @constraint:String {maxLength: 5000}
     string id;
     # The invoice that the discount's coupon was applied to, if it was applied directly to a particular invoice.
     string? invoice?;
@@ -6490,23 +5867,19 @@ public type V1SubscriptionsBody record {
     # Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions. Defaults to `charge_automatically`.
     string collection_method?;
     # The ID of the coupon to apply to this subscription. A coupon applied to a subscription will only affect invoices created for that particular subscription.
-    @constraint:String {maxLength: 5000}
     string coupon?;
     # The identifier of the customer to subscribe.
-    @constraint:String {maxLength: 5000}
     string customer;
     # Number of days a customer has to pay invoices generated by this subscription. Valid only for subscriptions where `collection_method` is set to `send_invoice`.
     int days_until_due?;
     # ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
     # ID of the default payment source for the subscription. It must belong to the customer associated with the subscription and be in a chargeable state. If `default_payment_method` is also set, `default_payment_method` will take precedence. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-    @constraint:String {maxLength: 5000}
     string default_source?;
     # The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription.
     TaxRateArray|string default_tax_rates?;
     # Specifies which fields in the response should be expanded.
-    V1subscriptionsbodyExpandItemsString[] expand?;
+    string[] expand?;
     # A list of up to 20 subscription items, each with an attached price.
     SubscriptionItemCreateParams[] items?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
@@ -6526,7 +5899,6 @@ public type V1SubscriptionsBody record {
     # Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval.
     PendingInvoiceItemIntervalParams|string pending_invoice_item_interval?;
     # The API ID of a promotion code to apply to this subscription. A promotion code applied to a subscription will only affect invoices created for that particular subscription.
-    @constraint:String {maxLength: 5000}
     string promotion_code?;
     # Determines how to handle [prorations](https://stripe.com/docs/subscriptions/billing-cycle#prorations) resulting from the `billing_cycle_anchor`. Valid values are `create_prorations` or `none`.
     # 
@@ -6545,7 +5917,6 @@ public type V1SubscriptionsBody record {
 # 
 public type PaymentIntentPaymentMethodOptionsMandateOptionsAcssDebit record {
     # A URL for custom mandate text
-    @constraint:String {maxLength: 5000}
     string custom_mandate_url?;
     # Description of the interval. Only required if the 'payment_schedule' parameter is 'interval' or 'combined'.
     string? interval_description?;
@@ -6569,7 +5940,6 @@ public type Review record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The IP address where the payment originated.
     string? ip_address?;
@@ -6586,7 +5956,6 @@ public type Review record {
     # The PaymentIntent ID associated with this review, if one exists.
     string|PaymentIntent payment_intent?;
     # The reason the review is currently open or closed. One of `rule`, `manual`, `approved`, `refunded`, `refunded_as_fraud`, `disputed`, or `redacted`.
-    @constraint:String {maxLength: 5000}
     string reason;
     # Information related to the browsing session of the user who initiated the payment.
     RadarReviewResourceSession? session?;
@@ -6604,7 +5973,6 @@ public type TaxId record {
     # ID of the customer.
     string|Customer? customer?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -6613,7 +5981,6 @@ public type TaxId record {
     # Type of the tax ID, one of `ae_trn`, `au_abn`, `au_arn`, `br_cnpj`, `br_cpf`, `ca_bn`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `ca_qst`, `ch_vat`, `cl_tin`, `es_cif`, `eu_vat`, `gb_vat`, `hk_br`, `id_npwp`, `il_vat`, `in_gst`, `jp_cn`, `jp_rn`, `kr_brn`, `li_uid`, `mx_rfc`, `my_frp`, `my_itn`, `my_sst`, `no_vat`, `nz_gst`, `ru_inn`, `ru_kpp`, `sa_vat`, `sg_gst`, `sg_uen`, `th_vat`, `tw_vat`, `us_ein`, or `za_vat`. Note that some legacy tax IDs have type `unknown`
     string 'type;
     # Value of the tax ID.
-    @constraint:String {maxLength: 5000}
     string value;
     # Tax ID verification information.
     TaxIdVerification? verification?;
@@ -6622,7 +5989,6 @@ public type TaxId record {
 # When a non-stripe BIN is used, any use of an [issued card](https://stripe.com/docs/issuing) must be settled directly with the card network. The net amount owed is represented by an Issuing `Settlement` object.
 public type IssuingSettlement record {
     # The Bank Identification Number reflecting this settlement record.
-    @constraint:String {maxLength: 5000}
     string bin;
     # The date that the transactions are cleared and posted to user's accounts.
     int clearing_date;
@@ -6631,7 +5997,6 @@ public type IssuingSettlement record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The total interchange received as reimbursement for the transactions.
     int interchange_fees;
@@ -6646,12 +6011,10 @@ public type IssuingSettlement record {
     # The total amount of fees owed to the network.
     int network_fees;
     # The Settlement Identification Number assigned by the network.
-    @constraint:String {maxLength: 5000}
     string network_settlement_identifier;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # One of `international` or `uk_national_net`.
-    @constraint:String {maxLength: 5000}
     string settlement_service;
     # The total number of transactions reflected in this settlement.
     int transaction_count;
@@ -6666,7 +6029,6 @@ public type PaymentMethodCardWalletGooglePay record {
 # 
 public type PaymentMethodCard record {
     # Card brand. Can be `amex`, `diners`, `discover`, `jcb`, `mastercard`, `unionpay`, `visa`, or `unknown`.
-    @constraint:String {maxLength: 5000}
     string brand;
     # Checks on Card address and CVC if provided.
     PaymentMethodCardChecks? checks?;
@@ -6681,12 +6043,10 @@ public type PaymentMethodCard record {
     # *Starting May 1, 2021, card fingerprint in India for Connect will change to allow two fingerprints for the same card --- one for India and one for the rest of the world.*
     string? fingerprint?;
     # Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-    @constraint:String {maxLength: 5000}
     string funding;
     # Details of the original PaymentMethod that created this object.
     PaymentMethodCardGeneratedCard? generated_from?;
     # The last four digits of the card.
-    @constraint:String {maxLength: 5000}
     string last4;
     # Contains information about card networks that can be used to process the payment.
     Networks? networks?;
@@ -6710,7 +6070,6 @@ public type PaymentFlowsPaymentMethodList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -6726,10 +6085,8 @@ public type RadarEarlyFraudWarning record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
-    @constraint:String {maxLength: 5000}
     string fraud_type;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -6764,7 +6121,6 @@ public type IssuingAuthorization record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -6809,10 +6165,8 @@ public type ThreeDSecure record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-    @constraint:String {maxLength: 5000}
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -6821,13 +6175,12 @@ public type ThreeDSecure record {
     # If present, this is the URL that you should send the cardholder to for authentication. If you are going to use Stripe.js to display the authentication page in an iframe, you should use the value "_callback".
     string? redirect_url?;
     # Possible values are `redirect_pending`, `succeeded`, or `failed`. When the cardholder can be authenticated, the object starts with status `redirect_pending`. When liability will be shifted to the cardholder's bank (either because the cardholder was successfully authenticated, or because the bank has not implemented 3D Secure, the object wlil be in status `succeeded`. `failed` indicates that authentication was attempted unsuccessfully.
-    @constraint:String {maxLength: 5000}
     string status;
 };
 
 public type InvoicePayBody record {
     # Specifies which fields in the response should be expanded.
-    InvoicepaybodyExpandItemsString[] expand?;
+    string[] expand?;
     # In cases where the source used to pay the invoice has insufficient funds, passing `forgive=true` controls whether a charge should be attempted for the full amount available on the source, up to the amount to fully pay the invoice. This effectively forgives the difference between the amount available on the source and the amount due. 
     # 
     # Passing `forgive=false` will fail the charge if the source hasn't been pre-funded with the right amount. An example for this case is with ACH Credit Transfers and wires: if the amount wired is less than the amount due by a small amount, you might want to forgive the difference. Defaults to `false`.
@@ -6837,18 +6190,14 @@ public type InvoicePayBody record {
     # Boolean representing whether an invoice is paid outside of Stripe. This will result in no charge being made. Defaults to `false`.
     boolean paid_out_of_band?;
     # A PaymentMethod to be charged. The PaymentMethod must be the ID of a PaymentMethod belonging to the customer associated with the invoice being paid.
-    @constraint:String {maxLength: 5000}
     string payment_method?;
     # A payment source to be charged. The source must be the ID of a source belonging to the customer associated with the invoice being paid.
-    @constraint:String {maxLength: 5000}
     string 'source?;
 };
 
 public type CustomerAddressWithName record {
     OptionalFieldsAddress address;
-    @constraint:String {maxLength: 5000}
     string name;
-    @constraint:String {maxLength: 5000}
     string phone?;
 };
 
@@ -6888,7 +6237,6 @@ public type DeletedInvoice record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -6949,7 +6297,6 @@ public type Charge record {
     # Information on fraud assessments for the charge.
     ChargeFraudDetails? fraud_details?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # ID of the invoice this charge is for if one exists.
     string|Invoice? invoice?;
@@ -6994,7 +6341,6 @@ public type Charge record {
     # Provides information about the charge that customers see on their statements. Concatenated with the prefix (shortened descriptor) or statement descriptor that’s set on the account to form the complete statement descriptor. Maximum 22 characters for the concatenated descriptor.
     string? statement_descriptor_suffix?;
     # The status of the payment is either `succeeded`, `pending`, or `failed`.
-    @constraint:String {maxLength: 5000}
     string status;
     # ID of the transfer to the `destination` account (only applicable if the charge was created using the `destination` parameter).
     string|Transfer transfer?;
@@ -7009,7 +6355,6 @@ public type Mandate record {
     # 
     CustomerAcceptance customer_acceptance;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -7123,7 +6468,6 @@ public type Quote record {
     # A header that will be displayed on the quote PDF.
     string? header?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The invoice that was created from this quote.
     string|Invoice|DeletedInvoice? invoice?;
@@ -7165,7 +6509,6 @@ public type SubscriptionItem record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata;
@@ -7181,7 +6524,6 @@ public type SubscriptionItem record {
     # The [quantity](https://stripe.com/docs/subscriptions/quantities) of the plan to which the customer should be subscribed.
     int quantity?;
     # The `subscription` this `subscription_item` belongs to.
-    @constraint:String {maxLength: 5000}
     string subscription;
     # The tax rates which apply to this `subscription_item`. When set, the `default_tax_rates` on the subscription do not apply to this `subscription_item`.
     TaxRate[]? tax_rates?;
@@ -7204,7 +6546,6 @@ public type ExternalAccountList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -7233,10 +6574,8 @@ public type AccountCardPaymentsSettings record {
 # 
 public type SourceTransactionPaperCheckData record {
     # Time at which the deposited funds will be available for use. Measured in seconds since the Unix epoch.
-    @constraint:String {maxLength: 5000}
     string available_at?;
     # Comma-separated list of invoice IDs associated with the paper check.
-    @constraint:String {maxLength: 5000}
     string invoices?;
 };
 
@@ -7272,12 +6611,10 @@ public type Account record {
     # 
     AccountController controller?;
     # The account's country.
-    @constraint:String {maxLength: 5000}
     string country?;
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created?;
     # Three-letter ISO currency code representing the default currency for the account. This must be a currency that [Stripe supports in the account's country](https://stripe.com/docs/payouts).
-    @constraint:String {maxLength: 5000}
     string default_currency?;
     # Whether account details have been submitted. Standard accounts cannot receive payouts before this is true.
     boolean details_submitted?;
@@ -7286,7 +6623,6 @@ public type Account record {
     # External accounts (bank accounts and debit cards) currently attached to this account
     ExternalAccountList external_accounts?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # This is an object representing a person associated with a Stripe account.
     # 
@@ -7415,7 +6751,6 @@ public type Invoice record {
     # The URL for the hosted invoice page, which allows customers to view and pay an invoice. If the invoice has not been finalized yet, this will be null.
     string? hosted_invoice_url?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id?;
     # The link to download the PDF for the invoice. If the invoice has not been finalized yet, this will be null.
     string? invoice_pdf?;
@@ -7498,7 +6833,6 @@ public type DeletedTerminalReader record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -7513,7 +6847,6 @@ public type ConnectCollectionTransfer record {
     # ID of the account that funds are being collected for.
     string|Account destination;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -7530,7 +6863,6 @@ public type PaymentMethodDetailsAuBecsDebit record {
     # Last four digits of the bank account number.
     string? last4?;
     # ID of the mandate used to make this payment.
-    @constraint:String {maxLength: 5000}
     string mandate?;
 };
 
@@ -7571,12 +6903,10 @@ public type Item record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # An arbitrary string attached to the object. Often useful for displaying to users. Defaults to product name.
-    @constraint:String {maxLength: 5000}
     string description;
     # The discounts applied to the line item.
     LineItemsDiscountAmount[] discounts?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -7603,22 +6933,19 @@ public type CardGeneratedFromPaymentMethodDetails record {
     # 
     PaymentMethodDetailsCardPresent card_present?;
     # The type of payment method transaction-specific details from the transaction that generated this `card` payment method. Always `card_present`.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
 public type V1SubscriptionSchedulesBody record {
     # The identifier of the customer to create the subscription schedule for.
-    @constraint:String {maxLength: 5000}
     string customer?;
     # Object representing the subscription schedule's default settings.
     DefaultSettingsParams default_settings?;
     # Configures how the subscription schedule behaves when it ends. Possible values are `release` or `cancel` with the default being `release`. `release` will end the subscription schedule and keep the underlying subscription running.`cancel` will end the subscription schedule and cancel the underlying subscription.
     string end_behavior?;
     # Specifies which fields in the response should be expanded.
-    V1subscriptionschedulesbodyExpandItemsString[] expand?;
+    string[] expand?;
     # Migrate an existing subscription to be managed by a subscription schedule. If this parameter is set, a subscription schedule will be created using the subscription's item(s), set to auto-renew using the subscription's interval. When using this parameter, other parameters (such as phase values) cannot be set. To create a subscription schedule with other modifications, we recommend making two separate API calls.
-    @constraint:String {maxLength: 5000}
     string from_subscription?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string metadata?;
@@ -7675,7 +7002,6 @@ public type Subscription record {
     # If the subscription has ended, the date the subscription ended.
     int? ended_at?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # List of subscription items, each with an attached price.
     SubscriptionItemList items;
@@ -7731,7 +7057,6 @@ public type PromotionCode record {
     # Whether the promotion code is currently active. A promotion code is only active if the coupon is also valid.
     boolean active;
     # The customer-facing code. Regardless of case, this code must be unique across all active promotion codes for each customer.
-    @constraint:String {maxLength: 5000}
     string code;
     # A coupon contains information about a percent-off or amount-off discount you
     # might want to apply to a customer. Coupons may be applied to [invoices](https://stripe.com/docs/api#invoices) or
@@ -7744,7 +7069,6 @@ public type PromotionCode record {
     # Date at which the promotion code can no longer be redeemed.
     int? expires_at?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -7763,7 +7087,6 @@ public type PromotionCode record {
 # 
 public type AccountBacsDebitPaymentsSettings record {
     # The Bacs Direct Debit Display Name for this account. For payments made with Bacs Direct Debit, this will appear on the mandate, and as the statement descriptor.
-    @constraint:String {maxLength: 5000}
     string display_name?;
 };
 
@@ -7794,7 +7117,6 @@ public type InvoiceLinesList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -7825,7 +7147,6 @@ public type Card record {
     # A set of available payout methods for this card. Only values from this set should be passed as the `method` when creating a payout.
     string[]? available_payout_methods?;
     # Card brand. Can be `American Express`, `Diners Club`, `Discover`, `JCB`, `MasterCard`, `UnionPay`, `Visa`, or `Unknown`.
-    @constraint:String {maxLength: 5000}
     string brand;
     # Two-letter ISO code representing the country of the card. You could use this attribute to get a sense of the international breakdown of cards you've collected.
     string? country?;
@@ -7848,13 +7169,10 @@ public type Card record {
     # *Starting May 1, 2021, card fingerprint in India for Connect will change to allow two fingerprints for the same card --- one for India and one for the rest of the world.*
     string? fingerprint?;
     # Card funding type. Can be `credit`, `debit`, `prepaid`, or `unknown`.
-    @constraint:String {maxLength: 5000}
     string funding;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The last four digits of the card.
-    @constraint:String {maxLength: 5000}
     string last4;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata?;
@@ -7884,21 +7202,19 @@ public type QuotesResourceComputed record {
 # guide](/docs/connect/required-verification-information).
 public type CountrySpec record {
     # The default currency for this country. This applies to both payment methods and bank accounts.
-    @constraint:String {maxLength: 5000}
     string default_currency;
     # Unique identifier for the object. Represented as the ISO country code for this country.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # Currencies that can be accepted in the specific country (for transfers).
     record {} supported_bank_account_currencies;
     # Currencies that can be accepted in the specified country (for payments).
-    CountryspecSupportedpaymentcurrenciesItemsString[] supported_payment_currencies;
+    string[] supported_payment_currencies;
     # Payment methods available in the specified country. You may need to enable some payment methods (e.g., [ACH](https://stripe.com/docs/ach)) on your account before they appear in this list. The `stripe` payment method refers to [charging through your platform](https://stripe.com/docs/connect/destination-charges).
-    CountryspecSupportedpaymentmethodsItemsString[] supported_payment_methods;
+    string[] supported_payment_methods;
     # Countries that can accept transfers from the specified country.
-    CountryspecSupportedtransfercountriesItemsString[] supported_transfer_countries;
+    string[] supported_transfer_countries;
     # 
     CountrySpecVerificationFields verification_fields;
 };
@@ -7912,13 +7228,10 @@ public type PaymentMethodEps record {
 # 
 public type Rule record {
     # The action taken on the payment.
-    @constraint:String {maxLength: 5000}
     string action;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The predicate to evaluate the payment against.
-    @constraint:String {maxLength: 5000}
     string predicate;
 };
 
@@ -7944,19 +7257,16 @@ public type BalanceTransaction record {
     # Detailed breakdown of fees (in %s) paid for this transaction.
     Fee[] fee_details;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Net amount of the transaction, in %s.
     int net;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # [Learn more](https://stripe.com/docs/reports/reporting-categories) about how reporting categories can help you understand balance transactions from an accounting perspective.
-    @constraint:String {maxLength: 5000}
     string reporting_category;
     # The Stripe object to which this transaction is related.
     string|ApplicationFee|Charge|ConnectCollectionTransfer|Dispute|FeeRefund|IssuingAuthorization|IssuingDispute|IssuingTransaction|Payout|PlatformTaxFee|Refund|ReserveTransaction|TaxDeductedAtSource|Topup|Transfer|TransferReversal? 'source?;
     # If the transaction's net funds are available in the Stripe balance yet. Either `available` or `pending`.
-    @constraint:String {maxLength: 5000}
     string status;
     # Transaction type: `adjustment`, `advance`, `advance_funding`, `anticipation_repayment`, `application_fee`, `application_fee_refund`, `charge`, `connect_collection_transfer`, `contribution`, `issuing_authorization_hold`, `issuing_authorization_release`, `issuing_dispute`, `issuing_transaction`, `payment`, `payment_failure_refund`, `payment_refund`, `payout`, `payout_cancel`, `payout_failure`, `refund`, `refund_failure`, `reserve_transaction`, `reserved_funds`, `stripe_fee`, `stripe_fx_fee`, `tax_fee`, `topup`, `topup_reversal`, `transfer`, `transfer_cancel`, `transfer_failure`, or `transfer_refund`. [Learn more](https://stripe.com/docs/reports/balance-transaction-types) about balance transaction types and what they represent. If you are looking to classify transactions for accounting purposes, you might want to consider `reporting_category` instead.
     string 'type;
@@ -8076,7 +7386,6 @@ public type BillingThresholdParams record {
 # 
 public type SetupIntentPaymentMethodOptionsMandateOptionsAcssDebit record {
     # A URL for custom mandate text
-    @constraint:String {maxLength: 5000}
     string custom_mandate_url?;
     # Description of the interval. Only required if the 'payment_schedule' parameter is 'interval' or 'combined'.
     string? interval_description?;
@@ -8091,7 +7400,6 @@ public type DeletedPrice record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -8194,10 +7502,8 @@ public type CreditNoteLineItem record {
     # The amount of discount calculated per discount for this line item
     DiscountsResourceDiscountAmount[] discount_amounts;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # ID of the invoice line item being credited
-    @constraint:String {maxLength: 5000}
     string invoice_line_item?;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -8240,7 +7546,6 @@ public type BitcoinTransactionList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -8251,13 +7556,11 @@ public type Param8 record {
 
 # If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account.
 public type Param7 record {
-    @constraint:String {maxLength: 5000}
     string iban;
 };
 
 # If this is a `p24` PaymentMethod, this hash contains details about the P24 payment method.
 public type Param6 record {
-    @constraint:String {maxLength: 5000}
     string bank?;
 };
 
@@ -8272,39 +7575,32 @@ public type Fee record {
     # An arbitrary string attached to the object. Often useful for displaying to users.
     string? description?;
     # Type of the fee, one of: `application_fee`, `stripe_fee` or `tax`.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
 # If this is an `ideal` PaymentMethod, this hash contains details about the iDEAL payment method.
 public type Param5 record {
-    @constraint:String {maxLength: 5000}
     string bank?;
 };
 
 # If this is an `fpx` PaymentMethod, this hash contains details about the FPX payment method.
 public type Param4 record {
-    @constraint:String {maxLength: 5000}
     string bank;
 };
 
 # If this is an `eps` PaymentMethod, this hash contains details about the EPS payment method.
 public type Param3 record {
-    @constraint:String {maxLength: 5000}
     string bank?;
 };
 
 # If this is a `boleto` PaymentMethod, this hash contains details about the Boleto payment method.
 public type Param2 record {
-    @constraint:String {maxLength: 5000}
     string tax_id;
 };
 
 # If this is a `bacs_debit` PaymentMethod, this hash contains details about the Bacs Direct Debit bank account.
 public type Param1 record {
-    @constraint:String {maxLength: 5000}
     string account_number?;
-    @constraint:String {maxLength: 5000}
     string sort_code?;
 };
 
@@ -8339,7 +7635,6 @@ public type Plan record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
     string interval;
@@ -8379,7 +7674,6 @@ public type SetupAttempt record {
     # The value of [customer](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-customer) on the SetupIntent at the time of this confirmation.
     string|Customer|DeletedCustomer? customer?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -8396,10 +7690,8 @@ public type SetupAttempt record {
     # ID of the SetupIntent that this attempt belongs to.
     string|SetupIntent setup_intent;
     # Status of this SetupAttempt, one of `requires_confirmation`, `requires_action`, `processing`, `succeeded`, `failed`, or `abandoned`.
-    @constraint:String {maxLength: 5000}
     string status;
     # The value of [usage](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-usage) on the SetupIntent at the time of this confirmation, one of `off_session` or `on_session`.
-    @constraint:String {maxLength: 5000}
     string usage;
 };
 
@@ -8418,7 +7710,6 @@ public type BillingPortalConfiguration record {
     # 
     PortalFeatures features;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Whether the configuration is the default. If `true`, this configuration can be managed in the Dashboard and portal sessions will use this configuration unless it is overriden when creating the session.
     boolean is_default;
@@ -8435,7 +7726,6 @@ public type DeletedRecipient record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -8462,55 +7752,43 @@ public type CustomersCustomerBody record {
     CustomerBankAccountDetails|string bank_account?;
     # A token, like the ones returned by [Stripe.js](https://stripe.com/docs/js).
     CustomerCardDetails|string card?;
-    @constraint:String {maxLength: 5000}
     string coupon?;
     # ID of Alipay account to make the customer's new default for invoice payments.
-    @constraint:String {maxLength: 500}
     string default_alipay_account?;
     # ID of bank account to make the customer's new default for invoice payments.
-    @constraint:String {maxLength: 500}
     string default_bank_account?;
     # ID of card to make the customer's new default for invoice payments.
-    @constraint:String {maxLength: 500}
     string default_card?;
     # If you are using payment methods created via the PaymentMethods API, see the [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/update#update_customer-invoice_settings-default_payment_method) parameter.
     # 
     # Provide the ID of a payment source already attached to this customer to make it this customer's default payment source.
     # 
     # If you want to add a new payment source and make it the default, see the [source](https://stripe.com/docs/api/customers/update#update_customer-source) property.
-    @constraint:String {maxLength: 500}
     string default_source?;
     # An arbitrary string that you can attach to a customer object. It is displayed alongside the customer in the dashboard.
-    @constraint:String {maxLength: 5000}
     string description?;
     # Customer's email address. It's displayed alongside the customer in your dashboard and can be useful for searching and tracking. This may be up to *512 characters*.
-    @constraint:String {maxLength: 512}
     string email?;
     # Specifies which fields in the response should be expanded.
-    CustomerscustomerbodyExpandItemsString[] expand?;
+    string[] expand?;
     # The prefix for the customer used to generate unique invoice numbers. Must be 3–12 uppercase letters or numbers.
-    @constraint:String {maxLength: 5000}
     string invoice_prefix?;
     # Default invoice settings for this customer.
     CustomerParam1 invoice_settings?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string metadata?;
     # The customer's full name or business name.
-    @constraint:String {maxLength: 256}
     string name?;
     # The sequence to be used on the customer's next invoice. Defaults to 1.
     int next_invoice_sequence?;
     # The customer's phone number.
-    @constraint:String {maxLength: 20}
     string phone?;
     # Customer's preferred languages, ordered by preference.
-    CustomerscustomerbodyPreferredlocalesItemsString[] preferred_locales?;
+    string[] preferred_locales?;
     # The API ID of a promotion code to apply to the customer. The customer will have a discount applied on all recurring payments. Charges you create through the API will not have the discount.
-    @constraint:String {maxLength: 5000}
     string promotion_code?;
     # The customer's shipping information. Appears on invoices emailed to this customer.
     CustomerShippingAddress|string shipping?;
-    @constraint:String {maxLength: 5000}
     string 'source?;
     # Tax details about the customer.
     TaxParam tax?;
@@ -8523,9 +7801,8 @@ public type CustomersCustomerBody record {
 # 
 public type PortalSubscriptionUpdateProduct record {
     # The list of price IDs which, when subscribed to, a subscription can be updated.
-    PortalsubscriptionupdateproductPricesItemsString[] prices;
+    string[] prices;
     # The product ID.
-    @constraint:String {maxLength: 5000}
     string product;
 };
 
@@ -8547,7 +7824,6 @@ public type OrderItem record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Description of the line item, meant to be displayable to the user (e.g., `"Express shipping"`).
-    @constraint:String {maxLength: 5000}
     string description;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -8556,7 +7832,6 @@ public type OrderItem record {
     # A positive integer representing the number of instances of `parent` that are included in this order item. Applicable/present only if `type` is `sku`.
     int? quantity?;
     # The type of line item. One of `sku`, `tax`, `shipping`, or `discount`.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -8570,19 +7845,15 @@ public type LegalEntityCompanyVerification record {
 public type BillingDetailsInnerParams record {
     BillingDetailsAddress|string address?;
     string email?;
-    @constraint:String {maxLength: 5000}
     string name?;
-    @constraint:String {maxLength: 5000}
     string phone?;
 };
 
 # 
 public type MandateSepaDebit record {
     # The unique reference of the mandate.
-    @constraint:String {maxLength: 5000}
     string reference;
     # The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -8605,14 +7876,12 @@ public type SourceMandateNotification record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # The reason of the mandate notification. Valid reasons are `mandate_confirmed` or `debit_initiated`.
-    @constraint:String {maxLength: 5000}
     string reason;
     # 
     SourceMandateNotificationSepaDebitData sepa_debit?;
@@ -8624,10 +7893,8 @@ public type SourceMandateNotification record {
     # Related guides: [Sources API](https://stripe.com/docs/sources) and [Sources & Customers](https://stripe.com/docs/sources/customers).
     Source 'source;
     # The status of the mandate notification. Valid statuses are `pending` or `submitted`.
-    @constraint:String {maxLength: 5000}
     string status;
     # The type of source this mandate notification is attached to. Should be the source type identifier code for the payment method, such as `three_d_secure`.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -8639,7 +7906,6 @@ public type ReserveTransaction record {
     # An arbitrary string attached to the object. Often useful for displaying to users.
     string? description?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -8664,7 +7930,6 @@ public type CreditNote record {
     # The aggregate amounts calculated per discount for all line items.
     DiscountsResourceDiscountAmount[] discount_amounts;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # ID of the invoice.
     string|Invoice invoice;
@@ -8677,14 +7942,12 @@ public type CreditNote record {
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata?;
     # A unique number that identifies this particular credit note and appears on the PDF of the credit note and its associated invoice.
-    @constraint:String {maxLength: 5000}
     string number;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
     # Amount that was credited outside of Stripe.
     int? out_of_band_amount?;
     # The link to download the PDF of the credit note.
-    @constraint:String {maxLength: 5000}
     string pdf;
     # Reason for issuing this credit note, one of `duplicate`, `fraudulent`, `order_change`, or `product_unsatisfactory`
     string? reason?;
@@ -8711,10 +7974,8 @@ public type TerminalLocation record {
     # 
     Address address;
     # The display name of the location.
-    @constraint:String {maxLength: 5000}
     string display_name;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -8742,7 +8003,6 @@ public type SourceTransaction record {
     # 
     SourceTransactionGbpCreditTransferData gbp_credit_transfer?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -8753,10 +8013,8 @@ public type SourceTransaction record {
     # 
     SourceTransactionSepaCreditTransferData sepa_credit_transfer?;
     # The ID of the source this transaction is attached to.
-    @constraint:String {maxLength: 5000}
     string 'source;
     # The status of the transaction, one of `succeeded`, `pending`, or `failed`.
-    @constraint:String {maxLength: 5000}
     string status;
     # The type of source this transaction is attached to.
     string 'type;
@@ -8803,7 +8061,6 @@ public type DeletedBitcoinReceiver record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -8834,10 +8091,8 @@ public type Order record {
     # The email address of the customer placing the order.
     string? email?;
     # External coupon code to load for this order.
-    @constraint:String {maxLength: 5000}
     string external_coupon_code?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # List of items constituting the order. An order can have up to 25 items.
     OrderItem[] items;
@@ -8856,14 +8111,12 @@ public type Order record {
     # A list of supported shipping methods for this order. The desired shipping method can be specified either by updating the order, or when paying it.
     ShippingMethod[]? shipping_methods?;
     # Current order status. One of `created`, `paid`, `canceled`, `fulfilled`, or `returned`. More details in the [Orders Guide](https://stripe.com/docs/orders/guide#understanding-order-statuses).
-    @constraint:String {maxLength: 5000}
     string status;
     # The timestamps at which the order status was updated.
     StatusTransitions? status_transitions?;
     # Time at which the object was last updated. Measured in seconds since the Unix epoch.
     int? updated?;
     # The user's order ID if it is different from the Stripe order ID.
-    @constraint:String {maxLength: 5000}
     string upstream_id?;
 };
 
@@ -8880,14 +8133,12 @@ public type QuotesResourceListLineItems record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
 # Data used to generate a new [Price](https://stripe.com/docs/api/prices) object inline.
 public type RecurringPriceData record {
     string currency;
-    @constraint:String {maxLength: 5000}
     string product;
     RecurringAdhoc recurring;
     string tax_behavior?;
@@ -8990,7 +8241,6 @@ public type PaymentIntent record {
     # An arbitrary string attached to the object. Often useful for displaying to users.
     string? description?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # ID of the invoice that created this PaymentIntent, if it exists.
     string|Invoice? invoice?;
@@ -9011,7 +8261,7 @@ public type PaymentIntent record {
     # Payment-method-specific configuration for this PaymentIntent.
     PaymentIntentPaymentMethodOptions? payment_method_options?;
     # The list of payment method types (e.g. card) that this PaymentIntent is allowed to use.
-    PaymentintentPaymentmethodtypesItemsString[] payment_method_types;
+    string[] payment_method_types;
     # Email address that the receipt for the resulting payment will be sent to. If `receipt_email` is specified for a payment in live mode, a receipt will be sent regardless of your [email settings](https://dashboard.stripe.com/account/emails).
     string? receipt_email?;
     # ID of the review associated with this PaymentIntent, if any.
@@ -9053,7 +8303,6 @@ public type IdentityVerificationReport record {
     # Result from a document check
     GelatoDocumentReport document?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Result from an id_number check
     GelatoIdNumberReport id_number?;
@@ -9074,14 +8323,12 @@ public type IdentityVerificationReport record {
 # 
 public type MandateAuBecsDebit record {
     # The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
 # 
 public type PaymentMethodBoleto record {
     # Uniquely identifies the customer tax id (CNPJ or CPF)
-    @constraint:String {maxLength: 5000}
     string tax_id;
 };
 
@@ -9110,7 +8357,6 @@ public type ReportingReportRun record {
     #  `status=failed`).
     string? 'error?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # `true` if the report is run on live mode data and `false` if it is run on test mode data.
     boolean livemode;
@@ -9119,7 +8365,6 @@ public type ReportingReportRun record {
     # 
     FinancialReportingFinanceReportRunRunParameters parameters;
     # The ID of the [report type](https://stripe.com/docs/reports/report-types) to run, such as `"balance.summary.1"`.
-    @constraint:String {maxLength: 5000}
     string report_type;
     # The file object representing the result of the report run (populated when
     #  `status=succeeded`).
@@ -9127,7 +8372,6 @@ public type ReportingReportRun record {
     # Status of this report run. This will be `pending` when the run is initially created.
     #  When the run finishes, this will be set to `succeeded` and the `result` field will be populated.
     #  Rarely, we may encounter an error, at which point this will be set to `failed` and the `error` field will be populated.
-    @constraint:String {maxLength: 5000}
     string status;
     # Timestamp at which this run successfully finished (populated when
     #  `status=succeeded`). Measured in seconds since the Unix epoch.
@@ -9157,7 +8401,6 @@ public type Invoiceitem record {
     # The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
     (string|Discount)[]? discounts?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The ID of the invoice this invoice item belongs to.
     string|Invoice? invoice?;
@@ -9178,7 +8421,6 @@ public type Invoiceitem record {
     # The subscription that this invoice item has been created for, if any.
     string|Subscription? subscription?;
     # The subscription item that this invoice item has been created for, if any.
-    @constraint:String {maxLength: 5000}
     string subscription_item?;
     # The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item.
     TaxRate[]? tax_rates?;
@@ -9215,7 +8457,6 @@ public type CustomerBalanceTransaction record {
     # The customer's `balance` after the transaction was applied. A negative value decreases the amount due on the customer's next invoice. A positive value increases the amount due on the customer's next invoice.
     int ending_balance;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The ID of the invoice (if any) related to the transaction.
     string|Invoice? invoice?;
@@ -9238,7 +8479,6 @@ public type DeletedCoupon record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -9269,7 +8509,6 @@ public type ApplicationFee record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -9286,10 +8525,8 @@ public type ApplicationFee record {
 # 
 public type PaymentIntentNextActionWechatPayDisplayQrCode record {
     # The data being used to generate QR code
-    @constraint:String {maxLength: 5000}
     string data;
     # The base64 image data for a pre-generated QR code
-    @constraint:String {maxLength: 5000}
     string image_data_url;
 };
 
@@ -9332,7 +8569,6 @@ public type PaymentMethod record {
     # 
     PaymentMethodGrabpay grabpay?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # 
     PaymentMethodIdeal ideal?;
@@ -9384,7 +8620,6 @@ public type SubscriptionsSubscriptionExposedIdBody record {
     # Automatic tax settings for this subscription.
     AutomaticTaxConfig1 automatic_tax?;
     # Either `now` or `unchanged`. Setting the value to `now` resets the subscription's billing cycle anchor to the current time. For more information, see the billing cycle [documentation](https://stripe.com/docs/billing/subscriptions/billing-cycle).
-    @constraint:String {maxLength: 5000}
     string billing_cycle_anchor?;
     # Define thresholds at which an invoice will be sent, and the subscription advanced to a new billing period. Pass an empty string to remove previously-defined thresholds.
     record {int amount_gte?; boolean reset_billing_cycle_anchor?;}|string billing_thresholds?;
@@ -9395,20 +8630,17 @@ public type SubscriptionsSubscriptionExposedIdBody record {
     # Either `charge_automatically`, or `send_invoice`. When charging automatically, Stripe will attempt to pay this subscription at the end of the cycle using the default source attached to the customer. When sending an invoice, Stripe will email your customer an invoice with payment instructions. Defaults to `charge_automatically`.
     string collection_method?;
     # The ID of the coupon to apply to this subscription. A coupon applied to a subscription will only affect invoices created for that particular subscription.
-    @constraint:String {maxLength: 5000}
     string coupon?;
     # Number of days a customer has to pay invoices generated by this subscription. Valid only for subscriptions where `collection_method` is set to `send_invoice`.
     int days_until_due?;
     # ID of the default payment method for the subscription. It must belong to the customer associated with the subscription. This takes precedence over `default_source`. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-    @constraint:String {maxLength: 5000}
     string default_payment_method?;
     # ID of the default payment source for the subscription. It must belong to the customer associated with the subscription and be in a chargeable state. If `default_payment_method` is also set, `default_payment_method` will take precedence. If neither are set, invoices will use the customer's [invoice_settings.default_payment_method](https://stripe.com/docs/api/customers/object#customer_object-invoice_settings-default_payment_method) or [default_source](https://stripe.com/docs/api/customers/object#customer_object-default_source).
-    @constraint:String {maxLength: 5000}
     string default_source?;
     # The tax rates that will apply to any subscription item that does not have `tax_rates` set. Invoices created will have their `default_tax_rates` populated from the subscription. Pass an empty string to remove previously-defined tax rates.
-    DefaulttaxratesItemsString[]|string default_tax_rates?;
+    string[]|string default_tax_rates?;
     # Specifies which fields in the response should be expanded.
-    SubscriptionssubscriptionexposedidbodyExpandItemsString[] expand?;
+    string[] expand?;
     # A list of up to 20 subscription items, each with an attached price.
     SubscriptionItemUpdateParams[] items?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
@@ -9430,7 +8662,6 @@ public type SubscriptionsSubscriptionExposedIdBody record {
     # Specifies an interval for how often to bill for any pending invoice items. It is analogous to calling [Create an invoice](https://stripe.com/docs/api#create_invoice) for the given subscription at the specified interval.
     record {string interval; int interval_count?;}|string pending_invoice_item_interval?;
     # The promotion code to apply to this subscription. A promotion code applied to a subscription will only affect invoices created for that particular subscription.
-    @constraint:String {maxLength: 5000}
     string promotion_code?;
     # Determines how to handle [prorations](https://stripe.com/docs/subscriptions/billing-cycle#prorations) when the billing cycle changes (e.g., when switching plans, resetting `billing_cycle_anchor=now`, or starting a trial), or if an item's `quantity` changes. Valid values are `create_prorations`, `none`, or `always_invoice`.
     # 
@@ -9515,7 +8746,6 @@ public type PaymentMethodDetails record {
     # The type of transaction-specific details of the payment method used in the payment, one of `ach_credit_transfer`, `ach_debit`, `acss_debit`, `alipay`, `au_becs_debit`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `klarna`, `multibanco`, `p24`, `sepa_debit`, `sofort`, `stripe_account`, or `wechat`.
     # An additional hash is included on `payment_method_details` with a name matching this value.
     # It contains information specific to the payment method.
-    @constraint:String {maxLength: 5000}
     string 'type;
     # 
     PaymentMethodDetailsWechat wechat?;
@@ -9553,7 +8783,6 @@ public type QuotesResourceAutomaticTax record {
 # Related guide: [Metered Billing](https://stripe.com/docs/billing/subscriptions/metered-billing).
 public type UsageRecord record {
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -9562,7 +8791,6 @@ public type UsageRecord record {
     # The usage quantity for the specified date.
     int quantity;
     # The ID of the subscription item this usage record contains data for.
-    @constraint:String {maxLength: 5000}
     string subscription_item;
     # The timestamp when this usage occurred.
     int timestamp;
@@ -9577,7 +8805,6 @@ public type FeeRefundList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -9615,7 +8842,6 @@ public type Source record {
     SourceTypeCard card?;
     SourceTypeCardPresent card_present?;
     # The client secret of the source. Used for client-side retrieval using a publishable key.
-    @constraint:String {maxLength: 5000}
     string client_secret;
     # 
     SourceCodeVerificationFlow code_verification?;
@@ -9624,15 +8850,12 @@ public type Source record {
     # Three-letter [ISO code for the currency](https://stripe.com/docs/currencies) associated with the source. This is the currency for which the source will be chargeable once ready. Required for `single_use` sources.
     string? currency?;
     # The ID of the customer to which this source is attached. This will not be present when the source has not been attached to a customer.
-    @constraint:String {maxLength: 5000}
     string customer?;
     SourceTypeEps eps?;
     # The authentication `flow` of the source. `flow` is one of `redirect`, `receiver`, `code_verification`, `none`.
-    @constraint:String {maxLength: 5000}
     string flow;
     SourceTypeGiropay giropay?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     SourceTypeIdeal ideal?;
     SourceTypeKlarna klarna?;
@@ -9657,7 +8880,6 @@ public type Source record {
     # Extra information about a source. This will appear on your customer's statement every time you charge the source.
     string? statement_descriptor?;
     # The status of the source, one of `canceled`, `chargeable`, `consumed`, `failed`, or `pending`. Only `chargeable` sources can be used to create a charge.
-    @constraint:String {maxLength: 5000}
     string status;
     SourceTypeThreeDSecure three_d_secure?;
     # The `type` of the source. The `type` is a payment method, one of `ach_credit_transfer`, `ach_debit`, `alipay`, `bancontact`, `card`, `card_present`, `eps`, `giropay`, `ideal`, `multibanco`, `klarna`, `p24`, `sepa_debit`, `sofort`, `three_d_secure`, or `wechat`. An additional hash is included on the source with a name matching this value. It contains additional information specific to the [payment method](https://stripe.com/docs/sources) used.
@@ -9696,7 +8918,6 @@ public type PaymentIntentNextAction record {
     # 
     PaymentIntentNextActionRedirectToUrl redirect_to_url?;
     # Type of the next action to perform, one of `redirect_to_url`, `use_stripe_sdk`, `alipay_handle_redirect`, or `oxxo_display_details`.
-    @constraint:String {maxLength: 5000}
     string 'type;
     # When confirming a PaymentIntent with Stripe.js, Stripe.js depends on the contents of this dictionary to invoke authentication flows. The shape of the contents is subject to change and is only intended to be used by Stripe.js.
     record {} use_stripe_sdk?;
@@ -9723,7 +8944,6 @@ public type MandateSingleUse record {
 # 
 public type PaymentIntentNextActionWechatPayRedirectToIosApp record {
     # An universal link that redirect to Wechat Pay APP
-    @constraint:String {maxLength: 5000}
     string native_url;
 };
 
@@ -9741,13 +8961,10 @@ public type SubscriptionBillingCycleAnchor1 string|int;
 # [Tax codes](https://stripe.com/docs/tax/tax-codes) classify goods and services for tax purposes.
 public type TaxCode record {
     # A detailed description of which types of products the tax code represents.
-    @constraint:String {maxLength: 5000}
     string description;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # A short name for the tax code.
-    @constraint:String {maxLength: 5000}
     string name;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -9785,14 +9002,12 @@ public type Payout record {
     # Message to user further explaining reason for payout failure if available.
     string? failure_message?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
     record {} metadata?;
     # The method used to send this payout, which can be `standard` or `instant`. `instant` is only supported for payouts to debit cards. (See [Instant payouts for marketplaces](https://stripe.com/blog/instant-payouts-for-marketplaces) for more information.)
-    @constraint:String {maxLength: 5000}
     string method;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -9801,12 +9016,10 @@ public type Payout record {
     # If the payout was reversed, this is the ID of the payout that reverses this payout.
     string|Payout? reversed_by?;
     # The source balance this payout came from. One of `card`, `fpx`, or `bank_account`.
-    @constraint:String {maxLength: 5000}
     string source_type;
     # Extra information about a payout to be displayed on the user's bank statement.
     string? statement_descriptor?;
     # Current status of the payout: `paid`, `pending`, `in_transit`, `canceled` or `failed`. A payout is `pending` until it is submitted to the bank, when it becomes `in_transit`. The status then changes to `paid` if the transaction goes through, or to `failed` or `canceled` (within 5 business days). Some failed payouts may initially show as `paid` but then change to `failed`.
-    @constraint:String {maxLength: 5000}
     string status;
     # Can be `bank_account` or `card`.
     string 'type;
@@ -9823,12 +9036,10 @@ public type IssuingAuthorizationRequest record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-    @constraint:String {maxLength: 5000}
     string currency;
     # The `pending_request.merchant_amount` at the time of the request, presented in the `merchant_currency` and in the [smallest currency unit](https://stripe.com/docs/currencies#zero-decimal).
     int merchant_amount;
     # The currency that was collected by the merchant and presented to the cardholder for the authorization. Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
-    @constraint:String {maxLength: 5000}
     string merchant_currency;
     # The reason for the approval or decline.
     string reason;
@@ -9837,25 +9048,18 @@ public type IssuingAuthorizationRequest record {
 # 
 public type SourceTransactionGbpCreditTransferData record {
     # Bank account fingerprint associated with the Stripe owned bank account receiving the transfer.
-    @constraint:String {maxLength: 5000}
     string fingerprint?;
     # The credit transfer rails the sender used to push this transfer. The possible rails are: Faster Payments, BACS, CHAPS, and wire transfers. Currently only Faster Payments is supported.
-    @constraint:String {maxLength: 5000}
     string funding_method?;
     # Last 4 digits of sender account number associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string last4?;
     # Sender entered arbitrary information about the transfer.
-    @constraint:String {maxLength: 5000}
     string reference?;
     # Sender account number associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string sender_account_number?;
     # Sender name associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string sender_name?;
     # Sender sort code associated with the transfer.
-    @constraint:String {maxLength: 5000}
     string sender_sort_code?;
 };
 
@@ -9863,10 +9067,8 @@ public type SourceTransactionGbpCreditTransferData record {
 public type ApplePayDomain record {
     # Time at which the object was created. Measured in seconds since the Unix epoch.
     int created;
-    @constraint:String {maxLength: 5000}
     string domain_name;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -9881,11 +9083,9 @@ public type VerificationSessionRedaction record {
 };
 
 public type CardDetailsParams record {
-    @constraint:String {maxLength: 5000}
     string cvc?;
     int exp_month;
     int exp_year;
-    @constraint:String {maxLength: 5000}
     string number;
 };
 
@@ -9906,7 +9106,6 @@ public type PaymentFlowsPaymentIntentResourceChargeList record {
     # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
     string 'object;
     # The URL where this list can be accessed.
-    @constraint:String {maxLength: 5000}
     string url;
 };
 
@@ -9955,10 +9154,8 @@ public type LineItem record {
     # The discounts applied to the invoice line item. Line item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
     (string|Discount)[]? discounts?;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The ID of the [invoice item](https://stripe.com/docs/api/invoiceitems) associated with this line item if any.
-    @constraint:String {maxLength: 5000}
     string invoice_item?;
     # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
     boolean livemode;
@@ -9977,7 +9174,6 @@ public type LineItem record {
     # The subscription that the invoice item pertains to, if any.
     string? subscription?;
     # The subscription item that generated this invoice item. Left empty if the line item is not an explicit result of a subscription.
-    @constraint:String {maxLength: 5000}
     string subscription_item?;
     # The amount of tax calculated per tax rate for this line item
     InvoiceTaxAmount[] tax_amounts?;
@@ -10007,7 +9203,6 @@ public type OrderReturn record {
     # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
     string currency;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # The items included in this order return.
     OrderItem[] items;
@@ -10026,7 +9221,6 @@ public type DeletedRadarValueListItem record {
     # Always true for a deleted object
     boolean deleted;
     # Unique identifier for the object.
-    @constraint:String {maxLength: 5000}
     string id;
     # String representing the object's type. Objects of the same type share the same value.
     string 'object;
@@ -10041,7 +9235,6 @@ public type IssuingCardShipping record {
     # A unix timestamp representing a best estimate of when the card will be delivered.
     int? eta?;
     # Recipient name.
-    @constraint:String {maxLength: 5000}
     string name;
     # Shipment service, such as `standard` or `express`.
     string 'service;
@@ -10081,14 +9274,12 @@ public type PricesPriceBody record {
     # Whether the price can be used for new purchases. Defaults to `true`.
     boolean active?;
     # Specifies which fields in the response should be expanded.
-    PricespricebodyExpandItemsString[] expand?;
+    string[] expand?;
     # A lookup key used to retrieve prices dynamically from a static string.
-    @constraint:String {maxLength: 5000}
     string lookup_key?;
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     AdditionalProperties|string metadata?;
     # A brief description of the price, hidden from customers.
-    @constraint:String {maxLength: 5000}
     string nickname?;
     # Specifies whether the price is considered inclusive of taxes or exclusive of taxes. One of `inclusive`, `exclusive`, or `unspecified`. Once specified as either `inclusive` or `exclusive`, it cannot be changed.
     string tax_behavior?;
@@ -10097,11 +9288,10 @@ public type PricesPriceBody record {
 };
 
 public type AddInvoiceItemEntry1 record {
-    @constraint:String {maxLength: 5000}
     string price?;
     OneTimePriceData price_data?;
     int quantity?;
-    TaxratesItemsString[]|string tax_rates?;
+    string[]|string tax_rates?;
 };
 
 # 
@@ -10123,7 +9313,6 @@ public type MandatePaymentMethodDetails record {
     # 
     MandateSepaDebit sepa_debit?;
     # The type of the payment method associated with this mandate. An additional hash is included on `payment_method_details` with a name matching this value. It contains mandate information specific to the payment method.
-    @constraint:String {maxLength: 5000}
     string 'type;
 };
 
@@ -10134,9 +9323,7 @@ public type PaymentMethodOptionsBoleto record {
 };
 
 public type DiscountsDataParam1 record {
-    @constraint:String {maxLength: 5000}
     string coupon?;
-    @constraint:String {maxLength: 5000}
     string discount?;
 };
 

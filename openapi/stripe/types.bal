@@ -1,19 +1,3 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-//
-// WSO2 Inc. licenses this file to you under the Apache License,
-// Version 2.0 (the "License"); you may not use this file except
-// in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-
 public type NotificationEventRequest record {
     # ID of the API request that caused the event. If null, the event was automatic (e.g., Stripe's automatic subscription handling). Request logs are available in the [dashboard](https://dashboard.stripe.com/logs), but currently not in the API.
     string? id?;
@@ -4337,10 +4321,6 @@ public type EphemeralKey record {
     string? secret?;
 };
 
-public type Created2 RangeQuerySpecs|int?;
-
-public type Created1 RangeQuerySpecs|int?;
-
 public type PaymentMethodsPaymentMethodBody record {
     # Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
     BillingDetailsInnerParams? billing_details?;
@@ -4351,6 +4331,8 @@ public type PaymentMethodsPaymentMethodBody record {
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string? metadata?;
 };
+
+public type Created1 RangeQuerySpecs|int?;
 
 # `Refund` objects allow you to refund a charge that has previously been created
 # but not yet refunded. Funds will be refunded to the credit or debit card that
@@ -4636,16 +4618,7 @@ public type PaymentPagesCheckoutSessionTotalDetails record {
     PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown? breakdown?;
 };
 
-public type Created record {
-    # Minimum value to filter by (exclusive)
-    int? gt?;
-    # Minimum value to filter by (inclusive)
-    int? gte?;
-    # Maximum value to filter by (exclusive)
-    int? lt?;
-    # Maximum value to filter by (inclusive)
-    int? lte?;
-}|int?;
+public type Created RangeQuerySpecs|int?;
 
 # Value lists allow you to group values together which can then be referenced in rules.
 # 

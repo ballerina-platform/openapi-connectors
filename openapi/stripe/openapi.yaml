@@ -24623,23 +24623,7 @@ paths:
           name: created
           required: false
           schema:
-            anyOf:
-              - properties:
-                  gt:
-                    description: Minimum value to filter by (exclusive)
-                    type: integer
-                  gte:
-                    description: Minimum value to filter by (inclusive)
-                    type: integer
-                  lt:
-                    description: Maximum value to filter by (exclusive)
-                    type: integer
-                  lte:
-                    description: Maximum value to filter by (inclusive)
-                    type: integer
-                title: range_query_specs
-                type: object
-              - type: integer
+            $ref: '#/components/schemas/CreatedDetails'
           style: deepObject
         - description: >-
             A case-sensitive filter on the list based on the customer's `email`

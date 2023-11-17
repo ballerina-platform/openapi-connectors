@@ -1,19 +1,3 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-//
-// WSO2 Inc. licenses this file to you under the Apache License,
-// Version 2.0 (the "License"); you may not use this file except
-// in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-
 import ballerina/http;
 
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
@@ -102,7 +86,7 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + testClock - Provides a list of customers that are associated with the specified test clock. The response will not include customers with test clocks if this parameter is not set. 
     # + return - Successful response. 
-    remote isolated function listCustomers(Created? created = (), string? email = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? testClock = ()) returns CustomerResourceCustomerList|error {
+    remote isolated function listCustomers(CreatedDetails? created = (), string? email = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? testClock = ()) returns CustomerResourceCustomerList|error {
         string resourcePath = string `/v1/customers`;
         map<anydata> queryParam = {"created": created, "email": email, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter, "test_clock": testClock};
         map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};
@@ -174,7 +158,7 @@ public isolated client class Client {
     # + status - The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview) 
     # + subscription - Only return invoices for the subscription specified by this subscription ID. 
     # + return - Successful response. 
-    remote isolated function listInvoices(string? collectionMethod = (), Created1? created = (), string? customer = (), DueDate? dueDate = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? status = (), string? subscription = ()) returns InvoicesList|error {
+    remote isolated function listInvoices(string? collectionMethod = (), Created? created = (), string? customer = (), DueDate? dueDate = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? status = (), string? subscription = ()) returns InvoicesList|error {
         string resourcePath = string `/v1/invoices`;
         map<anydata> queryParam = {"collection_method": collectionMethod, "created": created, "customer": customer, "due_date": dueDate, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter, "status": status, "subscription": subscription};
         map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "due_date": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};
@@ -573,7 +557,7 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + status - The status of the subscriptions to retrieve. Passing in a value of `canceled` will return all canceled subscriptions, including those belonging to deleted customers. Pass `ended` to find subscriptions that are canceled and subscriptions that are expired due to [incomplete payment](https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses). Passing in a value of `all` will return subscriptions of all statuses. If no value is supplied, all subscriptions that have not been canceled are returned. 
     # + return - Successful response. 
-    remote isolated function listSubscriptions(string? collectionMethod = (), Created2? created = (), CurrentPeriodEnd? currentPeriodEnd = (), CurrentPeriodStart? currentPeriodStart = (), string? customer = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? price = (), string? startingAfter = (), string? status = ()) returns InlineResponse2002|error {
+    remote isolated function listSubscriptions(string? collectionMethod = (), Created1? created = (), CurrentPeriodEnd? currentPeriodEnd = (), CurrentPeriodStart? currentPeriodStart = (), string? customer = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? price = (), string? startingAfter = (), string? status = ()) returns InlineResponse2002|error {
         string resourcePath = string `/v1/subscriptions`;
         map<anydata> queryParam = {"collection_method": collectionMethod, "created": created, "current_period_end": currentPeriodEnd, "current_period_start": currentPeriodStart, "customer": customer, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "price": price, "starting_after": startingAfter, "status": status};
         map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "current_period_end": {style: DEEPOBJECT, explode: true}, "current_period_start": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};

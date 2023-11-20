@@ -203,7 +203,7 @@ public type Invoice record {
     # Invoice items
     InvoiceItem[] invoice_items?;
     # Secondary tax label
-    string tax2_label?;
+    string? tax2_label?;
     # Summary
     string summary?;
     # Total payments
@@ -219,7 +219,7 @@ public type Invoice record {
     # Payments
     Payment[] payments?;
     # Tertiary tax label
-    string tax3_label?;
+    string? tax3_label?;
     # Tertiary tax
     decimal tax3?;
     # Invoice items attributes. invoice_item_attributes.title, invoice_item_attributes.quantity, invoice_item_attributes.price must be provided if any items are added.
@@ -229,7 +229,7 @@ public type Invoice record {
 # Invoice item
 public type InvoiceItem record {
     # Price
-    string price?;
+    string|float price?;
     # Title
     string title?;
     # Quantity
@@ -345,7 +345,7 @@ public type UpdateTaskRequest record {
 # Clients represent companies, groups, organizations or other contact containers. All contacts must belong to a client. Clients are also the main containers for Projects and Invoices.
 public type ClientObject record {
     # The unique number for the client
-    string number?;
+    string? number?;
     # The name of the client
     string name?;
     # The city of the client
@@ -359,11 +359,11 @@ public type ClientObject record {
     # Client ID
     int id?;
     # The website of the client
-    string website?;
+    string? website?;
     # The address2 of the client
-    string address_2?;
+    string? address_2?;
     # The description about the client
-    string description?;
+    string? description?;
     # The state of the client
     string state?;
 };

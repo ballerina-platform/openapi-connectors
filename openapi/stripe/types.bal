@@ -4347,10 +4347,6 @@ public type EphemeralKey record {
     string? secret?;
 };
 
-public type Created2 RangeQuerySpecs|int?;
-
-public type Created1 RangeQuerySpecs|int?;
-
 public type PaymentMethodsPaymentMethodBody record {
     # Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
     BillingDetailsInnerParams? billing_details?;
@@ -4361,6 +4357,8 @@ public type PaymentMethodsPaymentMethodBody record {
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string? metadata?;
 };
+
+public type Created1 RangeQuerySpecs|int?;
 
 # `Refund` objects allow you to refund a charge that has previously been created
 # but not yet refunded. Funds will be refunded to the credit or debit card that
@@ -4646,16 +4644,7 @@ public type PaymentPagesCheckoutSessionTotalDetails record {
     PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown? breakdown?;
 };
 
-public type Created record {
-    # Minimum value to filter by (exclusive)
-    int? gt?;
-    # Minimum value to filter by (inclusive)
-    int? gte?;
-    # Maximum value to filter by (exclusive)
-    int? lt?;
-    # Maximum value to filter by (inclusive)
-    int? lte?;
-}|int?;
+public type Created RangeQuerySpecs|int?;
 
 # Value lists allow you to group values together which can then be referenced in rules.
 # 

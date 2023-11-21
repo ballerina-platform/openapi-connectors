@@ -93,6 +93,23 @@ public isolated client class Client {
         Coupon response = check self.clientEp->get(resourcePath);
         return response;
     }
+    # <p>Returns a list of your customers. The customers are returned sorted by creation date, with the most recent customers appearing first.</p>
+    #
+    # + email - A case-sensitive filter on the list based on the customer's `email` field. The value must be a string. 
+    # + endingBefore - A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list. 
+    # + expand - Specifies which fields in the response should be expanded. 
+    # + 'limit - A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 10. 
+    # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
+    # + testClock - Provides a list of customers that are associated with the specified test clock. The response will not include customers with test clocks if this parameter is not set. 
+    # + return - Successful response. 
+    remote isolated function listCustomers(Created? created = (), string? email = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? testClock = ()) returns CustomerResourceCustomerList|error {
+        string resourcePath = string `/v1/customers`;
+        map<anydata> queryParam = {"created": created, "email": email, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter, "test_clock": testClock};
+        map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};
+        resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
+        CustomerResourceCustomerList response = check self.clientEp->get(resourcePath);
+        return response;
+    }
     # <p>Creates a new customer object.</p>
     #
     # + payload - Customer details 
@@ -157,7 +174,7 @@ public isolated client class Client {
     # + status - The status of the invoice, one of `draft`, `open`, `paid`, `uncollectible`, or `void`. [Learn more](https://stripe.com/docs/billing/invoices/workflow#workflow-overview) 
     # + subscription - Only return invoices for the subscription specified by this subscription ID. 
     # + return - Successful response. 
-    remote isolated function listInvoices(string? collectionMethod = (), Created? created = (), string? customer = (), DueDate? dueDate = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? status = (), string? subscription = ()) returns InvoicesList|error {
+    remote isolated function listInvoices(string? collectionMethod = (), Created1? created = (), string? customer = (), DueDate? dueDate = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = (), string? status = (), string? subscription = ()) returns InvoicesList|error {
         string resourcePath = string `/v1/invoices`;
         map<anydata> queryParam = {"collection_method": collectionMethod, "created": created, "customer": customer, "due_date": dueDate, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter, "status": status, "subscription": subscription};
         map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "due_date": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};
@@ -542,9 +559,8 @@ public isolated client class Client {
         UsageRecord response = check self.clientEp->post(resourcePath, request);
         return response;
     }
-
     # <p>For the specified subscription item, returns a list of summary objects. Each object in the list provides usage information that’s been summarized from multiple usage records and over a subscription billing period (e.g., 15 usage records in the month of September).</p>
-    #
+    # 
     # <p>The list is sorted in reverse-chronological order (newest first). The first list item represents the most current usage period that hasn’t ended yet. Since new usage records can still be added, the returned summary information for the subscription item’s ID should be seen as unstable until the subscription billing period ends.</p>
     #
     # + endingBefore - A cursor for use in pagination. `ending_before` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, starting with `obj_bar`, your subsequent call can include `ending_before=obj_bar` in order to fetch the previous page of the list. 
@@ -553,14 +569,13 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + return - Successful response. 
     remote isolated function getSubscriptionItemsSubscriptionItemUsageRecordSummaries(string subscriptionItem, string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? startingAfter = ()) returns UsageEventsResourceUsageRecordSummaryList|error {
-        string resourcePath = string `/v1/subscription_items/${getEncodedUri(subscriptionItem)}/usage_record_summaries`;
+        string resourcePath = string `/v1/subscription_items/${subscriptionItem}/usage_record_summaries`;
         map<anydata> queryParam = {"ending_before": endingBefore, "expand": expand, "limit": 'limit, "starting_after": startingAfter};
         map<Encoding> queryParamEncoding = {"expand": {style: DEEPOBJECT, explode: true}};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam, queryParamEncoding);
         UsageEventsResourceUsageRecordSummaryList response = check self.clientEp->get(resourcePath);
         return response;
     }
-
     # <p>By default, returns a list of subscriptions that have not been canceled. In order to list canceled subscriptions, specify <code>status=canceled</code>.</p>
     #
     # + collectionMethod - The collection method of the subscriptions to retrieve. Either `charge_automatically` or `send_invoice`. 
@@ -575,7 +590,7 @@ public isolated client class Client {
     # + startingAfter - A cursor for use in pagination. `starting_after` is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with `obj_foo`, your subsequent call can include `starting_after=obj_foo` in order to fetch the next page of the list. 
     # + status - The status of the subscriptions to retrieve. Passing in a value of `canceled` will return all canceled subscriptions, including those belonging to deleted customers. Pass `ended` to find subscriptions that are canceled and subscriptions that are expired due to [incomplete payment](https://stripe.com/docs/billing/subscriptions/overview#subscription-statuses). Passing in a value of `all` will return subscriptions of all statuses. If no value is supplied, all subscriptions that have not been canceled are returned. 
     # + return - Successful response. 
-    remote isolated function listSubscriptions(string? collectionMethod = (), Created1? created = (), CurrentPeriodEnd? currentPeriodEnd = (), CurrentPeriodStart? currentPeriodStart = (), string? customer = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? price = (), string? startingAfter = (), string? status = ()) returns InlineResponse2002|error {
+    remote isolated function listSubscriptions(string? collectionMethod = (), Created2? created = (), CurrentPeriodEnd? currentPeriodEnd = (), CurrentPeriodStart? currentPeriodStart = (), string? customer = (), string? endingBefore = (), string[]? expand = (), int? 'limit = (), string? price = (), string? startingAfter = (), string? status = ()) returns InlineResponse2002|error {
         string resourcePath = string `/v1/subscriptions`;
         map<anydata> queryParam = {"collection_method": collectionMethod, "created": created, "current_period_end": currentPeriodEnd, "current_period_start": currentPeriodStart, "customer": customer, "ending_before": endingBefore, "expand": expand, "limit": 'limit, "price": price, "starting_after": startingAfter, "status": status};
         map<Encoding> queryParamEncoding = {"created": {style: DEEPOBJECT, explode: true}, "current_period_end": {style: DEEPOBJECT, explode: true}, "current_period_start": {style: DEEPOBJECT, explode: true}, "expand": {style: DEEPOBJECT, explode: true}};

@@ -14,6 +14,13 @@
 // specific language governing permissions and limitations
 // under the License.
 
+public type NotificationEventRequest record {
+    # ID of the API request that caused the event. If null, the event was automatic (e.g., Stripe's automatic subscription handling). Request logs are available in the [dashboard](https://dashboard.stripe.com/logs), but currently not in the API.
+    string? id?;
+    # The idempotency key transmitted during the request, if any. *Note: This property is populated only for events on or after May 23, 2017*.
+    string? idempotency_key?;
+};
+
 public type IssuingTransactionFlightDataLeg record {
     # The three-letter IATA airport code of the flight's destination.
     string? arrival_airport_code?;
@@ -145,6 +152,47 @@ public type Product record {
 public type SubscriptionSchedulesResourceDefaultSettingsAutomaticTax record {
     # Whether Stripe automatically computes tax on invoices created during this phase.
     boolean? enabled;
+};
+
+# A VerificationSession guides you through the process of collecting and verifying the identities
+# of your users. It contains details about the type of verification, such as what [verification
+# check](/docs/identity/verification-checks) to perform. Only create one VerificationSession for
+# each verification in your system.
+# 
+# A VerificationSession transitions through [multiple
+# statuses](/docs/identity/how-sessions-work) throughout its lifetime as it progresses through
+# the verification flow. The VerificationSession contains the user’s verified data after
+# verification checks are complete.
+# 
+# Related guide: [The Verification Sessions API](https://stripe.com/docs/identity/verification-sessions)
+public type IdentityVerificationSession record {
+    # The short-lived client secret used by Stripe.js to [show a verification modal](https://stripe.com/docs/js/identity/modal) inside your app. This client secret expires after 24 hours and can only be used once. Don’t store it, log it, embed it in a URL, or expose it to anyone other than the user. Make sure that you have TLS enabled on any page that includes the client secret. Refer to our docs on [passing the client secret to the frontend](https://stripe.com/docs/identity/verification-sessions#client-secret) to learn more.
+    string? client_secret?;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Unique identifier for the object.
+    string? id;
+    # If present, this property tells you the last error encountered when processing the verification.
+    GelatoSessionLastError? last_error?;
+    # ID of the most recent VerificationReport. [Learn more about accessing detailed verification results.](https://stripe.com/docs/identity/verification-sessions#results)
+    string|IdentityVerificationReport? last_verification_report?;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    GelatoVerificationSessionOptions? options;
+    # Redaction status of this VerificationSession. If the VerificationSession is not redacted, this field will be null.
+    VerificationSessionRedaction? redaction?;
+    # Status of this VerificationSession. [Learn more about the lifecycle of sessions](https://stripe.com/docs/identity/how-sessions-work).
+    string? status;
+    # The type of [verification check](https://stripe.com/docs/identity/verification-checks) to be performed.
+    string? 'type;
+    # The short-lived URL that you use to redirect a user to Stripe to submit their identity information. This URL expires after 48 hours and can only be used once. Don’t store it, log it, send it in emails or expose it to anyone other than the user. Refer to our docs on [verifying identity documents](https://stripe.com/docs/identity/verify-identity-documents?platform=web&type=redirect) to learn how to redirect users to Stripe.
+    string? url?;
+    # The user’s verified data.
+    GelatoVerifiedOutputs? verified_outputs?;
 };
 
 public type SourceTypeKlarna record {
@@ -317,6 +365,11 @@ public type InvoiceSettingSubscriptionScheduleSetting record {
     int? days_until_due?;
 };
 
+public type GelatoVerificationReportOptions record {
+    GelatoReportDocumentOptions? document?;
+    GelatoReportIdNumberOptions? id_number?;
+};
+
 public type ThreeDSecureDetails record {
     # For authenticated transactions: how the customer was authenticated by
     # the issuing bank.
@@ -329,6 +382,8 @@ public type ThreeDSecureDetails record {
     # The version of 3D Secure that was used.
     string? 'version?;
 };
+
+public type ExternalAccount BankAccount|Card?;
 
 # These fields can be used to create a new product that this price will belong to.
 public type InlineProductParams record {
@@ -365,6 +420,15 @@ public type PaymentIntentNextActionVerifyWithMicrodeposits record {
     int? arrival_date;
     # The URL for the hosted verification page, which allows customers to verify their bank account.
     string? hosted_verification_url;
+};
+
+public type BalanceAmountBySourceType record {
+    # Amount for bank account.
+    int? bank_account?;
+    # Amount for card.
+    int? card?;
+    # Amount for FPX.
+    int? fpx?;
 };
 
 public type SubscriptionScheduleCurrentPhase record {
@@ -677,6 +741,44 @@ public type PaymentMethodCardWalletVisaCheckout record {
     Address? shipping_address?;
 };
 
+# The Billing customer portal is a Stripe-hosted UI for subscription and
+# billing management.
+# 
+# A portal configuration describes the functionality and features that you
+# want to provide to your customers through the portal.
+# 
+# A portal session describes the instantiation of the customer portal for
+# a particular customer. By visiting the session's URL, the customer
+# can manage their subscriptions and billing details. For security reasons,
+# sessions are short-lived and will expire if the customer does not visit the URL.
+# Create sessions on-demand when customers intend to manage their subscriptions
+# and billing details.
+# 
+# Learn more in the [product overview](https://stripe.com/docs/billing/subscriptions/customer-portal)
+# and [integration guide](https://stripe.com/docs/billing/subscriptions/integrating-customer-portal).
+public type BillingPortalSession record {
+    # The configuration used by this session, describing the features available.
+    string|BillingPortalConfiguration? configuration;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # The ID of the customer for this session.
+    string? customer;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # The IETF language tag of the locale Customer Portal is displayed in. If blank or auto, the customer’s `preferred_locales` or browser’s locale is used.
+    string? locale?;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The account for which the session was created on behalf of. When specified, only subscriptions and invoices with this `on_behalf_of` account appear in the portal. For more information, see the [docs](https://stripe.com/docs/connect/charges-transfers#on-behalf-of). Use the [Accounts API](https://stripe.com/docs/api/accounts/object#account_object-settings-branding) to modify the `on_behalf_of` account's branding settings, which the portal displays.
+    string? on_behalf_of?;
+    # The URL to redirect customers to when they click on the portal's link to return to your website.
+    string? return_url;
+    # The short-lived URL of the session that gives customers access to the customer portal.
+    string? url;
+};
+
 public type PaymentFlowsPrivatePaymentMethodsAlipay record {
 };
 
@@ -691,6 +793,13 @@ public type PaymentMethodDetailsCardWalletMasterpass record {
     string? name?;
     # Owner's verified shipping address. Values are verified or provided by the wallet directly (if supported) at the time of authorization or settlement. They cannot be set or mutated.
     Address? shipping_address?;
+};
+
+public type PortalSubscriptionCancellationReason record {
+    # Whether the feature is enabled.
+    boolean? enabled;
+    # Which cancellation reasons will be given as options to the customer.
+    string[]? options;
 };
 
 public type IssuingDisputeMerchandiseNotAsDescribedEvidence record {
@@ -822,6 +931,11 @@ public type PaymentIntentPaymentMethodOptionsCard record {
 
 public type InlineResponse2001 Customer|DeletedCustomer?;
 
+public type SourceMandateNotificationBacsDebitData record {
+    # Last 4 digits of the account number associated with the debit.
+    string? last4?;
+};
+
 # The customer's current subscriptions, if any.
 public type SubscriptionList record {
     # Details about each object.
@@ -861,6 +975,18 @@ public type InlineResponse2002 record {
     string? url;
 };
 
+# List of items contained within this value list.
+public type RadarListListItemList record {
+    # Details about each object.
+    RadarValueListItem[]? data;
+    # True if this list has another page of items after this one that can be fetched.
+    boolean? has_more;
+    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    string? 'object;
+    # The URL where this list can be accessed.
+    string? url;
+};
+
 public type DeletedProduct record {
     # Always true for a deleted object
     boolean? deleted;
@@ -870,7 +996,36 @@ public type DeletedProduct record {
     string? 'object;
 };
 
+# Value list items allow you to add specific values to a given Radar value list, which can then be used in rules.
+# 
+# Related guide: [Managing List Items](https://stripe.com/docs/radar/lists#managing-list-items).
+public type RadarValueListItem record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # The name or email address of the user who added this item to the value list.
+    string? created_by;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The value of the item.
+    string? value;
+    # The identifier of the value list this item belongs to.
+    string? value_list;
+};
+
 public type DeletedCustomer record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
+public type DeletedInvoiceitem record {
     # Always true for a deleted object
     boolean? deleted;
     # Unique identifier for the object.
@@ -942,6 +1097,25 @@ public type PaymentMethodDetailsInteracPresent record {
     string? read_method?;
     # A collection of fields required to be displayed on receipts. Only required for EMV transactions.
     PaymentMethodDetailsInteracPresentReceipt? receipt?;
+};
+
+public type UsageEventsResourceUsageRecordSummaryList record {
+    UsageRecordSummary[]? data;
+    # True if this list has another page of items after this one that can be fetched.
+    boolean? has_more;
+    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    string? 'object;
+    # The URL where this list can be accessed.
+    string? url;
+};
+
+public type DeletedSubscriptionItem record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
 };
 
 public type QuotesResourceTotalDetails record {
@@ -1155,6 +1329,23 @@ public type ChargeFraudDetails record {
     string? user_report?;
 };
 
+public type PortalSubscriptionCancel record {
+    PortalSubscriptionCancellationReason? cancellation_reason?;
+    # Whether the feature is enabled.
+    boolean? enabled;
+    # Whether to cancel subscriptions immediately or at the end of the billing period.
+    string? mode;
+    # Whether to create prorations when canceling subscriptions. Possible values are `none` and `create_prorations`.
+    string? proration_behavior;
+};
+
+public type PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown record {
+    # The aggregated line item discounts.
+    LineItemsDiscountAmount[]? discounts;
+    # The aggregated line item tax amounts by rate.
+    LineItemsTaxAmount[]? taxes;
+};
+
 # Object representing the subscription schedule's default settings.
 public type DefaultSettingsParams record {
     # A non-negative decimal between 0 and 100, with at most two decimal places. This represents the percentage of the subscription invoice subtotal that will be transferred to the application owner’s Stripe account. The request must be made by a platform account on a connected account in order to set an application fee percentage.
@@ -1252,6 +1443,21 @@ public type SetupAttemptPaymentMethodDetailsIdeal record {
     string? verified_name?;
 };
 
+# Account Links are the means by which a Connect platform grants a connected account permission to access
+# Stripe-hosted applications, such as Connect Onboarding.
+# 
+# Related guide: [Connect Onboarding](https://stripe.com/docs/connect/connect-onboarding).
+public type AccountLink record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # The timestamp at which this account link will expire.
+    int? expires_at;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The URL for the account link.
+    string? url;
+};
+
 public type DiscountsResourceDiscountAmount record {
     # The amount, in %s, of the discount.
     int? amount;
@@ -1315,6 +1521,11 @@ public type SubscriptionItemCreateParams record {
     TaxRateArray|string? tax_rates?;
 };
 
+public type BalanceDetail record {
+    # Funds that are available for use.
+    BalanceAmount[]? available;
+};
+
 public type PaymentMethodP24 record {
     # The customer's bank, if provided.
     string? bank?;
@@ -1327,6 +1538,19 @@ public type Period1 record {
 
 public type TokenParamas record {
     string? token;
+};
+
+public type SourceTransactionChfCreditTransferData record {
+    # Reference associated with the transfer.
+    string? reference?;
+    # Sender's country address.
+    string? sender_address_country?;
+    # Sender's line 1 address.
+    string? sender_address_line1?;
+    # Sender's bank account IBAN.
+    string? sender_iban?;
+    # Sender's name.
+    string? sender_name?;
 };
 
 # Object representing the subscription schedule's default settings.
@@ -1393,40 +1617,6 @@ public type RecurringPriceData1 record {
     string? unit_amount_decimal?;
 };
 
-public type Period record {
-    # The end date of this usage period. All usage up to and including this point in time is included.
-    int? end?;
-    # The start date of this usage period. All usage after this point in time is included.
-    int? 'start?;
-};
-
-public type UsageRecordSummary record {
-    # Unique identifier for the object.
-    string? id;
-    # The invoice in which this usage period has been billed for.
-    string? invoice?;
-    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
-    boolean? livemode;
-    # String representing the object's type. Objects of the same type share the same value.
-    string? 'object;
-    #
-    Period? period;
-    # The ID of the subscription item this summary is describing.
-    string? subscription_item;
-    # The total usage within this usage period.
-    int? total_usage;
-};
-
-public type UsageEventsResourceUsageRecordSummaryList record {
-    UsageRecordSummary[]? data;
-    # True if this list has another page of items after this one that can be fetched.
-    boolean? has_more;
-    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
-    string? 'object;
-    # The URL where this list can be accessed.
-    string? url;
-};
-
 public type V1CustomersBody record {
     # The customer's address.
     CustomerAdresss|string? address?;
@@ -1484,6 +1674,15 @@ public type IssuingDisputeOtherEvidence record {
 };
 
 public type PaymentMethodTypesArray string[]?;
+
+public type DeletedRadarValueList record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
 
 # A SetupIntent guides you through the process of setting up and saving a customer's payment credentials for future payments.
 # For example, you could use a SetupIntent to set up and save your customer's card without immediately collecting a payment.
@@ -1595,6 +1794,15 @@ public type CardIssuingAccountTermsOfService record {
     string? user_agent?;
 };
 
+public type DeletedPerson record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
 public type PaymentMethodSepaDebit record {
     # Bank code of bank associated with the bank account.
     string? bank_code?;
@@ -1635,6 +1843,8 @@ public type SetupAttemptPaymentMethodDetailsBancontact record {
     # (if supported) at the time of authorization or settlement. They cannot be set or mutated.
     string? verified_name?;
 };
+
+public type DeletedExternalAccount DeletedBankAccount|DeletedCard?;
 
 public type PaymentMethodDetailsStripeAccount record {
 };
@@ -1713,6 +1923,15 @@ public type AccountDashboardSettings record {
     string? timezone?;
 };
 
+public type SourceMandateNotificationSepaDebitData record {
+    # SEPA creditor ID.
+    string? creditor_identifier?;
+    # Last 4 digits of the account number associated with the debit.
+    string? last4?;
+    # Mandate reference associated with the debit.
+    string? mandate_reference?;
+};
+
 # A coupon contains information about a percent-off or amount-off discount you
 # might want to apply to a customer. Coupons may be applied to [invoices](https://stripe.com/docs/api#invoices) or
 # [orders](https://stripe.com/docs/api#create_order-coupon). Coupons do not work with conventional one-off [charges](https://stripe.com/docs/api#create_charge).
@@ -1759,6 +1978,15 @@ public type QuotesResourceSubscriptionData record {
     int? effective_date?;
     # Integer representing the number of trial period days before the customer is charged for the first time.
     int? trial_period_days?;
+};
+
+public type DeletedAccount record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
 };
 
 public type PaymentMethodDetailsWechatPay record {
@@ -1878,6 +2106,15 @@ public type OptionalFieldsAddress record {
     string? state?;
 };
 
+public type PortalBusinessProfile record {
+    # The messaging shown to customers in the portal.
+    string? headline?;
+    # A link to the business’s publicly available privacy policy.
+    string? privacy_policy_url;
+    # A link to the business’s publicly available terms of service.
+    string? terms_of_service_url;
+};
+
 # If this is an `au_becs_debit` PaymentMethod, this hash contains details about the bank account.
 public type Param record {
     # The account number for the bank account
@@ -1931,6 +2168,15 @@ public type BitcoinReceiver record {
     boolean? uncaptured_funds;
     # Indicate if this source is used for payment.
     boolean? used_for_payment?;
+};
+
+public type PortalFeatures record {
+    PortalCustomerUpdate? customer_update;
+    PortalInvoiceList? invoice_history;
+    PortalPaymentMethodUpdate? payment_method_update;
+    PortalSubscriptionCancel? subscription_cancel;
+    PortalSubscriptionPause? subscription_pause;
+    PortalSubscriptionUpdate? subscription_update;
 };
 
 # Stores representations of [stock keeping units](http://en.wikipedia.org/wiki/Stock_keeping_unit).
@@ -1992,6 +2238,19 @@ public type PaymentMethodDetailsAfterpayClearpay record {
     string? reference?;
 };
 
+public type SourceMandateNotificationAcssDebitData record {
+    # The statement descriptor associate with the debit.
+    string? statement_descriptor?;
+};
+
+public type SigmaScheduledQueryRunError record {
+    # Information about the run failure.
+    string? message;
+};
+
+public type GelatoReportIdNumberOptions record {
+};
+
 public type Address record {
     # City, district, suburb, town, or village.
     string? city?;
@@ -2011,6 +2270,77 @@ public type Address record {
 public type AutomaticTaxConfig record {
     # Enabled
     boolean? enabled;
+};
+
+public type UsageRecordSummary record {
+    # Unique identifier for the object.
+    string? id;
+    # The invoice in which this usage period has been billed for.
+    string? invoice?;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    Period? period;
+    # The ID of the subscription item this summary is describing.
+    string? subscription_item;
+    # The total usage within this usage period.
+    int? total_usage;
+};
+
+public type PaymentSource Account|AlipayAccount|BankAccount|BitcoinReceiver|Card|Source?;
+
+# Tokenization is the process Stripe uses to collect sensitive card or bank
+# account details, or personally identifiable information (PII), directly from
+# your customers in a secure manner. A token representing this information is
+# returned to your server to use. You should use our
+# [recommended payments integrations](https://stripe.com/docs/payments) to perform this process
+# client-side. This ensures that no sensitive card data touches your server,
+# and allows your integration to operate in a PCI-compliant way.
+# 
+# If you cannot use client-side tokenization, you can also create tokens using
+# the API with either your publishable or secret API key. Keep in mind that if
+# your integration uses this method, you are responsible for any PCI compliance
+# that may be required, and you must keep your secret API key safe. Unlike with
+# client-side tokenization, your customer's information is not sent directly to
+# Stripe, so we cannot determine how it is handled or stored.
+# 
+# Tokens cannot be stored or used more than once. To store card or bank account
+# information for later use, you can create [Customer](https://stripe.com/docs/api#customers)
+# objects or [Custom accounts](https://stripe.com/docs/api#external_accounts). Note that
+# [Radar](https://stripe.com/docs/radar), our integrated solution for automatic fraud protection,
+# performs best with integrations that use client-side tokenization.
+# 
+# Related guide: [Accept a payment](https://stripe.com/docs/payments/accept-a-payment-charges#web-create-token)
+public type Token record {
+    # These bank accounts are payment methods on `Customer` objects.
+    # 
+    # On the other hand [External Accounts](https://stripe.com/docs/api#external_accounts) are transfer
+    # destinations on `Account` objects for [Custom accounts](https://stripe.com/docs/connect/custom-accounts).
+    # They can be bank accounts or debit cards as well, and are documented in the links above.
+    # 
+    # Related guide: [Bank Debits and Transfers](https://stripe.com/docs/payments/bank-debits-transfers).
+    BankAccount? bank_account?;
+    # You can store multiple cards on a customer in order to charge the customer
+    # later. You can also store multiple debit cards on a recipient in order to
+    # transfer to those cards later.
+    # 
+    # Related guide: [Card Payments with Sources](https://stripe.com/docs/sources/cards).
+    Card? card?;
+    # IP address of the client that generated the token.
+    string? client_ip?;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Type of the token: `account`, `bank_account`, `card`, or `pii`.
+    string? 'type;
+    # Whether this token has already been used (tokens can be used only once).
+    boolean? used;
 };
 
 public type CustomerCardDetails record {
@@ -2065,6 +2395,14 @@ public type SubscriptionSchedulePhaseConfiguration record {
     SubscriptionTransferData? transfer_data?;
     # When the trial ends within the phase.
     int? trial_end?;
+};
+
+# Shows last VerificationSession error
+public type GelatoSessionLastError record {
+    # A short machine-readable string giving the reason for the verification or user-session failure.
+    string? code?;
+    # A message that explains the reason for verification or user-session failure.
+    string? reason?;
 };
 
 public type SetupAttemptPaymentMethodDetailsSofort record {
@@ -2169,6 +2507,25 @@ public type SetupAttemptPaymentMethodDetails record {
     string? 'type;
 };
 
+# This is an object representing a capability for a Stripe account.
+# 
+# Related guide: [Account capabilities](https://stripe.com/docs/connect/account-capabilities).
+public type Capability record {
+    # The account for which the capability enables functionality.
+    string|Account? account;
+    # The identifier for the capability.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Whether the capability has been requested.
+    boolean? requested;
+    # Time at which the capability was requested. Measured in seconds since the Unix epoch.
+    int? requested_at?;
+    AccountCapabilityRequirements? requirements?;
+    # The status of the capability. Can be `active`, `inactive`, `pending`, or `unrequested`.
+    string? status;
+};
+
 public type PaymentMethodOptions record {
     record {string? preferred_language?;}|string? bancontact?;
     record {string? request_three_d_secure?;}|string? card?;
@@ -2184,6 +2541,16 @@ public type OrdersResourceOrderReturnList record {
     string? 'object;
     # The URL where this list can be accessed.
     string? url;
+};
+
+# Point in Time
+public type GelatoDataDocumentReportExpirationDate record {
+    # Numerical day between 1 and 31.
+    int? day?;
+    # Numerical month between 1 and 12.
+    int? month?;
+    # The four-digit year.
+    int? year?;
 };
 
 public type CreatedDetails CreatedFilterOptions|int?;
@@ -2357,6 +2724,34 @@ public type PaymentMethodDetailsBacsDebit record {
 
 public type CurrentPeriodStart RangeQuerySpecs|int?;
 
+# Result from a document check
+public type GelatoDocumentReport record {
+    # Address as it appears in the document.
+    Address? address?;
+    # Date of birth as it appears in the document.
+    GelatoDataDocumentReportDateOfBirth? dob?;
+    # Details on the verification error. Present when status is `unverified`.
+    GelatoDocumentReportError? _error?;
+    # Expiration date of the document.
+    GelatoDataDocumentReportExpirationDate? expiration_date?;
+    # Array of [File](https://stripe.com/docs/api/files) ids containing images for this document.
+    string[]? files?;
+    # First name as it appears in the document.
+    string? first_name?;
+    # Issued date of the document.
+    GelatoDataDocumentReportIssuedDate? issued_date?;
+    # Issuing country of the document.
+    string? issuing_country?;
+    # Last name as it appears in the document.
+    string? last_name?;
+    # Document ID number.
+    string? number?;
+    # Status of this `document` check.
+    string? status;
+    # Type of the document.
+    string? 'type?;
+};
+
 public type SourceTypeCardPresent record {
     string? application_cryptogram?;
     string? application_preferred_name?;
@@ -2417,6 +2812,17 @@ public type TransferDataSpecs2 record {
     string? destination;
 };
 
+public type CheckoutAcssDebitMandateOptions record {
+    # A URL for custom mandate text
+    string? custom_mandate_url?;
+    # Description of the interval. Only required if the 'payment_schedule' parameter is 'interval' or 'combined'.
+    string? interval_description?;
+    # Payment schedule for the mandate.
+    string? payment_schedule?;
+    # Transaction type of the mandate.
+    string? transaction_type?;
+};
+
 # An Add Invoice Item describes the prices and quantities that will be added as pending invoice items when entering a phase.
 public type SubscriptionScheduleAddInvoiceItem record {
     # ID of the price used to generate the invoice item.
@@ -2470,6 +2876,30 @@ public type SourceCodeVerificationFlow record {
     string? status;
 };
 
+# This resource has been renamed to [Early Fraud
+# Warning](#early_fraud_warning_object) and will be removed in a future API
+# version.
+public type IssuerFraudRecord record {
+    # An IFR is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an IFR, in order to avoid receiving a dispute later.
+    boolean? actionable;
+    # ID of the charge this issuer fraud record is for, optionally expanded.
+    string|Charge? charge;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
+    string? fraud_type;
+    # If true, the associated charge is subject to [liability shift](https://stripe.com/docs/payments/3d-secure#disputed-payments).
+    boolean? has_liability_shift;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The timestamp at which the card issuer posted the issuer fraud record.
+    int? post_date;
+};
+
 public type ThreeDSecureUsage record {
     # Whether 3D Secure is supported on this card.
     boolean? supported;
@@ -2501,6 +2931,18 @@ public type PaymentIntentNextActionRedirectToUrl record {
     string? url?;
 };
 
+# A Connection Token is used by the Stripe Terminal SDK to connect to a reader.
+# 
+# Related guide: [Fleet Management](https://stripe.com/docs/terminal/creating-locations).
+public type TerminalConnectionToken record {
+    # The id of the location that this connection token is scoped to. Note that location scoping only applies to internet-connected readers. For more details, see [the docs on scoping connection tokens](https://stripe.com/docs/terminal/readers/fleet-management#connection-tokens).
+    string? location?;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Your application should pass this token to the Stripe Terminal SDK.
+    string? secret;
+};
+
 public type PaymentMethodDetailsAchDebit record {
     # Type of entity that holds the account. This can be either `individual` or `company`.
     string? account_holder_type?;
@@ -2514,6 +2956,16 @@ public type PaymentMethodDetailsAchDebit record {
     string? last4?;
     # Routing transit number of the bank account.
     string? routing_number?;
+};
+
+# Point in Time
+public type GelatoDataDocumentReportDateOfBirth record {
+    # Numerical day between 1 and 31.
+    int? day?;
+    # Numerical month between 1 and 12.
+    int? month?;
+    # The four-digit year.
+    int? year?;
 };
 
 public type SetupIntentNextActionRedirectToUrl record {
@@ -2615,6 +3067,22 @@ public type AccountRequirementsError record {
 public type PaymentMethodOxxo record {
 };
 
+public type GelatoDocumentReportError record {
+    # A short machine-readable string giving the reason for the verification failure.
+    string? code?;
+    # A human-readable message giving the reason for the failure. These messages can be shown to your users.
+    string? reason?;
+};
+
+public type DeletedApplePayDomain record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
 public type PaymentMethodDetailsAchCreditTransfer record {
     # Account number to transfer funds to.
     string? account_number?;
@@ -2704,6 +3172,15 @@ public type QuotesResourceUpfront record {
     QuotesResourceTotalDetails? total_details;
 };
 
+public type DeletedAlipayAccount record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
 public type PaymentIntentNextActionAlipayHandleRedirect record {
     # The native data to be used with Alipay SDK you must redirect your customer to in order to authenticate the payment in an Android App.
     string? native_data?;
@@ -2725,6 +3202,16 @@ public type SourceTypeIdeal record {
     string? statement_descriptor?;
 };
 
+public type CustomerResourceCustomerList record {
+    Customer[]? data;
+    # True if this list has another page of items after this one that can be fetched.
+    boolean? has_more;
+    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    string? 'object;
+    # The URL where this list can be accessed.
+    string? url;
+};
+
 public type AccountPaymentsSettings record {
     # The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge.
     string? statement_descriptor?;
@@ -2732,6 +3219,13 @@ public type AccountPaymentsSettings record {
     string? statement_descriptor_kana?;
     # The Kanji variation of the default text that appears on credit card statements when a charge is made (Japan only)
     string? statement_descriptor_kanji?;
+};
+
+public type PortalCustomerUpdate record {
+    # The types of customer updates that are supported. When empty, customers are not updateable.
+    string[]? allowed_updates;
+    # Whether the feature is enabled.
+    boolean? enabled;
 };
 
 public type InvoiceTransferData record {
@@ -2877,6 +3371,34 @@ public type PromotionCodesResourceRestrictions record {
     string? minimum_amount_currency?;
 };
 
+# If you have [scheduled a Sigma query](https://stripe.com/docs/sigma/scheduled-queries), you'll
+# receive a `sigma.scheduled_query_run.created` webhook each time the query
+# runs. The webhook contains a `ScheduledQueryRun` object, which you can use to
+# retrieve the query results.
+public type ScheduledQueryRun record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # When the query was run, Sigma contained a snapshot of your Stripe data at this time.
+    int? data_load_time;
+    SigmaScheduledQueryRunError? _error?;
+    # The file object representing the results of the query.
+    File? file?;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Time at which the result expires and is no longer available for download.
+    int? result_available_until;
+    # SQL for the query.
+    string? sql;
+    # The query's execution status, which will be `completed` for successful runs, and `canceled`, `failed`, or `timed_out` otherwise.
+    string? status;
+    # Title of the query.
+    string? title;
+};
+
 public type SubscriptionItemUsageRecordsBody record {
     # Valid values are `increment` (default) or `set`. When using `increment` the specified `quantity` will be added to the usage at the specified timestamp. The `set` action will overwrite the usage quantity at that timestamp. If the subscription has [billing thresholds](https://stripe.com/docs/api/subscriptions/object#subscription_object-billing_thresholds), `increment` is the only allowed value.
     string? action?;
@@ -2954,6 +3476,13 @@ public type CustomerAdresss record {
     string? line2?;
     string? postal_code?;
     string? state?;
+};
+
+public type TransformUsage record {
+    # Divide usage by this number.
+    int? divide_by;
+    # After division, either round the result `up` or `down`.
+    string? round;
 };
 
 public type PaymentMethodDetailsCardWalletVisaCheckout record {
@@ -3034,6 +3563,33 @@ public type InvoiceItemPreviewParams record {
     string? unit_amount_decimal?;
 };
 
+# This is an object representing your Stripe balance. You can retrieve it to see
+# the balance currently on your Stripe account.
+# 
+# You can also retrieve the balance history, which contains a list of
+# [transactions](https://stripe.com/docs/reporting/balance-transaction-types) that contributed to the balance
+# (charges, payouts, and so forth).
+# 
+# The available and pending amounts for each currency are broken down further by
+# payment source types.
+# 
+# Related guide: [Understanding Connect Account Balances](https://stripe.com/docs/connect/account-balances).
+public type Balance record {
+    # Funds that are available to be transferred or paid out, whether automatically by Stripe or explicitly via the [Transfers API](https://stripe.com/docs/api#transfers) or [Payouts API](https://stripe.com/docs/api#payouts). The available balance for each currency and payment type can be found in the `source_types` property.
+    BalanceAmount[]? available;
+    # Funds held due to negative balances on connected Custom accounts. The connect reserve balance for each currency and payment type can be found in the `source_types` property.
+    BalanceAmount[]? connect_reserved?;
+    # Funds that can be paid out using Instant Payouts.
+    BalanceAmount[]? instant_available?;
+    BalanceDetail? issuing?;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Funds that are not yet available in the balance, due to the 7-day rolling pay cycle. The pending balance for each currency, and for each payment type, can be found in the `source_types` property.
+    BalanceAmount[]? pending;
+};
+
 # This is an object representing a file hosted on Stripe's servers. The
 # file may have been uploaded by yourself using the [create file](https://stripe.com/docs/api#create_file)
 # request (for example, when uploading dispute evidence) or it may have
@@ -3064,6 +3620,50 @@ public type File record {
     string? 'type?;
     # The URL from which the file can be downloaded using your live secret API key.
     string? url?;
+};
+
+# Point in Time
+public type GelatoDataDocumentReportIssuedDate record {
+    # Numerical day between 1 and 31.
+    int? day?;
+    # Numerical month between 1 and 12.
+    int? month?;
+    # The four-digit year.
+    int? year?;
+};
+
+public type AccountCapabilityRequirements record {
+    # Date by which the fields in `currently_due` must be collected to keep the capability enabled for the account. These fields may disable the capability sooner if the next threshold is reached before they are collected.
+    int? current_deadline?;
+    # Fields that need to be collected to keep the capability enabled. If not collected by `current_deadline`, these fields appear in `past_due` as well, and the capability is disabled.
+    string[]? currently_due;
+    # If the capability is disabled, this string describes why. Can be `requirements.past_due`, `requirements.pending_verification`, `listed`, `platform_paused`, `rejected.fraud`, `rejected.listed`, `rejected.terms_of_service`, `rejected.other`, `under_review`, or `other`.
+    # 
+    # `rejected.unsupported_business` means that the account's business is not supported by the capability. For example, payment methods may restrict the businesses they support in their terms of service:
+    # 
+    # - [Afterpay Clearpay's terms of service](/afterpay-clearpay/legal#restricted-businesses)
+    # 
+    # If you believe that the rejection is in error, please contact support@stripe.com for assistance.
+    string? disabled_reason?;
+    # Fields that are `currently_due` and need to be collected again because validation or verification failed.
+    AccountRequirementsError[]? errors;
+    # Fields that need to be collected assuming all volume thresholds are reached. As they become required, they appear in `currently_due` as well, and `current_deadline` becomes set.
+    string[]? eventually_due;
+    # Fields that weren't collected by `current_deadline`. These fields need to be collected to enable the capability on the account.
+    string[]? past_due;
+    # Fields that may become required depending on the results of verification or review. Will be an empty array unless an asynchronous verification is pending. If verification fails, these fields move to `eventually_due`, `currently_due`, or `past_due`.
+    string[]? pending_verification;
+};
+
+public type SourceTransactionAchCreditTransferData record {
+    # Customer data associated with the transfer.
+    string? customer_data?;
+    # Bank account fingerprint associated with the transfer.
+    string? fingerprint?;
+    # Last 4 digits of the account number associated with the transfer.
+    string? last4?;
+    # Routing number associated with the transfer.
+    string? routing_number?;
 };
 
 public type SetupAttemptPaymentMethodDetailsCard record {
@@ -3108,6 +3708,33 @@ public type InvoicesPaymentMethodOptions record {
     InvoicePaymentMethodOptionsBancontact? bancontact?;
     # If paying by `card`, this sub-hash contains details about the Card payment method options to pass to the invoice’s PaymentIntent.
     InvoicePaymentMethodOptionsCard? card?;
+};
+
+# The Report Type resource corresponds to a particular type of report, such as
+# the "Activity summary" or "Itemized payouts" reports. These objects are
+# identified by an ID belonging to a set of enumerated values. See
+# [API Access to Reports documentation](https://stripe.com/docs/reporting/statements/api)
+# for those Report Type IDs, along with required and optional parameters.
+# 
+# Note that certain report types can only be run based on your live-mode data (not test-mode
+# data), and will error when queried without a [live-mode API key](https://stripe.com/docs/keys#test-live-modes).
+public type ReportingReportType record {
+    # Most recent time for which this Report Type is available. Measured in seconds since the Unix epoch.
+    int? data_available_end;
+    # Earliest time for which this Report Type is available. Measured in seconds since the Unix epoch.
+    int? data_available_start;
+    # List of column names that are included by default when this Report Type gets run. (If the Report Type doesn't support the `columns` parameter, this will be null.)
+    string[]? default_columns?;
+    # The [ID of the Report Type](https://stripe.com/docs/reporting/statements/api#available-report-types), such as `balance.summary.1`.
+    string? id;
+    # Human-readable name of the Report Type
+    string? name;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # When this Report Type was latest updated. Measured in seconds since the Unix epoch.
+    int? updated;
+    # Version of the Report Type. Different versions report with the same ID will have the same purpose, but may take different run parameters or have different result schemas.
+    int? 'version;
 };
 
 # Default invoice settings for this customer.
@@ -3249,6 +3876,16 @@ public type SubscriptionDefaultTaxRates string[]|string?;
 
 public type DueDate RangeQuerySpecs|int?;
 
+# Point in Time
+public type GelatoDataVerifiedOutputsDate record {
+    # Numerical day between 1 and 31.
+    int? day?;
+    # Numerical month between 1 and 12.
+    int? month?;
+    # The four-digit year.
+    int? year?;
+};
+
 public type InvoiceSendBody record {
     # Specifies which fields in the response should be expanded.
     string[]? expand?;
@@ -3295,6 +3932,55 @@ public type IssuingCardholderAuthorizationControls record {
     IssuingCardholderSpendingLimit[]? spending_limits?;
     # Currency of the amounts within `spending_limits`.
     string? spending_limits_currency?;
+};
+
+public type CountrySpecVerificationFieldDetails record {
+    # Additional fields which are only required for some users.
+    string[]? additional;
+    # Fields which every account must eventually provide.
+    string[]? minimum;
+};
+
+# A Reader represents a physical device for accepting payment details.
+# 
+# Related guide: [Connecting to a Reader](https://stripe.com/docs/terminal/readers/connecting).
+public type TerminalReader record {
+    # The current software version of the reader.
+    string? device_sw_version?;
+    # Type of reader, one of `bbpos_chipper2x` or `verifone_P400`.
+    string? device_type;
+    # Unique identifier for the object.
+    string? id;
+    # The local IP address of the reader.
+    string? ip_address?;
+    # Custom label given to the reader for easier identification.
+    string? label;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # The location identifier of the reader.
+    string|TerminalLocation? location?;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Serial number of the reader.
+    string? serial_number;
+    # The networking status of the reader.
+    string? status?;
+};
+
+# An error response from the Stripe API
+public type Error record {
+    ApiErrors? _error;
+};
+
+public type DeletedWebhookEndpoint record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
 };
 
 public type IssuingTransactionPurchaseDetails record {
@@ -3387,6 +4073,15 @@ public type IssuingTransactionFlightData record {
     string? travel_agency?;
 };
 
+public type DeletedPlan record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
 public type Networks record {
     # All available networks for the card.
     string[]? available;
@@ -3448,6 +4143,15 @@ public type ConfigurationItemParams record {
     string[]|string? tax_rates?;
 };
 
+public type DeletedTerminalLocation record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
 public type SubscriptionSchedulesScheduleBody record {
     # Object representing the subscription schedule's default settings.
     DefaultSettingsParams1? default_settings?;
@@ -3503,6 +4207,15 @@ public type PriceTier record {
     int? up_to?;
 };
 
+public type LoginLink record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The URL for the login link.
+    string? url;
+};
+
 public type DeletedTaxId record {
     # Always true for a deleted object
     boolean? deleted;
@@ -3533,6 +4246,11 @@ public type SkuInventory record {
     string? 'type;
     # An indicator of the inventory available. Possible values are `in_stock`, `limited`, and `out_of_stock`. Will be present if and only if `type` is `bucket`.
     string? value?;
+};
+
+public type CountrySpecVerificationFields record {
+    CountrySpecVerificationFieldDetails? company;
+    CountrySpecVerificationFieldDetails? individual;
 };
 
 public type PaymentMethodDetailsCardWallet record {
@@ -3614,6 +4332,25 @@ public type PaymentIntentNextActionBoleto record {
     string? pdf?;
 };
 
+public type EphemeralKey record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Time at which the key will expire. Measured in seconds since the Unix epoch.
+    int? expires;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The key's secret. You can use this value to make authorized requests to the Stripe API.
+    string? secret?;
+};
+
+public type Created2 RangeQuerySpecs|int?;
+
+public type Created1 RangeQuerySpecs|int?;
+
 public type PaymentMethodsPaymentMethodBody record {
     # Billing information associated with the PaymentMethod that may be used or required by particular types of payment methods.
     BillingDetailsInnerParams? billing_details?;
@@ -3624,8 +4361,6 @@ public type PaymentMethodsPaymentMethodBody record {
     # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format. Individual keys can be unset by posting an empty value to them. All keys can be unset by posting an empty value to `metadata`.
     record {}|string? metadata?;
 };
-
-public type Created1 RangeQuerySpecs|int?;
 
 # `Refund` objects allow you to refund a charge that has previously been created
 # but not yet refunded. Funds will be refunded to the credit or debit card that
@@ -3708,6 +4443,11 @@ public type SubscriptionItemUpdateParams record {
     string[]|string? tax_rates?;
 };
 
+public type PortalSubscriptionPause record {
+    # Whether the feature is enabled.
+    boolean? enabled;
+};
+
 public type SetupIntentNextAction record {
     SetupIntentNextActionRedirectToUrl? redirect_to_url?;
     # Type of the next action to perform, one of `redirect_to_url`, `use_stripe_sdk`, `alipay_handle_redirect`, or `oxxo_display_details`.
@@ -3731,6 +4471,21 @@ public type AddInvoiceItemEntry record {
     OneTimePriceData? price_data?;
     int? quantity?;
     TaxRateArray|string? tax_rates?;
+};
+
+public type PaymentPagesPaymentPageResourcesShippingAddressCollection record {
+    # An array of two-letter ISO country codes representing which countries Checkout should provide as options for
+    # shipping locations. Unsupported country codes: `AS, CX, CC, CU, HM, IR, KP, MH, FM, NF, MP, PW, SD, SY, UM, VI`.
+    string[]? allowed_countries;
+};
+
+public type SourceTransactionSepaCreditTransferData record {
+    # Reference associated with the transfer.
+    string? reference?;
+    # Sender's bank account IBAN.
+    string? sender_iban?;
+    # Sender's name.
+    string? sender_name?;
 };
 
 # To top up your Stripe balance, you create a top-up object. You can retrieve
@@ -3816,6 +4571,18 @@ public type CouponAppliesTo record {
     string[]? products;
 };
 
+# The line items purchased by the customer.
+public type PaymentPagesCheckoutSessionListLineItems record {
+    # Details about each object.
+    Item[]? data;
+    # True if this list has another page of items after this one that can be fetched.
+    boolean? has_more;
+    # String representing the object's type. Objects of the same type share the same value. Always has the value `list`.
+    string? 'object;
+    # The URL where this list can be accessed.
+    string? url;
+};
+
 public type V1PaymentMethodsBody record {
     # If this is an `acss_debit` PaymentMethod, this hash contains details about the ACSS Debit payment method.
     PaymentMethodParam? acss_debit?;
@@ -3869,7 +4636,52 @@ public type V1PaymentMethodsBody record {
     record {} wechat_pay?;
 };
 
-public type Created RangeQuerySpecs|int?;
+public type PaymentPagesCheckoutSessionTotalDetails record {
+    # This is the sum of all the line item discounts.
+    int? amount_discount;
+    # This is the sum of all the line item shipping amounts.
+    int? amount_shipping?;
+    # This is the sum of all the line item tax amounts.
+    int? amount_tax;
+    PaymentPagesCheckoutSessionTotalDetailsResourceBreakdown? breakdown?;
+};
+
+public type Created record {
+    # Minimum value to filter by (exclusive)
+    int? gt?;
+    # Minimum value to filter by (inclusive)
+    int? gte?;
+    # Maximum value to filter by (exclusive)
+    int? lt?;
+    # Maximum value to filter by (inclusive)
+    int? lte?;
+}|int?;
+
+# Value lists allow you to group values together which can then be referenced in rules.
+# 
+# Related guide: [Default Stripe Lists](https://stripe.com/docs/radar/lists#managing-list-items).
+public type RadarValueList record {
+    # The name of the value list for use in rules.
+    string? alias;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # The name or email address of the user who created this value list.
+    string? created_by;
+    # Unique identifier for the object.
+    string? id;
+    # The type of items in the value list. One of `card_fingerprint`, `card_bin`, `email`, `ip_address`, `country`, `string`, or `case_sensitive_string`.
+    string? item_type;
+    # List of items contained within this value list.
+    RadarListListItemList? list_items;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata;
+    # The name of the value list.
+    string? name;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
 
 public type Recurring record {
     # Specifies a usage aggregation strategy for prices of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
@@ -3911,9 +4723,121 @@ public type ApmsSourcesSourceList record {
     string? url;
 };
 
+# Point in Time
+public type GelatoDataIdNumberReportDate record {
+    # Numerical day between 1 and 31.
+    int? day?;
+    # Numerical month between 1 and 12.
+    int? month?;
+    # The four-digit year.
+    int? year?;
+};
+
 public type PaymentMethodOptionsSofort record {
     # Preferred language of the SOFORT authorization page that the customer is redirected to.
     string? preferred_language?;
+};
+
+# A Checkout Session represents your customer's session as they pay for
+# one-time purchases or subscriptions through [Checkout](https://stripe.com/docs/payments/checkout).
+# We recommend creating a new Session each time your customer attempts to pay.
+# 
+# Once payment is successful, the Checkout Session will contain a reference
+# to the [Customer](https://stripe.com/docs/api/customers), and either the successful
+# [PaymentIntent](https://stripe.com/docs/api/payment_intents) or an active
+# [Subscription](https://stripe.com/docs/api/subscriptions).
+# 
+# You can create a Checkout Session on your server and pass its ID to the
+# client to begin Checkout.
+# 
+# Related guide: [Checkout Server Quickstart](https://stripe.com/docs/payments/checkout/api).
+public type CheckoutSession record {
+    # Enables user redeemable promotion codes.
+    boolean? allow_promotion_codes?;
+    # Total of all items before discounts or taxes are applied.
+    int? amount_subtotal?;
+    # Total of all items after discounts and taxes are applied.
+    int? amount_total?;
+    PaymentPagesCheckoutSessionAutomaticTax? automatic_tax;
+    # Describes whether Checkout should collect the customer's billing address.
+    string? billing_address_collection?;
+    # The URL the customer will be directed to if they decide to cancel payment and return to your website.
+    string? cancel_url;
+    # A unique string to reference the Checkout Session. This can be a
+    # customer ID, a cart ID, or similar, and can be used to reconcile the
+    # Session with your internal systems.
+    string? client_reference_id?;
+    # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    string? currency?;
+    # The ID of the customer for this Session.
+    # For Checkout Sessions in `payment` or `subscription` mode, Checkout
+    # will create a new customer object based on information provided
+    # during the payment flow unless an existing customer was provided when
+    # the Session was created.
+    string|Customer|DeletedCustomer? customer?;
+    # The customer details including the customer's tax exempt status and the customer's tax IDs. Only present on Sessions in `payment` or `subscription` mode.
+    PaymentPagesCheckoutSessionCustomerDetails? customer_details?;
+    # If provided, this value will be used when the Customer object is created.
+    # If not provided, customers will be asked to enter their email address.
+    # Use this parameter to prefill customer data if you already have an email
+    # on file. To access information about the customer once the payment flow is
+    # complete, use the `customer` attribute.
+    string? customer_email?;
+    # Unique identifier for the object. Used to pass to `redirectToCheckout`
+    # in Stripe.js.
+    string? id;
+    # The line items purchased by the customer.
+    PaymentPagesCheckoutSessionListLineItems? line_items?;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # The IETF language tag of the locale Checkout is displayed in. If blank or `auto`, the browser's locale is used.
+    string? locale?;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata?;
+    # The mode of the Checkout Session.
+    string? mode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The ID of the PaymentIntent for Checkout Sessions in `payment` mode.
+    string|PaymentIntent? payment_intent?;
+    # Payment-method-specific configuration for the PaymentIntent or SetupIntent of this CheckoutSession.
+    CheckoutSessionPaymentMethodOptions? payment_method_options?;
+    # A list of the types of payment methods (e.g. card) this Checkout
+    # Session is allowed to accept.
+    string[]? payment_method_types;
+    # The payment status of the Checkout Session, one of `paid`, `unpaid`, or `no_payment_required`.
+    # You can use this value to decide when to fulfill your customer's order.
+    string? payment_status;
+    # The ID of the SetupIntent for Checkout Sessions in `setup` mode.
+    string|SetupIntent? setup_intent?;
+    # Shipping information for this Checkout Session.
+    Shipping? shipping?;
+    # When set, provides configuration for Checkout to collect a shipping address from a customer.
+    PaymentPagesPaymentPageResourcesShippingAddressCollection? shipping_address_collection?;
+    # Describes the type of transaction being performed by Checkout in order to customize
+    # relevant text on the page, such as the submit button. `submit_type` can only be
+    # specified on Checkout Sessions in `payment` mode, but not Checkout Sessions
+    # in `subscription` or `setup` mode.
+    string? submit_type?;
+    # The ID of the subscription for Checkout Sessions in `subscription` mode.
+    string|Subscription? subscription?;
+    # The URL the customer will be directed to after the payment or
+    # subscription creation is successful.
+    string? success_url;
+    PaymentPagesCheckoutSessionTaxIdCollection? tax_id_collection?;
+    # Tax and discount details for the computed total amount.
+    PaymentPagesCheckoutSessionTotalDetails? total_details?;
+    # The URL to the Checkout Session.
+    string? url?;
+};
+
+public type DeletedSku record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
 };
 
 public type PhaseConfigurationParams record {
@@ -4044,6 +4968,57 @@ public type Dispute record {
     string? status;
 };
 
+# Events are our way of letting you know when something interesting happens in
+# your account. When an interesting event occurs, we create a new `Event`
+# object. For example, when a charge succeeds, we create a `charge.succeeded`
+# event; and when an invoice payment attempt fails, we create an
+# `invoice.payment_failed` event. Note that many API requests may cause multiple
+# events to be created. For example, if you create a new subscription for a
+# customer, you will receive both a `customer.subscription.created` event and a
+# `charge.succeeded` event.
+# 
+# Events occur when the state of another API resource changes. The state of that
+# resource at the time of the change is embedded in the event's data field. For
+# example, a `charge.succeeded` event will contain a charge, and an
+# `invoice.payment_failed` event will contain an invoice.
+# 
+# As with other API resources, you can use endpoints to retrieve an
+# [individual event](https://stripe.com/docs/api#retrieve_event) or a [list of events](https://stripe.com/docs/api#list_events)
+# from the API. We also have a separate
+# [webhooks](http://en.wikipedia.org/wiki/Webhook) system for sending the
+# `Event` objects directly to an endpoint on your server. Webhooks are managed
+# in your
+# [account settings](https://dashboard.stripe.com/account/webhooks),
+# and our [Using Webhooks](https://stripe.com/docs/webhooks) guide will help you get set up.
+# 
+# When using [Connect](https://stripe.com/docs/connect), you can also receive notifications of
+# events that occur in connected accounts. For these events, there will be an
+# additional `account` attribute in the received `Event` object.
+# 
+# **NOTE:** Right now, access to events through the [Retrieve Event API](https://stripe.com/docs/api#retrieve_event) is
+# guaranteed only for 30 days.
+public type Event record {
+    # The connected account that originated the event.
+    string? account?;
+    # The Stripe API version used to render `data`. *Note: This property is populated only for events on or after October 31, 2014*.
+    string? api_version?;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    NotificationEventData? data;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Number of webhooks that have yet to be successfully delivered (i.e., to return a 20x response) to the URLs you've specified.
+    int? pending_webhooks;
+    # Information on the API request that instigated the event.
+    NotificationEventRequest? request?;
+    # Description of the event (e.g., `invoice.created` or `charge.refunded`).
+    string? 'type;
+};
+
 public type PaymentMethodDetailsOxxo record {
     # OXXO reference number
     string? number?;
@@ -4087,6 +5062,13 @@ public type BitcoinTransaction record {
     string? receiver;
 };
 
+public type PaymentPagesCheckoutSessionTaxId record {
+    # The type of the tax ID, one of `eu_vat`, `br_cnpj`, `br_cpf`, `gb_vat`, `nz_gst`, `au_abn`, `au_arn`, `in_gst`, `no_vat`, `za_vat`, `ch_vat`, `mx_rfc`, `sg_uen`, `ru_inn`, `ru_kpp`, `ca_bn`, `hk_br`, `es_cif`, `tw_vat`, `th_vat`, `jp_cn`, `jp_rn`, `li_uid`, `my_itn`, `us_ein`, `kr_brn`, `ca_qst`, `ca_gst_hst`, `ca_pst_bc`, `ca_pst_mb`, `ca_pst_sk`, `my_sst`, `sg_gst`, `ae_trn`, `cl_tin`, `sa_vat`, `id_npwp`, `my_frp`, `il_vat`, or `unknown`
+    string? 'type;
+    # The value of the tax ID.
+    string? value?;
+};
+
 public type IssuingDisputeCanceledEvidence record {
     # (ID of a [file upload](https://stripe.com/docs/guides/file-upload)) Additional documentation supporting the dispute.
     string|File? additional_documentation?;
@@ -4113,7 +5095,38 @@ public type IssuingDisputeCanceledEvidence record {
 public type PaymentMethodCardWalletApplePay record {
 };
 
+public type GelatoSessionIdNumberOptions record {
+};
+
+public type CheckoutAcssDebitPaymentMethodOptions record {
+    # Currency supported by the bank account. Returned when the Session is in `setup` mode.
+    string? currency?;
+    CheckoutAcssDebitMandateOptions? mandate_options?;
+    # Bank account verification method.
+    string? verification_method?;
+};
+
+public type PortalPaymentMethodUpdate record {
+    # Whether the feature is enabled.
+    boolean? enabled;
+};
+
 public type PaymentMethodInteracPresent record {
+};
+
+public type GelatoVerifiedOutputs record {
+    # The user's verified address.
+    Address? address?;
+    # The user’s verified date of birth.
+    GelatoDataVerifiedOutputsDate? dob?;
+    # The user's verified first name.
+    string? first_name?;
+    # The user's verified id number.
+    string? id_number?;
+    # The user's verified id number type.
+    string? id_number_type?;
+    # The user's verified last name.
+    string? last_name?;
 };
 
 public type PaymentMethodGiropay record {
@@ -4150,6 +5163,11 @@ public type InvoiceMarkUncollectibleBody record {
 public type IssuingTransactionAmountDetails record {
     # The fee charged by the ATM for the cash withdrawal.
     int? atm_fee?;
+};
+
+public type PaymentPagesCheckoutSessionTaxIdCollection record {
+    # Indicates whether tax ID collection is enabled for the session
+    boolean? enabled;
 };
 
 public type LineItemsDiscountAmount record {
@@ -4245,6 +5263,40 @@ public type SourceTypeMultibanco record {
     string? refund_iban?;
 };
 
+# You can configure [webhook endpoints](https://stripe.com/docs/webhooks/) via the API to be
+# notified about events that happen in your Stripe account or connected
+# accounts.
+# 
+# Most users configure webhooks from [the dashboard](https://dashboard.stripe.com/webhooks), which provides a user interface for registering and testing your webhook endpoints.
+# 
+# Related guide: [Setting up Webhooks](https://stripe.com/docs/webhooks/configure).
+public type WebhookEndpoint record {
+    # The API version events are rendered as for this webhook endpoint.
+    string? api_version?;
+    # The ID of the associated Connect application.
+    string? application?;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # An optional description of what the webhook is used for.
+    string? description?;
+    # The list of events to enable for this endpoint. `['*']` indicates that all events are enabled, except those that require explicit selection.
+    string[]? enabled_events;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The endpoint's secret, used to generate [webhook signatures](https://stripe.com/docs/webhooks/signatures). Only returned at creation.
+    string? secret?;
+    # The status of the webhook. It can be `enabled` or `disabled`.
+    string? status;
+    # The URL of the webhook endpoint.
+    string? url;
+};
+
 public type SubscriptionDefaultTaxRates1 string[]|string?;
 
 public type ProductsIdBody record {
@@ -4322,6 +5374,25 @@ public type IssuingTransaction record {
     string? wallet?;
 };
 
+public type FinancialReportingFinanceReportRunRunParameters record {
+    # The set of output columns requested for inclusion in the report run.
+    string[]? columns?;
+    # Connected account ID by which to filter the report run.
+    string? connected_account?;
+    # Currency of objects to be included in the report run.
+    string? currency?;
+    # Ending timestamp of data to be included in the report run (exclusive).
+    int? interval_end?;
+    # Starting timestamp of data to be included in the report run.
+    int? interval_start?;
+    # Payout ID by which to filter the report run.
+    string? payout?;
+    # Category of balance transactions to be included in the report run.
+    string? reporting_category?;
+    # Defaults to `Etc/UTC`. The output timezone for all timestamps in the report. A list of possible time zone values is maintained at the [IANA Time Zone Database](http://www.iana.org/time-zones). Has no effect on `interval_start` or `interval_end`.
+    string? timezone?;
+};
+
 public type IssuingAuthorizationMerchantData record {
     # A categorization of the seller's type of business. See our [merchant categories guide](https://stripe.com/docs/issuing/merchant-categories) for a list of possible values.
     string? category;
@@ -4359,6 +5430,37 @@ public type PaymentMethodDetailsSepaDebit record {
 # All invoices will be billed using the specified settings
 public type SubscriptionSchedulesParam record {
     int? days_until_due?;
+};
+
+public type GelatoSessionDocumentOptions record {
+    # Array of strings of allowed identity document types. If the provided identity document isn’t one of the allowed types, the verification check will fail with a document_type_not_allowed error code.
+    string[]? allowed_types?;
+    # Collect an ID number and perform an [ID number check](https://stripe.com/docs/identity/verification-checks?type=id-number) with the document’s extracted name and date of birth.
+    boolean? require_id_number?;
+    # Disable image uploads, identity document images have to be captured using the device’s camera.
+    boolean? require_live_capture?;
+    # Capture a face image and perform a [selfie check](https://stripe.com/docs/identity/verification-checks?type=selfie) comparing a photo ID and a picture of your user’s face. [Learn more](https://stripe.com/docs/identity/selfie).
+    boolean? require_matching_selfie?;
+};
+
+# `Exchange Rate` objects allow you to determine the rates that Stripe is
+# currently using to convert from one currency to another. Since this number is
+# variable throughout the day, there are various reasons why you might want to
+# know the current rate (for example, to dynamically price an item for a user
+# with a default payment in a foreign currency).
+# 
+# If you want a guarantee that the charge is made with a certain exchange rate
+# you expect is current, you can pass in `exchange_rate` to charges endpoints.
+# If the value is no longer up to date, the charge won't go through. Please
+# refer to our [Exchange Rates API](https://stripe.com/docs/exchange-rates) guide for more
+# details.
+public type ExchangeRate record {
+    # Unique identifier for the object. Represented as the three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) in lowercase.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Hash where the keys are supported currencies and the values are the exchange rate at which the base id currency converts to the key currency.
+    record {} rates;
 };
 
 public type IssuingTransactionFuelData record {
@@ -4551,6 +5653,42 @@ public type TaxId record {
     TaxIdVerification? verification?;
 };
 
+# When a non-stripe BIN is used, any use of an [issued card](https://stripe.com/docs/issuing) must be settled directly with the card network. The net amount owed is represented by an Issuing `Settlement` object.
+public type IssuingSettlement record {
+    # The Bank Identification Number reflecting this settlement record.
+    string? bin;
+    # The date that the transactions are cleared and posted to user's accounts.
+    int? clearing_date;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    string? currency;
+    # Unique identifier for the object.
+    string? id;
+    # The total interchange received as reimbursement for the transactions.
+    int? interchange_fees;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata;
+    # The total net amount required to settle with the network.
+    int? net_total;
+    # The card network for this settlement report. One of ["visa"]
+    string? network;
+    # The total amount of fees owed to the network.
+    int? network_fees;
+    # The Settlement Identification Number assigned by the network.
+    string? network_settlement_identifier;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # One of `international` or `uk_national_net`.
+    string? settlement_service;
+    # The total number of transactions reflected in this settlement.
+    int? transaction_count;
+    # The total transaction amount reflected in this settlement.
+    int? transaction_volume;
+};
+
 public type PaymentMethodCardWalletGooglePay record {
 };
 
@@ -4596,6 +5734,29 @@ public type PaymentFlowsPaymentMethodList record {
     string? 'object;
     # The URL where this list can be accessed.
     string? url;
+};
+
+# An early fraud warning indicates that the card issuer has notified us that a
+# charge may be fraudulent.
+# 
+# Related guide: [Early Fraud Warnings](https://stripe.com/docs/disputes/measuring#early-fraud-warnings).
+public type RadarEarlyFraudWarning record {
+    # An EFW is actionable if it has not received a dispute and has not been fully refunded. You may wish to proactively refund a charge that receives an EFW, in order to avoid receiving a dispute later.
+    boolean? actionable;
+    # ID of the charge this early fraud warning is for, optionally expanded.
+    string|Charge? charge;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # The type of fraud labelled by the issuer. One of `card_never_received`, `fraudulent_card_application`, `made_with_counterfeit_card`, `made_with_lost_card`, `made_with_stolen_card`, `misc`, `unauthorized_use_of_card`.
+    string? fraud_type;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # ID of the Payment Intent this early fraud warning is for, optionally expanded.
+    string|PaymentIntent? payment_intent?;
 };
 
 # When an [issued card](https://stripe.com/docs/issuing) is used to make a purchase, an Issuing `Authorization`
@@ -4648,6 +5809,36 @@ public type IssuingAuthorization record {
     string? wallet?;
 };
 
+# Cardholder authentication via 3D Secure is initiated by creating a `3D Secure`
+# object. Once the object has been created, you can use it to authenticate the
+# cardholder and create a charge.
+public type ThreeDSecure record {
+    # Amount of the charge that you will create when authentication completes.
+    int? amount;
+    # True if the cardholder went through the authentication flow and their bank indicated that authentication succeeded.
+    boolean? authenticated;
+    # You can store multiple cards on a customer in order to charge the customer
+    # later. You can also store multiple debit cards on a recipient in order to
+    # transfer to those cards later.
+    # 
+    # Related guide: [Card Payments with Sources](https://stripe.com/docs/sources/cards).
+    Card? card;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    string? currency;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # If present, this is the URL that you should send the cardholder to for authentication. If you are going to use Stripe.js to display the authentication page in an iframe, you should use the value "_callback".
+    string? redirect_url?;
+    # Possible values are `redirect_pending`, `succeeded`, or `failed`. When the cardholder can be authenticated, the object starts with status `redirect_pending`. When liability will be shifted to the cardholder's bank (either because the cardholder was successfully authenticated, or because the bank has not implemented 3D Secure, the object wlil be in status `succeeded`. `failed` indicates that authentication was attempted unsuccessfully.
+    string? status;
+};
+
 public type InvoicePayBody record {
     # Specifies which fields in the response should be expanded.
     string[]? expand?;
@@ -4669,6 +5860,12 @@ public type CustomerAddressWithName record {
     OptionalFieldsAddress? address;
     string? name;
     string? phone?;
+};
+
+public type CheckoutSessionPaymentMethodOptions record {
+    CheckoutAcssDebitPaymentMethodOptions? acss_debit?;
+    PaymentMethodOptionsBoleto? boleto?;
+    PaymentMethodOptionsOxxo? oxxo?;
 };
 
 public type PaymentMethodOptionsAlipay record {
@@ -4970,6 +6167,8 @@ public type SubscriptionItem record {
     TaxRate[]? tax_rates?;
 };
 
+public type DeletedPaymentSource DeletedAlipayAccount|DeletedBankAccount|DeletedBitcoinReceiver|DeletedCard?;
+
 public type SourceTypeAuBecsDebit record {
     string? bsb_number?;
     string? fingerprint?;
@@ -5004,6 +6203,24 @@ public type AccountCardPaymentsSettings record {
     AccountDeclineChargeOn? decline_on?;
     # The default text that appears on credit card statements when a charge is made. This field prefixes any dynamic `statement_descriptor` specified on the charge. `statement_descriptor_prefix` is useful for maximizing descriptor space for the dynamic portion.
     string? statement_descriptor_prefix?;
+};
+
+public type SourceTransactionPaperCheckData record {
+    # Time at which the deposited funds will be available for use. Measured in seconds since the Unix epoch.
+    string? available_at?;
+    # Comma-separated list of invoice IDs associated with the paper check.
+    string? invoices?;
+};
+
+public type GelatoReportDocumentOptions record {
+    # Array of strings of allowed identity document types. If the provided identity document isn’t one of the allowed types, the verification check will fail with a document_type_not_allowed error code.
+    string[]? allowed_types?;
+    # Collect an ID number and perform an [ID number check](https://stripe.com/docs/identity/verification-checks?type=id-number) with the document’s extracted name and date of birth.
+    boolean? require_id_number?;
+    # Disable image uploads, identity document images have to be captured using the device’s camera.
+    boolean? require_live_capture?;
+    # Capture a face image and perform a [selfie check](https://stripe.com/docs/identity/verification-checks?type=selfie) comparing a photo ID and a picture of your user’s face. [Learn more](https://stripe.com/docs/identity/selfie).
+    boolean? require_matching_selfie?;
 };
 
 # This is an object representing a Stripe account. You can retrieve it to see
@@ -5233,6 +6450,15 @@ public type CustomerTax record {
     CustomerTaxLocation? location?;
 };
 
+public type DeletedTerminalReader record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
 public type ConnectCollectionTransfer record {
     # Amount transferred, in %s.
     int? amount;
@@ -5272,6 +6498,13 @@ public type SourceTypeAcssDebit record {
     string? fingerprint?;
     string? last4?;
     string? routing_number?;
+};
+
+public type PaymentPagesCheckoutSessionAutomaticTax record {
+    # Indicates whether automatic tax is enabled for the session
+    boolean? enabled;
+    # The status of the most recent automated tax calculation for this session.
+    string? status?;
 };
 
 public type TransferDataSpecs record {
@@ -5335,6 +6568,11 @@ public type V1SubscriptionSchedulesBody record {
     PhaseConfigurationParams[]? phases?;
     # When the subscription schedule starts. We recommend using `now` so that it starts the subscription immediately. You can also use a Unix timestamp to backdate the subscription so that it starts on a past date, or set a future date for the subscription to start on.
     int|string? start_date?;
+};
+
+public type PortalInvoiceList record {
+    # Whether the feature is enabled.
+    boolean? enabled;
 };
 
 # Subscriptions allow you to charge a customer on a recurring basis.
@@ -5560,6 +6798,30 @@ public type QuotesResourceComputed record {
     QuotesResourceUpfront? upfront;
 };
 
+# Stripe needs to collect certain pieces of information about each account
+# created. These requirements can differ depending on the account's country. The
+# Country Specs API makes these rules available to your integration.
+# 
+# You can also view the information from this API call as [an online
+# guide](/docs/connect/required-verification-information).
+public type CountrySpec record {
+    # The default currency for this country. This applies to both payment methods and bank accounts.
+    string? default_currency;
+    # Unique identifier for the object. Represented as the ISO country code for this country.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Currencies that can be accepted in the specific country (for transfers).
+    record {} supported_bank_account_currencies;
+    # Currencies that can be accepted in the specified country (for payments).
+    string[]? supported_payment_currencies;
+    # Payment methods available in the specified country. You may need to enable some payment methods (e.g., [ACH](https://stripe.com/docs/ach)) on your account before they appear in this list. The `stripe` payment method refers to [charging through your platform](https://stripe.com/docs/connect/destination-charges).
+    string[]? supported_payment_methods;
+    # Countries that can accept transfers from the specified country.
+    string[]? supported_transfer_countries;
+    CountrySpecVerificationFields? verification_fields;
+};
+
 public type PaymentMethodEps record {
     # The customer's bank. Should be one of `arzte_und_apotheker_bank`, `austrian_anadi_bank_ag`, `bank_austria`, `bankhaus_carl_spangler`, `bankhaus_schelhammer_und_schattera_ag`, `bawag_psk_ag`, `bks_bank_ag`, `brull_kallmus_bank_ag`, `btv_vier_lander_bank`, `capital_bank_grawe_gruppe_ag`, `dolomitenbank`, `easybank_ag`, `erste_bank_und_sparkassen`, `hypo_alpeadriabank_international_ag`, `hypo_noe_lb_fur_niederosterreich_u_wien`, `hypo_oberosterreich_salzburg_steiermark`, `hypo_tirol_bank_ag`, `hypo_vorarlberg_bank_ag`, `hypo_bank_burgenland_aktiengesellschaft`, `marchfelder_bank`, `oberbank_ag`, `raiffeisen_bankengruppe_osterreich`, `schoellerbank_ag`, `sparda_bank_wien`, `volksbank_gruppe`, `volkskreditbank_ag`, or `vr_bank_braunau`.
     string? bank?;
@@ -5611,6 +6873,24 @@ public type BalanceTransaction record {
     string? 'type;
 };
 
+# Result from an id_number check
+public type GelatoIdNumberReport record {
+    # Date of birth.
+    GelatoDataIdNumberReportDate? dob?;
+    # Details on the verification error. Present when status is `unverified`.
+    GelatoIdNumberReportError? _error?;
+    # First name.
+    string? first_name?;
+    # ID number.
+    string? id_number?;
+    # Type of ID number.
+    string? id_number_type?;
+    # Last name.
+    string? last_name?;
+    # Status of this `id_number` check.
+    string? status;
+};
+
 public type AccountCardIssuingSettings record {
     CardIssuingAccountTermsOfService? tos_acceptance?;
 };
@@ -5634,6 +6914,11 @@ public type SubscriptionSchedulesResourceDefaultSettings record {
     SubscriptionTransferData? transfer_data?;
 };
 
+public type GelatoVerificationSessionOptions record {
+    GelatoSessionDocumentOptions? document?;
+    GelatoSessionIdNumberOptions? id_number?;
+};
+
 public type PaymentMethodCardGeneratedCard record {
     # The charge that created this object.
     string? charge?;
@@ -5652,6 +6937,17 @@ public type SourceTypeAchCreditTransfer record {
     string? refund_routing_number?;
     string? routing_number?;
     string? swift_code?;
+};
+
+public type PortalSubscriptionUpdate record {
+    # The types of subscription updates that are supported for items listed in the `products` attribute. When empty, subscriptions are not updateable.
+    string[]? default_allowed_updates;
+    # Whether the feature is enabled.
+    boolean? enabled;
+    # The list of products that support subscription updates.
+    PortalSubscriptionUpdateProduct[]? products?;
+    # Determines how to handle prorations resulting from subscription updates. Valid values are `none`, `create_prorations`, and `always_invoice`.
+    string? proration_behavior;
 };
 
 public type PaymentMethodOptionsOxxo record {
@@ -5898,6 +7194,57 @@ public type PackageDimentionsSpecs record {
     decimal? width;
 };
 
+# You can now model subscriptions more flexibly using the [Prices API](https://stripe.com/docs/api#prices). It replaces the Plans API and is backwards compatible to simplify your migration.
+# 
+# Plans define the base price, currency, and billing cycle for recurring purchases of products.
+# [Products](https://stripe.com/docs/api#products) help you track inventory or provisioning, and plans help you track pricing. Different physical goods or levels of service should be represented by products, and pricing options should be represented by plans. This approach lets you change prices without having to change your provisioning scheme.
+# 
+# For example, you might have a single "gold" product that has plans for $10/month, $100/year, €9/month, and €90/year.
+# 
+# Related guides: [Set up a subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription) and more about [products and prices](https://stripe.com/docs/billing/prices-guide).
+public type Plan record {
+    # Whether the plan can be used for new purchases.
+    boolean? active;
+    # Specifies a usage aggregation strategy for plans of `usage_type=metered`. Allowed values are `sum` for summing up all usage during a period, `last_during_period` for using the last usage record reported within a period, `last_ever` for using the last usage record ever (across period bounds) or `max` which uses the usage record with the maximum reported usage during a period. Defaults to `sum`.
+    string? aggregate_usage?;
+    # The unit amount in %s to be charged, represented as a whole integer if possible. Only set if `billing_scheme=per_unit`.
+    int? amount?;
+    # The unit amount in %s to be charged, represented as a decimal string with at most 12 decimal places. Only set if `billing_scheme=per_unit`.
+    string? amount_decimal?;
+    # Describes how to compute the price per period. Either `per_unit` or `tiered`. `per_unit` indicates that the fixed amount (specified in `amount`) will be charged per unit in `quantity` (for plans with `usage_type=licensed`), or per unit of total usage (for plans with `usage_type=metered`). `tiered` indicates that the unit pricing will be computed using a tiering strategy as defined using the `tiers` and `tiers_mode` attributes.
+    string? billing_scheme;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    string? currency;
+    # Unique identifier for the object.
+    string? id;
+    # The frequency at which a subscription is billed. One of `day`, `week`, `month` or `year`.
+    string? interval;
+    # The number of intervals (specified in the `interval` attribute) between subscription billings. For example, `interval=month` and `interval_count=3` bills every 3 months.
+    int? interval_count;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata?;
+    # A brief description of the plan, hidden from customers.
+    string? nickname?;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The product whose pricing this plan determines.
+    string|Product|DeletedProduct? product?;
+    # Each element represents a pricing tier. This parameter requires `billing_scheme` to be set to `tiered`. See also the documentation for `billing_scheme`.
+    PlanTier[]? tiers?;
+    # Defines if the tiering price should be `graduated` or `volume` based. In `volume`-based tiering, the maximum quantity within a period determines the per unit price. In `graduated` tiering, pricing can change as the quantity grows.
+    string? tiers_mode?;
+    # Apply a transformation to the reported usage or set quantity before computing the amount billed. Cannot be combined with `tiers`.
+    TransformUsage? transform_usage?;
+    # Default number of trial days when subscribing a customer to this plan using [`trial_from_plan=true`](https://stripe.com/docs/api#create_subscription-trial_from_plan).
+    int? trial_period_days?;
+    # Configures how the quantity per period should be determined. Can be either `metered` or `licensed`. `licensed` automatically bills the `quantity` set when adding it to a subscription. `metered` aggregates the total usage based on usage records. Defaults to `licensed`.
+    string? usage_type;
+};
+
 # A SetupAttempt describes one attempted confirmation of a SetupIntent,
 # whether that confirmation was successful or unsuccessful. You can use
 # SetupAttempts to inspect details of a specific attempt at setting up a
@@ -5928,6 +7275,39 @@ public type SetupAttempt record {
     string? status;
     # The value of [usage](https://stripe.com/docs/api/setup_intents/object#setup_intent_object-usage) on the SetupIntent at the time of this confirmation, one of `off_session` or `on_session`.
     string? usage;
+};
+
+# A portal configuration describes the functionality and behavior of a portal session.
+public type BillingPortalConfiguration record {
+    # Whether the configuration is active and can be used to create portal sessions.
+    boolean? active;
+    # ID of the Connect Application that created the configuration.
+    string? application?;
+    PortalBusinessProfile? business_profile;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # The default URL to redirect customers to when they click on the portal's link to return to your website. This can be [overriden](https://stripe.com/docs/api/customer_portal/sessions/create#create_portal_session-return_url) when creating the session.
+    string? default_return_url?;
+    PortalFeatures? features;
+    # Unique identifier for the object.
+    string? id;
+    # Whether the configuration is the default. If `true`, this configuration can be managed in the Dashboard and portal sessions will use this configuration unless it is overriden when creating the session.
+    boolean? is_default;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # Time at which the object was last updated. Measured in seconds since the Unix epoch.
+    int? updated;
+};
+
+public type DeletedRecipient record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
 };
 
 public type InvoicesStatusTransitions record {
@@ -5996,6 +7376,13 @@ public type CustomersCustomerBody record {
     string|int? trial_end?;
 };
 
+public type PortalSubscriptionUpdateProduct record {
+    # The list of price IDs which, when subscribed to, a subscription can be updated.
+    string[]? prices;
+    # The product ID.
+    string? product;
+};
+
 public type AccountDeclineChargeOn record {
     # Whether Stripe automatically declines charges with an incorrect ZIP or postal code. This setting only applies when a ZIP or postal code is provided and they fail bank verification.
     boolean? avs_failure;
@@ -6046,6 +7433,38 @@ public type MandateSepaDebit record {
 public type PaymentMethodFpx record {
     # The customer's bank, if provided. Can be one of `affin_bank`, `alliance_bank`, `ambank`, `bank_islam`, `bank_muamalat`, `bank_rakyat`, `bsn`, `cimb`, `hong_leong_bank`, `hsbc`, `kfh`, `maybank2u`, `ocbc`, `public_bank`, `rhb`, `standard_chartered`, `uob`, `deutsche_bank`, `maybank2e`, or `pb_enterprise`.
     string? bank;
+};
+
+# Source mandate notifications should be created when a notification related to
+# a source mandate must be sent to the payer. They will trigger a webhook or
+# deliver an email to the customer.
+public type SourceMandateNotification record {
+    SourceMandateNotificationAcssDebitData? acss_debit?;
+    # A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount associated with the mandate notification. The amount is expressed in the currency of the underlying source. Required if the notification type is `debit_initiated`.
+    int? amount?;
+    SourceMandateNotificationBacsDebitData? bacs_debit?;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    # The reason of the mandate notification. Valid reasons are `mandate_confirmed` or `debit_initiated`.
+    string? reason;
+    SourceMandateNotificationSepaDebitData? sepa_debit?;
+    # `Source` objects allow you to accept a variety of payment methods. They
+    # represent a customer's payment instrument, and can be used with the Stripe API
+    # just like a `Card` object: once chargeable, they can be charged, or can be
+    # attached to customers.
+    # 
+    # Related guides: [Sources API](https://stripe.com/docs/sources) and [Sources & Customers](https://stripe.com/docs/sources/customers).
+    Source? 'source;
+    # The status of the mandate notification. Valid statuses are `pending` or `submitted`.
+    string? status;
+    # The type of source this mandate notification is attached to. Should be the source type identifier code for the payment method, such as `three_d_secure`.
+    string? 'type;
 };
 
 public type ReserveTransaction record {
@@ -6116,6 +7535,53 @@ public type CreditNote record {
     int? voided_at?;
 };
 
+# A Location represents a grouping of readers.
+# 
+# Related guide: [Fleet Management](https://stripe.com/docs/terminal/creating-locations).
+public type TerminalLocation record {
+    Address? address;
+    # The display name of the location.
+    string? display_name;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
+# Some payment methods have no required amount that a customer must send.
+# Customers can be instructed to send any amount, and it can be made up of
+# multiple transactions. As such, sources can have multiple associated
+# transactions.
+public type SourceTransaction record {
+    SourceTransactionAchCreditTransferData? ach_credit_transfer?;
+    # A positive integer in the smallest currency unit (that is, 100 cents for $1.00, or 1 for ¥1, Japanese Yen being a zero-decimal currency) representing the amount your customer has pushed to the receiver.
+    int? amount;
+    SourceTransactionChfCreditTransferData? chf_credit_transfer?;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    string? currency;
+    SourceTransactionGbpCreditTransferData? gbp_credit_transfer?;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    SourceTransactionPaperCheckData? paper_check?;
+    SourceTransactionSepaCreditTransferData? sepa_credit_transfer?;
+    # The ID of the source this transaction is attached to.
+    string? 'source;
+    # The status of the transaction, one of `succeeded`, `pending`, or `failed`.
+    string? status;
+    # The type of source this transaction is attached to.
+    string? 'type;
+};
+
 public type PaymentMethodWechatPay record {
 };
 
@@ -6147,6 +7613,15 @@ public type PaymentMethodDetailsCardPresentReceipt record {
     string? terminal_verification_results?;
     # An indication of various EMV functions performed during the transaction.
     string? transaction_status_information?;
+};
+
+public type DeletedBitcoinReceiver record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
 };
 
 # Order objects are created to handle end customers' purchases of previously
@@ -6265,6 +7740,13 @@ public type AutomaticTaxConfig1 record {
     boolean? enabled;
 };
 
+public type Period record {
+    # The end date of this usage period. All usage up to and including this point in time is included.
+    int? end?;
+    # The start date of this usage period. All usage after this point in time is included.
+    int? 'start?;
+};
+
 # A PaymentIntent guides you through the process of collecting a payment from your customer.
 # We recommend that you create exactly one PaymentIntent for each order or
 # customer session in your system. You can reference the PaymentIntent later to
@@ -6360,6 +7842,39 @@ public type PaymentIntent record {
     string? transfer_group?;
 };
 
+# A VerificationReport is the result of an attempt to collect and verify data from a user.
+# The collection of verification checks performed is determined from the `type` and `options`
+# parameters used. You can find the result of each verification check performed in the
+# appropriate sub-resource: `document`, `id_number`, `selfie`.
+# 
+# Each VerificationReport contains a copy of any data collected by the user as well as
+# reference IDs which can be used to access collected images through the [FileUpload](https://stripe.com/docs/api/files)
+# API. To configure and create VerificationReports, use the
+# [VerificationSession](https://stripe.com/docs/api/identity/verification_sessions) API.
+# 
+# Related guides: [Accessing verification results](https://stripe.com/docs/identity/verification-sessions#results).
+public type IdentityVerificationReport record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # Result from a document check
+    GelatoDocumentReport? document?;
+    # Unique identifier for the object.
+    string? id;
+    # Result from an id_number check
+    GelatoIdNumberReport? id_number?;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    GelatoVerificationReportOptions? options;
+    # Result from a selfie check
+    GelatoSelfieReport? selfie?;
+    # Type of report.
+    string? 'type;
+    # ID of the VerificationSession that created this report.
+    string? verification_session?;
+};
+
 public type MandateAuBecsDebit record {
     # The URL of the mandate. This URL generally contains sensitive information about the customer and should be shared with them exclusively.
     string? url;
@@ -6377,6 +7892,92 @@ public type PaymentMethodDetailsEps record {
     # (if supported) at the time of authorization or settlement. They cannot be set or mutated.
     # EPS rarely provides this information so the attribute is usually empty.
     string? verified_name?;
+};
+
+# The Report Run object represents an instance of a report type generated with
+# specific run parameters. Once the object is created, Stripe begins processing the report.
+# When the report has finished running, it will give you a reference to a file
+# where you can retrieve your results. For an overview, see
+# [API Access to Reports](https://stripe.com/docs/reporting/statements/api).
+# 
+# Note that certain report types can only be run based on your live-mode data (not test-mode
+# data), and will error when queried without a [live-mode API key](https://stripe.com/docs/keys#test-live-modes).
+public type ReportingReportRun record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    # If something should go wrong during the run, a message about the failure (populated when
+    #  `status=failed`).
+    string? _error?;
+    # Unique identifier for the object.
+    string? id;
+    # `true` if the report is run on live mode data and `false` if it is run on test mode data.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    FinancialReportingFinanceReportRunRunParameters? parameters;
+    # The ID of the [report type](https://stripe.com/docs/reports/report-types) to run, such as `"balance.summary.1"`.
+    string? report_type;
+    # The file object representing the result of the report run (populated when
+    #  `status=succeeded`).
+    File? result?;
+    # Status of this report run. This will be `pending` when the run is initially created.
+    #  When the run finishes, this will be set to `succeeded` and the `result` field will be populated.
+    #  Rarely, we may encounter an error, at which point this will be set to `failed` and the `error` field will be populated.
+    string? status;
+    # Timestamp at which this run successfully finished (populated when
+    #  `status=succeeded`). Measured in seconds since the Unix epoch.
+    int? succeeded_at?;
+};
+
+# Sometimes you want to add a charge or credit to a customer, but actually
+# charge or credit the customer's card only at the end of a regular billing
+# cycle. This is useful for combining several charges (to minimize
+# per-transaction fees), or for having Stripe tabulate your usage-based billing
+# totals.
+# 
+# Related guide: [Subscription Invoices](https://stripe.com/docs/billing/invoices/subscription#adding-upcoming-invoice-items).
+public type Invoiceitem record {
+    # Amount (in the `currency` specified) of the invoice item. This should always be equal to `unit_amount * quantity`.
+    int? amount;
+    # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    string? currency;
+    # The ID of the customer who will be billed when this invoice item is billed.
+    string|Customer|DeletedCustomer? customer;
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? date;
+    # An arbitrary string attached to the object. Often useful for displaying to users.
+    string? description?;
+    # If true, discounts will apply to this invoice item. Always false for prorations.
+    boolean? discountable;
+    # The discounts which apply to the invoice item. Item discounts are applied before invoice discounts. Use `expand[]=discounts` to expand each discount.
+    (string|Discount?)[]? discounts?;
+    # Unique identifier for the object.
+    string? id;
+    # The ID of the invoice this invoice item belongs to.
+    string|Invoice? invoice?;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # Set of [key-value pairs](https://stripe.com/docs/api/metadata) that you can attach to an object. This can be useful for storing additional information about the object in a structured format.
+    record {} metadata?;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+    InvoiceLineItemPeriod? period;
+    # The price of the invoice item.
+    Price? price?;
+    # Whether the invoice item was created automatically as a proration adjustment when the customer switched plans.
+    boolean? proration;
+    # Quantity of units for the invoice item. If the invoice item is a proration, the quantity of the subscription that the proration was computed for.
+    int? quantity;
+    # The subscription that this invoice item has been created for, if any.
+    string|Subscription? subscription?;
+    # The subscription item that this invoice item has been created for, if any.
+    string? subscription_item?;
+    # The tax rates which apply to the invoice item. When set, the `default_tax_rates` on the invoice do not apply to this invoice item.
+    TaxRate[]? tax_rates?;
+    # Unit amount (in the `currency` specified) of the invoice item.
+    int? unit_amount?;
+    # Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
+    string? unit_amount_decimal?;
 };
 
 public type PaymentMethodOptions1 record {
@@ -6656,6 +8257,13 @@ public type AccountController record {
     string? 'type?;
 };
 
+public type GelatoIdNumberReportError record {
+    # A short machine-readable string giving the reason for the verification failure.
+    string? code?;
+    # A human-readable message giving the reason for the failure. These messages can be shown to your users.
+    string? reason?;
+};
+
 public type QuotesResourceAutomaticTax record {
     # Automatically calculate taxes
     boolean? enabled;
@@ -6697,6 +8305,15 @@ public type FeeRefundList record {
 public type InvoicePaymentMethodOptionsBancontact record {
     # Preferred language of the Bancontact authorization page that the customer is redirected to.
     string? preferred_language;
+};
+
+public type PaymentPagesCheckoutSessionCustomerDetails record {
+    # The customer’s email at time of checkout.
+    string? email?;
+    # The customer’s tax exempt status at time of checkout.
+    string? tax_exempt?;
+    # The customer’s tax IDs at time of checkout.
+    PaymentPagesCheckoutSessionTaxId[]? tax_ids?;
 };
 
 # `Source` objects allow you to accept a variety of payment methods. They
@@ -6902,11 +8519,52 @@ public type IssuingAuthorizationRequest record {
     string? reason;
 };
 
+public type SourceTransactionGbpCreditTransferData record {
+    # Bank account fingerprint associated with the Stripe owned bank account receiving the transfer.
+    string? fingerprint?;
+    # The credit transfer rails the sender used to push this transfer. The possible rails are: Faster Payments, BACS, CHAPS, and wire transfers. Currently only Faster Payments is supported.
+    string? funding_method?;
+    # Last 4 digits of sender account number associated with the transfer.
+    string? last4?;
+    # Sender entered arbitrary information about the transfer.
+    string? reference?;
+    # Sender account number associated with the transfer.
+    string? sender_account_number?;
+    # Sender name associated with the transfer.
+    string? sender_name?;
+    # Sender sort code associated with the transfer.
+    string? sender_sort_code?;
+};
+
+public type ApplePayDomain record {
+    # Time at which the object was created. Measured in seconds since the Unix epoch.
+    int? created;
+    string? domain_name;
+    # Unique identifier for the object.
+    string? id;
+    # Has the value `true` if the object exists in live mode or the value `false` if the object exists in test mode.
+    boolean? livemode;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
+};
+
+public type VerificationSessionRedaction record {
+    # Indicates whether this object and its related objects have been redacted or not.
+    string? status;
+};
+
 public type CardDetailsParams record {
     string? cvc?;
     int? exp_month;
     int? exp_year;
     string? number;
+};
+
+public type GelatoSelfieReportError record {
+    # A short machine-readable string giving the reason for the verification failure.
+    string? code?;
+    # A human-readable message giving the reason for the failure. These messages can be shown to your users.
+    string? reason?;
 };
 
 # Charges that were created by this PaymentIntent, if any.
@@ -6919,6 +8577,26 @@ public type PaymentFlowsPaymentIntentResourceChargeList record {
     string? 'object;
     # The URL where this list can be accessed.
     string? url;
+};
+
+# Result from a selfie check
+public type GelatoSelfieReport record {
+    # ID of the [File](https://stripe.com/docs/api/files) holding the image of the identity document used in this check.
+    string? document?;
+    # Details on the verification error. Present when status is `unverified`.
+    GelatoSelfieReportError? _error?;
+    # ID of the [File](https://stripe.com/docs/api/files) holding the image of the selfie used in this check.
+    string? selfie?;
+    # Status of this `selfie` check.
+    string? status;
+};
+
+public type BalanceAmount record {
+    # Balance amount.
+    int? amount;
+    # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://stripe.com/docs/currencies).
+    string? currency;
+    BalanceAmountBySourceType? source_types?;
 };
 
 public type InvoiceLineItemPeriod record {
@@ -6970,6 +8648,13 @@ public type LineItem record {
     string? 'type;
 };
 
+public type NotificationEventData record {
+    # Object containing the API resource relevant to the event. For example, an `invoice.created` event will have a full [invoice object](https://stripe.com/docs/api#invoice_object) as the value of the object key.
+    record {} 'object;
+    # Object containing the names of the attributes that have changed, and their previous values (sent along only with *.updated events).
+    record {} previous_attributes?;
+};
+
 # A return represents the full or partial return of a number of [order items](https://stripe.com/docs/api#order_items).
 # Returns always belong to an order, and may optionally contain a refund.
 # 
@@ -6993,6 +8678,15 @@ public type OrderReturn record {
     string|Order? 'order?;
     # The ID of the refund issued for this return.
     string|Refund? refund?;
+};
+
+public type DeletedRadarValueListItem record {
+    # Always true for a deleted object
+    boolean? deleted;
+    # Unique identifier for the object.
+    string? id;
+    # String representing the object's type. Objects of the same type share the same value.
+    string? 'object;
 };
 
 public type IssuingCardShipping record {
@@ -7020,6 +8714,19 @@ public type PaymentMethodDetailsFpx record {
     string? bank;
     # Unique transaction id generated by FPX for every request from the merchant
     string? transaction_id?;
+};
+
+public type PlanTier record {
+    # Price for the entire tier.
+    int? flat_amount?;
+    # Same as `flat_amount`, but contains a decimal value with at most 12 decimal places.
+    string? flat_amount_decimal?;
+    # Per unit price for units relevant to the tier.
+    int? unit_amount?;
+    # Same as `unit_amount`, but contains a decimal value with at most 12 decimal places.
+    string? unit_amount_decimal?;
+    # Up to and including to this quantity will be contained in the tier.
+    int? up_to?;
 };
 
 public type PricesPriceBody record {

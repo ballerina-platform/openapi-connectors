@@ -22,6 +22,8 @@ security:
   - bearer:
       - api.read
   - apiKey: []
+x-ballerina-http-configurations:
+  httpVersion: "1.1"
 paths:
   /deployments/{deployment-id}/chat/completions:
     post:

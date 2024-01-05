@@ -31,7 +31,10 @@ type Encoding record {
 };
 
 enum EncodingStyle {
-    DEEPOBJECT, FORM, SPACEDELIMITED, PIPEDELIMITED
+    DEEPOBJECT,
+    FORM,
+    SPACEDELIMITED,
+    PIPEDELIMITED
 }
 
 final Encoding & readonly defaultEncoding = {};
@@ -41,7 +44,7 @@ final Encoding & readonly defaultEncoding = {};
 # + encodingMap - Includes the information about the encoding mechanism
 # + anyRecord - Record to be serialized
 # + return - Serialized request body or query parameter as a string
-isolated function createFormURLEncodedRequestBody(record {|anydata...;|} anyRecord, map<Encoding> encodingMap = {}) returns string {
+isolated function createFormURLEncodedRequestBody(record {|anydata...; |} anyRecord, map<Encoding> encodingMap = {}) returns string {
     string[] payload = [];
     foreach [string, anydata] [key, value] in anyRecord.entries() {
         Encoding encodingData = encodingMap.hasKey(key) ? encodingMap.get(key) : defaultEncoding;
@@ -196,12 +199,12 @@ isolated function getSerializedRecordArray(string parent, record {}[] value, str
 #
 # + value - Value to be encoded
 # + return - Encoded string
-isolated function getEncodedUri(anydata value) returns string {
-    string|error encoded = url:encode(value.toString(), "UTF8");
+isolated function getEncodedUri(string value) returns string {
+    string|error encoded = url:encode(value, "UTF8");
     if (encoded is string) {
         return encoded;
     } else {
-        return value.toString();
+        return value;
     }
 }
 

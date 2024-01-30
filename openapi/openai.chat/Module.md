@@ -31,7 +31,9 @@ chat:Client chatClient = check new ({
 ```
 
 ### Step 3: Invoke the connector operation
-1. Now you can use the operations available within the connector. Following is an example on creating a conversation with the GPT-3.5 model.
+1. Now you can use the operations available within the connector. 
+
+Following is an example on creating a conversation with the GPT-3.5 model.
     ```ballerina
     public function main() returns error? {
         chat:CreateChatCompletionRequest req = {
@@ -42,4 +44,39 @@ chat:Client chatClient = check new ({
     }
     ``` 
 
+Following is an example of using OpenAI vision capabilities when chatting. 
+
+    ```ballerina
+    public function main() returns error? {
+        chat:CreateChatCompletionResponse response = check chatClient->/chat/completions.post(
+            {
+                model: "gpt-4-vision-preview",
+                messages: [
+                    {
+                        "role": "system",
+                        "content": "You are a helpful assistant."
+                    },
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "Describe the image."
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": "<image_url>"
+                                }
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        );
+        chat:CreateChatCompletionResponse_choices[] choices = response.choices;
+        io:println(choices[0].message?.content);
+    }
+    ```
 2. Use `bal run` command to compile and run the Ballerina program.

@@ -4,9 +4,9 @@ keywords = ["AI/Chat", "OpenAI", "Cost/Paid", "GPT-3.5", "ChatGPT", "Vendor/Open
 org = "ballerinax"
 name = "openai.chat"
 icon = "icon.png"
-distribution = "2201.4.1"
+distribution = "2201.8.4"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/openai.chat"
-version = "1.1.3"
+version = "2.0.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

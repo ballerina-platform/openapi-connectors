@@ -5,7 +5,7 @@ Connects to [Azure OpenAI Chat Completions API](https://learn.microsoft.com/en-u
 The `azure.openai.chat` is a [Ballerina](https://ballerina.io/) connector for connecting to the Azure OpenAI Service REST API Chat Completions and Chat Completions extensions Endpoints.
 
 #### Compatibility
-Azure OpenAI Service REST API: v2023-08-01-preview
+Azure OpenAI Service REST API: v2023-12-01-preview
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library).

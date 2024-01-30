@@ -1,7 +1,7 @@
 ## Overview
 This is a generated connector from [Azure OpenAI Chat Completions API](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#chat-completions/) OpenAPI specification.
 
-The Azure Azure OpenAI Service REST API Chat Completions Endpoint will create completions for chat messages with the ChatGPT (preview) and GPT-4 (preview) models.
+The Azure Azure OpenAI Service REST API Chat Completions Endpoint will create completions for chat messages with the GPT3.5 (preview), GPT-4 (preview) models and GPT-4 Vision models.
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account
@@ -52,7 +52,7 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
             messages: [{role: "user", content: "What is Ballerina?"}]  
         };
 
-        chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-08-01-preview", chatBody);
+        chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-12-01-preview", chatBody);
 
         io:println(chatResult);
     }
@@ -68,44 +68,104 @@ Create and initialize a `chat:Client` with the obtained `apiKey` and a `serviceU
             serviceUrl = serviceUrl
         );
 
-        chat:ChatCompletionRequestMessage[] messages = [{role: "user", content: "What is the weather in Seattle?"}];
-
-        chat:ChatCompletionFunctions[] functions = [
+        chat:ChatCompletionRequestMessage[] messages = [{role: "user", "content": "What is the weather in Seattle?"}];
+        chat:ChatCompletionTool[] tools = [
             {
-                name: "get_current_weather",
-                description: "Get the current weather in a given location",
-                parameters: {
-                    "type": "object",
-                    "properties": {
-                        "location": {
-                            "type": "string",
-                            "description": "The city or town to get the weather for"
+                'type: "function",
+                'function: {
+                    name: "get_current_weather",
+                    description: "Get the current weather in a given location",
+                    parameters: {
+                        "type": "object",
+                        "properties": {
+                            "location": {
+                                "type": "string",
+                                "description": "The city or town to get the weather for"
+                            },
+                            "unit": {
+                                "type": "string",
+                                "enum": ["celsius", "fahrenheit"]
+                            }
                         },
-                        "unit": {
-                            "type": "string",
-                            "enum": ["celsius", "fahrenheit"]
-                        }
-                    },
-                    "required": ["location"]
+                        "required": ["location"]
+                    }
                 }
             }
         ];
 
-        chat:CreateChatCompletionRequest chatBody = {messages, functions};
+        chat:CreateChatCompletionRequest chatBody = {messages, tools};
 
-        chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/["chat"]/chat/completions.post("2023-08-01-preview", chatBody);
+        chat:CreateChatCompletionResponse chatResult = check chatClient->/deployments/[deployementId]/chat/completions.post("2023-12-01-preview", chatBody);
 
         io:println(chatResult);
 
-        chat:ChatCompletionRequestMessage_function_call? functionCall = chatResult.choices[0].message?.function_call;
+        record {|chat:ChatCompletionResponseMessage message?; chat:ContentFilterChoiceResults content_filter_results?; int index?; string finish_reason?; anydata...;|}[] choices = check chatResult.choices.ensureType();
 
-        if functionCall is chat:ChatCompletionRequestMessage_function_call {
-            messages.push({role: "assistant", content: (), function_call: functionCall});
-            
-            // Invoke the function [functionCall.name] with the arguments [functionCall.arguments] and get the output [functionOutput]
+        // continue the chat
+        chat:ChatCompletionRequestMessage message = check choices[0].message.cloneWithType();
+        messages.push(message);
 
-            messages.push({role: "function", name: functionCall.name, content: functionOutput.toString()});
+        // check if there are any tool calls
+        chat:ChatCompletionMessageToolCall[]? toolCalls = choices[0].message?.tool_calls;
+        if toolCalls is chat:ChatCompletionMessageToolCall[] {
+            foreach chat:ChatCompletionMessageToolCall toolCall in toolCalls {
+                string functionName = toolCall.'function.name;
+                string functionArguments = toolCall.'function.arguments;
+                // invoke the function
+                anydata functionResponse = "<function response>";
+                messages.push(
+                    {
+                    role: "tool",
+                    "tool_call_id": toolCall.id,
+                    "name": functionName,
+                    "content": functionResponse
+                });
+            }
         }
+
+        // do the second chat request
+        chatResult = check chatClient->/deployments/["chatgpt"]/chat/completions.post("2023-12-01-preview", {messages});
+        io:println(chatResult);
+    }
+    ```
+
+    Following a sample to use OpenAI vision capabilities with chat model
+    ```ballerina
+    public function main() returns error? {
+        final chat:Client chatClient = check new (
+            config = {auth: {apiKey: apiKey}},
+            serviceUrl = serviceUrl
+        );
+
+        chat:CreateChatCompletionResponse response = check chatClient->/deployments/[deployementId]/chat/completions.post("2023-12-01-preview",
+            {
+                messages: [
+                    {
+                        "role": "system",
+                        "content": "You are a helpful assistant."
+                    },
+                    {
+                        "role": "user",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "Describe the image."
+                            },
+                            {
+                                "type": "image_url",
+                                "image_url": {
+                                    "url": "<image url>"
+                                }
+                            }
+                        ]
+
+                    }
+                ]
+            }
+        );
+
+        record {|chat:ChatCompletionResponseMessage message?; chat:ContentFilterChoiceResults content_filter_results?; int index?; string finish_reason?; anydata...;|}[] choices = check response.choices.ensureType();
+        io:println(choices[0].message?.content);
     }
     ```
 

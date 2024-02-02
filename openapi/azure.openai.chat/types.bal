@@ -384,7 +384,7 @@ public type ChatCompletionsResponseCommon record {
     # Usage statistics for the completion request.
     CompletionUsage usage?;
     # Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that might impact determinism.
-    string system_fingerprint?;
+    string? system_fingerprint?;
 };
 
 # Error response object.

@@ -64,7 +64,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "http"
-version = "2.10.5"
+version = "2.10.6"
 dependencies = [
 	{org = "ballerina", name = "auth"},
 	{org = "ballerina", name = "cache"},
@@ -289,7 +289,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "openai.chat"
-version = "2.0.0"
+version = "2.0.1"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
 	{org = "ballerina", name = "http"},

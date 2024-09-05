@@ -357,7 +357,7 @@ public type NetworkConfig record {
     string[] ipAddresses?;
     # Internet protocol versions for which the instance has IP addresses assigned. For this version, only MODE_IPV4 is supported.
     string[] modes?;
-    # The name of the Google Compute Engine [VPC network](/compute/docs/networks-and-firewalls#networks) to which the instance is connected.
+    # The name of the Google Compute Engine [VPC network](https://cloud.google.com/vpc/docs/vpc#vpc) to which the instance is connected.
     string network?;
     # A /29 CIDR block in one of the [internal IP address ranges](https://www.arin.net/knowledge/address_filters.html) that identifies the range of IP addresses reserved for this instance. For example, 10.0.0.0/29 or 192.168.0.0/29. The range you specify can't overlap with either existing subnets or assigned IP address ranges for other Cloud Filestore instances in the selected VPC network.
     string reservedIpRange?;

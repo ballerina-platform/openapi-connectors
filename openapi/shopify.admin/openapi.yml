@@ -13,6 +13,9 @@ info:
   x-ballerina-display:
     label: Shopify Admin
     iconPath: "icon.png"
+  x-marketplace-tags:
+    - name: Featured
+      description: Featured APIs are hand-picked for display purposes.
   version: "2021-10"
 security:
 - api_token: []

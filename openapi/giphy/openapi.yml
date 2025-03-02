@@ -25,6 +25,9 @@ info:
   x-ballerina-init-description: | 
     The connector initialization requires setting the API credentials.
     Create a [Giphy account](https://giphy.com/login) and obtain tokens by following [this guide](https://support.giphy.com/hc/en-us/articles/360020283431-Request-A-GIPHY-API-Key).
+  x-marketplace-tags:
+    - name: Featured
+      description: Featured APIs are hand-picked for display purposes.
 externalDocs:
   description: Official Giphy Documentation
   url: https://developers.giphy.com/docs/

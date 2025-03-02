@@ -21,6 +21,9 @@ info:
     The connector initialization requires setting the API credentials. 
     
     Please create an account at https://openweathermap.org and an API key following [this guide](https://openweathermap.org/appid).  Choose a subscription that matches with your requirements.
+  x-marketplace-tags:
+    - name: Featured
+      description: Featured APIs are hand-picked for display purposes.
 servers:
 - url: "http://api.openweathermap.org/data/2.5/"
 

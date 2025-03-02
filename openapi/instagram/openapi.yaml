@@ -14,6 +14,9 @@ info:
   x-ballerina-display:
     label: Instagram
     iconPath: icon.png
+  x-marketplace-tags:
+    - name: Featured
+      description: Featured APIs are hand-picked for display purposes.
 servers:
   - url: https://graph.instagram.com/
 tags: []

@@ -24,6 +24,9 @@ info:
   license:
     name: CC BY-SA 4.0
     url: 'https://gitlab.com/gitlab-org/gitlab/-/blob/master/LICENSE'
+  x-marketplace-tags:
+    - name: Featured
+      description: Featured APIs are hand-picked for display purposes.
 servers:
   - url: 'https://gitlab.com/api/'
 security:

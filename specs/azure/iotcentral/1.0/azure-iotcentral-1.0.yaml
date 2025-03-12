@@ -1,0 +1,2575 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: Azure IoT Central
+    iconPath: "icon.png"
+  title: Azure IoT Central
+  description: >
+    This is a generated connector from [Azure IoT Central API v1.0](https://azure.microsoft.com/en-us/services/iot-central/) OpenAPI specification.
+
+    Azure IoT Central is a service that makes it easy to connect, monitor, and manage your IoT devices at scale.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create an [Azure  IoT Central account](https://azure.microsoft.com/en-us/services/iot-central/) and obtain OAuth tokens following [this guide](https://docs.microsoft.com/en-us/rest/api/iotcentral/authentication#aad-bearer-token).
+  version: "1.0"
+paths:
+  /apiTokens:
+    get:
+      summary: Get the list of API tokens in an application. The token value will
+        never be returned for security reasons.
+      operationId: ApiTokens_List
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiTokenCollection'
+      # x-ms-examples:
+      #   List API tokens:
+      #     $ref: ./examples/apitoken_list.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /apiTokens/{tokenId}:
+    get:
+      summary: Get an API token by ID.
+      operationId: ApiTokens_Get
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: tokenId
+        in: path
+        description: Unique ID for the API token.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiToken'
+      # x-ms-examples:
+      #   Get API token by ID:
+      #     $ref: ./examples/apitoken_get.json
+    put:
+      summary: Create a new API token in the application to use in the IoT Central
+        public API. The token value will be returned in the response, and won't be
+        returned again in subsequent requests.
+      operationId: ApiTokens_Create
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: tokenId
+        in: path
+        description: Unique ID for the API token.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: API token body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiToken'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiToken'
+      # x-ms-examples:
+      #   Create API token:
+      #     $ref: ./examples/apitoken_create.json
+      x-codegen-request-body-name: body
+    delete:
+      summary: Delete an API token.
+      operationId: ApiTokens_Remove
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: tokenId
+        in: path
+        description: Unique ID for the API token.
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Success
+          content: {}
+      # x-ms-examples:
+      #   Delete API token:
+      #     $ref: ./examples/apitoken_delete.json
+  /deviceTemplates:
+    get:
+      summary: Get the list of device templates in an application
+      operationId: DeviceTemplates_List
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTemplateCollection'
+      # x-ms-examples:
+      #   List device templates:
+      #     $ref: ./examples/devicetemplates_list.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /deviceTemplates/{deviceTemplateId}:
+    get:
+      summary: Get a device template by ID
+      operationId: DeviceTemplates_Get
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceTemplateId
+        in: path
+        description: Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTemplate'
+      # x-ms-examples:
+      #   Get a device template by Id:
+      #     $ref: ./examples/devicetemplates_get.json
+    put:
+      summary: Publish a new device template. Default views will be automatically
+        generated for new device templates created this way.
+      operationId: DeviceTemplates_Create
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceTemplateId
+        in: path
+        description: Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device template body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceTemplate'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTemplate'
+      # x-ms-examples:
+      #   Create a device template:
+      #     $ref: ./examples/devicetemplates_create.json
+      x-codegen-request-body-name: body
+    delete:
+      summary: Delete a device template
+      description: Delete an existing device template by device ID.
+      operationId: DeviceTemplates_Remove
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceTemplateId
+        in: path
+        description: Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        204:
+          description: Success
+          content: {}
+      # x-ms-examples:
+      #   Delete a device template by Id:
+      #     $ref: ./examples/devicetemplates_delete.json
+    patch:
+      summary: Update the cloud properties and overrides of an existing device template
+        via patch.
+      operationId: DeviceTemplates_Update
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceTemplateId
+        in: path
+        description: Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device template patch body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTemplate'
+      # x-ms-examples:
+      #   Update a device template:
+      #     $ref: ./examples/devicetemplates_create.json
+      x-codegen-request-body-name: body
+  /devices:
+    get:
+      summary: Get the list of devices in an application
+      operationId: Devices_List
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCollection'
+      # x-ms-examples:
+      #   List devices:
+      #     $ref: ./examples/devices_list.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /devices/{deviceId}:
+    get:
+      summary: Get a device by ID
+      description: Get details about an existing device by device ID.
+      operationId: Devices_Get
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+      # x-ms-examples:
+      #   Get device by Id:
+      #     $ref: ./examples/devices_get.json
+    put:
+      summary: Create or update a device
+      description: Create a new device.
+      operationId: Devices_Create
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Device'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+      # x-ms-examples:
+      #   Create device:
+      #     $ref: ./examples/devices_create.json
+      x-codegen-request-body-name: body
+    delete:
+      summary: Delete a device
+      description: Delete an existing device by device ID.
+      operationId: Devices_Remove
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        204:
+          description: Success
+          content: {}
+      # x-ms-examples:
+      #   Delete device:
+      #     $ref: ./examples/devices_delete.json
+    patch:
+      summary: Update a device via patch
+      description: Update an existing device by ID.
+      operationId: Devices_Update
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device patch body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+          application/json-patch+json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+      # x-ms-examples:
+      #   Update device:
+      #     $ref: ./examples/devices_update.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/attestation:
+    get:
+      summary: Get device attestation
+      operationId: Devices_GetAttestation
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attestation'
+      # x-ms-examples:
+      #   Get device attestation:
+      #     $ref: ./examples/devices_attestations_get.json
+    put:
+      summary: Create an individual device attestation
+      operationId: Devices_CreateAttestation
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Individual device attestation body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attestation'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attestation'
+      # x-ms-examples:
+      #   Create or update device attestation - Symmetric Key:
+      #     $ref: ./examples/devices_attestations_set_symmetricKey.json
+      #   Create or update device attestation - TPM:
+      #     $ref: ./examples/devices_attestations_set_tpm.json
+      #   Create or update device attestation - X509:
+      #     $ref: ./examples/devices_attestations_set_x509.json
+      x-codegen-request-body-name: body
+    delete:
+      summary: Remove an individual device attestation
+      operationId: Devices_RemoveAttestation
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        204:
+          description: Success
+          content: {}
+      # x-ms-examples:
+      #   Delete device attestation:
+      #     $ref: ./examples/devices_attestations_delete.json
+    patch:
+      summary: Update an individual device attestation via patch
+      operationId: Devices_UpdateAttestation
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Individual device attestation patch body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+          application/json-patch+json:
+            schema:
+              type: object
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attestation'
+      # x-ms-examples:
+      #   Update device attestation - Symmetric Key:
+      #     $ref: ./examples/devices_attestations_set_symmetricKey.json
+      #   Update device attestation - TPM:
+      #     $ref: ./examples/devices_attestations_set_tpm.json
+      #   Update device attestation - X509:
+      #     $ref: ./examples/devices_attestations_set_x509.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/commands/{commandName}:
+    get:
+      summary: Get device command history
+      operationId: Devices_GetCommandHistory
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommandCollection'
+      # x-ms-examples:
+      #   Get command history:
+      #     $ref: ./examples/devices_commandshistory_get.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+    post:
+      summary: Run a device command
+      description: Run a command on a device.
+      operationId: Devices_RunCommand
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device command body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCommand'
+        required: true
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommand'
+      # x-ms-examples:
+      #   Send command:
+      #     $ref: ./examples/devices_commands_send.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/components:
+    get:
+      summary: List the components present in a device
+      operationId: Devices_ListComponents
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+      # x-ms-examples:
+      #   List components:
+      #     $ref: ./examples/devices_components_get.json
+  /devices/{deviceId}/components/{componentName}/commands/{commandName}:
+    get:
+      summary: Get component command history
+      operationId: Devices_GetComponentCommandHistory
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommandCollection'
+      # x-ms-examples:
+      #   Get command history:
+      #     $ref: ./examples/devices_commandshistory_get.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+    post:
+      summary: Run a component command
+      description: Run a command on a component.
+      operationId: Devices_RunComponentCommand
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device command body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCommand'
+        required: true
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommand'
+      # x-ms-examples:
+      #   Send command:
+      #     $ref: ./examples/devices_commands_send.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/components/{componentName}/properties:
+    get:
+      summary: Get device properties for a specific component
+      operationId: Devices_GetComponentProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Get properties on components:
+      #     $ref: ./examples/devices_properties_components_get.json
+    put:
+      summary: Replace device properties for a specific component
+      operationId: Devices_ReplaceComponentProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device properties.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceProperties'
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties on components:
+      #     $ref: ./examples/devices_properties_components_set.json
+      x-codegen-request-body-name: body
+    patch:
+      summary: Update device properties for a specific component via patch
+      operationId: Devices_UpdateComponentProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device properties patch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+          application/json-patch+json:
+            schema:
+              type: object
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties on components:
+      #     $ref: ./examples/devices_properties_components_set.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/components/{componentName}/telemetry/{telemetryName}:
+    get:
+      summary: Get component telemetry value
+      description: Get the last telemetry value from a component.
+      operationId: Devices_GetComponentTelemetryValue
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: telemetryName
+        in: path
+        description: Name of this device telemetry.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTelemetry'
+      # x-ms-examples:
+      #   Get telemetry:
+      #     $ref: ./examples/devices_telemetry_get.json
+  /devices/{deviceId}/credentials:
+    get:
+      summary: Get device credentials
+      operationId: Devices_GetCredentials
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCredentials'
+      # x-ms-examples:
+      #   Get device credentials:
+      #     $ref: ./examples/devicecredentials_get.json
+  /devices/{deviceId}/modules:
+    get:
+      summary: List the modules present in a device
+      operationId: Devices_ListModules
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+      # x-ms-examples:
+      #   List modules:
+      #     $ref: ./examples/devices_modules_get.json
+  /devices/{deviceId}/modules/{moduleName}/commands/{commandName}:
+    get:
+      summary: Get module command history
+      operationId: Devices_GetModuleCommandHistory
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommandCollection'
+      # x-ms-examples:
+      #   Get command history within module:
+      #     $ref: ./examples/modules_commandshistory_get.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+    post:
+      summary: Run a module command
+      description: Run a command on a module.
+      operationId: Devices_RunModuleCommand
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device command body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCommand'
+        required: true
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommand'
+      # x-ms-examples:
+      #   Send command to module:
+      #     $ref: ./examples/modules_commands_send.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/modules/{moduleName}/components:
+    get:
+      summary: List the components present in a module
+      operationId: Devices_ListModuleComponents
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+      # x-ms-examples:
+      #   List module components:
+      #     $ref: ./examples/devices_modules_components_get.json
+  /devices/{deviceId}/modules/{moduleName}/components/{componentName}/commands/{commandName}:
+    get:
+      summary: Get module component command history
+      operationId: Devices_GetModuleComponentCommandHistory
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommandCollection'
+      # x-ms-examples:
+      #   Get command history within module:
+      #     $ref: ./examples/modules_commandshistory_get.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+    post:
+      summary: Run a module component command
+      description: Run a command on a module.
+      operationId: Devices_RunModuleComponentCommand
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: commandName
+        in: path
+        description: Name of this device command.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device command body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCommand'
+        required: true
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceCommand'
+      # x-ms-examples:
+      #   Send command to module:
+      #     $ref: ./examples/modules_commands_send.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/modules/{moduleName}/components/{componentName}/properties:
+    get:
+      summary: Get module properties for a specific component
+      operationId: Devices_GetModuleComponentProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Get properties of a module:
+      #     $ref: ./examples/modules_properties_components_get.json
+    put:
+      summary: Replace module properties for a specific component
+      operationId: Devices_ReplaceModuleComponentProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Module properties.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceProperties'
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties of a module within a component:
+      #     $ref: ./examples/modules_properties_components_set.json
+      x-codegen-request-body-name: body
+    patch:
+      summary: Update module properties for a specific component via patch
+      operationId: Devices_UpdateModuleComponentProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Module properties patch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+          application/json-patch+json:
+            schema:
+              type: object
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties of a module within a component:
+      #     $ref: ./examples/modules_properties_components_set.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/modules/{moduleName}/components/{componentName}/telemetry/{telemetryName}:
+    get:
+      summary: Get module component telemetry value
+      description: Get the last telemetry value from a module component.
+      operationId: Devices_GetModuleComponentTelemetryValue
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: componentName
+        in: path
+        description: Name of the device component.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: telemetryName
+        in: path
+        description: Name of this device telemetry.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTelemetry'
+      # x-ms-examples:
+      #   Get telemetry from module:
+      #     $ref: ./examples/modules_telemetry_get.json
+  /devices/{deviceId}/modules/{moduleName}/properties:
+    get:
+      summary: Get module properties
+      description: Get all property values of a module.
+      operationId: Devices_GetModuleProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Get properties of a module:
+      #     $ref: ./examples/modules_properties_get.json
+    put:
+      summary: Replace module properties
+      description: Replace all property values of a module.
+      operationId: Devices_ReplaceModuleProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Module properties.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceProperties'
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties of a module:
+      #     $ref: ./examples/modules_properties_update.json
+      x-codegen-request-body-name: body
+    patch:
+      summary: Update module properties via patch
+      description: Update property values of a module.
+      operationId: Devices_UpdateModuleProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Module properties patch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+          application/json-patch+json:
+            schema:
+              type: object
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties of a module:
+      #     $ref: ./examples/modules_properties_update.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/modules/{moduleName}/telemetry/{telemetryName}:
+    get:
+      summary: Get module telemetry value
+      description: Get the last telemetry value from a module.
+      operationId: Devices_GetModuleTelemetryValue
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: moduleName
+        in: path
+        description: Name of the device module.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: telemetryName
+        in: path
+        description: Name of this device telemetry.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTelemetry'
+      # x-ms-examples:
+      #   Get telemetry from module:
+      #     $ref: ./examples/modules_telemetry_get.json
+  /devices/{deviceId}/properties:
+    get:
+      summary: Get device properties
+      description: Get all property values of a device by device ID.
+      operationId: Devices_GetProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Get properties:
+      #     $ref: ./examples/devices_properties_get.json
+    put:
+      summary: Replace device properties
+      description: Replace all property values of a device by device ID.
+      operationId: Devices_ReplaceProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device properties.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceProperties'
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties:
+      #     $ref: ./examples/devices_properties_update.json
+      x-codegen-request-body-name: body
+    patch:
+      summary: Update device properties via patch
+      description: Update property values of a device by device ID.
+      operationId: Devices_UpdateProperties
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      requestBody:
+        description: Device properties patch.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+          application/json-patch+json:
+            schema:
+              type: object
+        required: true
+      responses:
+        202:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceProperties'
+      # x-ms-examples:
+      #   Update properties:
+      #     $ref: ./examples/devices_properties_update.json
+      x-codegen-request-body-name: body
+  /devices/{deviceId}/telemetry/{telemetryName}:
+    get:
+      summary: Get device telemetry value
+      description: Get the last telemetry value from a device.
+      operationId: Devices_GetTelemetryValue
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: deviceId
+        in: path
+        description: Unique ID of the device.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      - name: telemetryName
+        in: path
+        description: Name of this device telemetry.
+        required: true
+        schema:
+          type: string
+          x-ms-parameter-location: method
+        x-ms-parameter-location: method
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceTelemetry'
+      # x-ms-examples:
+      #   Get telemetry:
+      #     $ref: ./examples/devices_telemetry_get.json
+  /roles:
+    get:
+      summary: Get the list of roles in an application.
+      operationId: Roles_List
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleCollection'
+      # x-ms-examples:
+      #   List roles:
+      #     $ref: ./examples/roles_list.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /roles/{roleId}:
+    get:
+      summary: Get a role by ID.
+      operationId: Roles_Get
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: roleId
+        in: path
+        description: Unique ID for the role.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+      # x-ms-examples:
+      #   Get role by Id:
+      #     $ref: ./examples/roles_get.json
+  /users:
+    get:
+      summary: Get the list of users in an application
+      operationId: Users_List
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCollection'
+      # x-ms-examples:
+      #   List users:
+      #     $ref: ./examples/users_list.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+  /users/{userId}:
+    get:
+      summary: Get a user by ID
+      operationId: Users_Get
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: userId
+        in: path
+        description: Unique ID of the user.
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      # x-ms-examples:
+      #   Get a user by ID:
+      #     $ref: ./examples/users_get.json
+    put:
+      summary: Create a user in the application
+      operationId: Users_Create
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: userId
+        in: path
+        description: Unique ID of the user.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: User body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      # x-ms-examples:
+      #   Add or update a service principal user:
+      #     $ref: ./examples/users_set_serviceprincipal.json
+      #   Add or update an email user:
+      #     $ref: ./examples/users_set.json
+      x-codegen-request-body-name: body
+    delete:
+      summary: Delete a user
+      operationId: Users_Remove
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: userId
+        in: path
+        description: Unique ID of the user.
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Success
+          content: {}
+      # x-ms-examples:
+      #   Delete a user:
+      #     $ref: ./examples/users_delete.json
+    patch:
+      summary: Update a user in the application via patch
+      operationId: Users_Update
+      parameters:
+      - name: api-version
+        in: query
+        description: The version of the API being called.
+        required: true
+        schema:
+          type: string
+          default: "1.0"
+          x-ms-parameter-location: client
+        x-ms-parameter-location: client
+      - name: userId
+        in: path
+        description: Unique ID of the user.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: User patch body.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Payload'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+      # x-ms-examples:
+      #   Update a service principal user:
+      #     $ref: ./examples/users_set_serviceprincipal.json
+      #   Update an email user:
+      #     $ref: ./examples/users_set.json
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    ApiToken:
+      allOf:
+      - $ref: '#/components/schemas/Permission'
+    ApiTokenCollection:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: array
+          description: The collection of API tokens.
+          items:
+            $ref: '#/components/schemas/ApiToken'
+        nextLink:
+          type: string
+          description: URL to get the next page of API tokens.
+    Attestation:
+      required:
+      - type
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the attestation.
+      discriminator:
+        propertyName: type
+    Collection:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: array
+          description: The collection of entities.
+          items:
+            type: object
+            properties: {}
+        nextLink:
+          type: string
+          description: URL to get the next page of entities.
+    Device:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the device.
+          readOnly: true
+        etag:
+          type: string
+          description: ETag used to prevent conflict in device updates.
+        displayName:
+          type: string
+          description: Display name of the device.
+        template:
+          type: string
+          description: The device template definition for the device.
+        enabled:
+          type: boolean
+          description: Whether the device connection to IoT Central has been enabled.
+        provisioned:
+          type: boolean
+          description: Whether resources have been allocated for the device.
+          readOnly: true
+        simulated:
+          type: boolean
+          description: Whether the device is simulated.
+    DeviceCollection:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: array
+          description: The collection of devices.
+          items:
+            $ref: '#/components/schemas/Device'
+        nextLink:
+          type: string
+          description: URL to get the next page of devices.
+    DeviceCommand:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The request ID of the device command execution.
+          readOnly: true
+        connectionTimeout:
+          maximum: 3E+1
+          minimum: 0
+          type: integer
+          description: Connection timeout in seconds to wait for a disconnected device
+            to come online. Defaults to 0 seconds.
+        responseTimeout:
+          maximum: 3E+1
+          minimum: 5
+          type: integer
+          description: Response timeout in seconds to wait for a command completion
+            on a device. Defaults to 30 seconds.
+        request:
+          type: object
+          description: The payload for the device command.
+        response:
+          type: object
+          description: The payload of the device command response.
+          readOnly: true
+        responseCode:
+          type: integer
+          description: The status code of the device command response.
+          readOnly: true
+    DeviceCommandCollection:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: array
+          description: The collection of device command executions.
+          items:
+            $ref: '#/components/schemas/DeviceCommand'
+        nextLink:
+          type: string
+          description: URL to get the next page of device command executions.
+    DeviceCredentials:
+      required:
+      - idScope
+      type: object
+      properties:
+        idScope:
+          type: string
+          description: ID scope for connecting to the IoT Central application.
+        symmetricKey:
+          $ref: '#/components/schemas/SymmetricKey'
+        x509:
+          $ref: '#/components/schemas/X509'
+        tpm:
+          $ref: '#/components/schemas/Tpm'
+    DeviceProperties:
+      type: object
+      description: Property values associated with the device.
+    DeviceTelemetry:
+      type: object
+      properties:
+        value:
+          type: object
+          description: The last known value of this device telemetry.
+        timestamp:
+          type: string
+          description: String-formatted date representing the time when the telemetry
+            value was sent.
+          format: date-time
+    DeviceTemplate:
+      required:
+      - '@type'
+      - capabilityModel
+      type: object
+      properties:
+        '@id':
+          type: string
+          description: Unique ID of the device template.
+          readOnly: true
+        '@type':
+          type: array
+          description: The JSON-LD types of this device template.
+          items:
+            type: string
+        etag:
+          type: string
+          description: ETag used to prevent conflict in device template updates.
+        displayName:
+          type: string
+          description: Display name of the device template.
+        description:
+          type: string
+          description: Detailed description of the device template.
+        capabilityModel:
+          type: object
+          properties: {}
+          description: The capability model utilized by this device template.
+    Payload:
+      type: object
+    DeviceTemplateCollection:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: array
+          description: The collection of device templates.
+          items:
+            $ref: '#/components/schemas/DeviceTemplate'
+        nextLink:
+          type: string
+          description: URL to get the next page of device templates.
+    EmailUser:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      x-ms-discriminator-value: email
+    Permission:
+      required:
+      - roles
+      type: object
+      properties:
+        roles:
+          minItems: 1
+          type: array
+          description: List of role assignments that specify the permissions to access
+            the application.
+          items:
+            $ref: '#/components/schemas/RoleAssignment'
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID of the role.
+          readOnly: true
+        displayName:
+          type: string
+          description: Display name of the role.
+    RoleAssignment:
+      required:
+      - role
+      type: object
+      properties:
+        role:
+          type: string
+          description: ID of the role for this role assignment.
+    RoleCollection:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: array
+          description: The collection of roles.
+          items:
+            $ref: '#/components/schemas/Role'
+        nextLink:
+          type: string
+          description: URL to get the next page of roles.
+    ServicePrincipalUser:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      x-ms-discriminator-value: servicePrincipal
+    SymmetricKey:
+      required:
+      - primaryKey
+      - secondaryKey
+      type: object
+      properties:
+        primaryKey:
+          type: string
+          description: The primary key for this credential.
+        secondaryKey:
+          type: string
+          description: The secondary key for this credential.
+    SymmetricKeyAttestation:
+      allOf:
+      - $ref: '#/components/schemas/Attestation'
+      x-ms-discriminator-value: symmetricKey
+    Tpm:
+      required:
+      - endorsementKey
+      type: object
+      properties:
+        endorsementKey:
+          type: string
+          description: The TPM endorsement key for this credential.
+    TpmAttestation:
+      allOf:
+      - $ref: '#/components/schemas/Attestation'
+      x-ms-discriminator-value: tpm
+    User:
+      allOf:
+      - $ref: '#/components/schemas/Permission'
+    UserCollection:
+      required:
+      - value
+      type: object
+      properties:
+        value:
+          type: array
+          description: The collection of users.
+          items:
+            $ref: '#/components/schemas/User'
+        nextLink:
+          type: string
+          description: URL to get the next page of users.
+    X509:
+      type: object
+      properties:
+        clientCertificates:
+          $ref: '#/components/schemas/X509Certificates'
+    X509Attestation:
+      allOf:
+      - $ref: '#/components/schemas/Attestation'
+      x-ms-discriminator-value: x509
+    X509Certificate:
+      type: object
+      properties:
+        certificate:
+          type: string
+          description: The string representation of this certificate.
+        info:
+          $ref: '#/components/schemas/X509CertificateInfo'
+    X509CertificateInfo:
+      required:
+      - sha1Thumbprint
+      type: object
+      properties:
+        sha1Thumbprint:
+          type: string
+          description: The SHA-1 hash value of the certificate.
+    X509Certificates:
+      required:
+      - primary
+      type: object
+      properties:
+        primary:
+          $ref: '#/components/schemas/X509Certificate'
+        secondary:
+          $ref: '#/components/schemas/X509Certificate'
+  parameters:
+    BaseDomain:
+      name: baseDomain
+      in: path
+      description: The base domain for all Azure IoT Central service requests.
+      required: true
+      schema:
+        type: string
+        default: azureiotcentral.com
+        x-ms-parameter-location: client
+        x-ms-skip-url-encoding: true
+      x-ms-parameter-location: client
+      x-ms-skip-url-encoding: true
+    CommandName:
+      name: commandName
+      in: path
+      description: Name of this device command.
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    ComponentName:
+      name: componentName
+      in: path
+      description: Name of the device component.
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    DeviceId:
+      name: deviceId
+      in: path
+      description: Unique ID of the device.
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    DeviceTemplateId:
+      name: deviceTemplateId
+      in: path
+      description: Digital Twin Model Identifier of the device template, [More Details](https://github.com/Azure/opendigitaltwins-dtdl/blob/master/DTDL/v2/dtdlv2.md#digital-twin-model-identifier)
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    ModuleName:
+      name: moduleName
+      in: path
+      description: Name of the device module.
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    Subdomain:
+      name: subdomain
+      in: path
+      description: The application subdomain.
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: client
+      x-ms-parameter-location: client
+    TelemetryName:
+      name: telemetryName
+      in: path
+      description: Name of this device telemetry.
+      required: true
+      schema:
+        type: string
+        x-ms-parameter-location: method
+      x-ms-parameter-location: method
+    Version:
+      name: api-version
+      in: query
+      description: The version of the API being called.
+      required: true
+      schema:
+        type: string
+        default: "1.0"
+        x-ms-parameter-location: client
+      x-ms-parameter-location: client
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      description: Azure Active Directory OAuth2 Flow
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+          scopes:
+            user_impersonation: impersonate your user account
+# x-ms-parameterized-host:
+#   hostTemplate: '{subdomain}.{baseDomain}'
+#   parameters:
+#   - $ref: '#/parameters/BaseDomain'
+#   - $ref: '#/parameters/Subdomain'

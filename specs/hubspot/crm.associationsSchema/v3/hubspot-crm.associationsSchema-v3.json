@@ -1,0 +1,532 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Associations Schema",
+        "description": "Associations define the relationships between objects in HubSpot. These endpoints allow you to create, read, and remove associations.",
+        "version": "v3",
+        "x-hubspot-product-tier-requirements": {
+            "marketing": "FREE",
+            "sales": "FREE",
+            "service": "FREE",
+            "cms": "STARTER"
+        },
+        "x-hubspot-documentation-banner": "NONE",
+        "x-hubspot-api-use-case": "To associate a contact with a company, use this API to get the necessary associationTypeId and associationCategory.",
+        "x-hubspot-related-documentation": [
+            {
+                "name": "Associations Guide",
+                "url": "https://developers.hubspot.com/docs/guides/api/crm/associations"
+            }
+        ],
+        "x-hubspot-introduction": "Use the association schema API to understand how different types of CRM records and activities can relate to one another, as well as define your own custom associations. "
+    },
+    "servers": [
+        {
+            "url": "https://api.hubapi.com"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Types"
+        }
+    ],
+    "paths": {
+        "/crm/v3/associations/{fromObjectType}/{toObjectType}/types": {
+            "get": {
+                "tags": ["Types"],
+                "summary": "List association types",
+                "description": "List all the valid association types available between two object types",
+                "operationId": "get-/crm/v3/associations/{fromObjectType}/{toObjectType}/types_getAll",
+                "parameters": [
+                    {
+                        "name": "fromObjectType",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "toObjectType",
+                        "in": "path",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CollectionResponsePublicAssociationDefinitionNoPaging"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/Error"
+                    }
+                },
+                "security": [
+                    {
+                        "private_apps": ["crm.objects.listings.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.services.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.listings.write"]
+                    },
+                    {
+                        "oauth2_legacy": ["media_bridge.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.deals.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.appointments.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.orders.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.orders.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.subscriptions.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.deals.read"]
+                    },
+                    {
+                        "private_apps_legacy": ["contacts"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.subscriptions.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.companies.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.companies.read"]
+                    },
+                    {
+                        "private_apps_legacy": ["crm.objects.goals.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.users.write"]
+                    },
+                    {
+                        "private_apps_legacy": ["media_bridge.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.companies.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.companies.write"]
+                    },
+                    {
+                        "oauth2_legacy": ["tickets"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.users.read"]
+                    },
+                    {
+                        "private_apps_legacy": ["crm.objects.custom.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.users.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.users.write"]
+                    },
+                    {
+                        "private_apps_legacy": ["e-commerce"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.carts.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.carts.write"]
+                    },
+                    {
+                        "oauth2_legacy": ["e-commerce"]
+                    },
+                    {
+                        "private_apps_legacy": ["tickets"]
+                    },
+                    {
+                        "oauth2_legacy": ["crm.objects.goals.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.appointments.write"]
+                    },
+                    {
+                        "oauth2_legacy": ["crm.objects.custom.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.contacts.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.orders.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.services.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.services.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.orders.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.commercepayments.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.commercepayments.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.contacts.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.deals.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.deals.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.appointments.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.invoices.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.appointments.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.invoices.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.leads.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.quotes.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.quotes.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.leads.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.leads.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.courses.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.line_items.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.partner-clients.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.contacts.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.contacts.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.line_items.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.partner-clients.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.leads.read"]
+                    },
+                    {
+                        "oauth2_legacy": ["crm.objects.custom.read"]
+                    },
+                    {
+                        "private_apps_legacy": ["crm.objects.custom.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.line_items.write"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.listings.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.line_items.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.courses.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.courses.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.listings.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.carts.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.quotes.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.courses.write"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.partner-clients.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.services.read"]
+                    },
+                    {
+                        "oauth2": ["crm.objects.carts.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.partner-clients.read"]
+                    },
+                    {
+                        "private_apps": ["crm.objects.quotes.read"]
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "CollectionResponsePublicAssociationDefinitionNoPaging": {
+                "required": ["results"],
+                "type": "object",
+                "properties": {
+                    "results": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PublicAssociationDefinition"
+                        }
+                    }
+                }
+            },
+            "ErrorDetail": {
+                "required": ["message"],
+                "type": "object",
+                "properties": {
+                    "subCategory": {
+                        "type": "string",
+                        "description": "A specific category that contains more specific detail about the error"
+                    },
+                    "code": {
+                        "type": "string",
+                        "description": "The status code associated with the error detail"
+                    },
+                    "in": {
+                        "type": "string",
+                        "description": "The name of the field or parameter in which the error was found."
+                    },
+                    "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Context about the error condition",
+                        "example": {
+                            "missingScopes": ["scope1", "scope2"]
+                        }
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A human readable message describing the error along with remediation steps where appropriate"
+                    }
+                }
+            },
+            "PublicAssociationDefinition": {
+                "required": ["id", "name"],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "contact_to_company"
+                    },
+                    "id": {
+                        "type": "string",
+                        "example": "1"
+                    }
+                },
+                "example": {
+                    "id": "1",
+                    "name": "contact_to_company"
+                }
+            },
+            "Error": {
+                "required": ["category", "correlationId", "message"],
+                "type": "object",
+                "properties": {
+                    "subCategory": {
+                        "type": "string",
+                        "description": "A specific category that contains more specific detail about the error"
+                    },
+                    "context": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "description": "Context about the error condition",
+                        "example": {
+                            "missingScopes": ["scope1", "scope2"],
+                            "invalidPropertyName": ["propertyValue"]
+                        }
+                    },
+                    "correlationId": {
+                        "type": "string",
+                        "description": "A unique identifier for the request. Include this value with any error reports or support tickets",
+                        "format": "uuid",
+                        "example": "aeb5f871-7f07-4993-9211-075dc63e7cbf"
+                    },
+                    "links": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "description": "A map of link names to associated URIs containing documentation about the error or recommended remediation steps",
+                        "example": {
+                            "knowledge-base": "https://www.hubspot.com/products/service/knowledge-base"
+                        }
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "A human readable message describing the error along with remediation steps where appropriate",
+                        "example": "Invalid input (details will vary based on the error)"
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "The error category",
+                        "example": "VALIDATION_ERROR"
+                    },
+                    "errors": {
+                        "type": "array",
+                        "description": "further information about the error",
+                        "items": {
+                            "$ref": "#/components/schemas/ErrorDetail"
+                        }
+                    }
+                },
+                "example": {
+                    "message": "Invalid input (details will vary based on the error)",
+                    "correlationId": "aeb5f871-7f07-4993-9211-075dc63e7cbf",
+                    "category": "VALIDATION_ERROR",
+                    "links": {
+                        "knowledge-base": "https://www.hubspot.com/products/service/knowledge-base"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "Error": {
+                "description": "An error occurred.",
+                "content": {
+                    "*/*": {
+                        "schema": {
+                            "$ref": "#/components/schemas/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "oauth2_legacy": {
+                "type": "oauth2",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+                        "tokenUrl": "https://api.hubapi.com/oauth/v1/token",
+                        "scopes": {
+                            "crm.objects.custom.read": "View custom object records",
+                            "tickets": "Read and write tickets",
+                            "crm.objects.goals.read": "Read goals",
+                            "media_bridge.read": "Read media and media events",
+                            "crm.objects.custom.write": "Change custom object records",
+                            "e-commerce": "e-commerce"
+                        }
+                    }
+                }
+            },
+            "oauth2": {
+                "type": "oauth2",
+                "flows": {
+                    "authorizationCode": {
+                        "authorizationUrl": "https://app.hubspot.com/oauth/authorize",
+                        "tokenUrl": "https://api.hubapi.com/oauth/v1/token",
+                        "scopes": {
+                            "crm.objects.services.read": "Read services",
+                            "crm.objects.quotes.read": "Quotes",
+                            "crm.objects.orders.write": "Write orders",
+                            "crm.objects.carts.read": "Read carts",
+                            "crm.objects.subscriptions.read": "Read Commerce Subscriptions",
+                            "crm.objects.leads.write": "Modify lead objects",
+                            "crm.objects.commercepayments.read": "Read the COMMERCE_PAYMENT object.",
+                            "crm.objects.users.write": "Write User CRM objects",
+                            "crm.objects.contacts.write": " ",
+                            "crm.objects.companies.write": " ",
+                            "crm.objects.listings.write": "Write listings",
+                            "crm.objects.line_items.write": "Line Items",
+                            "crm.objects.deals.write": " ",
+                            "crm.objects.partner-clients.read": "View Partner Client CRM objects",
+                            "crm.objects.invoices.read": "Read invoices objects",
+                            "crm.objects.deals.read": " ",
+                            "crm.objects.courses.read": "Read courses",
+                            "crm.objects.line_items.read": "Line Items",
+                            "crm.objects.services.write": "Write services",
+                            "crm.objects.appointments.write": "Write appointments",
+                            "crm.objects.leads.read": "Read lead objects",
+                            "crm.objects.partner-clients.write": "Modify Partner Client CRM objects",
+                            "crm.objects.appointments.read": "Read appointments",
+                            "crm.objects.companies.read": " ",
+                            "crm.objects.users.read": "Read User CRM objects",
+                            "crm.objects.quotes.write": "Quotes",
+                            "crm.objects.courses.write": "Write courses",
+                            "crm.objects.carts.write": "Write cart",
+                            "crm.objects.listings.read": "Read listings",
+                            "crm.objects.contacts.read": " ",
+                            "crm.objects.orders.read": "Read Orders"
+                        }
+                    }
+                }
+            },
+            "private_apps_legacy": {
+                "type": "apiKey",
+                "name": "private-app-legacy",
+                "in": "header"
+            },
+            "private_apps": {
+                "type": "apiKey",
+                "name": "private-app",
+                "in": "header"
+            }
+        }
+    },
+    "x-hubspot-available-client-libraries": ["PHP", "Node", "Ruby", "Python"],
+    "x-hubspot-product-tier-requirements": {
+        "marketing": "FREE",
+        "sales": "FREE",
+        "service": "FREE",
+        "cms": "STARTER"
+    },
+    "x-hubspot-documentation-banner": "NONE"
+}

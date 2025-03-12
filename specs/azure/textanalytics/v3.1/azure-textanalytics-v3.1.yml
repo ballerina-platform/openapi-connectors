@@ -1,0 +1,3163 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: Azure Text Analytics
+    iconPath: "icon.png"
+  title: Text Analytics API (v3.1)
+  description: >
+    This is a generated connector for [Azure Text Analytics API v1](https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/) OpenAPI specification.
+
+    The Text Analytics API is a suite of natural language processing (NLP)
+    services built with best-in-class Microsoft machine learning algorithms.  The
+    API can be used to analyze unstructured text for tasks such as sentiment analysis,
+    key phrase extraction and language detection. Functionality for analysis of text
+    specific to the healthcare domain and personal information are also available
+    in the API. Further documentation can be found in <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview">https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview</a>
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create a [Azure Text Analytics account](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) and obtain API key following [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal).
+  contact:
+    name: Microsoft Cognitive Services
+    url: https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/
+    email: mlapi@microsoft.com
+  version: v3.1
+security:
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags: []
+paths:
+  /entities/health/jobs/{jobId}:
+    get:
+      summary: Get healthcare analysis job status and results
+      description: Get details of the healthcare prediction job specified by the jobId.
+      operationId: HealthStatus
+      parameters:
+      - name: jobId
+        in: path
+        description: Format - uuid. Job ID
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: $top
+        in: query
+        description: (Optional) Set the maximum number of results per task. When both
+          $top and $skip are specified, $skip is applied first.
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          default: 20
+      - name: $skip
+        in: query
+        description: (Optional) Set the number of elements to offset in the response.
+          When both $top and $skip are specified, $skip is applied first.
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthcareJobState'
+              example: "{\r\n\t\"createdDateTime\": \"2020-10-01T15:01:03Z\",\r\n\t\
+                \"expirationDateTime\": \"2020-10-03T15:01:03Z\",\r\n\t\"jobId\":\
+                \ \"c0f2a446-05d9-48fc-ba8f-3ef4af8d0b18\",\r\n\t\"lastUpdateDateTime\"\
+                : \"2020-10-01T15:01:03Z\",\r\n\t\"status\": \"succeeded\",\r\n\t\"\
+                results\": {\r\n\t\t\"documents\": [\r\n\t\t\t{\r\n\t\t\t\t\"id\"\
+                : \"1\",\r\n\t\t\t\t\"entities\": [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\
+                \"offset\": 18,\r\n\t\t\t\t\t\t\"length\": 5,\r\n\t\t\t\t\t\t\"text\"\
+                : \"100mg\",\r\n\t\t\t\t\t\t\"category\": \"Dosage\",\r\n\t\t\t\t\t\
+                \t\"confidenceScore\": 0.99\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\
+                \t\t\t\t\"offset\": 27,\r\n\t\t\t\t\t\t\"length\": 9,\r\n\t\t\t\t\t\
+                \t\"text\": \"ibuprofen\",\r\n\t\t\t\t\t\t\"category\": \"MedicationName\"\
+                ,\r\n\t\t\t\t\t\t\"confidenceScore\": 1.0,\r\n\t\t\t\t\t\t\"assertion\"\
+                : {\r\n\t\t\t\t\t\t\t\"certainty\": \"Positive\"\r\n\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\"links\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"\
+                id\": \"C0020740\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"UMLS\"\r\n\
+                \t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"\
+                0000019879\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"AOD\"\r\n\t\t\t\
+                \t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"M01AE01\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"ATC\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"0046165\",\r\n\t\t\t\
+                \t\t\t\t\t\"dataSource\": \"CCPSS\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\
+                \t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"0000006519\",\r\n\t\t\t\t\t\t\
+                \t\t\"dataSource\": \"CHV\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\"id\": \"2270-2077\",\r\n\t\t\t\t\t\t\t\t\"\
+                dataSource\": \"CSP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\
+                \t\t\t\t\t\t\t\"id\": \"DB01050\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"DRUGBANK\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\
+                \t\t\t\"id\": \"1611\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"GS\"\r\
+                \n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"\
+                sh97005926\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"LCH_NW\"\r\n\t\t\
+                \t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"LP16165-0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"LNC\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"40458\",\r\n\t\t\t\t\
+                \t\t\t\t\"dataSource\": \"MEDCIN\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\
+                \t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"d00015\",\r\n\t\t\t\t\t\t\t\t\
+                \"dataSource\": \"MMSL\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\
+                \t\t\t\t\t\t\t\t\"id\": \"D007052\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"MSH\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\
+                \t\"id\": \"WK2XYI10QM\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"MTHSPL\"\
+                \r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\"\
+                : \"C561\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"NCI\"\r\n\t\t\t\t\
+                \t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"C561\",\r\
+                \n\t\t\t\t\t\t\t\t\"dataSource\": \"NCI_CTRP\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"00803\",\r\n\t\t\t\t\
+                \t\t\t\t\"dataSource\": \"NCI_DCP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\
+                \t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"NSC0256857\",\r\n\t\t\t\t\t\t\
+                \t\t\"dataSource\": \"NCI_DTP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\
+                \t{\r\n\t\t\t\t\t\t\t\t\"id\": \"WK2XYI10QM\",\r\n\t\t\t\t\t\t\t\t\
+                \"dataSource\": \"NCI_FDA\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\"id\": \"CDR0000613511\",\r\n\t\t\t\t\t\t\t\t\
+                \"dataSource\": \"NCI_NCI-GLOSS\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\
+                \t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"002377\",\r\n\t\t\t\t\t\t\t\t\"\
+                dataSource\": \"NDDF\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\
+                \t\t\t\t\t\t\t\"id\": \"CDR0000040475\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"PDQ\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\
+                \t\"id\": \"x02MO\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"RCD\"\r\n\
+                \t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"\
+                5640\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"RXNORM\"\r\n\t\t\t\t\t\
+                \t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"E-7772\",\r\
+                \n\t\t\t\t\t\t\t\t\"dataSource\": \"SNM\"\r\n\t\t\t\t\t\t\t},\r\n\t\
+                \t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"C-603C0\",\r\n\t\t\t\t\t\
+                \t\t\t\"dataSource\": \"SNMI\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\
+                \t{\r\n\t\t\t\t\t\t\t\t\"id\": \"387207008\",\r\n\t\t\t\t\t\t\t\t\"\
+                dataSource\": \"SNOMEDCT_US\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\"id\": \"m39860\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"USP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\
+                \t\"id\": \"MTHU000060\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"USPMG\"\
+                \r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\"\
+                : \"4017840\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"VANDF\"\r\n\t\t\
+                \t\t\t\t\t}\r\n\t\t\t\t\t\t]\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\
+                \t\t\t\t\"offset\": 37,\r\n\t\t\t\t\t\t\"length\": 11,\r\n\t\t\t\t\
+                \t\t\"text\": \"twice daily\",\r\n\t\t\t\t\t\t\"category\": \"Frequency\"\
+                ,\r\n\t\t\t\t\t\t\"confidenceScore\": 1\r\n\t\t\t\t\t}\r\n\t\t\t\t\
+                ],\r\n\t\t\t\t\"relations\": [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"relationType\"\
+                : \"DosageOfMedication\",\r\n\t\t\t\t\t\t\"entities\": [\r\n\t\t\t\
+                \t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Attribute\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/1\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Entity\"\r\n\t\t\t\t\t\t\t}\r\n\t\
+                \t\t\t\t\t]\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"relationType\"\
+                : \"FrequencyOfMedication\",\r\n\t\t\t\t\t\t\"entities\": [\r\n\t\t\
+                \t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/2\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Attribute\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/1\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Entity\"\r\n\t\t\t\t\t\t\t}\r\n\t\
+                \t\t\t\t\t]\r\n\t\t\t\t\t}\r\n\t\t\t\t],\r\n\t\t\t\t\"warnings\":\
+                \ []\r\n\t\t\t}\r\n\t\t],\r\n\t\t\"errors\": [],\r\n\t\t\"modelVersion\"\
+                : \"2020-05-08\"\r\n\t}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/HealthcareJobState'
+              example: "{\r\n\t\"createdDateTime\": \"2020-10-01T15:01:03Z\",\r\n\t\
+                \"expirationDateTime\": \"2020-10-03T15:01:03Z\",\r\n\t\"jobId\":\
+                \ \"c0f2a446-05d9-48fc-ba8f-3ef4af8d0b18\",\r\n\t\"lastUpdateDateTime\"\
+                : \"2020-10-01T15:01:03Z\",\r\n\t\"status\": \"succeeded\",\r\n\t\"\
+                results\": {\r\n\t\t\"documents\": [\r\n\t\t\t{\r\n\t\t\t\t\"id\"\
+                : \"1\",\r\n\t\t\t\t\"entities\": [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\
+                \"offset\": 18,\r\n\t\t\t\t\t\t\"length\": 5,\r\n\t\t\t\t\t\t\"text\"\
+                : \"100mg\",\r\n\t\t\t\t\t\t\"category\": \"Dosage\",\r\n\t\t\t\t\t\
+                \t\"confidenceScore\": 0.99\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\
+                \t\t\t\t\"offset\": 27,\r\n\t\t\t\t\t\t\"length\": 9,\r\n\t\t\t\t\t\
+                \t\"text\": \"ibuprofen\",\r\n\t\t\t\t\t\t\"category\": \"MedicationName\"\
+                ,\r\n\t\t\t\t\t\t\"confidenceScore\": 1.0,\r\n\t\t\t\t\t\t\"assertion\"\
+                : {\r\n\t\t\t\t\t\t\t\"certainty\": \"Positive\"\r\n\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\"links\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"\
+                id\": \"C0020740\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"UMLS\"\r\n\
+                \t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"\
+                0000019879\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"AOD\"\r\n\t\t\t\
+                \t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"M01AE01\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"ATC\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"0046165\",\r\n\t\t\t\
+                \t\t\t\t\t\"dataSource\": \"CCPSS\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\
+                \t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"0000006519\",\r\n\t\t\t\t\t\t\
+                \t\t\"dataSource\": \"CHV\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\"id\": \"2270-2077\",\r\n\t\t\t\t\t\t\t\t\"\
+                dataSource\": \"CSP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\
+                \t\t\t\t\t\t\t\"id\": \"DB01050\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"DRUGBANK\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\
+                \t\t\t\"id\": \"1611\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"GS\"\r\
+                \n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"\
+                sh97005926\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"LCH_NW\"\r\n\t\t\
+                \t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"LP16165-0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"LNC\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"40458\",\r\n\t\t\t\t\
+                \t\t\t\t\"dataSource\": \"MEDCIN\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\
+                \t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"d00015\",\r\n\t\t\t\t\t\t\t\t\
+                \"dataSource\": \"MMSL\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\
+                \t\t\t\t\t\t\t\t\"id\": \"D007052\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"MSH\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\
+                \t\"id\": \"WK2XYI10QM\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"MTHSPL\"\
+                \r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\"\
+                : \"C561\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"NCI\"\r\n\t\t\t\t\
+                \t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"C561\",\r\
+                \n\t\t\t\t\t\t\t\t\"dataSource\": \"NCI_CTRP\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"00803\",\r\n\t\t\t\t\
+                \t\t\t\t\"dataSource\": \"NCI_DCP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\
+                \t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"NSC0256857\",\r\n\t\t\t\t\t\t\
+                \t\t\"dataSource\": \"NCI_DTP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\
+                \t{\r\n\t\t\t\t\t\t\t\t\"id\": \"WK2XYI10QM\",\r\n\t\t\t\t\t\t\t\t\
+                \"dataSource\": \"NCI_FDA\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\"id\": \"CDR0000613511\",\r\n\t\t\t\t\t\t\t\t\
+                \"dataSource\": \"NCI_NCI-GLOSS\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\
+                \t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"002377\",\r\n\t\t\t\t\t\t\t\t\"\
+                dataSource\": \"NDDF\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\
+                \t\t\t\t\t\t\t\"id\": \"CDR0000040475\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"PDQ\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\
+                \t\"id\": \"x02MO\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"RCD\"\r\n\
+                \t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"\
+                5640\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"RXNORM\"\r\n\t\t\t\t\t\
+                \t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"E-7772\",\r\
+                \n\t\t\t\t\t\t\t\t\"dataSource\": \"SNM\"\r\n\t\t\t\t\t\t\t},\r\n\t\
+                \t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\": \"C-603C0\",\r\n\t\t\t\t\t\
+                \t\t\t\"dataSource\": \"SNMI\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\
+                \t{\r\n\t\t\t\t\t\t\t\t\"id\": \"387207008\",\r\n\t\t\t\t\t\t\t\t\"\
+                dataSource\": \"SNOMEDCT_US\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\"id\": \"m39860\",\r\n\t\t\t\t\t\t\t\t\"dataSource\"\
+                : \"USP\"\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\
+                \t\"id\": \"MTHU000060\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"USPMG\"\
+                \r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"id\"\
+                : \"4017840\",\r\n\t\t\t\t\t\t\t\t\"dataSource\": \"VANDF\"\r\n\t\t\
+                \t\t\t\t\t}\r\n\t\t\t\t\t\t]\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\
+                \t\t\t\t\"offset\": 37,\r\n\t\t\t\t\t\t\"length\": 11,\r\n\t\t\t\t\
+                \t\t\"text\": \"twice daily\",\r\n\t\t\t\t\t\t\"category\": \"Frequency\"\
+                ,\r\n\t\t\t\t\t\t\"confidenceScore\": 1\r\n\t\t\t\t\t}\r\n\t\t\t\t\
+                ],\r\n\t\t\t\t\"relations\": [\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"relationType\"\
+                : \"DosageOfMedication\",\r\n\t\t\t\t\t\t\"entities\": [\r\n\t\t\t\
+                \t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Attribute\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/1\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Entity\"\r\n\t\t\t\t\t\t\t}\r\n\t\
+                \t\t\t\t\t]\r\n\t\t\t\t\t},\r\n\t\t\t\t\t{\r\n\t\t\t\t\t\t\"relationType\"\
+                : \"FrequencyOfMedication\",\r\n\t\t\t\t\t\t\"entities\": [\r\n\t\t\
+                \t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/2\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Attribute\"\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/entities/1\"\
+                ,\r\n\t\t\t\t\t\t\t\t\"role\": \"Entity\"\r\n\t\t\t\t\t\t\t}\r\n\t\
+                \t\t\t\t\t]\r\n\t\t\t\t\t}\r\n\t\t\t\t],\r\n\t\t\t\t\"warnings\":\
+                \ []\r\n\t\t\t}\r\n\t\t],\r\n\t\t\"errors\": [],\r\n\t\t\"modelVersion\"\
+                : \"2020-05-08\"\r\n\t}"
+        404:
+          description: Job ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+    delete:
+      summary: Cancel healthcare prediction job
+      description: Cancel healthcare prediction job.
+      operationId: CancelHealthJob
+      parameters:
+      - name: jobId
+        in: path
+        description: Format - uuid. Job ID
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        202:
+          description: Cancel Job request has been received.
+          headers:
+            Operation-Location:
+              schema:
+                type: string
+          content: {}
+        404:
+          description: Job ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+  /languages:
+    post:
+      summary: Detect Language
+      description: The API returns the detected language and a numeric score between
+        0 and 1. Scores close to 1 indicate 100% certainty that the identified language
+        is true. See the <a href="https://aka.ms/talangs">Supported languages in Text
+        Analytics API</a> for the list of enabled languages.
+      operationId: Languages
+      parameters:
+      - name: model-version
+        in: query
+        description: '(Optional) This value indicates which model will be used for
+          scoring. If a model-version is not specified, the API should default to
+          the latest, non-preview version. '
+        schema:
+          type: string
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      - name: loggingOptOut
+        in: query
+        description: (Optional) If set to true, you opt-out of having your text input
+          logged for troubleshooting. By default, Text Analytics logs your input text
+          for 48 hours, solely to allow for troubleshooting issues in providing you
+          with the Text Analytics natural language processing functions. Setting this
+          parameter to true, disables input logging and may limit our ability to remediate
+          issues that occur.  Please see Cognitive Services Compliance and Privacy
+          notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+          Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+        schema:
+          type: boolean
+      requestBody:
+        description: Collection of documents to analyze for language endpoint.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LanguageBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/LanguageBatchInput'
+        required: false
+      responses:
+        200:
+          description: A successful call results in the detected language with the
+            highest probability for each valid document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LanguageResult'
+              example: "{\r\n\t\"documents\": [{\r\n\t\t\t\"id\": \"1\",\r\n\t\t\t\
+                \"detectedLanguage\": {\r\n\t\t\t\t\"name\": \"English\",\r\n\t\t\t\
+                \t\"iso6391Name\": \"en\",\r\n\t\t\t\t\"confidenceScore\": 1\r\n\t\
+                \t\t},\r\n\t\t\t\"warnings\": []\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"id\"\
+                : \"2\",\r\n\t\t\t\"detectedLanguage\": {\r\n\t\t\t\t\"name\": \"\
+                French\",\r\n\t\t\t\t\"iso6391Name\": \"fr\",\r\n\t\t\t\t\"confidenceScore\"\
+                : 1\r\n\t\t\t},\r\n\t\t\t\"warnings\": []\r\n\t\t},\r\n\t\t{\r\n\t\
+                \t\t\"id\": \"3\",\r\n\t\t\t\"detectedLanguage\": {\r\n\t\t\t\t\"\
+                name\": \"Spanish\",\r\n\t\t\t\t\"iso6391Name\": \"es\",\r\n\t\t\t\
+                \t\"confidenceScore\": 1\r\n\t\t\t},\r\n\t\t\t\"warnings\": []\r\n\
+                \t\t}\r\n\t],\r\n\t\"errors\": [],\r\n\t\"modelVersion\": \"2020-04-01\"\
+                \r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/LanguageResult'
+              example: "{\r\n\t\"documents\": [{\r\n\t\t\t\"id\": \"1\",\r\n\t\t\t\
+                \"detectedLanguage\": {\r\n\t\t\t\t\"name\": \"English\",\r\n\t\t\t\
+                \t\"iso6391Name\": \"en\",\r\n\t\t\t\t\"confidenceScore\": 1\r\n\t\
+                \t\t},\r\n\t\t\t\"warnings\": []\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"id\"\
+                : \"2\",\r\n\t\t\t\"detectedLanguage\": {\r\n\t\t\t\t\"name\": \"\
+                French\",\r\n\t\t\t\t\"iso6391Name\": \"fr\",\r\n\t\t\t\t\"confidenceScore\"\
+                : 1\r\n\t\t\t},\r\n\t\t\t\"warnings\": []\r\n\t\t},\r\n\t\t{\r\n\t\
+                \t\t\"id\": \"3\",\r\n\t\t\t\"detectedLanguage\": {\r\n\t\t\t\t\"\
+                name\": \"Spanish\",\r\n\t\t\t\t\"iso6391Name\": \"es\",\r\n\t\t\t\
+                \t\"confidenceScore\": 1\r\n\t\t\t},\r\n\t\t\t\"warnings\": []\r\n\
+                \t\t}\r\n\t],\r\n\t\"errors\": [],\r\n\t\"modelVersion\": \"2020-04-01\"\
+                \r\n}"
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: languageBatchInput
+  /entities/recognition/pii:
+    post:
+      summary: Entities containing personal information
+      description: "The API returns a list of entities with personal information (\\\
+        \"SSN\\\", \\\"Bank Account\\\" etc) in the document. For the list of supported\
+        \ entity types, check <a href=\"https://aka.ms/tanerpii\">Supported Entity\
+        \ Types in Text Analytics API</a>. See the <a href=\"https://aka.ms/talangs\"\
+        >Supported languages in Text Analytics API</a> for the list of enabled languages.\r\
+        \n"
+      operationId: EntitiesRecognitionPii
+      parameters:
+      - name: model-version
+        in: query
+        description: '(Optional) This value indicates which model will be used for
+          scoring. If a model-version is not specified, the API should default to
+          the latest, non-preview version. '
+        schema:
+          type: string
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      - name: loggingOptOut
+        in: query
+        description: (Optional) If set to true, you opt-out of having your text input
+          logged for troubleshooting. By default, Text Analytics logs your input text
+          for 48 hours, solely to allow for troubleshooting issues in providing you
+          with the Text Analytics natural language processing functions. Setting this
+          parameter to true, disables input logging and may limit our ability to remediate
+          issues that occur.  Please see Cognitive Services Compliance and Privacy
+          notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+          Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+        schema:
+          type: boolean
+      - name: domain
+        in: query
+        description: '(Optional) if specified, will set the PII domain to include
+          only a subset of the entity categories. Possible values include: ''PHI'',
+          ''none''.'
+        schema:
+          type: string
+      - name: stringIndexType
+        in: query
+        description: (Optional) Specifies the method used to interpret string offsets.  Defaults
+          to Text Elements (Graphemes) according to Unicode v8.0.0. For additional
+          information see https://aka.ms/text-analytics-offsets
+        schema:
+          type: string
+          default: TextElement_v8
+          enum:
+          - TextElement_v8
+          - UnicodeCodePoint
+          - Utf16CodeUnit
+      - name: piiCategories
+        in: query
+        description: (Optional) describes the PII categories to return
+        style: form
+        explode: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - ABARoutingNumber
+            - ARNationalIdentityNumber
+            - AUBankAccountNumber
+            - AUDriversLicenseNumber
+            - AUMedicalAccountNumber
+            - AUPassportNumber
+            - AUTaxFileNumber
+            - AUBusinessNumber
+            - AUCompanyNumber
+            - ATIdentityCard
+            - ATTaxIdentificationNumber
+            - ATValueAddedTaxNumber
+            - AzureDocumentDBAuthKey
+            - AzureIAASDatabaseConnectionAndSQLString
+            - AzureIoTConnectionString
+            - AzurePublishSettingPassword
+            - AzureRedisCacheString
+            - AzureSAS
+            - AzureServiceBusString
+            - AzureStorageAccountKey
+            - AzureStorageAccountGeneric
+            - BENationalNumber
+            - BENationalNumberV2
+            - BEValueAddedTaxNumber
+            - BRCPFNumber
+            - BRLegalEntityNumber
+            - BRNationalIDRG
+            - BGUniformCivilNumber
+            - CABankAccountNumber
+            - CADriversLicenseNumber
+            - CAHealthServiceNumber
+            - CAPassportNumber
+            - CAPersonalHealthIdentification
+            - CASocialInsuranceNumber
+            - CLIdentityCardNumber
+            - CNResidentIdentityCardNumber
+            - CreditCardNumber
+            - HRIdentityCardNumber
+            - HRNationalIDNumber
+            - HRPersonalIdentificationNumber
+            - HRPersonalIdentificationOIBNumberV2
+            - CYIdentityCard
+            - CYTaxIdentificationNumber
+            - CZPersonalIdentityNumber
+            - CZPersonalIdentityV2
+            - DKPersonalIdentificationNumber
+            - DKPersonalIdentificationV2
+            - DrugEnforcementAgencyNumber
+            - EEPersonalIdentificationCode
+            - EUDebitCardNumber
+            - EUDriversLicenseNumber
+            - EUGPSCoordinates
+            - EUNationalIdentificationNumber
+            - EUPassportNumber
+            - EUSocialSecurityNumber
+            - EUTaxIdentificationNumber
+            - FIEuropeanHealthNumber
+            - FINationalID
+            - FINationalIDV2
+            - FIPassportNumber
+            - FRDriversLicenseNumber
+            - FRHealthInsuranceNumber
+            - FRNationalID
+            - FRPassportNumber
+            - FRSocialSecurityNumber
+            - FRTaxIdentificationNumber
+            - FRValueAddedTaxNumber
+            - DEDriversLicenseNumber
+            - DEPassportNumber
+            - DEIdentityCardNumber
+            - DETaxIdentificationNumber
+            - DEValueAddedNumber
+            - GRNationalIDCard
+            - GRNationalIDV2
+            - GRTaxIdentificationNumber
+            - HKIdentityCardNumber
+            - HUValueAddedNumber
+            - HUPersonalIdentificationNumber
+            - HUTaxIdentificationNumber
+            - INPermanentAccount
+            - INUniqueIdentificationNumber
+            - IDIdentityCardNumber
+            - InternationalBankingAccountNumber
+            - IEPersonalPublicServiceNumber
+            - IEPersonalPublicServiceNumberV2
+            - ILBankAccountNumber
+            - ILNationalID
+            - ITDriversLicenseNumber
+            - ITFiscalCode
+            - ITValueAddedTaxNumber
+            - JPBankAccountNumber
+            - JPDriversLicenseNumber
+            - JPPassportNumber
+            - JPResidentRegistrationNumber
+            - JPSocialInsuranceNumber
+            - JPMyNumberCorporate
+            - JPMyNumberPersonal
+            - JPResidenceCardNumber
+            - LVPersonalCode
+            - LTPersonalCode
+            - LUNationalIdentificationNumberNatural
+            - LUNationalIdentificationNumberNonNatural
+            - MYIdentityCardNumber
+            - MTIdentityCardNumber
+            - MTTaxIDNumber
+            - NLCitizensServiceNumber
+            - NLCitizensServiceNumberV2
+            - NLTaxIdentificationNumber
+            - NLValueAddedTaxNumber
+            - NZBankAccountNumber
+            - NZDriversLicenseNumber
+            - NZInlandRevenueNumber
+            - NZMinistryOfHealthNumber
+            - NZSocialWelfareNumber
+            - NOIdentityNumber
+            - PHUnifiedMultiPurposeIDNumber
+            - PLIdentityCard
+            - PLNationalID
+            - PLNationalIDV2
+            - PLPassportNumber
+            - PLTaxIdentificationNumber
+            - PLREGONNumber
+            - PTCitizenCardNumber
+            - PTCitizenCardNumberV2
+            - PTTaxIdentificationNumber
+            - ROPersonalNumericalCode
+            - RUPassportNumberDomestic
+            - RUPassportNumberInternational
+            - SANationalID
+            - SGNationalRegistrationIdentityCardNumber
+            - SKPersonalNumber
+            - SITaxIdentificationNumber
+            - SIUniqueMasterCitizenNumber
+            - ZAIdentificationNumber
+            - KRResidentRegistrationNumber
+            - ESDNI
+            - ESSocialSecurityNumber
+            - ESTaxIdentificationNumber
+            - SQLServerConnectionString
+            - SENationalID
+            - SENationalIDV2
+            - SEPassportNumber
+            - SETaxIdentificationNumber
+            - SWIFTCode
+            - CHSocialSecurityNumber
+            - TWNationalID
+            - TWPassportNumber
+            - TWResidentCertificate
+            - THPopulationIdentificationCode
+            - TRNationalIdentificationNumber
+            - UKDriversLicenseNumber
+            - UKElectoralRollNumber
+            - UKNationalHealthNumber
+            - UKNationalInsuranceNumber
+            - UKUniqueTaxpayerNumber
+            - USUKPassportNumber
+            - USBankAccountNumber
+            - USDriversLicenseNumber
+            - USIndividualTaxpayerIdentification
+            - USSocialSecurityNumber
+            - UAPassportNumberDomestic
+            - UAPassportNumberInternational
+            - Organization
+            - Email
+            - URL
+            - Age
+            - PhoneNumber
+            - IPAddress
+            - Date
+            - Person
+            - Address
+            - All
+            - Default
+            x-ms-enum:
+              name: PiiCategory
+              modelAsString: true
+      requestBody:
+        description: Collection of documents to analyze.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+        required: false
+      responses:
+        200:
+          description: A successful call results in a list of entities containing
+            personal information returned for each valid document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PiiResult'
+              example: "{\r\n\t\"documents\": [\r\n\t\t{\r\n\t\t\t\"id\": \"1\",\r\
+                \n\t\t\t\"redactedText\": \"My SSN is ***********\",\r\n\t\t\t\"entities\"\
+                : [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"U.S. Social Security\
+                \ Number (SSN)\",\r\n\t\t\t\t\t\"confidenceScore\": 0.65,\r\n\t\t\t\
+                \t\t\"length\": 11,\r\n\t\t\t\t\t\"offset\": 28,\r\n\t\t\t\t\t\"text\"\
+                : \"859-98-0987\"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"warnings\":\
+                \ []\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"id\": \"2\",\r\n\t\t\t\"redactedText\"\
+                : \"Your ABA number - ********* - is the first 9 digits in the lower\
+                \ left hand corner of your personal check.\",\r\n\t\t\t\"entities\"\
+                : [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"ABA Routing Number\"\
+                ,\r\n\t\t\t\t\t\"confidenceScore\": 0.75,\r\n\t\t\t\t\t\"length\"\
+                : 9,\r\n\t\t\t\t\t\"offset\": 18,\r\n\t\t\t\t\t\"text\": \"111000025\"\
+                \r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"warnings\": []\r\n\t\t},\r\n\t\
+                \t{\r\n\t\t\t\"id\": \"3\",\r\n\t\t\t\"redactedText\": \"Is **************\
+                \ your Brazilian CPF number?\",\r\n\t\t\t\"entities\": [\r\n\t\t\t\
+                \t{\r\n\t\t\t\t\t\"category\": \"Brazil CPF Number\",\r\n\t\t\t\t\t\
+                \"confidenceScore\": 0.85,\r\n\t\t\t\t\t\"length\": 14,\r\n\t\t\t\t\
+                \t\"offset\": 3,\r\n\t\t\t\t\t\"text\": \"998.214.865-68\"\r\n\t\t\
+                \t\t}\r\n\t\t\t],\r\n\t\t\t\"warnings\": []\r\n\t\t}\r\n\t],\r\n\t\
+                \"errors\": [],\r\n\t\"modelVersion\": \"2019-10-01\"\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PiiResult'
+              example: "{\r\n\t\"documents\": [\r\n\t\t{\r\n\t\t\t\"id\": \"1\",\r\
+                \n\t\t\t\"redactedText\": \"My SSN is ***********\",\r\n\t\t\t\"entities\"\
+                : [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"U.S. Social Security\
+                \ Number (SSN)\",\r\n\t\t\t\t\t\"confidenceScore\": 0.65,\r\n\t\t\t\
+                \t\t\"length\": 11,\r\n\t\t\t\t\t\"offset\": 28,\r\n\t\t\t\t\t\"text\"\
+                : \"859-98-0987\"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"warnings\":\
+                \ []\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"id\": \"2\",\r\n\t\t\t\"redactedText\"\
+                : \"Your ABA number - ********* - is the first 9 digits in the lower\
+                \ left hand corner of your personal check.\",\r\n\t\t\t\"entities\"\
+                : [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"ABA Routing Number\"\
+                ,\r\n\t\t\t\t\t\"confidenceScore\": 0.75,\r\n\t\t\t\t\t\"length\"\
+                : 9,\r\n\t\t\t\t\t\"offset\": 18,\r\n\t\t\t\t\t\"text\": \"111000025\"\
+                \r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"warnings\": []\r\n\t\t},\r\n\t\
+                \t{\r\n\t\t\t\"id\": \"3\",\r\n\t\t\t\"redactedText\": \"Is **************\
+                \ your Brazilian CPF number?\",\r\n\t\t\t\"entities\": [\r\n\t\t\t\
+                \t{\r\n\t\t\t\t\t\"category\": \"Brazil CPF Number\",\r\n\t\t\t\t\t\
+                \"confidenceScore\": 0.85,\r\n\t\t\t\t\t\"length\": 14,\r\n\t\t\t\t\
+                \t\"offset\": 3,\r\n\t\t\t\t\t\"text\": \"998.214.865-68\"\r\n\t\t\
+                \t\t}\r\n\t\t\t],\r\n\t\t\t\"warnings\": []\r\n\t\t}\r\n\t],\r\n\t\
+                \"errors\": [],\r\n\t\"modelVersion\": \"2019-10-01\"\r\n}"
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: multiLanguageBatchInput
+  /analyze/jobs/{jobId}:
+    get:
+      summary: Get analysis status and results
+      description: Get the status of an analysis job.  A job may consist of one or
+        more tasks.  Once all tasks are completed, the job will transition to the
+        completed state and results will be available for each task.
+      operationId: AnalyzeStatus
+      parameters:
+      - name: jobId
+        in: path
+        description: Job ID for Analyze
+        required: true
+        schema:
+          type: string
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      - name: $top
+        in: query
+        description: (Optional) Set the maximum number of results per task. When both
+          $top and $skip are specified, $skip is applied first.
+        schema:
+          maximum: 50
+          minimum: 1
+          type: integer
+          default: 20
+      - name: $skip
+        in: query
+        description: (Optional) Set the number of elements to offset in the response.
+          When both $top and $skip are specified, $skip is applied first.
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      responses:
+        200:
+          description: Analysis job status and metadata.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeJobState'
+              example: "{\r\n\t\"parameters\": {\r\n    \"Ocp-Apim-Subscription-Key\"\
+                : \"{API key}\",\r\n    \"Endpoint\": \"{Endpoint}\",\r\n    \"jobId\"\
+                : \"{Job ID}\"\r\n\t}\t\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeJobState'
+              example: "{\r\n\t\"parameters\": {\r\n    \"Ocp-Apim-Subscription-Key\"\
+                : \"{API key}\",\r\n    \"Endpoint\": \"{Endpoint}\",\r\n    \"jobId\"\
+                : \"{Job ID}\"\r\n\t}\t\r\n}"
+        404:
+          description: Job ID not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"NotFound\",\r\n\t\t\
+                \"message\": \"Not Found\",\r\n\t\t\"innererror\": {\r\n\t\t\t\"code\"\
+                : \"JobIdNotFound\",\r\n\t\t\t\"message\": \"Job ID not found.\"\r\
+                \n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"NotFound\",\r\n\t\t\
+                \"message\": \"Not Found\",\r\n\t\t\"innererror\": {\r\n\t\t\t\"code\"\
+                : \"JobIdNotFound\",\r\n\t\t\t\"message\": \"Job ID not found.\"\r\
+                \n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+  /keyPhrases:
+    post:
+      summary: Key Phrases
+      description: The API returns a list of strings denoting the key phrases in the
+        input text. See the <a href="https://aka.ms/talangs">Supported languages in
+        Text Analytics API</a> for the list of enabled languages.
+      operationId: KeyPhrases
+      parameters:
+      - name: model-version
+        in: query
+        description: '(Optional) This value indicates which model will be used for
+          scoring. If a model-version is not specified, the API should default to
+          the latest, non-preview version. '
+        schema:
+          type: string
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      - name: loggingOptOut
+        in: query
+        description: (Optional) If set to true, you opt-out of having your text input
+          logged for troubleshooting. By default, Text Analytics logs your input text
+          for 48 hours, solely to allow for troubleshooting issues in providing you
+          with the Text Analytics natural language processing functions. Setting this
+          parameter to true, disables input logging and may limit our ability to remediate
+          issues that occur.  Please see Cognitive Services Compliance and Privacy
+          notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+          Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+        schema:
+          type: boolean
+      requestBody:
+        description: Collection of documents to analyze.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+        required: false
+      responses:
+        200:
+          description: A successful response results in 0 or more key phrases identified
+            in each valid document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KeyPhraseResult'
+              example: "{\r\n\t\"documents\": [\r\n\t{\r\n\t\t\"id\": \"1\",\r\n\t\
+                \t\"keyPhrases\": [\r\n\t\t\t\"world\",\r\n\t\t\t\"input text\"\r\n\
+                \t\t],\r\n\t\t\"warnings\": []\r\n\t},\r\n\t{\r\n\t\t\"id\": \"2\"\
+                ,\r\n\t\t\"keyPhrases\": [\r\n\t\t\t\"monde\"\r\n\t\t],\r\n\t\t\"\
+                warnings\": []\r\n\t},\r\n\t{\r\n\t\t\"id\": \"3\",\r\n\t\t\"keyPhrases\"\
+                : [\r\n\t\t\t\"carretera\",\r\n\t\t\t\"tráfico\",\r\n\t\t\t\"día\"\
+                \r\n\t\t],\r\n\t\t\"warnings\": []\r\n\t}\r\n\t],\r\n\t\"errors\"\
+                : [],\r\n\t\"modelVersion\": \"2020-04-01\"\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/KeyPhraseResult'
+              example: "{\r\n\t\"documents\": [\r\n\t{\r\n\t\t\"id\": \"1\",\r\n\t\
+                \t\"keyPhrases\": [\r\n\t\t\t\"world\",\r\n\t\t\t\"input text\"\r\n\
+                \t\t],\r\n\t\t\"warnings\": []\r\n\t},\r\n\t{\r\n\t\t\"id\": \"2\"\
+                ,\r\n\t\t\"keyPhrases\": [\r\n\t\t\t\"monde\"\r\n\t\t],\r\n\t\t\"\
+                warnings\": []\r\n\t},\r\n\t{\r\n\t\t\"id\": \"3\",\r\n\t\t\"keyPhrases\"\
+                : [\r\n\t\t\t\"carretera\",\r\n\t\t\t\"tráfico\",\r\n\t\t\t\"día\"\
+                \r\n\t\t],\r\n\t\t\"warnings\": []\r\n\t}\r\n\t],\r\n\t\"errors\"\
+                : [],\r\n\t\"modelVersion\": \"2020-04-01\"\r\n}"
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: multiLanguageBatchInput
+  /entities/linking:
+    post:
+      summary: Linked entities from a well known knowledge base
+      description: The API returns a list of recognized entities with links to a well
+        known knowledge base. See the <a href="https://aka.ms/talangs">Supported languages
+        in Text Analytics API</a> for the list of enabled languages.
+      operationId: EntitiesLinking
+      parameters:
+      - name: model-version
+        in: query
+        description: '(Optional) This value indicates which model will be used for
+          scoring. If a model-version is not specified, the API should default to
+          the latest, non-preview version. '
+        schema:
+          type: string
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      - name: loggingOptOut
+        in: query
+        description: (Optional) If set to true, you opt-out of having your text input
+          logged for troubleshooting. By default, Text Analytics logs your input text
+          for 48 hours, solely to allow for troubleshooting issues in providing you
+          with the Text Analytics natural language processing functions. Setting this
+          parameter to true, disables input logging and may limit our ability to remediate
+          issues that occur.  Please see Cognitive Services Compliance and Privacy
+          notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+          Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+        schema:
+          type: boolean
+      - name: stringIndexType
+        in: query
+        description: (Optional) Specifies the method used to interpret string offsets.  Defaults
+          to Text Elements (Graphemes) according to Unicode v8.0.0. For additional
+          information see https://aka.ms/text-analytics-offsets
+        schema:
+          type: string
+          default: TextElement_v8
+          enum:
+          - TextElement_v8
+          - UnicodeCodePoint
+          - Utf16CodeUnit
+      requestBody:
+        description: Collection of documents to analyze.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+        required: false
+      responses:
+        200:
+          description: A successful call results in a list of recognized entities
+            with links to a well known knowledge base returned for each valid document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityLinkingResult'
+              example: "{\r\n\t\"documents\": [\r\n\t\t\t{\r\n\t\t\t\t\t\"id\": \"\
+                1\",\r\n\t\t\t\t\t\"entities\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\
+                \t\t\t\t\"bingId\": \"5fbba6b8-85e1-4d41-9444-d9055436e473\",\r\n\t\
+                \t\t\t\t\t\t\t\t\"name\": \"Seattle\",\r\n\t\t\t\t\t\t\t\t\t\"matches\"\
+                : [\r\n\t\t\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"text\"\
+                : \"Seattle\",\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"offset\": 26,\r\n\t\t\
+                \t\t\t\t\t\t\t\t\t\t\t\"length\": 7,\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\
+                \"confidenceScore\": 0.19\r\n\t\t\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\
+                \t\t\t\t],\r\n\t\t\t\t\t\t\t\t\t\"language\": \"en\",\r\n\t\t\t\t\t\
+                \t\t\t\t\"id\": \"Seattle\",\r\n\t\t\t\t\t\t\t\t\t\"url\": \"https://en.wikipedia.org/wiki/Seattle\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"dataSource\": \"Wikipedia\"\r\n\t\t\t\t\t\
+                \t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"warnings\": []\r\n\t\t\t},\r\n\
+                \t\t\t{\r\n\t\t\t\t\t\"id\": \"2\",\r\n\t\t\t\t\t\"entities\": [\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"bingId\": \"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"name\": \"Microsoft\",\r\n\t\t\t\t\t\t\t\t\
+                \t\"matches\": [\r\n\t\t\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\t\
+                \t\t\t\"text\": \"Microsoft\",\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"offset\"\
+                : 10,\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"length\": 9,\r\n\t\t\t\t\t\t\t\
+                \t\t\t\t\t\t\"confidenceScore\": 0.25\r\n\t\t\t\t\t\t\t\t\t\t\t}\r\
+                \n\t\t\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\t\t\"language\": \"en\",\r\
+                \n\t\t\t\t\t\t\t\t\t\"id\": \"Microsoft\",\r\n\t\t\t\t\t\t\t\t\t\"\
+                url\": \"https://en.wikipedia.org/wiki/Microsoft\",\r\n\t\t\t\t\t\t\
+                \t\t\t\"dataSource\": \"Wikipedia\"\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\
+                \t],\r\n\t\t\t\t\t\"warnings\": []\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\
+                \t\t\"id\": \"3\",\r\n\t\t\t\t\t\"entities\": [\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\t\"bingId\": \"f8dd5b08-206d-2554-6e4a-893f51f4de7e\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"name\": \"Space Needle\",\r\n\t\t\t\t\t\t\
+                \t\t\t\"matches\": [\r\n\t\t\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\
+                \t\t\t\t\t\"text\": \"Space Needle\",\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\
+                \"offset\": 10,\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"length\": 12,\r\n\t\
+                \t\t\t\t\t\t\t\t\t\t\t\t\"confidenceScore\": 0.17\r\n\t\t\t\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\t\t\"language\"\
+                : \"en\",\r\n\t\t\t\t\t\t\t\t\t\"id\": \"Space Needle\",\r\n\t\t\t\
+                \t\t\t\t\t\t\"url\": \"https://en.wikipedia.org/wiki/Space_Needle\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"dataSource\": \"Wikipedia\"\r\n\t\t\t\t\t\
+                \t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"warnings\": []\r\n\t\t\t}\r\n\
+                \t],\r\n\t\"errors\": [],\r\n\t\"modelVersion\": \"2020-02-01\"\r\n\
+                }"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EntityLinkingResult'
+              example: "{\r\n\t\"documents\": [\r\n\t\t\t{\r\n\t\t\t\t\t\"id\": \"\
+                1\",\r\n\t\t\t\t\t\"entities\": [\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\
+                \t\t\t\t\"bingId\": \"5fbba6b8-85e1-4d41-9444-d9055436e473\",\r\n\t\
+                \t\t\t\t\t\t\t\t\"name\": \"Seattle\",\r\n\t\t\t\t\t\t\t\t\t\"matches\"\
+                : [\r\n\t\t\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"text\"\
+                : \"Seattle\",\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"offset\": 26,\r\n\t\t\
+                \t\t\t\t\t\t\t\t\t\t\t\"length\": 7,\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\
+                \"confidenceScore\": 0.19\r\n\t\t\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\
+                \t\t\t\t],\r\n\t\t\t\t\t\t\t\t\t\"language\": \"en\",\r\n\t\t\t\t\t\
+                \t\t\t\t\"id\": \"Seattle\",\r\n\t\t\t\t\t\t\t\t\t\"url\": \"https://en.wikipedia.org/wiki/Seattle\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"dataSource\": \"Wikipedia\"\r\n\t\t\t\t\t\
+                \t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"warnings\": []\r\n\t\t\t},\r\n\
+                \t\t\t{\r\n\t\t\t\t\t\"id\": \"2\",\r\n\t\t\t\t\t\"entities\": [\r\
+                \n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"bingId\": \"a093e9b9-90f5-a3d5-c4b8-5855e1b01f85\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"name\": \"Microsoft\",\r\n\t\t\t\t\t\t\t\t\
+                \t\"matches\": [\r\n\t\t\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\t\
+                \t\t\t\"text\": \"Microsoft\",\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"offset\"\
+                : 10,\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"length\": 9,\r\n\t\t\t\t\t\t\t\
+                \t\t\t\t\t\t\"confidenceScore\": 0.25\r\n\t\t\t\t\t\t\t\t\t\t\t}\r\
+                \n\t\t\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\t\t\"language\": \"en\",\r\
+                \n\t\t\t\t\t\t\t\t\t\"id\": \"Microsoft\",\r\n\t\t\t\t\t\t\t\t\t\"\
+                url\": \"https://en.wikipedia.org/wiki/Microsoft\",\r\n\t\t\t\t\t\t\
+                \t\t\t\"dataSource\": \"Wikipedia\"\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\
+                \t],\r\n\t\t\t\t\t\"warnings\": []\r\n\t\t\t},\r\n\t\t\t{\r\n\t\t\t\
+                \t\t\"id\": \"3\",\r\n\t\t\t\t\t\"entities\": [\r\n\t\t\t\t\t\t\t\
+                {\r\n\t\t\t\t\t\t\t\t\t\"bingId\": \"f8dd5b08-206d-2554-6e4a-893f51f4de7e\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"name\": \"Space Needle\",\r\n\t\t\t\t\t\t\
+                \t\t\t\"matches\": [\r\n\t\t\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\
+                \t\t\t\t\t\"text\": \"Space Needle\",\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\
+                \"offset\": 10,\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"length\": 12,\r\n\t\
+                \t\t\t\t\t\t\t\t\t\t\t\t\"confidenceScore\": 0.17\r\n\t\t\t\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\t\t\"language\"\
+                : \"en\",\r\n\t\t\t\t\t\t\t\t\t\"id\": \"Space Needle\",\r\n\t\t\t\
+                \t\t\t\t\t\t\"url\": \"https://en.wikipedia.org/wiki/Space_Needle\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"dataSource\": \"Wikipedia\"\r\n\t\t\t\t\t\
+                \t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"warnings\": []\r\n\t\t\t}\r\n\
+                \t],\r\n\t\"errors\": [],\r\n\t\"modelVersion\": \"2020-02-01\"\r\n\
+                }"
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: multiLanguageBatchInput
+  /entities/recognition/general:
+    post:
+      summary: Named Entity Recognition
+      description: The API returns a list of general named entities in a given document.
+        For the list of supported entity types, check <a href="https://aka.ms/taner">Supported
+        Entity Types in Text Analytics API</a>. See the <a href="https://aka.ms/talangs">Supported
+        languages in Text Analytics API</a> for the list of enabled languages.
+      operationId: EntitiesRecognitionGeneral
+      parameters:
+      - name: model-version
+        in: query
+        description: '(Optional) This value indicates which model will be used for
+          scoring. If a model-version is not specified, the API should default to
+          the latest, non-preview version. '
+        schema:
+          type: string
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      - name: loggingOptOut
+        in: query
+        description: (Optional) If set to true, you opt-out of having your text input
+          logged for troubleshooting. By default, Text Analytics logs your input text
+          for 48 hours, solely to allow for troubleshooting issues in providing you
+          with the Text Analytics natural language processing functions. Setting this
+          parameter to true, disables input logging and may limit our ability to remediate
+          issues that occur.  Please see Cognitive Services Compliance and Privacy
+          notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+          Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+        schema:
+          type: boolean
+      - name: stringIndexType
+        in: query
+        description: (Optional) Specifies the method used to interpret string offsets.  Defaults
+          to Text Elements (Graphemes) according to Unicode v8.0.0. For additional
+          information see https://aka.ms/text-analytics-offsets
+        schema:
+          type: string
+          default: TextElement_v8
+          enum:
+          - TextElement_v8
+          - UnicodeCodePoint
+          - Utf16CodeUnit
+      requestBody:
+        description: Collection of documents to analyze.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+        required: false
+      responses:
+        200:
+          description: A successful call results in a list of recognized entities
+            returned for each valid document.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitiesResult'
+              example: "{\r\n\t\"documents\": [\r\n\t\t{\r\n\t\t\t\"entities\": [\r\
+                \n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"Organization\",\r\n\t\t\t\
+                \t\t\"confidenceScore\": 0.84,\r\n\t\t\t\t\t\"length\": 9,\r\n\t\t\
+                \t\t\t\"offset\": 0,\r\n\t\t\t\t\t\"text\": \"Microsoft\"\r\n\t\t\t\
+                \t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"Person\",\r\n\t\t\t\
+                \t\t\"confidenceScore\": 0.85,\r\n\t\t\t\t\t\"length\": 10,\r\n\t\t\
+                \t\t\t\"offset\": 25,\r\n\t\t\t\t\t\"text\": \"Bill Gates\"\r\n\t\t\
+                \t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"Person\",\r\n\t\t\
+                \t\t\t\"confidenceScore\": 0.9,\r\n\t\t\t\t\t\"length\": 10,\r\n\t\
+                \t\t\t\t\"offset\": 40,\r\n\t\t\t\t\t\"text\": \"Paul Allen\"\r\n\t\
+                \t\t\t}\r\n\t\t\t],\r\n\t\t\t\"id\": \"1\",\r\n\t\t\t\"warnings\"\
+                : []\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"entities\": [\r\n\t\t\t\t{\r\n\t\
+                \t\t\t\t\"category\": \"Location\",\r\n\t\t\t\t\t\"confidenceScore\"\
+                : 0.55,\r\n\t\t\t\t\t\"length\": 7,\r\n\t\t\t\t\t\"offset\": 33,\r\
+                \n\t\t\t\t\t\"subcategory\": \"GPE\",\r\n\t\t\t\t\t\"text\": \"Seattle\"\
+                \r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"id\": \"2\",\r\n\t\t\t\"warnings\"\
+                : []\r\n\t\t}\r\n\t],\r\n\t\"errors\": [],\r\n\t\"modelVersion\":\
+                \ \"2020-04-01\"\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EntitiesResult'
+              example: "{\r\n\t\"documents\": [\r\n\t\t{\r\n\t\t\t\"entities\": [\r\
+                \n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"Organization\",\r\n\t\t\t\
+                \t\t\"confidenceScore\": 0.84,\r\n\t\t\t\t\t\"length\": 9,\r\n\t\t\
+                \t\t\t\"offset\": 0,\r\n\t\t\t\t\t\"text\": \"Microsoft\"\r\n\t\t\t\
+                \t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"Person\",\r\n\t\t\t\
+                \t\t\"confidenceScore\": 0.85,\r\n\t\t\t\t\t\"length\": 10,\r\n\t\t\
+                \t\t\t\"offset\": 25,\r\n\t\t\t\t\t\"text\": \"Bill Gates\"\r\n\t\t\
+                \t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"category\": \"Person\",\r\n\t\t\
+                \t\t\t\"confidenceScore\": 0.9,\r\n\t\t\t\t\t\"length\": 10,\r\n\t\
+                \t\t\t\t\"offset\": 40,\r\n\t\t\t\t\t\"text\": \"Paul Allen\"\r\n\t\
+                \t\t\t}\r\n\t\t\t],\r\n\t\t\t\"id\": \"1\",\r\n\t\t\t\"warnings\"\
+                : []\r\n\t\t},\r\n\t\t{\r\n\t\t\t\"entities\": [\r\n\t\t\t\t{\r\n\t\
+                \t\t\t\t\"category\": \"Location\",\r\n\t\t\t\t\t\"confidenceScore\"\
+                : 0.55,\r\n\t\t\t\t\t\"length\": 7,\r\n\t\t\t\t\t\"offset\": 33,\r\
+                \n\t\t\t\t\t\"subcategory\": \"GPE\",\r\n\t\t\t\t\t\"text\": \"Seattle\"\
+                \r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"id\": \"2\",\r\n\t\t\t\"warnings\"\
+                : []\r\n\t\t}\r\n\t],\r\n\t\"errors\": [],\r\n\t\"modelVersion\":\
+                \ \"2020-04-01\"\r\n}"
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: multiLanguageBatchInput
+  /sentiment:
+    post:
+      summary: Sentiment
+      description: The API returns a detailed sentiment analysis for the input text.
+        The analysis is done in multiple levels of granularity, start from the a document
+        level, down to sentence and key terms (targets and assessments).
+      operationId: Sentiment
+      parameters:
+      - name: model-version
+        in: query
+        description: '(Optional) This value indicates which model will be used for
+          scoring. If a model-version is not specified, the API should default to
+          the latest, non-preview version. '
+        schema:
+          type: string
+      - name: showStats
+        in: query
+        description: (Optional) if set to true, response will contain request and
+          document level statistics.
+        schema:
+          type: boolean
+      - name: loggingOptOut
+        in: query
+        description: (Optional) If set to true, you opt-out of having your text input
+          logged for troubleshooting. By default, Text Analytics logs your input text
+          for 48 hours, solely to allow for troubleshooting issues in providing you
+          with the Text Analytics natural language processing functions. Setting this
+          parameter to true, disables input logging and may limit our ability to remediate
+          issues that occur.  Please see Cognitive Services Compliance and Privacy
+          notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+          Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+        schema:
+          type: boolean
+      - name: opinionMining
+        in: query
+        description: (Optional) if set to true, response will contain not only sentiment
+          prediction but also opinion mining (aspect-based sentiment analysis) results.
+        schema:
+          type: boolean
+      - name: stringIndexType
+        in: query
+        description: (Optional) Specifies the method used to interpret string offsets.  Defaults
+          to Text Elements (Graphemes) according to Unicode v8.0.0. For additional
+          information see https://aka.ms/text-analytics-offsets
+        schema:
+          type: string
+          default: TextElement_v8
+          enum:
+          - TextElement_v8
+          - UnicodeCodePoint
+          - Utf16CodeUnit
+      requestBody:
+        description: Collection of documents to analyze.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+        required: false
+      responses:
+        200:
+          description: A successful call results in a document sentiment prediction,
+            as well as sentiment scores for each sentiment class (Positive, Negative,
+            and Neutral)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SentimentResponse'
+              example: "{\r\n\t\"documents\": [\r\n\t\t{\r\n\t\t\t\"confidenceScores\"\
+                : {\r\n\t\t\t\t\"negative\": 0,\r\n\t\t\t\t\"neutral\": 0,\r\n\t\t\
+                \t\t\"positive\": 1\r\n\t\t\t},\r\n\t\t\t\"id\": \"1\",\r\n\t\t\t\"\
+                sentences\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"targets\": [\r\n\t\t\t\t\
+                \t\t{\r\n\t\t\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\t\t\
+                \"negative\": 0,\r\n\t\t\t\t\t\t\t\t\"positive\": 1\r\n\t\t\t\t\t\t\
+                \t},\r\n\t\t\t\t\t\t\t\"length\": 10,\r\n\t\t\t\t\t\t\t\"offset\"\
+                : 6,\r\n\t\t\t\t\t\t\t\"relations\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\
+                \t\t\t\t\t\t\t\"ref\": \"#/documents/0/sentences/0/assessments/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"relationType\": \"assessment\"\r\n\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"atmosphere\"\r\n\t\t\t\t\t\t}\r\n\t\
+                \t\t\t\t],\r\n\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\"\
+                negative\": 0,\r\n\t\t\t\t\t\t\"neutral\": 0,\r\n\t\t\t\t\t\t\"positive\"\
+                : 1\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"length\": 17,\r\n\t\t\t\t\t\"offset\"\
+                : 0,\r\n\t\t\t\t\t\"assessments\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\
+                \t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\t\t\"negative\": 0,\r\n\
+                \t\t\t\t\t\t\t\t\"positive\": 1\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\
+                \t\"isNegated\": false,\r\n\t\t\t\t\t\t\t\"length\": 5,\r\n\t\t\t\t\
+                \t\t\t\"offset\": 0,\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"great\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\
+                \t],\r\n\t\t\t\t\t\"sentiment\": \"positive\",\r\n\t\t\t\t\t\"text\"\
+                : \"Great atmosphere.\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"\
+                targets\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"confidenceScores\"\
+                : {\r\n\t\t\t\t\t\t\t\t\"negative\": 0.01,\r\n\t\t\t\t\t\t\t\t\"positive\"\
+                : 0.99\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\"length\": 11,\r\n\t\t\
+                \t\t\t\t\t\"offset\": 37,\r\n\t\t\t\t\t\t\t\"relations\": [\r\n\t\t\
+                \t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/sentences/1/assessments/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"relationType\": \"assessment\"\r\n\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"restaurants\"\r\n\t\t\t\t\t\t},\r\n\
+                \t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\
+                \t\t\t\t\"negative\": 0.01,\r\n\t\t\t\t\t\t\t\t\"positive\": 0.99\r\
+                \n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\"length\": 6,\r\n\t\t\t\t\t\t\
+                \t\"offset\": 50,\r\n\t\t\t\t\t\t\t\"relations\": [\r\n\t\t\t\t\t\t\
+                \t\t{\r\n\t\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/sentences/1/assessments/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"relationType\": \"assessment\"\r\n\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"hotels\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\
+                \t\t],\r\n\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\"negative\"\
+                : 0.01,\r\n\t\t\t\t\t\t\"neutral\": 0.86,\r\n\t\t\t\t\t\t\"positive\"\
+                : 0.13\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"length\": 52,\r\n\t\t\t\t\t\"\
+                offset\": 18,\r\n\t\t\t\t\t\"assessments\": [\r\n\t\t\t\t\t\t{\r\n\
+                \t\t\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\t\t\"negative\"\
+                : 0.01,\r\n\t\t\t\t\t\t\t\t\"positive\": 0.99\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t\"isNegated\": false,\r\n\t\t\t\t\t\t\t\"length\"\
+                : 15,\r\n\t\t\t\t\t\t\t\"offset\": 18,\r\n\t\t\t\t\t\t\t\"sentiment\"\
+                : \"positive\",\r\n\t\t\t\t\t\t\t\"text\": \"Close to plenty\"\r\n\
+                \t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"sentiment\": \"neutral\"\
+                ,\r\n\t\t\t\t\t\"text\": \"Close to plenty of restaurants, hotels,\
+                \ and transit!\"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"sentiment\":\
+                \ \"positive\",\r\n\t\t\t\"warnings\": []\r\n\t\t}\r\n\t],\r\n\t\"\
+                errors\": [],\r\n\t\"modelVersion\": \"2020-04-01\"\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/SentimentResponse'
+              example: "{\r\n\t\"documents\": [\r\n\t\t{\r\n\t\t\t\"confidenceScores\"\
+                : {\r\n\t\t\t\t\"negative\": 0,\r\n\t\t\t\t\"neutral\": 0,\r\n\t\t\
+                \t\t\"positive\": 1\r\n\t\t\t},\r\n\t\t\t\"id\": \"1\",\r\n\t\t\t\"\
+                sentences\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"targets\": [\r\n\t\t\t\t\
+                \t\t{\r\n\t\t\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\t\t\
+                \"negative\": 0,\r\n\t\t\t\t\t\t\t\t\"positive\": 1\r\n\t\t\t\t\t\t\
+                \t},\r\n\t\t\t\t\t\t\t\"length\": 10,\r\n\t\t\t\t\t\t\t\"offset\"\
+                : 6,\r\n\t\t\t\t\t\t\t\"relations\": [\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\
+                \t\t\t\t\t\t\t\"ref\": \"#/documents/0/sentences/0/assessments/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"relationType\": \"assessment\"\r\n\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"atmosphere\"\r\n\t\t\t\t\t\t}\r\n\t\
+                \t\t\t\t],\r\n\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\"\
+                negative\": 0,\r\n\t\t\t\t\t\t\"neutral\": 0,\r\n\t\t\t\t\t\t\"positive\"\
+                : 1\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"length\": 17,\r\n\t\t\t\t\t\"offset\"\
+                : 0,\r\n\t\t\t\t\t\"assessments\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\
+                \t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\t\t\"negative\": 0,\r\n\
+                \t\t\t\t\t\t\t\t\"positive\": 1\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\
+                \t\"isNegated\": false,\r\n\t\t\t\t\t\t\t\"length\": 5,\r\n\t\t\t\t\
+                \t\t\t\"offset\": 0,\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"great\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\
+                \t],\r\n\t\t\t\t\t\"sentiment\": \"positive\",\r\n\t\t\t\t\t\"text\"\
+                : \"Great atmosphere.\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"\
+                targets\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"confidenceScores\"\
+                : {\r\n\t\t\t\t\t\t\t\t\"negative\": 0.01,\r\n\t\t\t\t\t\t\t\t\"positive\"\
+                : 0.99\r\n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\"length\": 11,\r\n\t\t\
+                \t\t\t\t\t\"offset\": 37,\r\n\t\t\t\t\t\t\t\"relations\": [\r\n\t\t\
+                \t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/sentences/1/assessments/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"relationType\": \"assessment\"\r\n\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"restaurants\"\r\n\t\t\t\t\t\t},\r\n\
+                \t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\
+                \t\t\t\t\"negative\": 0.01,\r\n\t\t\t\t\t\t\t\t\"positive\": 0.99\r\
+                \n\t\t\t\t\t\t\t},\r\n\t\t\t\t\t\t\t\"length\": 6,\r\n\t\t\t\t\t\t\
+                \t\"offset\": 50,\r\n\t\t\t\t\t\t\t\"relations\": [\r\n\t\t\t\t\t\t\
+                \t\t{\r\n\t\t\t\t\t\t\t\t\t\"ref\": \"#/documents/0/sentences/1/assessments/0\"\
+                ,\r\n\t\t\t\t\t\t\t\t\t\"relationType\": \"assessment\"\r\n\t\t\t\t\
+                \t\t\t\t}\r\n\t\t\t\t\t\t\t],\r\n\t\t\t\t\t\t\t\"sentiment\": \"positive\"\
+                ,\r\n\t\t\t\t\t\t\t\"text\": \"hotels\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\
+                \t\t],\r\n\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\"negative\"\
+                : 0.01,\r\n\t\t\t\t\t\t\"neutral\": 0.86,\r\n\t\t\t\t\t\t\"positive\"\
+                : 0.13\r\n\t\t\t\t\t},\r\n\t\t\t\t\t\"length\": 52,\r\n\t\t\t\t\t\"\
+                offset\": 18,\r\n\t\t\t\t\t\"assessments\": [\r\n\t\t\t\t\t\t{\r\n\
+                \t\t\t\t\t\t\t\"confidenceScores\": {\r\n\t\t\t\t\t\t\t\t\"negative\"\
+                : 0.01,\r\n\t\t\t\t\t\t\t\t\"positive\": 0.99\r\n\t\t\t\t\t\t\t},\r\
+                \n\t\t\t\t\t\t\t\"isNegated\": false,\r\n\t\t\t\t\t\t\t\"length\"\
+                : 15,\r\n\t\t\t\t\t\t\t\"offset\": 18,\r\n\t\t\t\t\t\t\t\"sentiment\"\
+                : \"positive\",\r\n\t\t\t\t\t\t\t\"text\": \"Close to plenty\"\r\n\
+                \t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"sentiment\": \"neutral\"\
+                ,\r\n\t\t\t\t\t\"text\": \"Close to plenty of restaurants, hotels,\
+                \ and transit!\"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"sentiment\":\
+                \ \"positive\",\r\n\t\t\t\"warnings\": []\r\n\t\t}\r\n\t],\r\n\t\"\
+                errors\": [],\r\n\t\"modelVersion\": \"2020-04-01\"\r\n}"
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: multiLanguageBatchInput
+  /analyze:
+    post:
+      summary: Submit analysis job
+      description: Submit a collection of text documents for analysis. Specify one
+        or more unique tasks to be executed.
+      operationId: Analyze
+      requestBody:
+        description: Collection of documents to analyze and tasks to execute.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeBatchInput'
+        required: false
+      responses:
+        202:
+          description: A successful call results with an Operation-Location header
+            used to check the status of the analysis job.
+          headers:
+            Operation-Location:
+              schema:
+                type: string
+          content: {}
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: analyzeBatchInput
+  /entities/health/jobs:
+    post:
+      summary: Submit healthcare analysis job
+      description: Start a healthcare analysis job to recognize healthcare related
+        entities (drugs, conditions, symptoms, etc) and their relations.
+      operationId: Health
+      parameters:
+      - name: model-version
+        in: query
+        description: '(Optional) This value indicates which model will be used for
+          scoring. If a model-version is not specified, the API should default to
+          the latest, non-preview version. '
+        schema:
+          type: string
+      - name: stringIndexType
+        in: query
+        description: (Optional) Specifies the method used to interpret string offsets.  Defaults
+          to Text Elements (Graphemes) according to Unicode v8.0.0. For additional
+          information see https://aka.ms/text-analytics-offsets
+        schema:
+          type: string
+          default: TextElement_v8
+          enum:
+          - TextElement_v8
+          - UnicodeCodePoint
+          - Utf16CodeUnit
+      - name: loggingOptOut
+        in: query
+        description: (Optional) If set to true, you opt-out of having your text input
+          logged for troubleshooting. By default, Text Analytics logs your input text
+          for 48 hours, solely to allow for troubleshooting issues in providing you
+          with the Text Analytics natural language processing functions. Setting this
+          parameter to true, disables input logging and may limit our ability to remediate
+          issues that occur.  Please see Cognitive Services Compliance and Privacy
+          notes at https://aka.ms/cs-compliance for additional details, and Microsoft
+          Responsible AI principles at https://www.microsoft.com/en-us/ai/responsible-ai.
+        schema:
+          type: boolean
+      requestBody:
+        description: Collection of documents to analyze.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MultiLanguageBatchInput'
+        required: false
+      responses:
+        202:
+          description: Accepted - call results in a link where the status of the submitted
+            job can be checked via the GET operation.
+          headers:
+            Operation-Location:
+              schema:
+                type: string
+          content: {}
+        400:
+          description: Bad Request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InvalidRequest\",\r\
+                \n\t\t\"message\": \"Invalid Request.\",\r\n\t\t\"innererror\": {\r\
+                \n\t\t\t\"code\": \"MissingInputRecords\",\r\n\t\t\t\"message\": \"\
+                Missing input records.\"\r\n\t\t}\r\n\t}\r\n}"
+        500:
+          description: Internal error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example: "{\r\n\t\"error\": {\r\n\t\t\"code\": \"InternalServerError\"\
+                ,\r\n\t\t\"message\": \"Processing failed unexpectedly. Please try\
+                \ again later.\"\r\n\t}\r\n}"
+      x-codegen-request-body-name: multiLanguageBatchInput
+components:
+  schemas:
+    JobManifest:
+      required:
+      - tasks
+      type: object
+      properties:
+        tasks:
+          type: object
+          properties:
+            entityRecognitionTasks:
+              type: array
+              description : Array of EntityRecognitionTasks records
+              items:
+                $ref: '#/components/schemas/EntitiesTask'
+            entityRecognitionPiiTasks:
+              type: array
+              description: Array of EntityRecognitionPiiTasks records
+              items:
+                $ref: '#/components/schemas/PiiTask'
+            keyPhraseExtractionTasks:
+              type: array
+              description : Array of EntityRecognitionTasks records
+              items:
+                $ref: '#/components/schemas/KeyPhrasesTask'
+            entityLinkingTasks:
+              type: array
+              description: Array of EntityLinkingTasks records
+              items:
+                $ref: '#/components/schemas/EntityLinkingTask'
+            sentimentAnalysisTasks:
+              type: array
+              description: Array of SentimentAnalysisTasks records
+              items:
+                $ref: '#/components/schemas/SentimentAnalysisTask'
+          description: The set of tasks to execute on the input documents. Cannot
+            specify the same task more than once.
+    MultiLanguageBatchInput:
+      required:
+      - documents
+      type: object
+      properties:
+        documents:
+          type: array
+          description: The set of documents to process as part of this batch.
+          items:
+            $ref: '#/components/schemas/MultiLanguageInput'
+      description: Contains a set of input documents to be analyzed by the service.
+      example: "{\r\n  \"documents\": [\r\n    {\r\n      \"id\": \"string\",\r\n\
+        \      \"text\": \"string\",\r\n      \"language\": \"string\"\r\n    }\r\n\
+        \  ]\r\n}"
+    MultiLanguageInput:
+      required:
+      - id
+      - text
+      type: object
+      properties:
+        id:
+          type: string
+          description: A unique, non-empty document identifier.
+        text:
+          type: string
+          description: The input text to process.
+        language:
+          type: string
+          description: (Optional) This is the 2 letter ISO 639-1 representation of
+            a language. For example, use "en" for English; "es" for Spanish etc. If
+            not set, use "en" for English as default.
+      description: Contains an input document to be analyzed by the service.
+    DocumentError:
+      required:
+      - error
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Document Id.
+        error:
+          $ref: '#/components/schemas/TextAnalyticsError'
+    ErrorResponse:
+      required:
+      - error
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/TextAnalyticsError'
+    TextAnalyticsError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - InvalidRequest
+          - InvalidArgument
+          - InternalServerError
+          - ServiceUnavailable
+          - NotFound
+          x-ms-enum:
+            name: ErrorCodeValue
+            modelAsString: false
+        message:
+          type: string
+          description: Error message.
+        target:
+          type: string
+          description: Error target.
+        innererror:
+          $ref: '#/components/schemas/InnerError'
+        details:
+          type: array
+          description: Details about specific errors that led to this reported error.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsError'
+    TextAnalyticsWarning:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - LongWordsInDocument
+          - DocumentTruncated
+          x-ms-enum:
+            name: WarningCodeValue
+            modelAsString: true
+        message:
+          type: string
+          description: Warning message.
+        targetRef:
+          type: string
+          description: A JSON pointer reference indicating the target object.
+    PiiTask:
+      type: object
+      properties:
+        parameters:
+          type: object
+          properties:
+            domain:
+              type: string
+              default: none
+              enum:
+              - phi
+              - none
+            model-version:
+              type: string
+              default: latest
+            loggingOptOut:
+              type: boolean
+              default: true
+            piiCategories:
+              $ref: '#/components/schemas/PiiCategories'
+            stringIndexType:
+              $ref: '#/components/schemas/StringIndexType'
+        taskName:
+          type: string
+    EntitiesTask:
+      type: object
+      properties:
+        parameters:
+          type: object
+          properties:
+            model-version:
+              type: string
+              default: latest
+            loggingOptOut:
+              type: boolean
+              default: false
+            stringIndexType:
+              $ref: '#/components/schemas/StringIndexType'
+        taskName:
+          type: string
+    SentimentAnalysisTask:
+      type: object
+      properties:
+        parameters:
+          type: object
+          properties:
+            model-version:
+              type: string
+              default: latest
+            loggingOptOut:
+              type: boolean
+              default: false
+            opinionMining:
+              type: boolean
+              default: false
+            stringIndexType:
+              $ref: '#/components/schemas/StringIndexType'
+        taskName:
+          type: string
+    InnerError:
+      required:
+      - code
+      - message
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code.
+          enum:
+          - InvalidParameterValue
+          - InvalidRequestBodyFormat
+          - EmptyRequest
+          - MissingInputRecords
+          - InvalidDocument
+          - ModelVersionIncorrect
+          - InvalidDocumentBatch
+          - UnsupportedLanguageCode
+          - InvalidCountryHint
+          x-ms-enum:
+            name: InnerErrorCodeValue
+            modelAsString: true
+        message:
+          type: string
+          description: Error message.
+        details:
+          type: object
+          additionalProperties:
+            type: string
+          description: Error details.
+        target:
+          type: string
+          description: Error target.
+        innererror:
+          $ref: '#/components/schemas/InnerError'
+    AnalyzeBatchInput:
+      allOf:
+      - $ref: '#/components/schemas/JobDescriptor'
+      - $ref: '#/components/schemas/AnalysisInput'
+      - $ref: '#/components/schemas/JobManifest'
+    AnalyzeJobState:
+      allOf:
+      - $ref: '#/components/schemas/AnalyzeJobMetadata'
+      - $ref: '#/components/schemas/TasksState'
+      - $ref: '#/components/schemas/AnalyzeJobErrorsAndStatistics'
+      - $ref: '#/components/schemas/Pagination'
+    SentimentResponse:
+      required:
+      - documents
+      - errors
+      - modelVersion
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Sentiment analysis per document.
+          items:
+            $ref: '#/components/schemas/DocumentSentiment'
+        errors:
+          type: array
+          description: Errors by document id.
+          items:
+            $ref: '#/components/schemas/DocumentError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+        modelVersion:
+          type: string
+          description: This field indicates which model is used for scoring.
+    TaskState:
+      required:
+      - lastUpdateDateTime
+      - status
+      type: object
+      properties:
+        lastUpdateDateTime:
+          type: string
+          format: date-time
+        taskName:
+          type: string
+        status:
+          type: string
+          enum:
+          - notStarted
+          - running
+          - succeeded
+          - failed
+          - rejected
+          - cancelled
+          - cancelling
+          x-ms-enum:
+            modelAsString: false
+            name: State
+    TasksState:
+      required:
+      - tasks
+      type: object
+      properties:
+        tasks:
+          required:
+          - completed
+          - failed
+          - inProgress
+          - total
+          type: object
+          properties:
+            completed:
+              type: integer
+            failed:
+              type: integer
+            inProgress:
+              type: integer
+            total:
+              type: integer
+            entityRecognitionTasks:
+              type: array
+              items:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/TaskState'
+                - $ref: '#/components/schemas/EntitiesTaskResult'
+            entityRecognitionPiiTasks:
+              type: array
+              items:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/TaskState'
+                - $ref: '#/components/schemas/PiiTaskResult'
+            keyPhraseExtractionTasks:
+              type: array
+              items:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/TaskState'
+                - $ref: '#/components/schemas/KeyPhraseTaskResult'
+            entityLinkingTasks:
+              type: array
+              items:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/TaskState'
+                - $ref: '#/components/schemas/EntityLinkingTaskResult'
+            sentimentAnalysisTasks:
+              type: array
+              items:
+                type: object
+                allOf:
+                - $ref: '#/components/schemas/TaskState'
+                - $ref: '#/components/schemas/SentimentTaskResult'
+    DocumentSentiment:
+      required:
+      - confidenceScores
+      - id
+      - sentences
+      - sentiment
+      - warnings
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        sentiment:
+          type: string
+          description: Predicted sentiment for document (Negative, Neutral, Positive,
+            or Mixed).
+          enum:
+          - positive
+          - neutral
+          - negative
+          - mixed
+          x-ms-enum:
+            name: DocumentSentimentValue
+            modelAsString: false
+        statistics:
+          $ref: '#/components/schemas/DocumentStatistics'
+        confidenceScores:
+          $ref: '#/components/schemas/SentimentConfidenceScorePerLabel'
+        sentences:
+          type: array
+          description: Sentence level sentiment analysis.
+          items:
+            $ref: '#/components/schemas/SentenceSentiment'
+        warnings:
+          type: array
+          description: Warnings encountered while processing document.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsWarning'
+    RequestStatistics:
+      required:
+      - documentsCount
+      - erroneousDocumentsCount
+      - transactionsCount
+      - validDocumentsCount
+      type: object
+      properties:
+        documentsCount:
+          type: integer
+          description: Number of documents submitted in the request.
+          format: int32
+        validDocumentsCount:
+          type: integer
+          description: Number of valid documents. This excludes empty, over-size limit
+            or non-supported languages documents.
+          format: int32
+        erroneousDocumentsCount:
+          type: integer
+          description: Number of invalid documents. This includes empty, over-size
+            limit or non-supported languages documents.
+          format: int32
+        transactionsCount:
+          type: integer
+          description: Number of transactions for the request.
+          format: int64
+      description: if showStats=true was specified in the request this field will
+        contain information about the request payload.
+    DocumentStatistics:
+      required:
+      - charactersCount
+      - transactionsCount
+      type: object
+      properties:
+        charactersCount:
+          type: integer
+          description: Number of text elements recognized in the document.
+          format: int32
+        transactionsCount:
+          type: integer
+          description: Number of transactions for the document.
+          format: int32
+      description: if showStats=true was specified in the request this field will
+        contain information about the document payload.
+    SentimentConfidenceScorePerLabel:
+      required:
+      - negative
+      - neutral
+      - positive
+      type: object
+      properties:
+        positive:
+          type: number
+          format: double
+          description : Positive value
+        neutral:
+          type: number
+          format: double
+          description : Nuetral value
+        negative:
+          type: number
+          format: double
+          description : Negative value
+      description: 'Represents the confidence scores between 0 and 1 across all sentiment
+        classes: positive, neutral, negative.'
+    SentenceSentiment:
+      required:
+      - confidenceScores
+      - length
+      - offset
+      - sentiment
+      - text
+      type: object
+      properties:
+        text:
+          type: string
+          description: The sentence text.
+        sentiment:
+          type: string
+          description: The predicted Sentiment for the sentence.
+          enum:
+          - positive
+          - neutral
+          - negative
+          x-ms-enum:
+            name: SentenceSentimentValue
+            modelAsString: false
+        confidenceScores:
+          $ref: '#/components/schemas/SentimentConfidenceScorePerLabel'
+        offset:
+          type: integer
+          description: The sentence offset from the start of the document.
+          format: int32
+        length:
+          type: integer
+          description: The length of the sentence.
+          format: int32
+        targets:
+          type: array
+          description: The array of sentence targets for the sentence.
+          items:
+            $ref: '#/components/schemas/SentenceTarget'
+        assessments:
+          type: array
+          description: The array of assessments for the sentence.
+          items:
+            $ref: '#/components/schemas/SentenceAssessment'
+    SentenceTarget:
+      required:
+      - confidenceScores
+      - length
+      - offset
+      - relations
+      - sentiment
+      - text
+      type: object
+      properties:
+        sentiment:
+          type: string
+          description: Targeted sentiment in the sentence.
+          enum:
+          - positive
+          - mixed
+          - negative
+          x-ms-enum:
+            name: TokenSentimentValue
+            modelAsString: false
+        confidenceScores:
+          $ref: '#/components/schemas/TargetConfidenceScoreLabel'
+        offset:
+          type: integer
+          description: The target offset from the start of the sentence.
+          format: int32
+        length:
+          type: integer
+          description: The length of the target.
+          format: int32
+        text:
+          type: string
+          description: The target text detected.
+        relations:
+          type: array
+          description: The array of either assessment or target objects which is related
+            to the target.
+          items:
+            $ref: '#/components/schemas/TargetRelation'
+    SentenceAssessment:
+      required:
+      - confidenceScores
+      - isNegated
+      - length
+      - offset
+      - sentiment
+      - text
+      type: object
+      properties:
+        sentiment:
+          type: string
+          description: Assessment sentiment in the sentence.
+          enum:
+          - positive
+          - mixed
+          - negative
+          x-ms-enum:
+            name: TokenSentimentValue
+            modelAsString: false
+        confidenceScores:
+          $ref: '#/components/schemas/TargetConfidenceScoreLabel'
+        offset:
+          type: integer
+          description: The assessment offset from the start of the sentence.
+          format: int32
+        length:
+          type: integer
+          description: The length of the assessment.
+          format: int32
+        text:
+          type: string
+          description: The assessment text detected.
+        isNegated:
+          type: boolean
+          description: The indicator representing if the assessment is negated.
+    TargetRelation:
+      required:
+      - ref
+      - relationType
+      type: object
+      properties:
+        relationType:
+          type: string
+          description: The type related to the target.
+          enum:
+          - assessment
+          - target
+          x-ms-enum:
+            name: TargetRelationType
+            modelAsString: false
+        ref:
+          type: string
+          description: The JSON pointer indicating the linked object.
+    TargetConfidenceScoreLabel:
+      required:
+      - negative
+      - positive
+      type: object
+      properties:
+        positive:
+          type: number
+          format: double
+          description: Positive
+        negative:
+          type: number
+          format: double
+          description: Negative
+      description: 'Represents the confidence scores across all sentiment classes:
+        positive, neutral, negative.'
+    EntitiesResult:
+      required:
+      - documents
+      - errors
+      - modelVersion
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Response by document
+          items:
+            $ref: '#/components/schemas/DocumentEntities'
+        errors:
+          type: array
+          description: Errors by document id.
+          items:
+            $ref: '#/components/schemas/DocumentError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+        modelVersion:
+          type: string
+          description: This field indicates which model is used for scoring.
+    DocumentEntities:
+      required:
+      - entities
+      - id
+      - warnings
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        entities:
+          type: array
+          description: Recognized entities in the document.
+          items:
+            $ref: '#/components/schemas/Entity'
+        warnings:
+          type: array
+          description: Warnings encountered while processing document.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsWarning'
+        statistics:
+          $ref: '#/components/schemas/DocumentStatistics'
+    PiiDocumentEntities:
+      required:
+      - entities
+      - id
+      - redactedText
+      - warnings
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        redactedText:
+          type: string
+          description: Returns redacted text.
+        entities:
+          type: array
+          description: Recognized entities in the document.
+          items:
+            $ref: '#/components/schemas/Entity'
+        warnings:
+          type: array
+          description: Warnings encountered while processing document.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsWarning'
+        statistics:
+          $ref: '#/components/schemas/DocumentStatistics'
+    Entity:
+      required:
+      - category
+      - confidenceScore
+      - length
+      - offset
+      - text
+      type: object
+      properties:
+        text:
+          type: string
+          description: Entity text as appears in the request.
+        category:
+          type: string
+          description: Entity type.
+        subcategory:
+          type: string
+          description: (Optional) Entity sub type.
+        offset:
+          type: integer
+          description: Start position for the entity text. Use of different 'stringIndexType'
+            values can affect the offset returned.
+          format: int32
+        length:
+          type: integer
+          description: Length for the entity text. Use of different 'stringIndexType'
+            values can affect the length returned.
+          format: int32
+        confidenceScore:
+          type: number
+          description: Confidence score between 0 and 1 of the extracted entity.
+          format: double
+    EntityLinkingResult:
+      required:
+      - documents
+      - errors
+      - modelVersion
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Response by document
+          items:
+            $ref: '#/components/schemas/DocumentLinkedEntities'
+        errors:
+          type: array
+          description: Errors by document id.
+          items:
+            $ref: '#/components/schemas/DocumentError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+        modelVersion:
+          type: string
+          description: This field indicates which model is used for scoring.
+    DocumentLinkedEntities:
+      required:
+      - entities
+      - id
+      - warnings
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        entities:
+          type: array
+          description: Recognized well known entities in the document.
+          items:
+            $ref: '#/components/schemas/LinkedEntity'
+        warnings:
+          type: array
+          description: Warnings encountered while processing document.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsWarning'
+        statistics:
+          $ref: '#/components/schemas/DocumentStatistics'
+    HealthcareJobState:
+      allOf:
+      - $ref: '#/components/schemas/JobMetadata'
+      - $ref: '#/components/schemas/HealthcareTaskResult'
+      - $ref: '#/components/schemas/Pagination'
+    HealthcareResult:
+      required:
+      - documents
+      - errors
+      - modelVersion
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Response by document
+          items:
+            $ref: '#/components/schemas/DocumentHealthcareEntities'
+        errors:
+          type: array
+          description: Errors by document id.
+          items:
+            $ref: '#/components/schemas/DocumentError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+        modelVersion:
+          type: string
+          description: This field indicates which model is used for scoring.
+    DocumentHealthcareEntities:
+      required:
+      - entities
+      - id
+      - relations
+      - warnings
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        entities:
+          type: array
+          description: Healthcare entities.
+          items:
+            $ref: '#/components/schemas/HealthcareEntity'
+        relations:
+          type: array
+          description: Healthcare entity relations.
+          items:
+            $ref: '#/components/schemas/HealthcareRelation'
+        warnings:
+          type: array
+          description: Warnings encountered while processing document.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsWarning'
+        statistics:
+          $ref: '#/components/schemas/DocumentStatistics'
+    HealthcareEntity:
+      allOf:
+      - required:
+        - category
+        - confidenceScore
+        - length
+        - offset
+        - text
+        type: object
+        properties:
+          text:
+            type: string
+            description: Entity text as appears in the request.
+          category:
+            type: string
+            description: Healthcare Entity Category.
+            enum:
+            - BODY_STRUCTURE
+            - AGE
+            - GENDER
+            - EXAMINATION_NAME
+            - DATE
+            - DIRECTION
+            - FREQUENCY
+            - MEASUREMENT_VALUE
+            - MEASUREMENT_UNIT
+            - RELATIONAL_OPERATOR
+            - TIME
+            - GENE_OR_PROTEIN
+            - VARIANT
+            - ADMINISTRATIVE_EVENT
+            - CARE_ENVIRONMENT
+            - HEALTHCARE_PROFESSION
+            - DIAGNOSIS
+            - SYMPTOM_OR_SIGN
+            - CONDITION_QUALIFIER
+            - MEDICATION_CLASS
+            - MEDICATION_NAME
+            - DOSAGE
+            - MEDICATION_FORM
+            - MEDICATION_ROUTE
+            - FAMILY_RELATION
+            - TREATMENT_NAME
+            x-ms-enum:
+              name: healthcareEntityCategory
+              modelAsString: true
+          subcategory:
+            type: string
+            description: (Optional) Entity sub type.
+          offset:
+            type: integer
+            description: Start position for the entity text. Use of different 'stringIndexType'
+              values can affect the offset returned.
+            format: int32
+          length:
+            type: integer
+            description: Length for the entity text. Use of different 'stringIndexType'
+              values can affect the length returned.
+            format: int32
+          confidenceScore:
+            type: number
+            description: Confidence score between 0 and 1 of the extracted entity.
+            format: double
+      - $ref: '#/components/schemas/HealthcareLinkingProperties'
+    HealthcareRelation:
+      required:
+      - entities
+      - relationType
+      type: object
+      properties:
+        relationType:
+          type: string
+          description: 'Type of relation. Examples include: `DosageOfMedication` or
+            ''FrequencyOfMedication'', etc.'
+          enum:
+          - Abbreviation
+          - DirectionOfBodyStructure
+          - DirectionOfCondition
+          - DirectionOfExamination
+          - DirectionOfTreatment
+          - DosageOfMedication
+          - FormOfMedication
+          - FrequencyOfMedication
+          - FrequencyOfTreatment
+          - QualifierOfCondition
+          - RelationOfExamination
+          - RouteOfMedication
+          - TimeOfCondition
+          - TimeOfEvent
+          - TimeOfExamination
+          - TimeOfMedication
+          - TimeOfTreatment
+          - UnitOfCondition
+          - UnitOfExamination
+          - ValueOfCondition
+          - ValueOfExamination
+          x-ms-enum:
+            name: relationType
+            modelAsString: true
+        entities:
+          type: array
+          description: The entities in the relation.
+          items:
+            $ref: '#/components/schemas/HealthcareRelationEntity'
+      description: Every relation is an entity graph of a certain relationType, where
+        all entities are connected and have specific roles within the relation context.
+    HealthcareAssertion:
+      type: object
+      properties:
+        conditionality:
+          type: string
+          description: Describes any conditionality on the entity.
+          enum:
+          - hypothetical
+          - conditional
+          x-ms-enum:
+            name: Conditionality
+            modelAsString: false
+        certainty:
+          type: string
+          description: Describes the entities certainty and polarity.
+          enum:
+          - positive
+          - positivePossible
+          - neutralPossible
+          - negativePossible
+          - negative
+          x-ms-enum:
+            name: Certainty
+            modelAsString: false
+        association:
+          type: string
+          description: Describes if the entity is the subject of the text or if it
+            describes someone else.
+          enum:
+          - subject
+          - other
+          x-ms-enum:
+            name: Association
+            modelAsString: false
+    HealthcareRelationEntity:
+      required:
+      - ref
+      - role
+      type: object
+      properties:
+        ref:
+          type: string
+          description: Reference link object, using a JSON pointer RFC 6901 (URI Fragment
+            Identifier Representation), pointing to the entity .
+        role:
+          type: string
+          description: 'Role of entity in the relationship. For example: ''CD20-positive
+            diffuse large B-cell lymphoma'' has the following entities with their
+            roles in parenthesis:  CD20 (GeneOrProtein), Positive (Expression), diffuse
+            large B-cell lymphoma (Diagnosis).'
+    HealthcareEntityLink:
+      required:
+      - dataSource
+      - id
+      type: object
+      properties:
+        dataSource:
+          type: string
+          description: 'Entity Catalog. Examples include: UMLS, CHV, MSH, etc.'
+        id:
+          type: string
+          description: Entity id in the given source catalog.
+    HealthcareLinkingProperties:
+      type: object
+      properties:
+        assertion:
+          $ref: '#/components/schemas/HealthcareAssertion'
+        name:
+          type: string
+          description: 'Preferred name for the entity. Example: ''histologically''
+            would have a ''name'' of ''histologic''.'
+        links:
+          type: array
+          description: Entity references in known data sources.
+          items:
+            $ref: '#/components/schemas/HealthcareEntityLink'
+    LinkedEntity:
+      required:
+      - dataSource
+      - language
+      - matches
+      - name
+      - url
+      type: object
+      properties:
+        name:
+          type: string
+          description: Entity Linking formal name.
+        matches:
+          type: array
+          description: List of instances this entity appears in the text.
+          items:
+            $ref: '#/components/schemas/Match'
+        language:
+          type: string
+          description: Language used in the data source.
+        id:
+          type: string
+          description: Unique identifier of the recognized entity from the data source.
+        url:
+          type: string
+          description: URL for the entity's page from the data source.
+        dataSource:
+          type: string
+          description: Data source used to extract entity linking, such as Wiki/Bing
+            etc.
+        bingId:
+          type: string
+          description: Bing Entity Search API unique identifier of the recognized
+            entity.
+    Match:
+      required:
+      - confidenceScore
+      - length
+      - offset
+      - text
+      type: object
+      properties:
+        confidenceScore:
+          type: number
+          description: If a well known item is recognized, a decimal number denoting
+            the confidence level between 0 and 1 will be returned.
+          format: double
+        text:
+          type: string
+          description: Entity text as appears in the request.
+        offset:
+          type: integer
+          description: Start position for the entity match text.
+          format: int32
+        length:
+          type: integer
+          description: Length for the entity match text.
+          format: int32
+    AnalysisInput:
+      required:
+      - analysisInput
+      type: object
+      properties:
+        analysisInput:
+          $ref: '#/components/schemas/MultiLanguageBatchInput'
+    EntitiesTaskResult:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/EntitiesResult'
+    PiiTaskResult:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/PiiResult'
+    KeyPhraseTaskResult:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/KeyPhraseResult'
+    EntityLinkingTaskResult:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/EntityLinkingResult'
+    SentimentTaskResult:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/SentimentResponse'
+    HealthcareTaskResult:
+      type: object
+      properties:
+        results:
+          $ref: '#/components/schemas/HealthcareResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextAnalyticsError'
+    JobDescriptor:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Optional display name for the analysis job.
+    JobMetadata:
+      required:
+      - createdDateTime
+      - jobId
+      - lastUpdateDateTime
+      - status
+      type: object
+      properties:
+        createdDateTime:
+          type: string
+          format: date-time
+        expirationDateTime:
+          type: string
+          format: date-time
+        jobId:
+          type: string
+          format: uuid
+        lastUpdateDateTime:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+          - notStarted
+          - running
+          - succeeded
+          - failed
+          - cancelled
+          - cancelling
+          x-ms-enum:
+            modelAsString: false
+            name: State
+    AnalyzeJobDisplayName:
+      type: object
+      properties:
+        displayName:
+          type: string
+    AnalyzeJobMetadata:
+      allOf:
+      - $ref: '#/components/schemas/JobMetadata'
+      - $ref: '#/components/schemas/AnalyzeJobDisplayName'
+    AnalyzeJobErrorsAndStatistics:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/TextAnalyticsError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+    KeyPhraseResult:
+      required:
+      - documents
+      - errors
+      - modelVersion
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Response by document
+          items:
+            $ref: '#/components/schemas/DocumentKeyPhrases'
+        errors:
+          type: array
+          description: Errors by document id.
+          items:
+            $ref: '#/components/schemas/DocumentError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+        modelVersion:
+          type: string
+          description: This field indicates which model is used for scoring.
+    DocumentKeyPhrases:
+      required:
+      - id
+      - keyPhrases
+      - warnings
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        keyPhrases:
+          type: array
+          description: A list of representative words or phrases. The number of key
+            phrases returned is proportional to the number of words in the input document.
+          items:
+            type: string
+        warnings:
+          type: array
+          description: Warnings encountered while processing document.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsWarning'
+        statistics:
+          $ref: '#/components/schemas/DocumentStatistics'
+    KeyPhrasesTask:
+      type: object
+      properties:
+        parameters:
+          type: object
+          properties:
+            model-version:
+              type: string
+              default: latest
+            loggingOptOut:
+              type: boolean
+              default: false
+        taskName:
+          type: string
+    EntityLinkingTask:
+      type: object
+      properties:
+        parameters:
+          type: object
+          properties:
+            model-version:
+              type: string
+              default: latest
+            loggingOptOut:
+              type: boolean
+              default: false
+            stringIndexType:
+              $ref: '#/components/schemas/StringIndexType'
+        taskName:
+          type: string
+    LanguageBatchInput:
+      required:
+      - documents
+      type: object
+      properties:
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/LanguageInput'
+      example: "{\r\n  \"documents\": [\r\n    {\r\n      \"id\": \"string\",\r\n\
+        \      \"text\": \"string\",\r\n      \"countryHint\": \"string\"\r\n    }\r\
+        \n  ]\r\n}"
+    LanguageInput:
+      required:
+      - id
+      - text
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        text:
+          type: string
+        countryHint:
+          type: string
+    Pagination:
+      type: object
+      properties:
+        '@nextLink':
+          type: string
+    PiiResult:
+      required:
+      - documents
+      - errors
+      - modelVersion
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Response by document
+          items:
+            $ref: '#/components/schemas/PiiDocumentEntities'
+        errors:
+          type: array
+          description: Errors by document id.
+          items:
+            $ref: '#/components/schemas/DocumentError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+        modelVersion:
+          type: string
+          description: This field indicates which model is used for scoring.
+    LanguageResult:
+      required:
+      - documents
+      - errors
+      - modelVersion
+      type: object
+      properties:
+        documents:
+          type: array
+          description: Response by document
+          items:
+            $ref: '#/components/schemas/DocumentLanguage'
+        errors:
+          type: array
+          description: Errors by document id.
+          items:
+            $ref: '#/components/schemas/DocumentError'
+        statistics:
+          $ref: '#/components/schemas/RequestStatistics'
+        modelVersion:
+          type: string
+          description: This field indicates which model is used for scoring.
+    DocumentLanguage:
+      required:
+      - detectedLanguage
+      - id
+      - warnings
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique, non-empty document identifier.
+        detectedLanguage:
+          $ref: '#/components/schemas/DetectedLanguage'
+        warnings:
+          type: array
+          description: Warnings encountered while processing document.
+          items:
+            $ref: '#/components/schemas/TextAnalyticsWarning'
+        statistics:
+          $ref: '#/components/schemas/DocumentStatistics'
+    DetectedLanguage:
+      required:
+      - confidenceScore
+      - iso6391Name
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: Long name of a detected language (e.g. English, French).
+        iso6391Name:
+          type: string
+          description: A two letter representation of the detected language according
+            to the ISO 639-1 standard (e.g. en, fr).
+        confidenceScore:
+          type: number
+          description: A confidence score between 0 and 1. Scores close to 1 indicate
+            100% certainty that the identified language is true.
+          format: double
+    StringIndexType:
+      type: string
+      default: TextElement_v8
+      enum:
+      - TextElement_v8
+      - UnicodeCodePoint
+      - Utf16CodeUnit
+      x-ms-enum:
+        name: StringIndexType
+        modelAsString: true
+        values:
+        - value: TextElement_v8
+          description: Returned offset and length values will correspond to TextElements
+            (Graphemes and Grapheme clusters) confirming to the Unicode 8.0.0 standard.
+            Use this option if your application is written in .Net Framework or .Net
+            Core and you will be using StringInfo.
+        - value: UnicodeCodePoint
+          description: Returned offset and length values will correspond to Unicode
+            code points. Use this option if your application is written in a language
+            that support Unicode, for example Python.
+        - value: Utf16CodeUnit
+          description: Returned offset and length values will correspond to UTF-16
+            code units. Use this option if your application is written in a language
+            that support Unicode, for example Java, JavaScript.
+    PiiCategories:
+      type: array
+      description: (Optional) describes the PII categories to return
+      items:
+        type: string
+        enum:
+        - ABARoutingNumber
+        - ARNationalIdentityNumber
+        - AUBankAccountNumber
+        - AUDriversLicenseNumber
+        - AUMedicalAccountNumber
+        - AUPassportNumber
+        - AUTaxFileNumber
+        - AUBusinessNumber
+        - AUCompanyNumber
+        - ATIdentityCard
+        - ATTaxIdentificationNumber
+        - ATValueAddedTaxNumber
+        - AzureDocumentDBAuthKey
+        - AzureIAASDatabaseConnectionAndSQLString
+        - AzureIoTConnectionString
+        - AzurePublishSettingPassword
+        - AzureRedisCacheString
+        - AzureSAS
+        - AzureServiceBusString
+        - AzureStorageAccountKey
+        - AzureStorageAccountGeneric
+        - BENationalNumber
+        - BENationalNumberV2
+        - BEValueAddedTaxNumber
+        - BRCPFNumber
+        - BRLegalEntityNumber
+        - BRNationalIDRG
+        - BGUniformCivilNumber
+        - CABankAccountNumber
+        - CADriversLicenseNumber
+        - CAHealthServiceNumber
+        - CAPassportNumber
+        - CAPersonalHealthIdentification
+        - CASocialInsuranceNumber
+        - CLIdentityCardNumber
+        - CNResidentIdentityCardNumber
+        - CreditCardNumber
+        - HRIdentityCardNumber
+        - HRNationalIDNumber
+        - HRPersonalIdentificationNumber
+        - HRPersonalIdentificationOIBNumberV2
+        - CYIdentityCard
+        - CYTaxIdentificationNumber
+        - CZPersonalIdentityNumber
+        - CZPersonalIdentityV2
+        - DKPersonalIdentificationNumber
+        - DKPersonalIdentificationV2
+        - DrugEnforcementAgencyNumber
+        - EEPersonalIdentificationCode
+        - EUDebitCardNumber
+        - EUDriversLicenseNumber
+        - EUGPSCoordinates
+        - EUNationalIdentificationNumber
+        - EUPassportNumber
+        - EUSocialSecurityNumber
+        - EUTaxIdentificationNumber
+        - FIEuropeanHealthNumber
+        - FINationalID
+        - FINationalIDV2
+        - FIPassportNumber
+        - FRDriversLicenseNumber
+        - FRHealthInsuranceNumber
+        - FRNationalID
+        - FRPassportNumber
+        - FRSocialSecurityNumber
+        - FRTaxIdentificationNumber
+        - FRValueAddedTaxNumber
+        - DEDriversLicenseNumber
+        - DEPassportNumber
+        - DEIdentityCardNumber
+        - DETaxIdentificationNumber
+        - DEValueAddedNumber
+        - GRNationalIDCard
+        - GRNationalIDV2
+        - GRTaxIdentificationNumber
+        - HKIdentityCardNumber
+        - HUValueAddedNumber
+        - HUPersonalIdentificationNumber
+        - HUTaxIdentificationNumber
+        - INPermanentAccount
+        - INUniqueIdentificationNumber
+        - IDIdentityCardNumber
+        - InternationalBankingAccountNumber
+        - IEPersonalPublicServiceNumber
+        - IEPersonalPublicServiceNumberV2
+        - ILBankAccountNumber
+        - ILNationalID
+        - ITDriversLicenseNumber
+        - ITFiscalCode
+        - ITValueAddedTaxNumber
+        - JPBankAccountNumber
+        - JPDriversLicenseNumber
+        - JPPassportNumber
+        - JPResidentRegistrationNumber
+        - JPSocialInsuranceNumber
+        - JPMyNumberCorporate
+        - JPMyNumberPersonal
+        - JPResidenceCardNumber
+        - LVPersonalCode
+        - LTPersonalCode
+        - LUNationalIdentificationNumberNatural
+        - LUNationalIdentificationNumberNonNatural
+        - MYIdentityCardNumber
+        - MTIdentityCardNumber
+        - MTTaxIDNumber
+        - NLCitizensServiceNumber
+        - NLCitizensServiceNumberV2
+        - NLTaxIdentificationNumber
+        - NLValueAddedTaxNumber
+        - NZBankAccountNumber
+        - NZDriversLicenseNumber
+        - NZInlandRevenueNumber
+        - NZMinistryOfHealthNumber
+        - NZSocialWelfareNumber
+        - NOIdentityNumber
+        - PHUnifiedMultiPurposeIDNumber
+        - PLIdentityCard
+        - PLNationalID
+        - PLNationalIDV2
+        - PLPassportNumber
+        - PLTaxIdentificationNumber
+        - PLREGONNumber
+        - PTCitizenCardNumber
+        - PTCitizenCardNumberV2
+        - PTTaxIdentificationNumber
+        - ROPersonalNumericalCode
+        - RUPassportNumberDomestic
+        - RUPassportNumberInternational
+        - SANationalID
+        - SGNationalRegistrationIdentityCardNumber
+        - SKPersonalNumber
+        - SITaxIdentificationNumber
+        - SIUniqueMasterCitizenNumber
+        - ZAIdentificationNumber
+        - KRResidentRegistrationNumber
+        - ESDNI
+        - ESSocialSecurityNumber
+        - ESTaxIdentificationNumber
+        - SQLServerConnectionString
+        - SENationalID
+        - SENationalIDV2
+        - SEPassportNumber
+        - SETaxIdentificationNumber
+        - SWIFTCode
+        - CHSocialSecurityNumber
+        - TWNationalID
+        - TWPassportNumber
+        - TWResidentCertificate
+        - THPopulationIdentificationCode
+        - TRNationalIdentificationNumber
+        - UKDriversLicenseNumber
+        - UKElectoralRollNumber
+        - UKNationalHealthNumber
+        - UKNationalInsuranceNumber
+        - UKUniqueTaxpayerNumber
+        - USUKPassportNumber
+        - USBankAccountNumber
+        - USDriversLicenseNumber
+        - USIndividualTaxpayerIdentification
+        - USSocialSecurityNumber
+        - UAPassportNumberDomestic
+        - UAPassportNumberInternational
+        - Organization
+        - Email
+        - URL
+        - Age
+        - PhoneNumber
+        - IPAddress
+        - Date
+        - Person
+        - Address
+        - All
+        - Default
+        x-ms-enum:
+          name: PiiCategory
+          modelAsString: true
+  securitySchemes:  
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+      description: Represents API Key `Ocp-Apim-Subscription-Key`
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+      description: Represents API Key `subscription-key`
+x-servers:
+- url: https://southcentralus.api.cognitive.microsoft.com
+- url: https://cognitivescuprod.cognitiveservices.azure.com

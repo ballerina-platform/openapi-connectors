@@ -1,0 +1,105 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.interzoid.com
+info:
+  x-ballerina-display:
+      label: Interzoid Email Info
+      iconPath: "icon.png"
+  version: 1.0.0
+  title: Interzoid Get Email Information API
+  description: >
+    This is a generated connector for [Interzoid Email Info API v1.0.0](https://interzoid.com/services/getemailinfo) OpenAPI specification.
+
+    This API provides validation information for email addresses to aid in deliverability. 
+    Syntax, existence of mail servers, and other tests are run to ensure delivery. 
+    Additional demographics are provided for the email address as well, including identifying generic, 
+    vulgar, education, government, or other entity type email addresses.
+
+    For additional help getting started with the API, 
+    visit [Interzoid Email Info API](https://interzoid.com/services/getemailinfo).
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create an [Interzoid Account](https://www.interzoid.com/register) 
+    and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+  contact:
+    name: API Support
+    email: support@interzoid.com
+    url: https://www.interzoid.com
+  termsOfService: https://www.interzoid.com/terms
+  license:
+    name: Interzoid license
+    url: 'https://www.interzoid.com/license'
+externalDocs:
+  description: API home page and documentation
+  url: https://www.interzoid.com/services/getemailinfo
+security:
+  - ApiKeyAuth : []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: All requests on the Email Info API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+      type: apiKey
+      in: query
+      name: license
+  schemas: 
+    EmailInfo:
+      description: Validation information for email addresses.
+      properties:
+        Email:
+          type: string
+        Response:
+          type: string
+        Info:
+          type: string
+        IsGovernment:
+          type: string
+        IsEducational:
+          type: string
+        IsOrganizational:
+          type: string
+        IsVulgar:
+          type: string
+        IsGeneric:
+          type: string
+        Geolocation:
+          type: string
+        Code:
+          type: string
+        Credits:
+          type: string
+paths:
+  /getemailinfo:
+    get:
+      tags:
+        - Email Address Information
+      summary: Gets email validation information for an email address
+      operationId: getEmailInfo
+      description: |
+        Get email validation information and other demographics for an email address
+      parameters:
+        - in: query
+          name: email
+          description: Email address to retrieve validation information
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Email validation and demographic information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailInfo'
+        '400':
+          description: bad request - insufficient parameters
+        '402':
+          description: credits exhausted
+        '403':
+          description: invalid license API key
+        '404':
+          description: email address not valid
+        '405':
+          description: method not allowed
+        '500':
+          description: internal server error

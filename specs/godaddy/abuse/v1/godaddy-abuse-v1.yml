@@ -1,0 +1,435 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: GoDaddy Abuse
+    iconPath: "icon.png"
+  title: GoDaddy Abuse API
+  version: v1
+  description: >-
+    This is a generated connector for [GoDaddy Certificates API v1](https://developer.godaddy.com/doc/endpoint/certificates) OpenAPI specification.
+
+    <strong>GoDaddy Abuse API Terms of Use:</strong><p>GoDaddy’s Abuse API is
+    provided to simplify and standardize the abuse reporting experience. To help
+    us streamline the review of abuse reports, you acknowledge and agree that
+    your use of GoDaddy’s Abuse API is subject to the following quality metrics
+    and terms of use.</p><p>GoDaddy may, in its sole and absolute discretion,
+    change or modify these terms, and such changes or modifications shall be
+    effective immediately upon notice to you. Your use of GoDaddy’s Abuse API
+    after such changes or modifications shall constitute your acceptance of
+    these terms as last revised. If you do not agree to be bound by these terms
+    as last revised, do not use (or continue to use) our Abuse API.</p><p>As an
+    Abuse API user, you must only submit abuse reports via the API portal and
+    cease all email submissions, including but not limited, to
+    phishing@godaddy.com, netabuse@godaddy.com, malware@godaddy.com, or
+    spam@godaddy.com, etc.  Any additional or duplicate submission outside of
+    the API portal will be deprioritized for review. Submissions related to
+    trademark, copyright or content issues may still be sent to
+    trademarkclaims@godaddy.com, coyprightclaims@godaddy.com, and
+    contentcomplaints@godaddy.com, respectively. Our [Front of
+    Site](https://supportcenter.godaddy.com/AbuseReport) also describes other
+    scenarios not covered by the API.</p><p>When you submit abuse reports via
+    GoDaddy’s Abuse API, you must ensure that you accurately categorize the
+    abuse type of each report to match our definitions in the API documentations
+    provided to you. Any submission that fails to match our definitions or is
+    miscategorized will be marked as a false positive. Examples include, but are
+    not limited to, submissions of trademark complaints marked as phishing or
+    malware, or submissions of copyright complaints marked as phishing or
+    malware, etc.</p><p>If, at any time, the false positive rate of submissions
+    exceeds 40% of your total submissions, as determined by GoDaddy, GoDaddy may
+    in its sole discretion deprioritize any subsequent reports submitted by you
+    and/or your organization.</p><p>You acknowledge and agree that submitting
+    every URL for a single domain is not necessary and will not expedite the
+    review process. If your submissions exceed five (5) URLs for a single
+    domain, your report will be marked as a duplicate submission taking into
+    account that the final outcome of such submissions would yield the same
+    result as the original report. GoDaddy may in its sole discretion
+    deprioritize reports submitted by you and/or your organization in the event
+    more than 20% of your submissions are classified as duplicate
+    submissions.</p><p>You further acknowledge and agree that our Customer
+    Support lines are not intended to address abuse reporting matters or your
+    use of GoDaddy’s Abuse API. Contacting Customer Support will not expedite
+    the review process and may result in abuse reports being deprioritized, to
+    be determined in our sole discretion.</p><p>Should you have any questions
+    about GoDaddy’s Abuse API or any of the terms and conditions set forth
+    above, please contact abuseapisupport@godaddy.com.</p>
+  x-ballerina-init-description: >-
+    The connector initialization requires setting the API credentials.  Create a
+    [GoDaddy account](https://sg.godaddy.com/) and obtain tokens by following
+    [this guide](https://developer.godaddy.com/getstarted).
+servers:
+  - url: https://api.ote-godaddy.com/
+tags:
+  - name: v1
+    description: ''
+paths:
+  /v1/abuse/tickets:
+    get:
+      summary: Lists all abuse tickets ids that match user provided filters
+      tags:
+        - v1
+      operationId: getTickets
+      parameters:
+        - name: type
+          in: query
+          description: The type of abuse.
+          schema:
+            type: string
+            enum:
+              - A_RECORD
+              - CHILD_ABUSE
+              - CONTENT
+              - FRAUD_WIRE
+              - IP_BLOCK
+              - MALWARE
+              - NETWORK_ABUSE
+              - PHISHING
+              - SPAM
+        - name: closed
+          in: query
+          description: Is this abuse ticket closed?
+          schema:
+            type: boolean
+            default: false
+        - name: sourceDomainOrIp
+          in: query
+          description: The domain name or ip address the abuse originated from
+          schema:
+            type: string
+            format: host-name-or-ip-address
+        - name: target
+          in: query
+          description: 'The brand/company the abuse is targeting. ie: brand name/bank name'
+          schema:
+            type: string
+        - name: createdStart
+          in: query
+          description: The earliest abuse ticket creation date to pull abuse tickets for
+          schema:
+            type: string
+            format: iso-datetime
+        - name: createdEnd
+          in: query
+          description: The latest abuse ticket creation date to pull abuse tickets for
+          schema:
+            type: string
+            format: iso-datetime
+        - name: limit
+          in: query
+          description: Number of abuse ticket numbers to return.
+          schema:
+            maximum: 100
+            type: integer
+            format: integer-positive
+            default: 100
+        - name: offset
+          in: query
+          description: The earliest result set record number to pull abuse tickets for
+          schema:
+            type: integer
+            format: integer-positive
+            default: 0
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbuseTicketList'
+        '401':
+          description: Authentication info not sent or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Authenticated user is not allowed access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - v1
+      operationId: createTicket
+      summary: Creates a new abuse ticket.
+      requestBody:
+        description: The endpoint which allows the Reporter to create a new abuse ticket
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbuseTicketCreate'
+        required: true
+      responses:
+        '200':
+          description: No response was specified
+          content: {}
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbuseTicketId'
+        '401':
+          description: Authentication info not sent or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Authenticated user is not allowed access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-codegen-request-body-name: body
+  /v1/abuse/tickets/{ticketId}:
+    get:
+      tags:
+        - v1
+      operationId: getTicketInfo
+      summary: Returns the abuse ticket data for a given ticket id.
+      parameters:
+        - name: ticketId
+          in: path
+          description: A unique abuse ticket identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbuseTicket'
+        '401':
+          description: Authentication info not sent or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Authenticated user is not allowed access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Invalid ticket id provided
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+security:
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Represents API Key `Authorization`
+  schemas:
+    AbuseTicket:
+      required:
+        - closed
+        - closedAt
+        - createdAt
+        - domainIp
+        - reporter
+        - source
+        - target
+        - ticketId
+        - type
+      type: object
+      properties:
+        closed:
+          type: boolean
+          description: Is this abuse ticket closed?
+          default: false
+        closedAt:
+          type: string
+          description: The date the abuse ticket was closed
+          format: iso-datetime
+        createdAt:
+          type: string
+          description: The date the abuse ticket was created
+          format: iso-datetime
+        domainIp:
+          type: string
+          description: The domain or IP the suspected abuse was reported against
+        reporter:
+          type: string
+          description: The shopper id of the person who reported the suspected abuse
+        source:
+          type: string
+          description: The single URL or IP the suspected abuse was reported against
+        target:
+          type: string
+          description: The company the suspected abuse is targeting
+        ticketId:
+          type: string
+          description: Abuse ticket ID
+        type:
+          type: string
+          description: The type of abuse being reported
+          enum:
+            - A_RECORD
+            - CHILD_ABUSE
+            - CONTENT
+            - FRAUD_WIRE
+            - IP_BLOCK
+            - MALWARE
+            - NETWORK_ABUSE
+            - PHISHING
+            - SPAM
+      description: The associated fields returned, given a unique abuse ticket id
+    AbuseTicketCreate:
+      type: object
+      properties:
+        info:
+          type: string
+          description: >-
+            Additional information that may assist the abuse investigator. ie:
+            server logs or email headers/body for SPAM
+        infoUrl:
+          type: string
+          description: >-
+            Reporter URL if housing additional information that may assist the
+            abuse investigator
+          format: url
+        intentional:
+          type: boolean
+          description: Do you believe this is intentional abuse by the domain holder?
+          default: false
+        proxy:
+          type: string
+          description: >-
+            The Proxy information required to view the abuse being reported. ie:
+            Specific IP used, or country of IP viewing from
+        source:
+          type: string
+          description: >-
+            The URL or IP where live abuse content is located at. ie:
+            https://www.example.com/bad_stuff/bad.php
+        target:
+          type: string
+          description: 'The brand/company the abuse is targeting. ie: brand name/bank name'
+        type:
+          type: string
+          description: The type of abuse being reported.
+          enum:
+            - A_RECORD
+            - CHILD_ABUSE
+            - CONTENT
+            - FRAUD_WIRE
+            - IP_BLOCK
+            - MALWARE
+            - NETWORK_ABUSE
+            - PHISHING
+            - SPAM
+    AbuseTicketId:
+      type: object
+      properties:
+        u_number:
+          type: string
+          description: Abuse ticket ID
+      description: The primary key of a newly created abuse ticket
+    AbuseTicketList:
+      required:
+        - ticketIds
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        ticketIds:
+          type: array
+          description: A list of abuse ticket ids originated by this reporter.
+          items:
+            type: string
+    Error:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        fields:
+          type: array
+          description: >-
+            List of the specific fields, and the errors found with their
+            contents
+          items:
+            $ref: '#/components/schemas/ErrorField'
+        message:
+          type: string
+          description: Human-readable, English description of the error
+        stack:
+          type: array
+          description: ''
+          items:
+            type: string
+    ErrorField:
+      required:
+        - code
+        - path
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        message:
+          type: string
+          description: >-
+            Human-readable, English description of the problem with the contents
+            of the field
+        path:
+          type: string
+          description: >-
+            1) JSONPath referring to the field within the data containing an
+            error<br/>or<br/>2) JSONPath referring to an object containing an
+            error
+          format: json-path
+        pathRelated:
+          type: string
+          description: >-
+            JSONPath referring to the field on the object referenced by `path`
+            containing an error
+          format: json-path
+    Pagination:
+      type: object
+      properties:
+        first:
+          type: string
+          description: Optional link to first list of results
+        last:
+          type: string
+          description: Optional link to last list of results
+        next:
+          type: string
+          description: Optional link to next list of results
+        previous:
+          type: string
+          description: Optional link to previous list of results
+        total:
+          type: integer
+          description: Number of records available

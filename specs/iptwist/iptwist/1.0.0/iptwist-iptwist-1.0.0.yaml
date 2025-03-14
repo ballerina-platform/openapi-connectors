@@ -1,0 +1,100 @@
+openapi: 3.0.0
+servers:
+  - url: https://iptwist.com
+info:
+  x-ballerina-display:
+      label: ipTwist
+      iconPath: "icon.png"
+  contact:
+    email: support@iptwist.com
+  description: >
+    This is a generated connector from [ipTwist API v1](https://iptwist.com/) OpenAPI Specification. 
+
+    The reliable, secure, and simple IP geolocation API.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+
+    Create a [ipTwist Account](https://iptwist.com/register) and obtain the API token.
+  termsOfService: https://iptwist.com/legal/terms
+  title: ipTwist
+  version: 1.0.0
+  x-apisguru-categories:
+    - developer_tools
+  x-origin:
+    - converter:
+        url: https://github.com/mermade/oas-kit
+        version: 7.0.4
+      format: openapi
+      url: https://iptwist.com/schema
+      version: "3.0"
+  x-providerName: iptwist.com
+externalDocs:
+  description: Official Documentation
+  url: https://iptwist.com/documentation
+tags:
+  - name: Main
+paths:
+  /:
+    post:
+      operationId: "getGeoLocationInfo"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Request"
+        description: IP address
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+          description: Successful IP geolocation
+        "401":
+          description: Invalid authentication.
+        "403":
+          description: Monthly quota exceeded.
+      security:
+        - ApiKeyAuth: []
+      summary: Geolocate a given IP address
+      tags:
+        - Main
+components:
+  schemas:
+    Request:
+      properties:
+        ip:
+          format: ipv4
+          type: string
+      type: object
+    Response:
+      properties:
+        city:
+          type: string
+        country:
+          type: string
+        country_code:
+          type: string
+        ip:
+          format: ipv4
+          type: string
+        latitude:
+          format: float
+          type: number
+        longitude:
+          format: float
+          type: number
+        state:
+          type: string
+        timezone:
+          type: string
+        zip:
+          type: string
+      type: object
+  securitySchemes:
+    ApiKeyAuth:
+      in: header
+      name: X-IPTWIST-TOKEN
+      type: apiKey
+      description: Represents API Key `X-IPTWIST-TOKEN`

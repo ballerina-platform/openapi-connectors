@@ -1,0 +1,291 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: GoDaddy Agreements
+    iconPath: "icon.png"
+  title: GoDaddy Agreements API
+  description: >-
+    This is a generated connector for [GoDaddy Agreements API
+    v1](https://developer.godaddy.com/doc/endpoint/agreements) OpenAPI
+    specification.
+
+    The GoDaddy Agreements API provides capability to access GoDaddy operations
+    related to agreements.
+  version: '1.0'
+  x-ballerina-init-description: >-
+    The connector initialization requires setting the API credentials. 
+
+    Create a [GoDaddy](https://sg.godaddy.com/) and obtain tokens by following
+    [this guide](https://developer.godaddy.com/getstarted).
+servers:
+  - url: https://api.ote-godaddy.com/
+tags:
+  - name: v1
+    description: ''
+paths:
+  /v1/agreements:
+    get:
+      tags:
+        - v1
+      summary: Retrieve Legal Agreements for provided agreements keys
+      operationId: getLegalAgreements
+      parameters:
+        - name: X-Private-Label-Id
+          in: header
+          description: PrivateLabelId to operate as, if different from JWT
+          schema:
+            type: integer
+        - name: X-Market-Id
+          in: header
+          description: >-
+            Unique identifier of the Market used to retrieve/translate Legal
+            Agreements
+          schema:
+            type: string
+            format: bcp-47
+            default: en-US
+        - name: keys
+          in: query
+          description: Keys for Agreements whose details are to be retrieved
+          required: true
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Request was successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalAgreement'
+            application/javascript:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalAgreement'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalAgreement'
+            text/javascript:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalAgreement'
+            text/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LegalAgreement'
+        '400':
+          description: Request was malformed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Authentication info not sent or invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Authenticated user is not allowed access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Too many requests received within interval
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorLimit'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/javascript:
+              schema:
+                $ref: '#/components/schemas/Error'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+security:
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    ApiKeyAuth:       
+      type: apiKey
+      in: header  
+      name: Authorization
+      description: Represents API Key 'Authorization'
+  schemas:
+    Error:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        fields:
+          type: array
+          description: >-
+            List of the specific fields, and the errors found with their
+            contents
+          items:
+            $ref: '#/components/schemas/ErrorField'
+        message:
+          type: string
+          description: Human-readable, English description of the error
+    ErrorField:
+      required:
+        - code
+        - path
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        message:
+          type: string
+          description: >-
+            Human-readable, English description of the problem with the contents
+            of the field
+        path:
+          type: string
+          description: >-
+            <ul>
+
+            <li style='margin-left: 12px;'>JSONPath referring to a field
+            containing an error</li>
+
+            <strong style='margin-left: 12px;'>OR</strong>
+
+            <li style='margin-left: 12px;'>JSONPath referring to a field that
+            refers to an object containing an error, with more detail in
+            `pathRelated`</li>
+
+            </ul>
+          format: json-path
+        pathRelated:
+          type: string
+          description: >-
+            JSONPath referring to a field containing an error, which is
+            referenced by `path`
+          format: json-path
+    ErrorLimit:
+      required:
+        - code
+        - retryAfterSec
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Short identifier for the error, suitable for indicating the specific
+            error within client code
+          format: constant
+        fields:
+          type: array
+          description: >-
+            List of the specific fields, and the errors found with their
+            contents
+          items:
+            $ref: '#/components/schemas/ErrorField'
+        message:
+          type: string
+          description: Human-readable, English description of the error
+        retryAfterSec:
+          type: integer
+          description: Number of seconds to wait before attempting a similar request
+          format: integer-positive
+    LegalAgreement:
+      required:
+        - agreementKey
+        - content
+        - title
+      type: object
+      properties:
+        agreementKey:
+          type: string
+          description: Unique identifier for the legal agreement
+        content:
+          type: string
+          description: Contents of the legal agreement, suitable for embedding
+        title:
+          type: string
+          description: Title of the legal agreement
+        url:
+          type: string
+          description: URL to a page containing the legal agreement
+          format: url

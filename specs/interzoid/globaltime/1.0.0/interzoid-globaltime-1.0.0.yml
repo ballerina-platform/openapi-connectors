@@ -1,0 +1,124 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.interzoid.com
+info:
+  x-ballerina-display:
+      label: Interzoid Global Time
+      iconPath: "icon.png"
+  version: "1.0.0"
+  title: Interzoid Get Global Time API
+  description: > 
+    This is a generated connector for [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime) OpenAPI specification.
+
+    This API retrieves the current time for a city or geographic location around the globe.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+  contact:
+    name: API Support
+    email: support@interzoid.com
+    url: https://www.interzoid.com
+  termsOfService: https://www.interzoid.com/terms
+  license:
+    name: Interzoid license
+    url: 'https://www.interzoid.com/license'
+externalDocs:
+  description: API home page and documentation
+  url: https://www.interzoid.com/services/getglobaltime
+security:
+  - ApiKeyAuth : []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: All requests on the Get Global Time API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+      type: apiKey
+      in: query
+      name: license
+  schemas:
+    GlobalTime:
+      description: Contains details about Global Time
+      properties:
+        Locale:
+          type: string
+          description: Locale
+        Zone:
+          type: string
+          description: Zone
+        TimeStamp:
+          type: string
+          description: Time Stamp
+        CurrentTime:
+          type: string
+          description: Current Time 
+        CurrentDate:
+          type: string
+          description: Current Date
+        ClockTime:
+          type: string
+          description: Clock Time
+        Weekday:
+          type: string
+          description: Week Day
+        Day:
+          type: string
+          description: Day
+        Month:
+          type: string
+          description: Month
+        MonthNumber:
+          type: string
+          description: Month Number  
+        Year:
+          type: string
+          description: Year
+        Hour:
+          type: string
+          description: Hour
+        Minute:
+          type: string
+          description: Minute
+        Second:
+          type: string
+          description: Second
+        Code:
+          type: string
+          description: Code
+        Credits:
+          type: string
+          description: Credits
+paths:
+  /getglobaltime:
+    get:
+      tags:
+        - Current Global Time
+      summary: Gets the current time for a global locale
+      operationId: getGlobalTime
+      description: |
+        Gets the current time for a global locale (city, state, region, or country such as Chicago, London, Paris, Seoul, Spain, Buenos Aires, Hawaii, Moscow, Tokyo, Hanoi, etc.)
+      parameters:
+        - in: query
+          name: locale
+          description: Geographic locale to get the current time for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current global time in many forms and related information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GlobalTime'
+        '400':
+          description: bad request - insufficient parameters
+        '402':
+          description: credits exhausted
+        '403':
+          description: invalid license API key
+        '404':
+          description: locale not found
+        '405':
+          description: method not allowed
+        '500':
+          description: internal server error

@@ -1,0 +1,3211 @@
+openapi: 3.0.0
+info:
+  title: Eventbrite API
+  description: |
+    This is a generated connector for [Eventbrite API v3](https://www.eventbrite.com/platform/api) OpenAPI specification.
+    Eventbrite is an Event Management System with an API which allows creating and managing events including venue management, marketing, selling tickets, and financial management.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create an [Eventbrite account](https://www.eventbrite.com/platform) and obtain tokens by following [this guide](https://www.eventbrite.com/platform/api#/introduction/authentication).
+  x-ballerina-display:
+    label: Eventbrite
+    iconPath: "icon.png"
+  version: "v3"
+security:
+- bearerAuth: []
+servers:
+  - url: 'https://www.eventbriteapi.com/v3'
+tags:
+  - name: event
+paths:
+  /users/me/organizations/:
+    get:
+      summary: "Returns a list of the organizations to which you are a member. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/organization/list-your-organizations/list-your-organizations"
+      parameters: []
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a single property organizations which is an array of Organization objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Organizations'
+      operationId: "list_organizations"
+  /users/{user_id}/organizations/:
+    get:
+      summary: "Returns the list organizations by user ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/organization/list-organizations-by-user/list-organizations-by-user"
+      parameters: 
+        - in: "path"
+          name: "user_id"
+          description: "ID of User. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a single property organizations which is an array of Organization objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Organizations'
+      operationId: "list_organizations_by_user"
+  /organizations/{organization_id}/events/:
+    post:
+      summary: "Create a new Event."
+      description: "https://www.eventbrite.com/platform/api#/reference/event/create/create-an-event"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "ID of the Organization that owns the Event. Example: 12345."
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: An object with a single property event which must be an Event object.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateEventRequest'
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "Created new Event"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedEvent'
+      operationId: "create_event"
+    get:
+      summary: "List Events by Organization ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/event/list/list-events-by-organization"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "Organization ID Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "name_filter"
+          description: "Filter Organization's Events by specified name."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "currency_filter"
+          description: "Filter Organization's Events by specified currency."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "order_by"
+          description: "Sort order for the list of Events."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "series_filter"
+          description: "Filter based on whether an event is not a series, a series, child series or parent series. This filter has higher precedence than show series parent filter. Default will use show series parent filter behavior."
+          schema:
+            type: boolean
+          required: false
+        - in: "query"
+          name: "show_series_parent "
+          description: "false (Default) = In the list, show the series children and not series parent. true = In the list, show the series parent instead of series."
+          schema:
+            type: boolean
+          required: false
+        - in: "query"
+          name: "status"
+          description: "Filter Organization's Events by status. Specify multiple status values as a comma delimited"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "event_group_id"
+          description: "Filter Organization's Events by event_group_id."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "collection_id"
+          description: "Filter Organization's Events by collection_id."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page_size"
+          description: "Number of records to display on each page of the list."
+          schema:
+            type: number
+          required: false
+        - in: "query"
+          name: "time_filter"
+          description: "Limits the list results to either past or current and future Events."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "inventory_type_filter"
+          description: "Filter Organization's Events by Inventory Type."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "event_ids_to_exclude"
+          description: "IDs of events to exclude from the Organization's Events list."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "collection_ids_to_exclude"
+          description: "IDs of collections to exclude from the Organization's Events list. This will have precedence over event_group_id filter and collection_id filter."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a property events which is an array of Event objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/EventsByOrganization'
+      operationId: "list_events_by_organization"
+  /events/{event_id}/publish/:
+    post:
+      summary: "Publish an Event."
+      description: "https://www.eventbrite.com/platform/api#/reference/event/publish/publish-an-event"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        201:
+          description: "Published event status"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/PublishedEvent'
+      operationId: "publish_event"
+  /organizations/{organization_id}/discounts/:
+    post:
+      summary: "Create a new Discount."
+      description: "https://www.eventbrite.com/platform/api#/reference/discount/retrieve/create-a-discount"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "ID of the Organization that owns the Event. Example: 12345."
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: An object with a single property discount which must be an Discount object.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateDiscountRequest'
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "Created new Discount"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedDiscount'
+      operationId: "create_discount"
+    get:
+      summary: "List Discounts by Organization ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/discount/list/search-discounts-by-organization"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "Organization ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "scope"
+          description: "Discount scope. Example: event"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "code_filter"
+          description: "Filter Discounts by approximate match code or name"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "code"
+          description: "Filter Discount by exact match code or name. Example: abcde"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "page_size"
+          description: "Number of records to display on each returned page."
+          schema:
+            type: number
+          required: false
+        - in: "query"
+          name: "type"
+          description: "Discount type"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "ticket_group_id"
+          description: "Filter Discounts by Ticket Group ID. Example: 12345"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "event_id"
+          description: "Filter Discounts by Event ID. Required for the event scope. Example: 12345"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "order_by"
+          description: "Response order."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "hold_ids"
+          description: "Filter discounts to only those that apply to specified hold IDs. IDs are in composite id format for either hold class (H123) or hold inventory tier (I123)"
+          schema:
+            type: string
+          required: false
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a property discounts which is an array of Discount objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Discounts'
+      operationId: "list_discounts"
+  /events/{event_id}/ticket_classes/:
+    post:
+      summary: "Create a new Ticket Class."
+      description: "https://www.eventbrite.com/platform/api#/reference/ticket-class/create/create-a-ticket-class"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: An object with a single property ticket_class which must be an TicketClass object.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateTicketClassRequest'
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "Created ticket class"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedTicketClass'
+      operationId: "create_ticket_class"
+  /categories/:
+    get:
+      summary: "Returns a list of Category as categories, including subcategories nested. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/categories/list/list-of-categories"
+      parameters: []
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a single property categories which is an array of Category objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Categories'
+      operationId: "list_categories"
+  /venues/{venue_id}/events/:
+    get:
+      summary: "List Events by Venue ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/event/list/list-events-by-venue"
+      parameters: 
+        - in: "path"
+          name: "venue_id"
+          description: "Venue ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "status"
+          description: "Filter Events at the Venue by status. Specify multiple status values as a comma delimited string. Example: live."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "order_by"
+          description: "Sort order of list of Events at the Venue. Example: start_asc."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "start_date"
+          description: "Filter Events at the Venue by a specified date range."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "only_public"
+          description: "True = Filter public Events at the Venue. Example: true"
+          schema:
+            type: boolean
+          required: false
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a property events which is an array of Event objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/EventsByVenue'
+      operationId: "list_events_by_venue"
+  /users/{user_id}/:
+    get:
+      summary: "Retrieve Information about a User Account."
+      description: "https://www.eventbrite.com/platform/api#/reference/user/retrieve-information-about-a-user-account/retrieve-information-about-a-user-account"
+      parameters: 
+        - in: "path"
+          name: "user_id"
+          description: "User ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "user"
+      responses:
+        200:
+          description: "An object with a property user which is a User object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/UserObject'
+      operationId: "get_user_details"
+  /organizations/{organization_id}/orders/:
+    get:
+      summary: "Returns a paginated response of orders, under the key orders, of orders placed against any of the events the organization owns (events that would be returned from /organizations/:id/events/)."
+      description: "https://www.eventbrite.com/platform/api#/reference/order/list/list-orders-by-organization-id"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "Organization ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "status"
+          description: "Filter Event's Order by status. Example: active"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "changed_since"
+          description: "Only return orders changed on or after the time given."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "only_emails"
+          description: "Only include orders placed by one of these emails."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "exclude_emails"
+          description: "Don't include orders placed by any of these emails"
+          schema:
+            type: boolean
+          required: false
+      tags:
+        - "order"
+      responses:
+        200:
+          description: "An object with a property orders which is an array of Order objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrdersByOrganization'
+      operationId: "list_orders_by_organization"
+  /events/{event_id}/orders/:
+    get:
+      summary: "List Orders by Event ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/order/list/list-orders-by-event-id"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "status"
+          description: "Filter Event's Order by status. Example: active"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "changed_since"
+          description: "Orders changed on or after this time."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "last_item_seen"
+          description: "Orders changed on or after this time, and with an ID larger than last item seen."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "only_emails"
+          description: "Orders placed by this email address"
+          schema:
+            type: boolean
+          required: false
+        - in: "query"
+          name: "exclude_emails"
+          description: "Orders placed by this email address are not included in return"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "refund_request_statuses"
+          description: "Only Orders with specified refund request status are included in return."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "order"
+      responses:
+        200:
+          description: "An object with a property orders which is an array of Order objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrdersByEvent'
+      operationId: "list_orders_by_event"
+  /users/{user_id}/orders/:
+    get:
+      summary: "List Orders by User ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/order/list/list-orders-by-user-id"
+      parameters: 
+        - in: "path"
+          name: "user_id"
+          description: "User ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "changed_since"
+          description: "Orders changed on or after this time."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "time_filter"
+          description: "Filter the list to only, or all, past or current and future Orders."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "order"
+      responses:
+        200:
+          description: "An object with a property orders which is an array of Order objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/OrdersByOrganization'
+      operationId: "list_orders_by_user"
+  /organizations/{organization_id}/attendees/:
+    get:
+      summary: "List Attendees of an Organization's Events by Organization ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/attendee/list/list-attendees-by-organization"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "Organization ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "status"
+          description: "Filter Attendees by status of either attending or not_attending"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "changed_since"
+          description: "Filter Attendees by resource changed on or after the time given."
+          schema:
+            type: string
+          required: false
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a property attendees which is an array of Attendee objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/AttendeesByOrganization'
+      operationId: "list_attendees"
+  /events/{event_id}/attendees/:
+    get:
+      summary: "List Attendees by Event ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/attendee/list/list-attendees-by-event"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "query"
+          name: "status"
+          description: "Filter Attendees by status of either attending, not attending or unpaid"
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "changed_since"
+          description: "Filter Attendees changed on or after the specified time."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "last_item_seen"
+          description: "When passed in conjunction with changed_since, filter Attendees changed on or after the specified time and with an ID later than the value of thelast_item_seen field."
+          schema:
+            type: string
+          required: false
+        - in: "query"
+          name: "attendee_ids"
+          description: "Filter Attendees with the specified IDs"
+          schema:
+            type: boolean
+          required: false
+      tags:
+        - "user"
+      responses:
+        200:
+          description: "An object with a property attendees which is an array of Attendee objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/AttendeesByEvent'
+      operationId: "list_attendees_by_event"
+  /events/{event_id}/attendees/{attendee_id}/:
+    get:
+      summary: "Retrieve an Attendee by Attendee ID."
+      description: "https://www.eventbrite.com/platform/api#/reference/attendee/retrieve/retrieve-an-attendee"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "path"
+          name: "attendee_id"
+          description: "Attendee ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object which is an Attendee object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Attendee'
+      operationId: "get_attendee_details"
+  /organizations/{organization_id}/venues/:
+    post:
+      summary: "Create new Venue under an Organization."
+      description: "https://www.eventbrite.com/platform/api#/reference/venue/create/create-a-venue"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "ID of the Organization that owns the Event. Example: 12345."
+          schema:
+            type: string
+          required: true
+      requestBody:
+        description: An object with a single property venue which must be a Venue object.
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/CreateVenueRequest'
+      tags:
+        - "user"
+      responses:
+        200:
+          description: "Created Venue"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/CreatedVenue'
+      operationId: "create_venue"
+    get:
+      summary: "List Venues by Organization ID. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/venue/update/list-venues-by-organization"
+      parameters: 
+        - in: "path"
+          name: "organization_id"
+          description: "Organization ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "user"
+      responses:
+        200:
+          description: "An object with a property venues which is an array of Venue objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Venues'
+      operationId: "list_venues"
+  /events/{event_id}/teams/:
+    get:
+      summary: "Returns a list of teams for the event. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/event-teams/list/list-by-event"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a property teams which is an array of Team objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Teams'
+      operationId: "list_teams"
+  /events/{event_id}/teams/{team_id}/attendees/:
+    get:
+      summary: "Returns attendee for a single team. Returns a paginated response."
+      description: "https://www.eventbrite.com/platform/api#/reference/event-teams/retrieve/list-attendees-by-team"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "path"
+          name: "team_id"
+          description: "Team ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object with a property attendees which is an array of Attendee objects."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Attendees'
+      operationId: "list_attendees_by_team"
+  /events/{event_id}/teams/{team_id}/:
+    get:
+      summary: "Returns information for a single team."
+      description: "https://www.eventbrite.com/platform/api#/reference/event-teams/list/retrieve-team"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+        - in: "path"
+          name: "team_id"
+          description: "Team ID. Example: 1."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object which is a Team object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Team'
+      operationId: "get_team_details"
+  /events/{event_id}/:
+    get:
+      summary: "Retrieve an Event by Event ID."
+      description: "https://www.eventbrite.com/platform/api#/reference/event/retrieve/retrieve-an-event"
+      parameters: 
+        - in: "path"
+          name: "event_id"
+          description: "Event ID. Example: 12345."
+          schema:
+            type: string
+          required: true
+      tags:
+        - "event"
+      responses:
+        200:
+          description: "An object which is an Event object."
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/EventObject'
+      operationId: "get_event_details"
+
+components:
+  schemas:
+    CreateEventRequest:
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/EventRequest'
+      description: An object with a single property event which must be an Event object.
+    EventRequest:
+      type: object
+      required:
+        - "name"
+        - "start"
+        - "end"
+        - "currency"
+      properties:
+        name:
+          $ref: '#/components/schemas/Name'
+        summary:
+          type: string
+          description: Event summary. This is a plaintext field and will have any supplied HTML removed from it. Maximum of 140 characters, mutually exclusive with description.
+        description:
+          $ref: '#/components/schemas/Description'
+        start:
+          $ref: '#/components/schemas/Start'
+        end:
+          $ref: '#/components/schemas/End'
+        hide_start_date:
+          type: boolean
+          description: If true, the event's start date should never be displayed to attendees.
+        hide_end_date:
+          type: boolean
+          description: If true, the event's end date should never be displayed to attendees.
+        currency:
+          type: string
+          description: The ISO 4217 currency code for this event 
+        online_event:
+          type: boolean
+          description: true = Specifies that the Event is online only (i.e. the Event does not have a Venue).
+        organizer_id:
+          type: string
+          description: ID of the event organizer
+        logo_id:
+          type: string
+          description: Image ID of the event logo
+        venue_id:
+          type: string
+          description: Event venue ID
+        format_id:
+          type: string
+          description: Event format
+        category_id:
+          type: string
+          description: Event category
+        subcategory_id:
+          type: string
+          description: Event subcategory
+        listed:
+          type: boolean
+          description: Is this event publicly searchable on Eventbrite?. Default value is true.
+        shareable:
+          type: boolean
+          description: Can this event show social sharing buttons?
+        invite_only:
+          type: boolean
+          description: Can only people with invites see the event page?
+        show_remaining:
+          type: boolean
+          description: If the remaining number of tickets is publicly visible on the event page
+        password:
+          type: string
+          description: Password needed to see the event in unlisted mode
+        capacity:
+          type: number
+          description: Set specific capacity (if omitted, sums ticket capacities)
+        is_reserved_seating:
+          type: boolean
+          description: If the event is reserved seating
+        is_series:
+          type: boolean
+          description: If the event is part of a series. Specifying this attribute as True during event creation will always designate the event as a series parent, never as a series occurrence. Series occurrences must be created through the schedules API and cannot be created using the events API.
+        show_pick_a_seat:
+          type: boolean
+          description: For reserved seating event, if attendees can pick their seats.
+        show_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail visible on the event page.
+        show_colors_in_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail should have colors on the event page.
+        source:
+          type: string
+          description: Source of the event (defaults to API)
+        locale:
+          type: string
+          description: Indicates event language on Event's listing page. (Default is en_US)
+      description: The Event object represents an Eventbrite Event. An Event is owned by one Organization.
+    Event:
+      type: object
+      required:
+        - "name"
+        - "start"
+        - "end"
+        - "currency"
+      properties:
+        id:
+          type: string
+          description: Event ID
+        name:
+          $ref: '#/components/schemas/Name'
+        summary:
+          type: string
+          description: Event summary. This is a plaintext field and will have any supplied HTML removed from it. Maximum of 140 characters, mutually exclusive with description.
+        description:
+          $ref: '#/components/schemas/Description'
+        start:
+          $ref: '#/components/schemas/Start'
+        end:
+          $ref: '#/components/schemas/End'
+        hide_start_date:
+          type: boolean
+          description: If true, the event's start date should never be displayed to attendees.
+        hide_end_date:
+          type: boolean
+          description: If true, the event's end date should never be displayed to attendees.
+        currency:
+          type: string
+          description: The ISO 4217 currency code for this event 
+        online_event:
+          type: boolean
+          description: true = Specifies that the Event is online only (i.e. the Event does not have a Venue).
+        organizer_id:
+          type: string
+          description: ID of the event organizer
+        logo_id:
+          type: string
+          description: Image ID of the event logo
+        venue_id:
+          type: string
+          description: Event venue ID
+        format_id:
+          type: string
+          description: Event format
+        category_id:
+          type: string
+          description: Event category
+        subcategory_id:
+          type: string
+          description: Event subcategory
+        listed:
+          type: boolean
+          description: Is this event publicly searchable on Eventbrite?. Default value is true.
+        shareable:
+          type: boolean
+          description: Can this event show social sharing buttons?
+        invite_only:
+          type: boolean
+          description: Can only people with invites see the event page?
+        show_remaining:
+          type: boolean
+          description: If the remaining number of tickets is publicly visible on the event page
+        password:
+          type: string
+          description: Password needed to see the event in unlisted mode
+        capacity:
+          type: number
+          description: Set specific capacity (if omitted, sums ticket capacities)
+        is_reserved_seating:
+          type: boolean
+          description: If the event is reserved seating
+        is_series:
+          type: boolean
+          description: If the event is part of a series. Specifying this attribute as True during event creation will always designate the event as a series parent, never as a series occurrence. Series occurrences must be created through the schedules API and cannot be created using the events API.
+        show_pick_a_seat:
+          type: boolean
+          description: For reserved seating event, if attendees can pick their seats.
+        show_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail visible on the event page.
+        show_colors_in_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail should have colors on the event page.
+        source:
+          type: string
+          description: Source of the event (defaults to API)
+        locale:
+          type: string
+          description: Indicates event language on Event's listing page. (Default is en_US)
+      description: The Event object represents an Eventbrite Event. An Event is owned by one Organization.
+    CreatedEvent:
+      type: object
+      required:
+        - "created"
+        - "changed"
+      properties:
+        id:
+          type: string
+          description: Event ID
+        name:
+          $ref: '#/components/schemas/Name'
+        summary:
+          type: string
+          description: Event summary. This is a plaintext field and will have any supplied HTML removed from it. Maximum of 140 characters, mutually exclusive with description.
+        description:
+          $ref: '#/components/schemas/Description'
+        start:
+          $ref: '#/components/schemas/Start'
+        end:
+          $ref: '#/components/schemas/End'
+        url:
+          type: string
+          description: The URL to the event page for this event on Eventbrite
+        vanity_url:
+          type: string
+          description: The vanity URL to the event page for this event on Eventbrite
+        created:
+          type: string
+          description: When the event was created
+        changed:
+          type: string
+          description: When the event was last changed
+        published:
+          type: string
+          description: When the event was first published
+        status:
+          type: string
+          description: Status of the event
+        currency:
+          type: string
+          description: The ISO 4217 currency code for this event 
+        online_event:
+          type: boolean
+          description: true = Specifies that the Event is online only (i.e. the Event does not have a Venue).
+        organization_id:
+          type: string
+          description: Organization owning the event
+        organizer_id:
+          type: string
+          description: ID of the event organizer
+        organizer:
+          $ref: '#/components/schemas/Organizer'
+        logo_id:
+          type: string
+          description: Image ID of the event logo
+        logo:
+          $ref: '#/components/schemas/Logo'
+        venue_id:
+          type: string
+          description: Event venue ID
+        venue:
+          $ref: '#/components/schemas/Venue'
+        format_id:
+          type: string
+          description: Event format
+        format:
+          $ref: '#/components/schemas/Format'
+        category_id:
+          type: string
+          description: Event category
+        category:
+          $ref: '#/components/schemas/Category'
+        subcategory_id:
+          type: string
+          description: Event subcategory (Expansion is subcategory)
+        subcategory:
+          $ref: '#/components/schemas/Subcategory'
+        music_properties:
+          $ref: '#/components/schemas/MusicProperties'
+        bookmark_info:
+          $ref: '#/components/schemas/BookmarkInfo'
+        refund_policy:
+          type: string
+          description: Refund policy
+        ticket_availability:
+          $ref: '#/components/schemas/TicketAvailability'
+        listed:
+          type: boolean
+          description: Is this event publicly searchable on Eventbrite?. Default value is true.
+        shareable:
+          type: boolean
+          description: Can this event show social sharing buttons?
+        invite_only:
+          type: boolean
+          description: Can only people with invites see the event page?
+        show_remaining:
+          type: boolean
+          description: If the remaining number of tickets is publicly visible on the event page
+        password:
+          type: string
+          description: Password needed to see the event in unlisted mode
+        capacity:
+          type: number
+          description: Set specific capacity (if omitted, sums ticket capacities)
+        capacity_is_custom:
+          type: boolean
+          description: If True, the value of capacity is a custom-set value; if False, it's a calculated value of the total of all ticket capacities.
+        tx_time_limit:
+          type: string
+          description: Maximum duration (in seconds) of a transaction
+        hide_start_date:
+          type: boolean
+          description: If true, the event's start date should never be displayed to attendees.
+        hide_end_date:
+          type: boolean
+          description: If true, the event's end date should never be displayed to attendees.
+        locale:
+          type: string
+          description: Indicates event language on Event's listing page. (Default is en_US)
+        is_locked:
+          type: boolean
+          description: Is locked
+        privacy_setting:
+          type: string
+          description: Privacy setting
+        is_externally_ticketed:
+          type: boolean
+          description: true, if the Event is externally ticketed
+        external_ticketing:
+          $ref: '#/components/schemas/ExternalTicketing'
+        is_series:
+          type: boolean
+          description: If the event is part of a series. Specifying this attribute as True during event creation will always designate the event as a series parent, never as a series occurrence. Series occurrences must be created through the schedules API and cannot be created using the events API.
+        is_series_parent:
+          type: boolean
+          description: If the event is part of a series and is the series parent
+        series_id:
+          type: string
+          description: If the event is part of a series, this is the event id of the series parent. If the event is not part of a series, this field is omitted.
+        is_reserved_seating:
+          type: boolean
+          description: If the event is reserved seating
+        show_pick_a_seat:
+          type: boolean
+          description: For reserved seating event, if attendees can pick their seats.
+        show_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail visible on the event page.
+        show_colors_in_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail should have colors on the event page.
+        is_free:
+          type: boolean
+          description: Allows to set a free event
+        source:
+          type: string
+          description: Source of the event (defaults to API)
+        version:
+          type: string
+          description: Version
+        resource_uri:
+          type: string
+          description: Is an absolute URL to the API endpoint that will return you the canonical representation of the event.
+        event_sales_status:
+          $ref: '#/components/schemas/EventSalesStatus'
+        checkout_settings:
+          $ref: '#/components/schemas/CheckoutSettings'
+      description: The Event object represents an Eventbrite Event. An Event is owned by one Organization.
+    EventObject:
+      type: object
+      required:
+        - "created"
+        - "changed"
+      properties:
+        id:
+          type: string
+          description: Event ID
+        name:
+          $ref: '#/components/schemas/Name'
+        summary:
+          type: string
+          description: Event summary. This is a plaintext field and will have any supplied HTML removed from it. Maximum of 140 characters, mutually exclusive with description.
+        description:
+          $ref: '#/components/schemas/Description'
+        start:
+          $ref: '#/components/schemas/Start'
+        end:
+          $ref: '#/components/schemas/End'
+        url:
+          type: string
+          description: The URL to the event page for this event on Eventbrite
+        vanity_url:
+          type: string
+          description: The vanity URL to the event page for this event on Eventbrite
+        created:
+          type: string
+          description: When the event was created
+        changed:
+          type: string
+          description: When the event was last changed
+        published:
+          type: string
+          description: When the event was first published
+        status:
+          type: string
+          description: Status of the event
+        currency:
+          type: string
+          description: The ISO 4217 currency code for this event 
+        online_event:
+          type: boolean
+          description: true = Specifies that the Event is online only (i.e. the Event does not have a Venue).
+        organization_id:
+          type: string
+          description: Organization owning the event
+        organizer_id:
+          type: string
+          description: ID of the event organizer
+        organizer:
+          $ref: '#/components/schemas/Organizer'
+        logo_id:
+          type: string
+          description: Image ID of the event logo
+        logo:
+          $ref: '#/components/schemas/Logo'
+        venue_id:
+          type: string
+          description: Event venue ID
+        venue:
+          $ref: '#/components/schemas/Venue'
+        format_id:
+          type: string
+          description: Event format
+        format:
+          $ref: '#/components/schemas/Format'
+        category_id:
+          type: string
+          description: Event category
+        category:
+          $ref: '#/components/schemas/Category'
+        subcategory_id:
+          type: string
+          description: Event subcategory (Expansion is subcategory)
+        subcategory:
+          $ref: '#/components/schemas/Subcategory'
+        music_properties:
+          $ref: '#/components/schemas/MusicProperties'
+        bookmark_info:
+          $ref: '#/components/schemas/BookmarkInfo'
+        refund_policy:
+          type: string
+          description: Refund policy
+        ticket_availability:
+          $ref: '#/components/schemas/TicketAvailability'
+        listed:
+          type: boolean
+          description: Is this event publicly searchable on Eventbrite?. Default value is true.
+        shareable:
+          type: boolean
+          description: Can this event show social sharing buttons?
+        invite_only:
+          type: boolean
+          description: Can only people with invites see the event page?
+        show_remaining:
+          type: boolean
+          description: If the remaining number of tickets is publicly visible on the event page
+        password:
+          type: string
+          description: Password needed to see the event in unlisted mode
+        capacity:
+          type: number
+          description: Set specific capacity (if omitted, sums ticket capacities)
+        capacity_is_custom:
+          type: boolean
+          description: If True, the value of capacity is a custom-set value; if False, it's a calculated value of the total of all ticket capacities.
+        tx_time_limit:
+          type: string
+          description: Maximum duration (in seconds) of a transaction
+        hide_start_date:
+          type: boolean
+          description: If true, the event's start date should never be displayed to attendees.
+        hide_end_date:
+          type: boolean
+          description: If true, the event's end date should never be displayed to attendees.
+        locale:
+          type: string
+          description: Indicates event language on Event's listing page. (Default is en_US)
+        is_locked:
+          type: boolean
+          description: Is locked
+        privacy_setting:
+          type: string
+          description: Privacy setting
+        is_externally_ticketed:
+          type: boolean
+          description: true, if the Event is externally ticketed
+        external_ticketing:
+          $ref: '#/components/schemas/ExternalTicketing'
+        is_series:
+          type: boolean
+          description: If the event is part of a series. Specifying this attribute as True during event creation will always designate the event as a series parent, never as a series occurrence. Series occurrences must be created through the schedules API and cannot be created using the events API.
+        is_series_parent:
+          type: boolean
+          description: If the event is part of a series and is the series parent
+        series_id:
+          type: string
+          description: If the event is part of a series, this is the event id of the series parent. If the event is not part of a series, this field is omitted.
+        is_reserved_seating:
+          type: boolean
+          description: If the event is reserved seating
+        show_pick_a_seat:
+          type: boolean
+          description: For reserved seating event, if attendees can pick their seats.
+        show_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail visible on the event page.
+        show_colors_in_seatmap_thumbnail:
+          type: boolean
+          description: For reserved seating event, if venue map thumbnail should have colors on the event page.
+        is_free:
+          type: boolean
+          description: Allows to set a free event
+        source:
+          type: string
+          description: Source of the event (defaults to API)
+        version:
+          type: string
+          description: Version
+        resource_uri:
+          type: string
+          description: Is an absolute URL to the API endpoint that will return you the canonical representation of the event.
+        event_sales_status:
+          $ref: '#/components/schemas/EventSalesStatus'
+        checkout_settings:
+          $ref: '#/components/schemas/CheckoutSettings'
+      description: The Event object represents an Eventbrite Event. An Event is owned by one Organization.
+    Name:
+      type: object
+      properties:
+        html:
+          type: string
+          description: Event name in html format. <p>Some text</p>.
+      description: Event name. Value cannot be empty nor whitespace.
+    Description:
+      type: object
+      properties:
+        html:
+          type: string
+          description: Event description in html format. <p>Some text</p>.
+      description: Event description (contents of the event page). May be long and have significant formatting. Please refer to the event description tutorial to learn about the new way to create an event description.
+    Start:
+      type: object
+      required:
+        - "timezone"
+        - "utc"
+      properties:
+        timezone:
+          type: string
+          description: The timezone
+        utc:
+          type: string
+          description: The time relative to UTC
+      description: Start date/time of the event.
+    End:
+      type: object
+      required:
+        - "timezone"
+        - "utc"
+      properties:
+        timezone:
+          type: string
+          description: The timezone
+        utc:
+          type: string
+          description: The time relative to UTC
+      description: End date/time of the event.
+    Organizer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Organizer name.
+        description:
+          $ref: '#/components/schemas/OrganizerDescription'
+        long_description:
+          $ref: '#/components/schemas/OrganizerLongDescription'
+        logo_id:
+          type: string
+          description: Image ID of the organizer logo
+        logo:
+          $ref: '#/components/schemas/Logo'
+        resource_uri:
+          type: string
+          description: Is an absolute URL to the API endpoint that will return you the organizer.
+        id:
+          type: string
+          description: Id of the organizer
+        url:
+          type: string
+          description: URL to the organizer's page on Eventbrite
+        num_past_events:
+          type: number
+          description: Number of past events the organizer has
+        num_future_events:
+          type: number
+          description: Number of upcoming events the organizer has
+        twitter:
+          type: string
+          description: Organizer's twitter handle
+        facebook:
+          type: string
+          description: Organizer's facebook page
+      description: Full details of the event organizer (requires the organizer expansion)
+    OrganizerDescription:
+      type: object
+      required:
+        - "text"
+        - "html"
+      properties:
+        text:
+          type: string
+          description: Description of the Organizer in text format
+        html:
+          type: string
+          description: Description of the Organizer in html format
+      description: Description of the Organizer (may be very long and contain significant formatting).
+    OrganizerLongDescription:
+      type: object
+      required:
+        - "text"
+        - "html"
+      properties:
+        text:
+          type: string
+          description: Description of the Organizer in text format
+        html:
+          type: string
+          description: Description of the Organizer in html format
+      description: Long description of the Organizer.
+    Logo:
+      type: object
+      required:
+        - "id"
+        - "url"
+      properties:
+        id:
+          type: string
+          description: The image’s ID
+        url:
+          type: string
+          description: The URL of the image
+        crop_mask:
+          $ref: '#/components/schemas/CropMask'
+        original:
+          $ref: '#/components/schemas/Original'
+        aspect_ratio:
+          type: string
+          description: The aspect ratio of the cropped image
+        edge_color:
+          type: string
+          description: The edge color of the image in hexadecimal representation
+        edge_color_set:
+          type: boolean
+          description: True if the edge color has been set
+      description: Full image details for organizer logo
+    CropMask:
+      type: object
+      properties:
+        top_left:
+          $ref: '#/components/schemas/TopLeft'
+        width:
+          type: number
+          description: Crop mask width 
+        height:
+          type: number
+          description: Crop mask height
+      description: The crop mask applied to the original image
+    TopLeft:
+      type: object
+      properties:
+        y:
+          type: number
+          description: Y coordinate for top-left corner of crop mask
+        x:
+          type: number
+          description: X coordinate for top-left corner of crop mask 
+      description: Coordinate for top-left corner of crop mask 
+    Original:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL of the image
+        width:
+          type: number
+          description: The width of the image in pixels
+        height:
+          type: number
+          description: The height of the image in pixels
+      description: The original image
+    Venue:
+      type: object
+      required:
+        - "name"
+      properties:
+        name:
+          type: string
+          description: Venue name
+        age_restriction:
+          type: string
+          description: Age restriction of the venue
+        capacity:
+          type: number
+          description: Venue capacity
+        address:
+          $ref: '#/components/schemas/Address'
+        resource_uri:
+          type: string
+          description: Resource uri
+        id:
+          type: string
+          description: Venue ID
+        latitude:
+          type: string
+          description: Latitude portion of the address coordinates of the venue
+        longitude:
+          type: string
+          description: Longitude portion of the address coordinates of the venue
+      description: Full venue details for venue_id (requires the venue expansion)
+    Address:
+      type: object
+      properties:
+        address_1:
+          type: string
+          description: The street/location address (part 1)
+        address_2:
+          type: string
+          description: The street/location address (part 2)
+        city:
+          type: string
+          description: City
+        region:
+          type: string
+          description: ISO 3166-2 2- or 3-character region code for the state, province, region, or district
+        postal_code:
+          type: string
+          description: Postal code
+        country:
+          type: string
+          description: ISO 3166-1 2-character international code for the country
+        latitude:
+          type: string
+          description: Latitude portion of the address coordinates
+        longitude:
+          type: string
+          description: Longitude portion of the address coordinates
+      description: The address of the venue
+    Format:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Format ID
+        name:
+          type: string
+          description: Format name
+        name_localized:
+          type: string
+          description: Localized format name
+        short_name:
+          type: string
+          description: Short name for a format
+        short_name_localized:
+          type: string
+          description: Localized short name for a format
+        resource_uri:
+          type: string
+          description: Is an absolute URL to the API endpoint that will return you the canonical representation of the format.
+      description: Full details of the event format (requires the format expansion) 
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Category ID
+        resource_uri:
+          type: string
+          description: Resource URI
+        name:
+          type: string
+          description: Category name
+        name_localized:
+          type: string
+          description: Translated category name
+        short_name:
+          type: string
+          description: Shorter category name for display in sidebars and other small spaces
+        short_name_localized:
+          type: string
+          description: Translated short category name
+        subcategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subcategory'
+          description: List of subcategories (only shown on some endpoints)
+      description: Full details of the event category (requires the category expansion)
+    Organization:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The organization name
+        vertical:
+          type: string
+          description: The organization vertical
+        image_id:
+          type: string
+          description: The organization image id
+        id:
+          type: string
+          description: The organization id
+      description: Full details of the organization
+    Subcategory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Subcategory ID
+        resource_uri:
+          type: string
+          description: Resource URI
+        name:
+          type: string
+          description: Subcategory name
+        parent_category:
+            $ref: '#/components/schemas/Category'
+      description: Full details of the event subcategory (requires the subcategory expansion)
+    MusicProperties:
+      type: object
+      properties:
+        age_restriction:
+          type: string
+          description: Minimum age requirement of event attendees.
+        presented_by:
+          type: string
+          description: Main music event sponsor.
+        door_time:
+          type: string
+          description: Time relative to UTC that the doors are opened to allow people in the day of the event. When not set the event won't have any door time set.
+      description: This is an object of properties that detail dimensions of music events.
+    BookmarkInfo:
+      type: object
+      properties:
+        bookmarked:
+          type: boolean
+          description: User saved the event or not
+      description: The bookmark information on the event, requires the bookmark_info expansion
+    TicketAvailability:
+      type: object
+      properties:
+        has_available_tickets:
+          type: boolean
+          description: Whether this event has tickets available to purchase
+        minimum_ticket_price:
+          $ref: '#/components/schemas/MinimumTicketPrice'
+        maximum_ticket_price:
+          $ref: '#/components/schemas/MaximumTicketPrice'
+        is_sold_out:
+          type: boolean
+          description: Whether there is at least one ticket with availability
+        start_sales_date:
+          $ref: '#/components/schemas/StartSalesDate'
+        waitlist_available:
+          type: boolean
+          description: Waitlist available
+      description: Additional data about general tickets information (optional).
+    MinimumTicketPrice:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: string
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: A dictionary with some data of the available ticket with the minimums
+    MaximumTicketPrice:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: string
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: A dictionary with some data of the available ticket with the maximum
+    StartSalesDate:
+      type: object
+      required:
+        - "timezone"
+        - "utc"
+        - "local"
+      properties:
+        timezone:
+          type: string
+          description: The timezone
+        utc:
+          type: string
+          description: The time relative to UTC
+        local:
+          type: string
+          description: The time in the timezone of the event
+      description: The earliest start time when a visible ticket is or will be available
+    ExternalTicketing:
+      type: object
+      required:
+        - "external_url"
+        - "ticketing_provider_name"
+        - "is_free"
+        - "minimum_ticket_price"
+        - "maximum_ticket_price"
+      properties:
+        external_url:
+          type: string
+          description: The URL clients can follow to purchase tickets.
+        ticketing_provider_name:
+          type: string
+          description: The name of the ticketing provider.
+        is_free:
+          type: boolean
+          description: Whether this is a free event. Mutually exclusive with ticket price range.
+        minimum_ticket_price:
+          $ref: '#/components/schemas/MinimumTicketPrice'
+        maximum_ticket_price:
+          $ref: '#/components/schemas/MaximumTicketPrice'
+        sales_start:
+          type: string
+          description: When sales start.
+        sales_end:
+          type: string
+          description: When sales end.
+      description: External ticketing
+    EventSalesStatus:
+      type: object
+      properties:
+        sales_status:
+          type: string
+          description: Current sales status of the event.
+        start_sales_date:
+          $ref: '#/components/schemas/StartSalesDate'
+        message:
+          type: string
+          description: Custom message associated with the current event sales status.
+        message_type:
+          type: string
+          description: Message type
+        message_code:
+          type: string
+          description: Message code
+      description: Additional data about the sales status of the event (optional). 
+    CheckoutSettings:
+      type: object
+      properties:
+        created:
+          type: string
+          description: When the checkout settings object was created
+        changed:
+          type: string
+          description: When the checkout settings object was last changed
+        country_code:
+          type: string
+          description: The ISO 3166 alpha-2 code of the country within which these checkout settings can apply.
+        currency_codes:
+          type: string
+          description: The ISO 4217 3-character code of the currency for which these checkout settings can apply.
+        checkout_method:
+          type: string
+          description: Checkout method
+        offline_settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/OfflineSettings'
+          description: A container for representing additional offline payment method checkout settings.
+        user_instrument_vault_id:
+          type: string
+          description: The merchant account user instrument ID for the checkout method. Only specify this value for PayPal and Authorize.net checkout settings.
+      description: Additional data about the checkout settings of the Event.
+    OfflineSettings:
+      type: object
+      properties:
+        payment_method:
+          type: string
+          description: Set of possible values are [CASH, CHECK, INVOICE]
+        instructions:
+          type: string
+          description: Instructions
+      description: A container for representing additional offline payment method checkout settings.
+    PublishedEvent:
+      type: object
+      properties:
+        published:
+          type: boolean
+          description: Published status
+      description: Published event status.
+    CreateDiscountRequest:
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/DiscountRequest'
+      description: An object with a single property discount which must be an Discount object.
+    DiscountRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type
+        code:
+          type: string
+          description: Code used to activate the discount
+        amount_off:
+          type: string
+          description: Fixed reduction amount. When creating access codes the default value is Null.
+        percent_off:
+          type: string
+          description: Percentage reduction. When creating access codes the default value is Null.
+        event_id:
+          type: string
+          description: ID of the event. Only used for single event discounts
+        ticket_class_ids:
+          type: array
+          items:
+            type: string
+          description: IDs of the ticket classes to limit discount to
+        quantity_available:
+          type: number
+          description: Number of times the discount can be used
+        start_date:
+          type: string
+          description: Allow use from this date. A datetime represented as a string in Naive Local ISO8601 date and time format, in the timezone of the event.
+        start_date_relative:
+          type: number
+          description: Allow use from this number of seconds before the event starts. Greater than 59 and multiple of 60.
+        end_date:
+          type: string
+          description: Allow use until this date. A datetime represented as a string in Naive Local ISO8601 date and time format, in the timezone of the event.
+        end_date_relative:
+          type: number
+          description: Allow use until this number of seconds before the event starts. Greater than 59 and multiple of 60.
+        ticket_group_id:
+          type: string
+          description: ID of the ticket group
+        hold_ids:
+          type: array
+          items:
+            type: string
+          description: List of hold IDs this discount can unlock. Null if this discount does not unlock a hold.
+      description: The Discount object represents a discount that an Order owner can use when purchasing tickets to an Event.
+    Discount:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type
+        code:
+          type: string
+          description: Code used to activate the discount
+        amount_off:
+          type: string
+          description: Fixed reduction amount. When creating access codes the default value is Null.
+        percent_off:
+          type: string
+          description: Percentage reduction. When creating access codes the default value is Null.
+        event_id:
+          type: string
+          description: ID of the event. Only used for single event discounts
+        ticket_class_ids:
+          type: array
+          items:
+            type: string
+          description: IDs of the ticket classes to limit discount to
+        quantity_available:
+          type: number
+          description: Number of times the discount can be used
+        start_date:
+          type: string
+          description: Allow use from this date. A datetime represented as a string in Naive Local ISO8601 date and time format, in the timezone of the event.
+        start_date_relative:
+          type: number
+          description: Allow use from this number of seconds before the event starts. Greater than 59 and multiple of 60.
+        end_date:
+          type: string
+          description: Allow use until this date. A datetime represented as a string in Naive Local ISO8601 date and time format, in the timezone of the event.
+        end_date_relative:
+          type: number
+          description: Allow use until this number of seconds before the event starts. Greater than 59 and multiple of 60.
+        ticket_group_id:
+          type: string
+          description: ID of the ticket group
+        hold_ids:
+          type: array
+          items:
+            type: string
+          description: List of hold IDs this discount can unlock. Null if this discount does not unlock a hold.
+        id:
+          type: string
+          description: Discount ID
+        quantity_sold:
+          type: number
+          description: Number of discounts used during ticket sales
+      description: The Discount object represents a discount that an Order owner can use when purchasing tickets to an Event.
+    CreatedDiscount:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type
+        code:
+          type: string
+          description: Code used to activate the discount
+        amount_off:
+          type: string
+          description: Fixed reduction amount. When creating access codes the default value is Null.
+        percent_off:
+          type: string
+          description: Percentage reduction. When creating access codes the default value is Null.
+        event_id:
+          type: string
+          description: ID of the event. Only used for single event discounts
+        ticket_class_ids:
+          type: array
+          items:
+            type: string
+          description: IDs of the ticket classes to limit discount to
+        quantity_available:
+          type: number
+          description: Number of times the discount can be used
+        start_date:
+          type: string
+          description: Allow use from this date. A datetime represented as a string in Naive Local ISO8601 date and time format, in the timezone of the event.
+        start_date_relative:
+          type: number
+          description: Allow use from this number of seconds before the event starts. Greater than 59 and multiple of 60.
+        end_date:
+          type: string
+          description: Allow use until this date. A datetime represented as a string in Naive Local ISO8601 date and time format, in the timezone of the event.
+        end_date_relative:
+          type: number
+          description: Allow use until this number of seconds before the event starts. Greater than 59 and multiple of 60.
+        ticket_group_id:
+          type: string
+          description: ID of the ticket group
+        hold_ids:
+          type: array
+          items:
+            type: string
+          description: List of hold IDs this discount can unlock. Null if this discount does not unlock a hold.
+        id:
+          type: string
+          description: Discount ID
+        quantity_sold:
+          type: number
+          description: Number of discounts used during ticket sales
+      description: The Discount object represents a discount that an Order owner can use when purchasing tickets to an Event.
+    CreateTicketClassRequest:
+      type: object
+      properties:
+        ticket_class:
+          $ref: '#/components/schemas/TicketClass'
+      description: An object with a single property ticket_class which must be a Ticket Class object.
+    TicketClass:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the ticket
+        donation:
+          type: boolean
+          description: Is this a donation? (user-supplied cost)
+        free:
+          type: boolean
+          description: Is this a free ticket?
+        minimum_quantity:
+          type: number
+          description: Minimum number per order
+        maximum_quantity:
+          type: number
+          description: Maximum number per order
+        delivery_methods:
+          type: string
+          description: A list of the available delivery methods for this ticket class
+        cost:
+          type: string
+          description: Cost of the ticket (currently currency must match event currency) e.g. $45 would be "USD,4500"
+        resource_uri:
+          type: string
+          description: Is an absolute URL to the API endpoint that will return you ticket class.
+        image_id:
+          type: string
+          description: Image ID for this ticket class. null if no image is set.
+        name:
+          type: string
+          description: Name of this ticket type
+        display_name:
+          type: string
+          description: Pretty long name of this ticket class. For tiered inventory tickets, this includes the tier name.
+        sorting:
+          type: number
+          description: Unsigned integer in the order ticket classes are sorted by.
+        capacity:
+          type: number
+          description: Total available number of this ticket, required for non-donation and non-tiered ticket classes. For normal ticket, null or 0 is not allowed. For donation ticket, null or 0 means unlimited. For tiered inventory ticket, null or 0 means capacity is only limited by tier capacity and/or event capacity.
+        quantity_total:
+          type: number
+          description: Deprecated, use capacity instead.
+        quantity_sold:
+          type: number
+          description: The number of sold tickets.
+        sales_start:
+          type: string
+          description: When the ticket is available for sale (leave empty for ‘when event published’)
+        sales_end:
+          type: string
+          description: When the ticket stops being on sale (leave empty for 'one hour before event start'). Cannot be set on series parent tickets.
+        hidden:
+          type: boolean
+          description: Hide this ticket
+        include_fee:
+          type: boolean
+          description: Absorb the fee into the displayed cost
+        split_fee:
+          type: boolean
+          description: Absorb the payment fee, but show the eventbrite fee
+        hide_description:
+          type: boolean
+          description: Hide the ticket description on the event page
+        hide_sale_dates:
+          type: boolean
+          description: Hide the sale dates on event landing and ticket selection page
+        auto_hide:
+          type: boolean
+          description: Hide this ticket when it is not on sale
+        auto_hide_before:
+          type: string
+          description: Override reveal date for auto-hide
+        auto_hide_after:
+          type: string
+          description: Override re-hide date for auto-hide
+        sales_start_after:
+          type: string
+          description: The ID of another ticket class - when it sells out, this class will go on sale.
+        order_confirmation_message:
+          type: string
+          description: Order message per ticket type
+        sales_channels:
+          type: array
+          items:
+            type: string
+          description: A list of all supported sales channels
+        inventory_tier_id:
+          type: string
+          description: Optional ID of Inventory Tier with which to associate the ticket class
+        secondary_assignment_enabled:
+          type: boolean
+          description: Has secondary barcode assignment enabled (for ex/ RFID)
+        sales_end_relative:
+          $ref: '#/components/schemas/SalesEndRelative'
+        has_pdf_ticket:
+          type: boolean
+          description: Whether to include pdf ticket or not
+      description: The Ticket Class object represents a possible ticket class (i.e. ticket type) for an Event.
+    SalesEndRelative:
+      type: object
+      required:
+        - "relative_to_event"
+        - "offset"
+      properties:
+        relative_to_event:
+          type: string
+          description: Relative to event
+        offset:
+          type: number
+          description: The amount of time in seconds that the ticket sales are offset before the event start or end. Nonnegative number.
+      description: Relative values used to calculate ticket sales_end. Can only be used for series parent tickets.
+    CreatedTicketClass:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the ticket
+        donation:
+          type: boolean
+          description: Is this a donation? (user-supplied cost)
+        free:
+          type: boolean
+          description: Is this a free ticket?
+        minimum_quantity:
+          type: number
+          description: Minimum number per order
+        maximum_quantity:
+          type: number
+          description: Maximum number per order
+        delivery_methods:
+          type: array
+          items:
+            type: string
+          description: A list of the available delivery methods for this ticket class
+        cost:
+          $ref: '#/components/schemas/Cost'
+        resource_uri:
+          type: string
+          description: Is an absolute URL to the API endpoint that will return you ticket class.
+        image_id:
+          type: string
+          description: Image ID for this ticket class. null if no image is set.
+        name:
+          type: string
+          description: Name of this ticket type
+        display_name:
+          type: string
+          description: Pretty long name of this ticket class. For tiered inventory tickets, this includes the tier name.
+        sorting:
+          type: number
+          description: Unsigned integer in the order ticket classes are sorted by.
+        capacity:
+          type: number
+          description: Total available number of this ticket, required for non-donation and non-tiered ticket classes. For normal ticket, null or 0 is not allowed. For donation ticket, null or 0 means unlimited. For tiered inventory ticket, null or 0 means capacity is only limited by tier capacity and/or event capacity.
+        quantity_total:
+          type: number
+          description: Deprecated, use capacity instead.
+        quantity_sold:
+          type: number
+          description: The number of sold tickets.
+        sales_start:
+          type: string
+          description: When the ticket is available for sale (leave empty for ‘when event published’)
+        sales_end:
+          type: string
+          description: When the ticket stops being on sale (leave empty for 'one hour before event start'). Cannot be set on series parent tickets.
+        hidden:
+          type: boolean
+          description: Hide this ticket
+        include_fee:
+          type: boolean
+          description: Absorb the fee into the displayed cost
+        split_fee:
+          type: boolean
+          description: Absorb the payment fee, but show the eventbrite fee
+        hide_description:
+          type: boolean
+          description: Hide the ticket description on the event page
+        hide_sale_dates:
+          type: boolean
+          description: Hide the sale dates on event landing and ticket selection page
+        auto_hide:
+          type: boolean
+          description: Hide this ticket when it is not on sale
+        auto_hide_before:
+          type: string
+          description: Override reveal date for auto-hide
+        auto_hide_after:
+          type: string
+          description: Override re-hide date for auto-hide
+        sales_start_after:
+          type: string
+          description: The ID of another ticket class - when it sells out, this class will go on sale.
+        order_confirmation_message:
+          type: string
+          description: Order message per ticket type
+        sales_channels:
+          type: array
+          items:
+            type: string
+          description: A list of all supported sales channels
+        inventory_tier_id:
+          type: string
+          description: Optional ID of Inventory Tier with which to associate the ticket class
+        secondary_assignment_enabled:
+          type: boolean
+          description: Has secondary barcode assignment enabled (for ex/ RFID)
+        category:
+          type: string
+          description: Ticket class category to which a ticket class belongs.
+      description: The Ticket Class object represents a possible ticket class (i.e. ticket type) for an Event.
+    Cost:
+      type: object
+      properties:
+        actual_cost:
+          $ref: '#/components/schemas/ActualCost'
+        actual_fee:
+          $ref: '#/components/schemas/ActualFee'
+        cost:
+          $ref: '#/components/schemas/TicketCost'
+        fee:
+          $ref: '#/components/schemas/Fee'
+        tax:
+          $ref: '#/components/schemas/Tax'
+      description: Cost of the ticket (currently currency must match event currency) e.g. $45 would be "USD,4500"
+    ActualCost:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The total cost for this ticket class less the fee
+    ActualFee:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The fee for this ticket class
+    TicketCost:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The display cost for the ticket
+    Fee:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The fee that should be included in the price (0 if include_fee is false). 
+    Tax:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The ticket's base or discounted tax amount
+    Categories:
+      type: object
+      properties:
+        locale:
+          type: string
+          description: Locale
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        opportunities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Category'
+          description: An array of Category objects. 
+      description: An object with a property categories which is an array of Category objects.
+    Organizations:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        organizations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organization'
+          description: An array of Organization objects. 
+      description: An object with a property organizations which is an array of Organization objects.
+    Pagination:
+      type: object
+      properties:
+        object_count:
+          type: number
+          description: The total number of objects across all pages (optional)
+        page_number:
+          type: number
+          description: The current page number (starts at 1)
+        page_size:
+          type: number
+          description: The number of objects on each page (roughly)
+        page_count:
+          type: number
+          description: The total number of pages (starting at 1) (optional)
+        continuation:
+          type: string
+          description: A token to return to the server to get the next set of results (see “Continuated Responses” below)
+        has_more_items:
+          type: boolean
+          description: Has more items
+      description: Pagination
+    EventsByVenue:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          description: An array of Event objects. 
+      description: An object with a property events which is an array of Event objects.
+    EventsByOrganization:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        events:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event'
+          description: An array of Event objects. 
+      description: An object with a property events which is an array of Event objects.
+    UserObject:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+      description: An object with a single property user which must be a User object.
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Full name. Use this in preference to first_name/last_name if possible for forward compatibility with non-Western names.
+        first_name:
+          type: string
+          description: First name
+        last_name:
+          type: string
+          description: Last name
+        is_public:
+          type: boolean
+          description: Is this user's profile public?
+        image_id:
+          type: string
+          description: The organization image id
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/Email'
+          description: List of User Email objects
+      description: User is an object representing an Eventbrite account. Users are Members of an Organization.
+    Email:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address
+        verified:
+          type: boolean
+          description: Has this email address been verified to belong to the user?
+      description: User email object
+    OrdersByOrganization:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: An array of order objects. 
+      description: An object with a property orders which is an array of Order objects.
+    Order:
+      type: object
+      required:
+        - "id"
+      properties:
+        id:
+          type: string
+          description: The Id of the order
+        created:
+          type: string
+          description: When the attendee was created (order placed)
+        changed:
+          type: string
+          description: When the attendee was last changed
+        name:
+          type: string
+          description: The ticket buyer’s name. Use this in preference to first_name/last_name if possible for forward compatibility with non-Western names.
+        first_name:
+          type: string
+          description: The ticket buyer’s first name
+        last_name:
+          type: string
+          description: The ticket buyer’s last name
+        email:
+          type: string
+          description: The ticket buyer’s email address
+        costs:
+          $ref: '#/components/schemas/Costs'
+        event_id:
+          type: string
+          description: The event id this order is against
+        event:
+          $ref: '#/components/schemas/EventObject'
+        attendees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendee'
+          description: The list of attendees that belong to this order (requires the attendees expansion)
+        time_remaining:
+          type: number
+          description: The time remaining to complete this order (in seconds)
+        resource_uri:
+          type: string
+          description: Is an absolute URL to the API endpoint that will return you the canonical representation of the order.
+        status:
+          type: string
+          description: The status of the order
+        ticket_buyer_settings:
+          $ref: '#/components/schemas/TicketBuyerSettings'
+        contact_list_preferences:
+          $ref: '#/components/schemas/ContactListPreferences'
+      description: The Order object represents an order made against Eventbrite for one or more Ticket Classes. In other words, a single Order can be made up of multiple tickets. The object contains an Order's financial and transactional information; use the Attendee object to return information on Attendees.
+    OrdersByEvent:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: An array of order objects. 
+      description: An object with a property orders which is an array of Order objects.
+    OrdersByUser:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+          description: An array of order objects. 
+      description: An object with a property orders which is an array of Order objects.
+    Discounts:
+      type: object
+      properties:
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Discount'
+          description: An array of discount objects. 
+      description: An object with a property discounts which is an array of Discount objects.
+    AttendeesByOrganization:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        attendees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendee'
+          description: An array of attendee objects. 
+      description: An object with a property attendees which is an array of Attendee objects.
+    Attendee:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Attendee ID
+        created:
+          type: string
+          description: When the attendee was created (order placed)
+        changed:
+          type: string
+          description: When the attendee was last changed
+        ticket_class_id:
+          type: string
+          description: The ticket_class that the attendee registered with
+        ticket_class_name:
+          type: string
+          description: The name of the ticket_class at the time of registration
+        # profile:
+        #     $ref: '#/components/schemas/Profile'
+        affiliate:
+          type: string
+          description: The attendee's affiliate code
+        checked_in:
+          type: boolean
+          description: If the attendee is checked in
+        cancelled:
+          type: boolean
+          description: If the attendee is cancelled
+        refunded:
+          type: boolean
+          description: If the attendee is refunded
+        # costs:
+        #     $ref: '#/components/schemas/Costs'
+        status:
+          type: string
+          description: The status of the attendee (scheduled to be deprecated)
+        event_id:
+          type: string
+          description: The event id that this attendee is attending
+        # event:
+        #   $ref: '#/components/schemas/Event'
+        order_id:
+          type: string
+          description: The order id this attendee is part of
+        # order:
+        #   $ref: '#/components/schemas/Order'
+        guestlist_id:
+          type: string
+          description: The guestlist id for this attendee. If this is null it means that this is not a guest.
+        invited_by:
+          type: string
+          description: The name of the person that invited the attendee. If this is null it means that this is not a guest.
+        resource_uri:
+          type: string
+          description: The resource URI
+      description: An object which is an Attendee object.
+    AttendeesByEvent:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        attendees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendee'
+          description: An array of attendee objects. 
+      description: An object with a property attendees which is an array of Attendee objects.
+    CreateVenueRequest:
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/VenueRequest'
+      description: An object with a single property venue which must be a Venue object.
+    VenueRequest:
+      type: object
+      required:
+        - "name"
+      properties:
+        name:
+          type: string
+          description: The name of the venue
+        age_restriction:
+          type: string
+          description: The age restrictions for the venue
+        capacity:
+          type: number
+          description: Set specific capacity (if omitted, sums ticket capacities)
+        google_place_id:
+          type: string
+          description: The google place id for the venue
+        organizer_id:
+          type: string
+          description: The organizer this venue belongs to (optional - leave this off to use the default organizer)
+        address:
+          $ref: '#/components/schemas/Address'
+      description: The Venue object represents the location of an Event (i.e. where an Event takes place). Venues are grouped together by the Organization object.
+    CreatedVenue:
+      type: object
+      required:
+        - "name"
+      properties:
+        name:
+          type: string
+          description: The name of the venue
+        age_restriction:
+          type: string
+          description: The age restrictions for the venue
+        capacity:
+          type: number
+          description: Set specific capacity (if omitted, sums ticket capacities)
+        address:
+          $ref: '#/components/schemas/Address'
+        resource_uri:
+          type: string
+          description: Resource uri
+        id:
+          type: string
+          description: Venue ID
+        latitude:
+          type: string
+          description: Latitude portion of the address coordinates of the venue
+        longitude:
+          type: string
+          description: Longitude portion of the address coordinates of the venue
+      description: The Venue object represents the location of an Event (i.e. where an Event takes place). Venues are grouped together by the Organization object.
+    Venues:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        venues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Venue'
+          description: An array of venue objects. 
+      description: An object with a property venues which is an array of Venue objects.
+    Teams:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        venues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+          description: An array of Team objects. 
+      description: An object with a property teams which is an array of Team objects.
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Team ID
+        name:
+          type: string
+          description: Team name
+        creator:
+          $ref: '#/components/schemas/Creator'
+        changed:
+          type: string
+          description: Date when the team information was last changed
+        created:
+          type: string
+          description: Date when the team was created
+        attendee_count:
+          type: number
+          description: How many attendees the team have
+        token:
+          type: string
+          description: Token
+        event_id:
+          type: string
+          description: The ID of the event this team is part of
+        date_joined:
+          type: string
+          description: When the attendee joined the team
+      description: Work with the team information of an event
+    Creator:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Team's creator ID
+        name:
+          type: string
+          description: Team's creator name (or email if name is null)
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreatorEmail'
+          description: Team creator email's information
+      description: Creator object
+    CreatorEmail:
+      type: object
+      properties:
+        verified:
+          type: boolean
+          description: If the email is verified
+        primary:
+          type: boolean
+          description: If the email is the primary one
+        email:
+          type: string
+          description: The creator's email address
+      description: Team creator email's information
+    Attendees:
+      type: object
+      properties:
+        pagination:
+            $ref: '#/components/schemas/Pagination'
+        venues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendee'
+          description: An array of Attendee objects. 
+      description: An object with a property attendees which is an array of Attendee objects.
+    TicketBuyerSettings:
+      type: object
+      properties:
+        confirmation_message:
+          $ref: '#/components/schemas/ConfirmationMessage'
+        instructions:
+          $ref: '#/components/schemas/Instructions'
+        event_id:
+          type: string
+          description: Public id of the event these ticket buyer settings come from.
+        refund_request_enabled:
+          type: boolean
+          description: Are refund requests enabled for this event.
+        redirect_url:
+          type: string
+          description: URL to redirect the ticket buyer to for further purchase information.
+        ticket_class_confirmation_settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketClassConfirmationSettings'
+          description: List of confirmation messages per unique ticket class in the order.
+      description: Ticket settings relevant to the purchaser after the order has been processed. Included only when called with the expansion ticket_buyer_settings. Order must be in PLACED or UNPAID state for the ticket_buyer_settings to return any information, otherwise will be an empty object.
+    ConfirmationMessage:
+      type: object
+      required:
+        - "text"
+        - "html"
+      properties:
+        text:
+          type: string
+          description: Description of the confirmation message in text format
+        html:
+          type: string
+          description: Description of the confirmation message in html format
+      description: Order confirmation message from event settings.
+    Instructions:
+      type: object
+      required:
+        - "text"
+        - "html"
+      properties:
+        text:
+          type: string
+          description: Instructions for the ticket buyer in text format
+        html:
+          type: string
+          description: Instructions for the ticket buyer in html format
+      description: Instructions for the ticket buyer.
+    TicketClassConfirmationSettings:
+      type: object
+      properties:
+        ticket_class_id:
+          type: string
+          description: ID of the ticket class the confirmation settings apply to.
+        event_id:
+          type: string
+          description: ID of the event this ticket class belongs to.
+        confirmation_message:
+          $ref: '#/components/schemas/TicketClassConfirmationSettingsConfirmationMessage'
+      description: List of confirmation messages per unique ticket class in the order.
+    TicketClassConfirmationSettingsConfirmationMessage:
+      type: object
+      required:
+        - "text"
+        - "html"
+      properties:
+        text:
+          type: string
+          description: Description of the confirmation message for customers who have purchased one or more of this ticket class in text format
+        html:
+          type: string
+          description: Description of the confirmation message for customers who have purchased one or more of this ticket class in html format
+      description: Confirmation message for customers who have purchased one or more of this ticket class.
+    ContactListPreferences:
+      type: object
+      properties:
+        _type:
+          type: string
+          description: order_contact_list_preferences
+        has_contact_list:
+          type: boolean
+          description: Email address is in at least one contact list for Organization that owns this Event.
+        has_opted_in:
+          type: boolean
+          description: Email address is opt-in to receive marketing communication from the Organization that owns this Event.
+      description: Marketing communication preferences for the email address associated with this Order.
+    Costs:
+      type: object
+      properties:
+        base_price:
+          $ref: '#/components/schemas/BasePrice'
+        display_price:
+          $ref: '#/components/schemas/DisplayPrice'
+        display_fee:
+          $ref: '#/components/schemas/DisplayFee'
+        gross:
+          $ref: '#/components/schemas/Gross'
+        eventbrite_fee:
+          $ref: '#/components/schemas/EventbriteFee'
+        payment_fee:
+          $ref: '#/components/schemas/PaymentFee'
+        tax:
+          $ref: '#/components/schemas/CostsTax'
+        display_tax:
+          $ref: '#/components/schemas/DisplayTax'
+        price_before_discount:
+          $ref: '#/components/schemas/PriceBeforeDiscount'
+        discount_amount:
+          $ref: '#/components/schemas/DiscountAmount'
+        discount_type:
+          type: string
+          description: Type of discount applied. 
+        fee_components:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeeComponent'
+          description: List of price costs components that belong to the fee display group.
+        tax_components:
+          type: array
+          items:
+            $ref: '#/components/schemas/TaxComponent'
+          description: List of price costs components that belong to the tax display group.
+        shipping_components:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippingComponent'
+          description: List
+        has_gts_tax:
+          type: boolean
+          description: Indicates if any of the tax_components is a gts tax.
+        tax_name:
+          type: string
+          description: The name of the Organizer-to-Attendee tax that applies, if any.
+      description: Cost breakdown for this order
+    BasePrice:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The organizer ticket revenue.
+    DisplayPrice:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The item price with discounts applied.
+    DisplayFee:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The total amount of fees and taxes to be displayed.
+    Gross:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The total amount the buyer was charged.
+    EventbriteFee:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: Fees taken by Eventbrite as a service fee.
+    PaymentFee:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: Fees taken by Eventbrite as a payment processing fee.
+    CostsTax:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The tax collected by the organizer.
+    DisplayTax:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The total amount of taxes to be displayed.
+    PriceBeforeDiscount:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The item price before a discount code is applied. If no discount is applied it's the display_price.
+    DiscountAmount:
+      type: object
+      required:
+        - "currency"
+        - "value"
+        - "major_value"
+        - "display"
+      properties:
+        currency:
+          type: string
+          description: The ISO 4217 3-character code of a currency
+        value:
+          type: number
+          description: The integer value of units of the minor unit of the currency (e.g. cents for US dollars)
+        major_value:
+          type: string
+          description: You can get a value in the currency's major unit - for example, dollars or pound sterling - by taking the integer value provided and shifting the decimal point left by the exponent value for that currency as defined in ISO 4217
+        display:
+          type: string
+          description: Provided for your convenience; its formatting may change depending on the locale you query the API with (for example, commas for decimal separators in European locales).
+      description: The total discount to be displayed.
+    FeeComponent:
+      type: object
+      properties:
+        intermediate:
+          type: boolean
+          description: Indicates whether this is a price component that affects the final item price (if False), or just intermediate metadata (if True).
+        name:
+          type: string
+          description: Name of the fee.
+        internal_name:
+          type: string
+          description: Name of the fee within the group (organizer facing).
+        group_name:
+          type: string
+          description: Display name of the fee group (attendee facing).
+        value:
+          type: number
+          description: The amount of the component represented in minor units. E.g. 725 means 7.25. 
+        discount:
+          $ref: '#/components/schemas/DiscountObject'
+        rule:
+          $ref: '#/components/schemas/Rule'
+        base:
+          type: string
+          description: Name of the base used to calculate the fee.
+        bucket:
+          type: string
+          description: The display group the cost component belongs in.
+        recipient:
+          type: string
+          description: Who keeps the amount of the cost component.
+        payer:
+          type: string
+          description: Who is paying the fee, used to determine if the fee is being passed on or absorbed into the item price. 
+      description: Price costs component that belong to the fee display group.
+    Rule:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Fee Rule ID of a specific cost component.
+      description: Rate rule that applies to this cost component, if any.
+    TaxComponent:
+      type: object
+      properties:
+        intermediate:
+          type: boolean
+          description: Indicates whether this is a price component that affects the final item price (if False), or just intermediate metadata (if True).
+        name:
+          type: string
+          description: Name of the fee.
+        internal_name:
+          type: string
+          description: Name of the fee within the group (organizer facing).
+        group_name:
+          type: string
+          description: Display name of the fee group (attendee facing).
+        value:
+          type: number
+          description: The amount of the component represented in minor units. E.g. 725 means 7.25.
+        discount:
+          $ref: '#/components/schemas/DiscountObject'
+        rule:
+          $ref: '#/components/schemas/Rule'
+        base:
+          type: string
+          description: Name of the base used to calculate the fee.
+        bucket:
+          type: string
+          description: The display group the cost component belongs in.
+        recipient:
+          type: string
+          description: Who keeps the amount of the cost component.
+        payer:
+          type: string
+          description: Who is paying the fee, used to determine if the fee is being passed on or absorbed into the item price. 
+      description: Price costs component that belong to the tax display group.
+    DiscountObject:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/DiscountAmount'
+        reason:
+          type: string
+          description: The reason why a discount is applied to a specific cost component.
+      description: The total discount to be displayed to a specific cost component and the reason of the discount.
+    ShippingComponent:
+      type: object
+      properties:
+        intermediate:
+          type: boolean
+          description: Indicates whether this is a price component that affects the final item price (if False), or just intermediate metadata (if True).
+        name:
+          type: string
+          description: Name of the fee.
+        internal_name:
+          type: string
+          description: Name of the fee within the group (organizer facing).
+        group_name:
+          type: string
+          description: Display name of the fee group (attendee facing).
+        value:
+          type: number
+          description: The amount of the component represented in minor units. E.g. 725 means 7.25.
+        discount:
+          $ref: '#/components/schemas/DiscountObject'
+        rule:
+          $ref: '#/components/schemas/Rule'
+        base:
+          type: string
+          description: Name of the base used to calculate the fee.
+        bucket:
+          type: string
+          description: The display group the cost component belongs in.
+        recipient:
+          type: string
+          description: Who keeps the amount of the cost component.
+        payer:
+          type: string
+          description: Who is paying the fee, used to determine if the fee is being passed on or absorbed into the item price. 
+      description: List of price costs components that belong to the shipping display group.
+          
+
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http

@@ -1,0 +1,88 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.interzoid.com
+info:
+  x-ballerina-display:
+      label: Interzoid Currency Rate
+      iconPath: "icon.png"
+  version: "1.0.0"
+  title: Interzoid Get Currency Rate API
+  description: >
+    This is a generated connector for [Interzoid Currency Rate API v1.0.0](https://interzoid.com/services/getcurrencyrate) OpenAPI specification.
+    
+    This API retrieves the latest currency exchange rate, against the US Dollar, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+  contact:
+    name: API Support
+    email: support@interzoid.com
+    url: https://www.interzoid.com
+  termsOfService: https://www.interzoid.com/terms
+  license:
+    name: Interzoid license
+    url: 'https://www.interzoid.com/license'
+externalDocs:
+  description: API home page and documentation
+  url: https://www.interzoid.com/services/getcurrencyrate
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: All requests on this API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+      type: apiKey
+      in: query
+      name: license
+  schemas:
+    CurrencyInfo:
+      properties:
+        Symbol:
+          type: string
+        Name:
+          type: string
+        Country:
+          type: string
+        Rate:
+          type: string
+        Code:
+          type: string
+        Credits:
+          type: string
+security:
+  - ApiKeyAuth : []
+paths:
+  /getcurrencyrate:
+    get:
+      tags:
+        - Currency Rates
+      summary: Gets a foreign currency rate for one US Dollar
+      operationId: getCurrencyRate
+      description: |
+        Use a currency symbol (EUR, GBP, CNY, JPY, AUD, etc.) to obtain a live currency foreign exchange rate for one US Dollar. See the API home page for list of all supported currencies.
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol to retrieve current rate for
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Currency rate data to one US DOllar
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/CurrencyInfo'
+        '400':
+          description: bad request - insufficient parameters
+        '402':
+          description: credits exhausted
+        '403':
+          description: invalid license API key
+        '404':
+          description: currency symbol not found
+        '405':
+          description: method not allowed
+        '500':
+          description: internal server error

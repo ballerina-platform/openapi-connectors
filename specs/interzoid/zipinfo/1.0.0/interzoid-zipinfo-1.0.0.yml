@@ -1,0 +1,137 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.interzoid.com
+info:
+  x-ballerina-display:
+      label: Interzoid Zip Code Detailed Info
+      iconPath: "icon.png"
+  contact:
+    email: support@interzoid.com
+    name: API Support
+    url: https://www.interzoid.com
+    x-twitter: interzoid
+  description: This is a generated connector for [Interzoid Zip Code Detailed Info API v1.0.0]
+               (https://www.interzoid.com/services/getzipcodeinfo) OpenAPI specification.
+
+                The Interzoid Zip Code Detailed Info connector module provides detailed 
+                information for a given zip code, including city, state, latitude, 
+                longitude, area size, and various population demographics.
+
+                For additional help getting started with the API, 
+                visit [Interzoid Zip Code Detailed Info API]
+                (https://www.interzoid.com/services/getzipcodeinfo).
+  x-ballerina-init-description: |-
+    The connector initialization requires setting the API credentials.
+    Create an [Interzoid Account](https://www.interzoid.com/register) 
+    and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+  license:
+    name: Interzoid license
+    url: https://www.interzoid.com/license
+  termsOfService: https://www.interzoid.com/terms
+  title: Interzoid Zip Code Detailed Info API
+  version: 1.0.0
+  x-apisguru-categories:
+    - developer_tools
+  x-logo:
+    url: https://twitter.com/interzoid/profile_image?size=original
+  x-origin:
+    - format: openapi
+      url: https://oas.interzoid.com/api/getzipinfo.json
+      version: "3.0"
+  x-providerName: interzoid.com
+  x-serviceName: getzipinfo
+externalDocs:
+  description: API home page and documentation
+  url: https://www.interzoid.com/services/getzipcodeinfo
+security:
+  - ApiKeyAuth : []
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: All requests on the Get Zip Information API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+      type: apiKey
+      in: query
+      name: license
+  schemas:
+    ZipInfo:
+      description: Contains details about Zip Information
+      properties:
+        AreaSquareMiles:
+          type: string
+          description : Size of this Zip Code
+        City:
+          type: string
+          description : City corresponding to this Zip Code
+        Code:
+          type: string
+          description : Five-digit Zip Code
+        Credits:
+          type: string
+          description : Credits Remaining
+        ElderlyHouseholdPercent:
+          type: string
+          description : Elderly household percentage this Zip Code
+        FarmerHouseholdPercent:
+          type: string
+          description : Farmer household percentage in this Zip Code
+        IncomePercent100k:
+          type: string
+          description : Percentage of income greater than $100k in this Zip Code
+        IncomePercent200k:
+          type: string
+          description : Percentage of income greater than $200k in this Zip Code
+        IncomePercent50k:
+          type: string
+          description : Percentage of income greater than $50k in this Zip Code
+        Latitude:
+          type: string
+          description : Latitude centroid coordinate for this Zip Code
+        Longitude:
+          type: string
+          description : Longitude centroid coordinate for this Zip Code
+        MarriedHouseholdPercent:
+          type: string
+          description : Married household percentage in this Zip Code
+        Population:
+          type: string
+          description : Population of this Zip Code
+        State:
+          type: string
+          description : State corresponding to this Zip Code
+        ZipCode:
+          type: string
+          description : Five-digit Zip Code
+paths:
+  /getzipcodeinfo:
+    get:
+      description: For a given zip code, detailed information is returned, including city, state, latitude, longitude, area size, and various population demographics, including income, age, and presence of farming data.
+      operationId: getzipcodeinfo
+      parameters:
+        - description: Zip code to retrieve detailed information
+          in: query
+          name: zip
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZipInfo'
+          description: Zip code detailed code information
+        "400":
+          description: bad request - insufficient parameters
+        "402":
+          description: credits exhausted
+        "403":
+          description: invalid license API key
+        "404":
+          description: zip code not found
+        "405":
+          description: method not allowed
+        "500":
+          description: internal server error
+      summary: Gets detailed zip code information
+      tags:
+        - Detailed Zip Code Information

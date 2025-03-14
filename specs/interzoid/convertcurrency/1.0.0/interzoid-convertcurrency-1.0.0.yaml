@@ -1,0 +1,102 @@
+openapi: 3.0.0
+servers:
+  - url: https://api.interzoid.com
+info:
+  x-ballerina-display:
+      label: Interzoid Convert Currency
+      iconPath: "icon.png"
+  version: "1.0.0"
+  title: Interzoid Convert Currency Rate API
+  description: >
+    This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
+
+    This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create an [Interzoid Account](https://www.interzoid.com/register) and obtain tokens by log into [Interzoid Account](https://www.interzoid.com/account).
+  contact:
+    name: API Support
+    email: support@interzoid.com
+    url: https://www.interzoid.com
+  termsOfService: https://www.interzoid.com/terms
+  license:
+    name: Interzoid license
+    url: 'https://www.interzoid.com/license'
+externalDocs:
+  description: API home page and documentation
+  url: https://www.interzoid.com/services/convertcurrency
+security:
+  - ApiKeyAuth : []
+
+paths:
+  /convertcurrency:
+    get:
+      tags:
+        - Live Currency Rate Conversion
+      summary: Converts amount in one currency to that of another
+      operationId: convertCurrency
+      description: |
+        Provide an amount in one currency (EUR, GBP, CNY, JPY, AUD, etc.), and also a second currency to convert it to. The API will return the result using current foreign exchange rates. See the API home page for a list of all supported currencies.
+      parameters:
+        - in: query
+          name: from
+          description: Currency symbol for the converted from amount
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: to
+          description: Currency symbol for the converted to amount
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: amount
+          description: The amount of currency to be converted
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrencyConversionInfo'
+          description: Currency rate data
+        '400':
+          description: bad request - insufficient parameters
+        '402':
+          description: credits exhausted
+        '403':
+          description: invalid license API key
+        '404':
+          description: currency symbol not found
+        '405':
+          description: method not allowed
+        '500':
+          description: internal server error
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      description: All requests on the Convert Currency API needs to include an API key. The API key can be provided as part of the query string or as a request header. The name of the API key needs to be `license`.
+      type: apiKey
+      in: query
+      name: license
+  schemas:
+    CurrencyConversionInfo:
+      description: Contains details about converted currency information
+      properties:
+        Converted:
+          type: string
+          description: Value of converted currency
+        Currency:
+          type: string
+          description: Currency code of converted currency
+        Code:
+          type: string
+          description: Status of the response
+        Credits:
+          type: string
+          description: Credits remaining for usage of API
+      type: object

@@ -1,0 +1,7091 @@
+info:
+  termsOfService: https://bitly.com/pages/terms-of-service
+  version: 4.0.0
+  license:
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+    name: Apache 2.0
+  title: Bitly API
+  contact:
+    email: api@bitly.com
+  x-logo:
+    url: /v4/header-logo.png
+  description: >
+    This is a generated connector for [Bitly API v4.0.0](https://dev.bitly.com/api-reference) OpenAPI specification.
+
+    Bitly is the most widely trusted link management platform in the world. 
+    
+    By using the Bitly API, you will exercise the full power of your links through automated link customization, mobile deep linking, and click analytics.
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+  
+    Create a [Bitly account](https://dev.bitly.com/) and obtain tokens by following [this guide](https://dev.bitly.com/docs/getting-started/introduction).
+  x-ballerina-display:
+    label: Bitly
+    iconPath: "icon.png"
+paths:
+  /groups/{group_guid}/referring_networks:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+      tags:
+        - Groups
+      operationId: GetGroupMetricsByReferringNetworks
+      summary: Get Click Metrics for a Group by Referring Networks
+      description: Returns metrics by referring networks for the specified group's links.
+  /bitlinks/{bitlink}/countries:
+    get:
+      responses:
+        '200':
+          content:
+            text/csv:
+              example: |
+                Country, Clicks
+                US, 5
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getMetricsForBitlinkByCountries
+      summary: Get Metrics for a Bitlink by Country
+      description: Returns the country origins of click traffic for the specified link.
+  /groups/{group_guid}/tags:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tags'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+      tags:
+        - Groups
+      operationId: getGroupTags
+      summary: Retrieve Tags by Group
+      description: Returns the tags currently used in the specified group. Maximum 1000.
+  /groups/{group_guid}/clicks:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupClicks'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Groups
+      description: get number of clicks on bitlinks in a group
+      operationId: getGroupClicks
+      summary: Get clicks by group
+  /webhooks/{webhook_guid}:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/WebhookGUID'
+      tags:
+        - Webhooks
+      operationId: getWebhook
+      summary: Retrieve Webhook
+      description: Returns a webhook.
+    patch:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/WebhookGUID'
+      tags:
+        - Webhooks
+      summary: Update Webhook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookUpdate'
+        required: true
+      operationId: updateWebhook
+      description: Update a webhook
+    delete:
+      x-premium: true
+      responses:
+        '204':
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/WebhookGUID'
+      tags:
+        - Webhooks
+      operationId: deleteWebhook
+      summary: Delete Webhook
+      description: Deletes a webhook.
+  /organizations/{organization_guid}/shorten_counts:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metrics'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/OrganizationGUID'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Organizations
+      operationId: getOrganizationShortenCounts
+      summary: Get Shorten Counts for an Organization
+      description: >-
+        Returns the shorten counts for a specific organization over a specified
+        time period.
+  /expand:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpandBitlink'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpandedBitlink'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - Bitlinks
+      operationId: expandBitlink
+      summary: Expand a Bitlink
+      description: Returns the short link and long URL for the specified link.
+  /organizations/{organization_guid}:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/OrganizationGUID'
+      tags:
+        - Organizations
+      operationId: getOrganization
+      summary: Retrieve an Organization
+      description: Retrive details for the specified organization.
+  /groups/{group_guid}/devices:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            text/csv:
+              example: |
+                Device Type, Clicks
+                Desktop, 5
+              schema:
+                $ref: '#/components/schemas/DeviceMetrics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceMetrics'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Groups
+      operationId: getGroupMetricsByDevices
+      summary: Get Click Metrics for a Group by Device Type
+      description: >-
+        Returns the device types generating click traffic to the specified
+        group's links.
+  /groups/{group_guid}/countries:
+    get:
+      responses:
+        '200':
+          content:
+            text/csv:
+              example: |
+                Country, Clicks
+                US, 5
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Groups
+      operationId: getGroupMetricsByCountries
+      summary: Get Click Metrics for a Group by Country
+      description: >-
+        Returns the geographic origins of click traffic by country for the
+        specified group.
+  /bitlinks/{bitlink}/clicks/summary:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClicksSummary'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getClicksSummaryForBitlink
+      summary: Get a Clicks Summary for a Bitlink
+      description: >-
+        Returns the click counts for the specified link rolled up into a single
+        field.
+  /custom_bitlinks/{custom_bitlink}/clicks_by_destination:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/CustomBitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Custom Bitlinks
+      operationId: getCustomBitlinkMetricsByDestination
+      summary: Get Metrics for a Custom Bitlink by Destination
+      description: >-
+        Returns click metrics for the specified link by its historical
+        destinations.
+  /bitlinks/{bitlink}:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                archived: false
+                title: Bitly API Documentation
+                created_at: 2006-03-12T16:29:46+0000
+                tags:
+                  - bitly
+                  - api
+                deeplinks:
+                  - bitlink: bit.ly/documentation
+                    install_url: >-
+                      https://play.google.com/store/apps/details?id=com.bitly.app&hl=en_US
+                    app_uri_path: /store?id=123456
+                    install_type: promote_install
+                    app_guid: Ab1cdE2fG3h
+                    guid: Ra1bcD2eF3h
+                    os: android
+                    brand_guid: Ba1bc23dE4F
+                created_by: chauncey
+                long_url: https://dev.bitly.com
+                client_id: 1234a56b789cd0e123456fg7h8901j123km45n6p
+                custom_bitlinks:
+                  - https://chauncey.ly/documentation
+                link: https://bit.ly/documentation
+                id: bit.ly/documentation
+              $ref: '#/components/schemas/BitlinkBody'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BitlinkBody'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+      tags:
+        - Bitlinks
+      operationId: updateBitlink
+      summary: Update a Bitlink
+      description: Updates fields in the specified link.
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BitlinkBody'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+      tags:
+        - Bitlinks
+      operationId: getBitlink
+      summary: Retrieve a Bitlink
+      description: Returns information for the specified link.
+  /campaigns/{campaign_guid}:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/CampaignGUID'
+      tags:
+        - Campaigns
+      operationId: getCampaign
+      summary: Retrieve a Campaign
+      description: Returns details for a campaign.
+    patch:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/CampaignGUID'
+      tags:
+        - Campaigns
+      summary: Update Campaign
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignModify'
+        required: true
+      operationId: updateCampaign
+      description: Updates a campaign's details.
+  /custom_bitlinks/{custom_bitlink}/clicks:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clicks'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/CustomBitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Custom Bitlinks
+      operationId: getClicksForCustomBitlink
+      summary: Get Clicks for a Custom Bitlink's Entire History
+      description: >-
+        Returns the click counts for the specified link. This returns an array
+        with clicks based on a date.
+  /bitlinks/{bitlink}/referring_domains:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getMetricsForBitlinkByReferringDomains
+      summary: Get Metrics for a Bitlink by Referring Domains
+      description: Returns the referring domain click counts for the specified link.
+  /groups/{group_guid}:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupUpdate'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+      tags:
+        - Groups
+      operationId: updateGroup
+      summary: Update a Group
+      description: Updates the details of a group.
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+      tags:
+        - Groups
+      operationId: getGroup
+      summary: Retrieve a Group
+      description: Returns details for a group.
+  /bitlinks/{bitlink}/qr:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BitlinkQR'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/Color'
+        - $ref: '#/components/parameters/ExcludeBitlyLogo'
+        - $ref: '#/components/parameters/ImageFormat'
+      tags:
+        - Bitlinks
+      operationId: getBitlinkQRCode
+      summary: Get a QR Code
+      description: Generates a QR code for a Bitlink.
+  /bitlinks/{bitlink}/cities:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            text/csv:
+              example: |
+                City, Subregion, Region, Country, Clicks
+                New York, , NY, US, 5
+              schema:
+                $ref: '#/components/schemas/CityMetrics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CityMetrics'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getMetricsForBitlinkByCities
+      summary: Get Metrics for a Bitlink by City
+      description: Returns the city origins of click traffic for the specified link.
+  /groups/{group_guid}/cities:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            text/csv:
+              example: |
+                City, Subregion, Region, Country, Clicks
+                New York, , NY, US, 5
+              schema:
+                $ref: '#/components/schemas/CityMetrics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CityMetrics'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Groups
+      operationId: getGroupMetricsByCities
+      summary: Get Click Metrics for a Group by City
+      description: >-
+        Returns the geographic origins of click traffic by city for the
+        specified group.
+  /bitlinks/{bitlink}/devices:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            text/csv:
+              example: |
+                Device Type, Clicks
+                Desktop, 5
+              schema:
+                $ref: '#/components/schemas/DeviceMetrics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceMetrics'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getMetricsForBitlinkByDevices
+      summary: Get Metrics for a Bitlink by Device Type
+      description: Returns the device types generating click traffic to the specified link.
+  /webhooks:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreate'
+        required: true
+      x-premium: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+          description: CREATED
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - Webhooks
+      operationId: createWebhook
+      summary: Create Webhook
+      description: Creates a webhook.
+  /organizations/{organization_guid}/plan_limits:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlanLimits'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/OrganizationGUID'
+      tags:
+        - Organizations
+      operationId: getPlanLimits
+      summary: Get Plan Limits
+      description: Returns all plan limits and counts available for an organization.
+  /apps/{client_id}:
+    get:
+      description: Retrieve the details for the provided OAuth App client ID
+      summary: Retrieve OAuth App
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthApp'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/ClientID'
+      operationId: getOAuthApp
+  /channels:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                group_guid: Ba1bc23dE4F
+                guid: Ha1bc2DefGh
+                bitlinks:
+                  - campaign_guid: Ca1bcd2EFGh
+                    bitlink_id: bit.ly/1234abcd
+                name: My Channel
+              $ref: '#/components/schemas/ChannelModify'
+        required: true
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - Campaigns
+      operationId: createChannel
+      summary: Create Channel
+      description: Creates a new channel.
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channels'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUIDFilter'
+        - $ref: '#/components/parameters/CampaignGUIDFilter'
+      tags:
+        - Campaigns
+      operationId: getChannels
+      summary: Retrieve Channels
+      description: Returns the channels available to a user.
+  /custom_bitlinks/{custom_bitlink}:
+    patch:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomBitlink'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/CustomBitlink'
+      tags:
+        - Custom Bitlinks
+      summary: Update Custom Bitlink
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomBitlink'
+        required: true
+      operationId: updateCustomBitlink
+      description: Move a keyword (or custom back-half) to a different Bitlink.
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomBitlink'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/CustomBitlink'
+      tags:
+        - Custom Bitlinks
+      operationId: getCustomBitlink
+      summary: Retrieve Custom Bitlink
+      description: Returns the details and history of the specified link.
+  /groups/{group_guid}/shorten_counts:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metrics'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Groups
+      operationId: getGroupShortenCounts
+      summary: Retrieve Group Shorten Counts
+      description: Returns all the shorten counts for a group.
+  /groups:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Groups'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/OrganizationGUIDFilter'
+      tags:
+        - Groups
+      operationId: getGroups
+      summary: Retrieve Groups
+      description: Returns a list of groups in the organization.
+  /organizations:
+    get:
+      description: Retrieve a list of organizations.
+      tags:
+        - Organizations
+      summary: Retrieve Organizations
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organizations'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      operationId: getOrganizations
+  /bitlinks/{bitlink}/referrers_by_domains:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferrersByDomains'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getMetricsForBitlinkByReferrersByDomains
+      summary: Get Metrics for a Bitlink by Referrers by Domain
+      description: Returns click metrics grouped by referrers for the specified link.
+  /user:
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - User
+      operationId: updateUser
+      summary: Update a User
+      description: Update fields in the user
+    get:
+      description: Returns information for the current authenticated user.
+      tags:
+        - User
+      summary: Retrieve a User
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      operationId: getUser
+  /bsds:
+    get:
+      description: Fetch all Branded Short Domains
+      tags:
+        - BSDs
+      summary: Get BSDs
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BSDsResponse'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          headers:
+            X-Ratelimit-Reason:
+              description: An explanation of the ratelimit received.
+              schema:
+                type: string
+          description: FORBIDDEN
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      operationId: getBSDs
+  /groups/{group_guid}/preferences:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupPreferences'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+      tags:
+        - Groups
+      operationId: getGroupPreferences
+      summary: Retrieve Group Preferences
+      description: Returns preferences for the specified group.
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                group_guid: Ba1bc23dE4F
+                domain_preference: chauncey.ly
+              $ref: '#/components/schemas/GroupPreferences'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupPreferences'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+      tags:
+        - Groups
+      operationId: updateGroupPreferences
+      summary: Update Group Preferences
+      description: Updates preferences for a group.
+  /bitlinks/{bitlink}/clicks:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Clicks'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getClicksForBitlink
+      summary: Get Clicks for a Bitlink
+      description: >-
+        Returns the click counts for the specified link in an array based on a
+        date.
+  /groups/{group_guid}/bitlinks/{sort}:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SortedLinks'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+        - $ref: '#/components/parameters/Sort'
+        - $ref: '#/components/parameters/TimeUnitOptional'
+        - $ref: '#/components/parameters/UnitAmountOptional'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+        - $ref: '#/components/parameters/Size'
+      tags:
+        - Bitlinks
+      operationId: getSortedBitlinks
+      summary: Retrieve Sorted Bitlinks for Group
+      description: Returns a list of Bitlinks sorted by group.
+  /bitlinks:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FullShorten'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BitlinkBody'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '417':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpectationFailed'
+          headers:
+            X-Bsd-Error:
+              description: An explanation of the DNS error received
+              schema:
+                type: string
+          description: EXPECTATION_FAILED
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - Bitlinks
+      operationId: createFullBitlink
+      summary: Create a Bitlink
+  /custom_bitlinks:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCustomBitlink'
+        required: true
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomBitlink'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Conflict
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - Custom Bitlinks
+      operationId: addCustomBitlink
+      summary: Add Custom Bitlink
+      description: >-
+        Add a keyword (or "custom back-half") to a Bitlink with a Custom Domain.
+        This endpoint can also be used for initial redirects to a link.
+  /groups/{group_guid}/bitlinks:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bitlinks'
+          description: SUCCESS
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/Page'
+        - $ref: '#/components/parameters/Keyword'
+        - $ref: '#/components/parameters/Query'
+        - $ref: '#/components/parameters/CreatedBefore'
+        - $ref: '#/components/parameters/CreatedAfter'
+        - $ref: '#/components/parameters/ModifiedAfter'
+        - $ref: '#/components/parameters/Archived'
+        - $ref: '#/components/parameters/Deeplinks'
+        - $ref: '#/components/parameters/DomainDeeplinks'
+        - $ref: '#/components/parameters/FilterCampaignGUID'
+        - $ref: '#/components/parameters/FilterChannelGUID'
+        - $ref: '#/components/parameters/FilterCustomBitlink'
+        - $ref: '#/components/parameters/Tags'
+        - $ref: '#/components/parameters/LaunchpadIDs'
+        - $ref: '#/components/parameters/EncodingLogin'
+      tags:
+        - Bitlinks
+      operationId: getBitlinksByGroup
+      summary: Retrieve Bitlinks by Group
+      description: Returns a paginated collection of Bitlinks for a group.
+    patch:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkUpdateRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkUpdate'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUID'
+      tags:
+        - Bitlinks
+      operationId: updateBitlinksByGroup
+      summary: Bulk update bitlinks
+      description: >-
+        Bulk update can add or remove tags or archive up to 100 links at a time;
+        The response includes a a list of bitlink ids that were updated.
+  /campaigns:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignModify'
+        required: true
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - Campaigns
+      operationId: createCampaign
+      summary: Create Campaign
+      description: Creates a new campaign.
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaigns'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadGateway'
+          description: BAD_GATEWAY
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/GroupGUIDFilter'
+      tags:
+        - Campaigns
+      operationId: getCampaigns
+      summary: Retrieve Campaigns
+      description: Returns the campaigns for the current authenticated user.
+  /bitlinks/{bitlink}/referrers:
+    get:
+      responses:
+        '200':
+          content:
+            text/csv:
+              example: |
+                Referrers, Domain/Sub-Domain, Clicks
+                Other Sites, direct, 5
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClickMetrics'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/Bitlink'
+        - $ref: '#/components/parameters/TimeUnit'
+        - $ref: '#/components/parameters/UnitAmount'
+        - $ref: '#/components/parameters/Size'
+        - $ref: '#/components/parameters/UnitReferenceTimeStamp'
+      tags:
+        - Bitlinks
+      operationId: getMetricsForBitlinkByReferrers
+      summary: Get Metrics for a Bitlink by Referrers
+      description: Returns referrer click counts for the specified link.
+  /shorten:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shorten'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortenBitlinkBody'
+          headers:
+            X-Bsd-Error:
+              description: An explanation of the DNS error received
+              schema:
+                type: string
+          description: SUCCESS
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortenBitlinkBody'
+          headers:
+            X-Bsd-Error:
+              description: An explanation of the DNS error received
+              schema:
+                type: string
+          description: CREATED
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          headers:
+            X-Ratelimit-Reason:
+              description: An explanation of the ratelimit received.
+              schema:
+                type: string
+          description: FORBIDDEN
+        '417':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpectationFailed'
+          headers:
+            X-Bsd-Error:
+              description: An explanation of the DNS error received
+              schema:
+                type: string
+          description: EXPECTATION_FAILED
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      tags:
+        - Bitlinks
+      operationId: createBitlink
+      summary: Shorten a Link
+      description: Converts a long url to a Bitlink.
+  /webhooks/{webhook_guid}/verify:
+    post:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhook'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/WebhookGUID'
+      tags:
+        - Webhooks
+      operationId: verifyWebhook
+      summary: Verify Webhook
+      description: Sends ping event to test webhook configuration.
+  /organizations/{organization_guid}/webhooks:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Webhooks'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/OrganizationGUID'
+      tags:
+        - Webhooks
+      operationId: getWebhooks
+      summary: Get Webhooks
+      description: Fetch all webhooks available for an Organization
+  /channels/{channel_guid}:
+    get:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+          description: SUCCESS
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/ChannelGUID'
+      tags:
+        - Campaigns
+      operationId: getChannel
+      summary: Get a Channel
+      description: Returns a channel's details.
+    patch:
+      x-premium: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Channel'
+          description: SUCCESS
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+          description: BAD_REQUEST
+        '402':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpgradeRequired'
+          description: UPGRADE_REQUIRED
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Forbidden'
+          description: FORBIDDEN
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+          description: NOT_FOUND
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnprocessableEntity'
+          description: UNPROCESSABLE_ENTITY
+        '500':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalError'
+          description: INTERNAL_ERROR
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemporarilyUnavailable'
+          description: TEMPORARILY_UNAVAILABLE
+      parameters:
+        - $ref: '#/components/parameters/ChannelGUID'
+      tags:
+        - Campaigns
+      summary: Update a Channel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              example:
+                group_guid: Ba1bc23dE4F
+                guid: Ha1bc2DefGh
+                bitlinks:
+                  - campaign_guid: Ca1bcd2EFGh
+                    bitlink_id: bit.ly/1234abcd
+                name: My Channel
+              $ref: '#/components/schemas/ChannelModify'
+        required: true
+      operationId: updateChannel
+      description: Updates an existing channel.
+tags:
+  - name: Groups
+    description: >
+      Groups are subdivisions within organizations. Every user will be in at
+      least one group, and every shortened link will be in one group. Most
+      actions on our API will be on behalf of a group. For example, when you
+      shorten a link, it will be on behalf of a user and a group.
+  - name: Organizations
+    description: >
+      Organizations are equivalent to a Bitly account. Every plan limit, group,
+      and user is tied to an organization.
+  - name: User
+    description: >
+      Some subscription plans allow multiple users. Only one user is used for
+      authenticating a call, and these operations apply only to the
+      authenticated user.
+  - name: BSDs
+    description: >
+      Branded short domains (BSDs) are the custom domains used to brand your
+      links. A BSD can be added to a Bitly organization and may be assigned to
+      one or more groups. They can contain up to 32 characters.
+  - name: Bitlinks
+    description: >
+      Bitlinks are shortened links. They could begin with the bit.ly domain or
+      your own custom branded short domain (BSD).
+  - name: Custom Bitlinks
+    description: >
+      These endpoints are for updating custom Bitlinks only. Custom Bitlinks
+      have both a BSD and a customized back-half (e.g.,
+      yourcompany.com/yourcampaign). If a link begins with the bit.ly domain or
+      ends with an auto-generated random string it is not a custom Bitlink. 
+  - name: Campaigns
+    description: >
+      Bitly Campaigns are used to build and organize links and metrics for
+      marketing campaigns.
+  - name: Webhooks
+    description: >
+      Webhooks are a method of sending information from Bitly to an application
+      outside of Bitly. It's a way to automate actions or updates between two
+      different systems. These endpoints are for configuring your webhooks.
+  - name: Deeplinks
+    description: >
+      Deeplinks refers to links that direct a user to a location inside of a
+      mobile application. Bitly allows accounts to configure varying
+      implementations of Deeplinks.
+  - name: Billing
+    description: >
+      All endpoints under this tag are related to accounts subscribing to the
+      Bitly service.
+  - name: Tiers
+    description: |
+      Tiers references what level subscription a Bitly account is under.
+  - name: SSO
+    description: >
+      SSO is an acronym for Single Sign-On. This relates to a method of
+      authentication used by some Bitly accounts.
+  - name: Invitations
+    description: >
+      Invitations allow new users to be invited to a Bitly organization via
+      email or username. These endpoints handle both creation, retrieval, and
+      deletion of invitations tied to an organization.
+  - name: Bulk Shorten
+    description: >
+      Bulk Shorten references the capability for users to upload a csv of links
+      they would like to shorten and optionally customize.
+  - name: Clickstreams
+    description: |
+      Endpoints pertaining to the Clickstream nsq service.
+  - name: Launchpads
+    description: >
+      A link launchpad is a customizable page that contains a collection of
+      links. These endpoints allow for the customization of the links associated
+      with this site and the appearance of the site itself.
+openapi: 3.0.0
+components:
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+  parameters:
+    ModifiedAfter:
+      schema:
+        type: integer
+      example: 1501027200
+      description: Timestamp as an integer unix epoch
+      name: modified_after
+      in: query
+    BitlinksClicks:
+      description: The query parameter used to get clicks for a Bitlink
+      required: true
+      in: query
+      schema:
+        type: string
+      example: bit.ly/1234abcd
+      name: bitlink_id
+    Archived:
+      schema:
+        default: 'off'
+        enum:
+          - 'on'
+          - 'off'
+          - both
+        type: string
+      example: both
+      description: Whether or not to include archived bitlinks
+      name: archived
+      in: query
+    ExcludeBitlyLogo:
+      schema:
+        type: boolean
+      example: false
+      description: Removes the Bitly logo from the center of the generated QR image
+      name: exclude_bitly_logo
+      in: query
+    OrganizationGUID:
+      description: A GUID for a Bitly organization
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Oa1bcd234eF
+      name: organization_guid
+    SSOVerifySlug:
+      description: A potential slug for SSO
+      required: true
+      in: path
+      schema:
+        type: string
+      example: bitly
+      name: url_slug
+    TimeUnitOptional:
+      schema:
+        $ref: '#/components/schemas/TimeUnit'
+      example: month
+      description: A unit of time
+      name: unit
+      in: query
+    NSQSecret:
+      schema:
+        type: string
+      required: true
+      description: Access token for NSQ authorization
+      name: secret
+      in: query
+    Deeplinks:
+      schema:
+        default: both
+        enum:
+          - 'on'
+          - 'off'
+          - both
+        type: string
+      example: both
+      description: Filter to only Bitlinks that contain deeplinks
+      name: deeplinks
+      in: query
+    SinkID:
+      description: Unique short id of clickstream sink
+      required: true
+      in: path
+      schema:
+        type: string
+      example: l5sfSfZXFr
+      name: sink_id
+    FilterCampaignGUID:
+      schema:
+        type: string
+      example: Ca1bcd2EFGh
+      description: Filter to return only links for the given campaign GUID, can be provided
+      name: campaign_guid
+      in: query
+    GroupGUID:
+      description: A GUID for a Bitly group
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Ba1bc23dE4F
+      name: group_guid
+    MetricsLimit:
+      description: only return this number of facet values (subtotal only)
+      required: false
+      in: query
+      schema:
+        default: 100
+        type: integer
+      example: 50
+      name: limit
+    UnitAmount:
+      description: >-
+        An integer representing the time units to query data for. pass -1 to
+        return all units of time.
+      required: true
+      in: query
+      schema:
+        default: -1
+        type: integer
+      example: 5
+      name: units
+    ExtendedResults:
+      schema:
+        default: false
+        type: boolean
+      example: true
+      description: fetch more results from search that can be complimentary
+      name: extended_results
+      in: query
+    CampaignGUID:
+      description: A GUID for a Bitly campaign
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Ca1bcd2EFGh
+      name: campaign_guid
+    DomainDeeplinks:
+      schema:
+        default: both
+        enum:
+          - 'on'
+          - 'off'
+          - both
+        type: string
+      example: both
+      description: >-
+        Filter to only Bitlinks that contain deeplinks configured with a custom
+        domain
+      name: domain_deeplinks
+      in: query
+    RoleName:
+      description: The role specified for a user
+      required: true
+      in: path
+      schema:
+        type: string
+      example: admin
+      name: role_name
+    FileIdentifier:
+      description: Public name of the file
+      required: true
+      in: path
+      schema:
+        type: string
+      example: 20210621_c82d1d94-6637-ac9d-7de8-637a221fa495.ndjson
+      name: file_identifier
+    OrganizationGUIDFilter:
+      schema:
+        type: string
+      example: Oa1bcd234eF
+      description: A GUID for a Bitly organization
+      name: organization_guid
+      in: query
+    LaunchpadButtonGUID:
+      description: A GUID for a Bitly Link Launchpad button
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Ta1bcd234eF
+      name: button_id
+    Email:
+      description: An email address
+      required: true
+      in: path
+      schema:
+        type: string
+      example: chauncey@bit.ly
+      name: email
+    LoginFilter:
+      description: The login for a Bitly user
+      required: true
+      in: query
+      schema:
+        type: string
+      example: chauncey
+      name: login
+    GroupGUIDFilter:
+      schema:
+        type: string
+      example: Ba1bc23dE4F
+      description: A GUID for a Bitly group
+      name: group_guid
+      in: query
+    Sort:
+      description: The type of sorting that you would like to do
+      required: true
+      in: path
+      schema:
+        enum:
+          - clicks
+        type: string
+      example: clicks
+      name: sort
+    WebhookGUID:
+      description: A GUID for a Bitly webhook
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Wa1bcDefG23
+      name: webhook_guid
+    SinkOriginID:
+      description: Sink's origin ID describing how it was created
+      required: false
+      in: query
+      schema:
+        enum:
+          - 1
+          - 2
+          - 3
+        type: integer
+      example: 1
+      name: sink_origin_id
+    CampaignGUIDFilter:
+      schema:
+        type: string
+      example: Ca1bcd2EFGh
+      description: A GUID for a Bitly campaign
+      name: campaign_guid
+      in: query
+    Tags:
+      style: form
+      name: tags
+      description: filter by given tags
+      explode: true
+      in: query
+      example:
+        - bitly
+        - api
+      schema:
+        items:
+          type: string
+        type: array
+    ImageFormat:
+      schema:
+        default: png
+        enum:
+          - png
+          - svg
+        type: string
+      example: svg
+      description: Determines the image format of the returned QR code
+      name: image_format
+      in: query
+    CustomDomain:
+      description: find out more about your custom domain
+      required: true
+      in: path
+      schema:
+        type: string
+      example: chauncey.ly
+      name: custom_domain
+    DateTo:
+      description: An ISO-8601 timestamp, indicating when a period ends.
+      required: true
+      in: query
+      schema:
+        type: string
+      example: 2006-01-02T15:04:05-0700
+      name: date_to
+    DateFrom:
+      description: An ISO-8601 timestamp, indicating when a period starts.
+      required: true
+      in: query
+      schema:
+        type: string
+      example: 2006-01-02T15:04:05-0700
+      name: date_from
+    PreferenceValue:
+      description: The value of a user preference
+      required: true
+      in: path
+      schema:
+        type: string
+      example: chauncey.ly
+      name: value
+    ClientID:
+      description: The client ID of an OAuth app
+      required: true
+      in: path
+      schema:
+        type: string
+      example: 1234a56b789cd0e123456fg7h8901j123km45n6p
+      name: client_id
+    FilterCustomBitlink:
+      schema:
+        default: both
+        enum:
+          - 'on'
+          - 'off'
+          - both
+        type: string
+      example: both
+      name: custom_bitlink
+      in: query
+    ChannelGUID:
+      description: A GUID for a Bitly Channel
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Ha1bc2DefGh
+      name: channel_guid
+    DeeplinkAppGUID:
+      description: the guid reference to a deeplink app
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Ab1cdE2fG3h
+      name: deeplink_app_guid
+    CreatedBefore:
+      schema:
+        type: integer
+      example: 1501027200
+      description: Timestamp as an integer unix epoch
+      name: created_before
+      in: query
+    UnitReferenceTimeStamp:
+      description: >-
+        An ISO-8601 timestamp, indicating the most recent time for which to pull
+        metrics. Will default to current time.
+      required: false
+      in: query
+      schema:
+        type: string
+      example: 2006-01-02T15:04:05-0700
+      name: unit_reference
+    Offset:
+      schema:
+        type: integer
+      example: 50
+      description: set the starting index of the result set
+      name: offset
+      in: query
+    Path:
+      schema:
+        type: string
+      example: /organizations/{organization_guid}
+      description: The specific path for which information is requested
+      name: path
+      in: query
+    AppGUID:
+      description: the guid of the deeplink application
+      required: true
+      in: query
+      schema:
+        type: string
+      example: my-cool-app
+      name: app_id
+    DeeplinkRuleGUID:
+      description: the guid of a deeplink rule
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Ra1bcD2eF3g
+      name: deeplink_rule_guid
+    InvoiceID:
+      schema:
+        type: string
+      required: true
+      example: abcd1234
+      name: invoiceID
+      in: path
+    MetricsFacet:
+      description: A facet of metrics (e.g. country, referrer, ...)
+      required: true
+      in: path
+      schema:
+        type: string
+      example: country
+      name: facet
+    FilterChannelGUID:
+      schema:
+        type: string
+      example: Ha1bc2DefGh
+      description: >-
+        Filter to return only links for the given channel GUID, can be provided,
+        overrides all other parameters
+      name: channel_guid
+      in: query
+    Keyword:
+      schema:
+        type: string
+      example: chauncey
+      description: Custom keyword to filter on history entries
+      name: keyword
+      in: query
+    DeviceIDType:
+      description: the type of the device id that is being registered
+      required: true
+      in: query
+      schema:
+        type: string
+      example: IDFA
+      name: device_id_type
+    OrgGUID:
+      description: Organization GUID that a sink's clickstream belongs to.
+      required: true
+      in: query
+      schema:
+        type: string
+      example: O123abcd
+      name: org_guid
+    CustomBitlink:
+      description: A Custom Bitlink made of the domain and keyword
+      required: true
+      in: path
+      schema:
+        type: string
+      example: chauncey.ly/chauncey
+      name: custom_bitlink
+    ShareableReport:
+      description: Shareable Report URL to validate
+      required: true
+      in: query
+      schema:
+        type: string
+      example: http://dev.bitly.com
+      name: shareable_report
+    FetchPrice:
+      schema:
+        default: false
+        type: boolean
+      example: true
+      description: Include pricing information for a domain
+      name: fetch_price
+      in: query
+    ThirdPartyAppID:
+      description: the third party app id describing a specific ios/android app
+      required: true
+      in: query
+      schema:
+        type: string
+      example: com.bitly.app
+      name: third_party_app_id
+    OSMin:
+      description: the minor version of the operating system
+      required: false
+      in: query
+      schema:
+        type: string
+      example: Android 2.3.025
+      name: osmin
+    EncodingLogin:
+      style: form
+      name: encoding_login
+      description: Filter by the login of the authenticated user that created the Bitlink
+      explode: true
+      in: query
+      example:
+        - chauncey
+      schema:
+        items:
+          type: string
+        type: array
+    Limit:
+      schema:
+        type: integer
+      example: 50
+      description: limit the amount of results returned
+      name: limit
+      in: query
+    DeviceID:
+      description: the id of the mobile device being registered
+      required: true
+      in: query
+      schema:
+        type: string
+      example: 00000000-000000000000000
+      name: device_id
+    Query:
+      schema:
+        type: string
+      example: api
+      description: the value that you would like to search
+      name: query
+      in: query
+    OrganizationGUIDRequired:
+      description: A GUID for a Bitly organization
+      required: true
+      in: query
+      schema:
+        type: string
+      example: Oa1bcd234eF
+      name: organization_guid
+    Login:
+      description: The login for a Bitly user
+      required: true
+      in: path
+      schema:
+        type: string
+      example: chauncey
+      name: login
+    AuthorizationID:
+      description: A ID for an oAuth authorization
+      required: true
+      in: path
+      schema:
+        type: string
+      example: 12a34567b8c901d2efg345678h901ab2345c67de
+      name: authorization_id
+    UnitAmountOptional:
+      schema:
+        default: -1
+        type: integer
+      example: 5
+      description: >-
+        An integer representing the time units to query data for. pass -1 to
+        return all units of time.
+      name: units
+      in: query
+    Page:
+      schema:
+        default: 1
+        type: integer
+      example: 1
+      description: Integer specifying the numbered result at which to start
+      name: page
+      in: query
+    Bitlink:
+      description: A Bitlink made of the domain and hash
+      required: true
+      in: path
+      schema:
+        type: string
+      example: bit.ly/12a4b6c
+      name: bitlink
+    OSMaj:
+      description: the major version of the operating system
+      required: false
+      in: query
+      schema:
+        type: string
+      example: Android 2.3
+      name: osmaj
+    PreferenceName:
+      description: The preference name for a user preference
+      required: true
+      in: path
+      schema:
+        type: string
+      example: domain_preference
+      name: preference
+    Domain:
+      description: a web domain
+      required: true
+      in: path
+      schema:
+        type: string
+      example: bit.ly
+      name: domain
+    sortBy:
+      description: Country code property you would like to sort country codes by
+      required: false
+      in: query
+      schema:
+        type: string
+      example: CountryName
+      name: sort_by
+    Color:
+      schema:
+        type: string
+      example: 1133ff
+      description: A color denoted in hexidecimal RGB format
+      name: color
+      in: query
+    ActiveSink:
+      description: Active status of a sink
+      required: false
+      in: query
+      schema:
+        type: boolean
+      example: true
+      name: active
+    TierName:
+      description: The name of a pricing plan
+      required: true
+      in: path
+      schema:
+        type: string
+      example: free
+      name: TierName
+    PreferencesExpire:
+      schema:
+        type: string
+      example: 1
+      description: Number of hours before marking preference as 'expired'
+      name: expire_hours
+      in: query
+    CreatedAfter:
+      schema:
+        type: integer
+      example: 1501027200
+      description: Timestamp as an integer unix epoch
+      name: created_after
+      in: query
+    DSM:
+      description: the device model name
+      required: false
+      in: query
+      schema:
+        type: string
+      example: iPhoneXS
+      name: dsm
+    LaunchpadIDs:
+      style: form
+      name: launchpad_ids
+      description: filter by launchpad id
+      explode: true
+      in: query
+      example:
+        - M1234567890
+      schema:
+        items:
+          type: string
+        type: array
+    TimeUnit:
+      description: A unit of time
+      required: true
+      in: query
+      schema:
+        $ref: '#/components/schemas/TimeUnit'
+      example: month
+      name: unit
+    ClickstreamID:
+      description: Unique short id of clickstream
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Db2cde3FGi
+      name: clickstream_id
+    NSQTopic:
+      description: NSQ topic to look up
+      required: true
+      in: query
+      schema:
+        type: string
+      example: clickstream_12345
+      name: topic
+    OS:
+      description: the os of a specific ios/android app
+      required: true
+      in: query
+      schema:
+        enum:
+          - ios
+          - android
+        type: string
+      example: ios
+      name: os
+    LaunchpadGUID:
+      description: A GUID for a Bitly Link Launchpad
+      required: true
+      in: path
+      schema:
+        type: string
+      example: Sa1bcd234eF
+      name: launchpad_id
+    Size:
+      schema:
+        default: 50
+        type: integer
+      example: 10
+      description: The quantity of items to be be returned
+      name: size
+      in: query
+  schemas:
+    UMGroupPreference:
+      type: object
+      allOf:
+        - properties:
+            created:
+              type: string
+            group_guid:
+              type: string
+            modified:
+              type: string
+            value:
+              type: string
+            preference:
+              type: string
+            expired:
+              type: boolean
+            last_seen:
+              type: string
+    DomainUpdate:
+      type: object
+      description: update custom domain fields
+      properties:
+        https_enabled:
+          type: boolean
+        hsts_enabled:
+          type: boolean
+        upgrade_insecure_requests:
+          type: boolean
+        wildcard_redirect:
+          type: string
+        root_redirect:
+          type: string
+    Launchpad:
+      required:
+        - is_active
+      type: object
+      properties:
+        launchpad_id:
+          type: string
+          example: M1234567890
+        domain:
+          type: string
+          example: bit.ly
+        keyword:
+          type: string
+          example: bitlySocial
+        is_active:
+          type: boolean
+        buttons:
+          type: array
+          items:
+            $ref: '#/components/schemas/LaunchpadButtons'
+        launchpad_appearance:
+          type: object
+          $ref: '#/components/schemas/LaunchpadAppearance'
+        scheme:
+          type: string
+          example: https
+    PurchaseBSD:
+      type: object
+      properties:
+        domain:
+          type: string
+        agreed_at:
+          type: string
+          description: ISO_TIMESTAMP
+        organization_guid:
+          type: string
+        agreement_keys:
+          items:
+            type: string
+          type: array
+    PaymentInvoices:
+      type: object
+      properties:
+        payment_invoices:
+          items:
+            $ref: '#/components/schemas/PaymentInvoice'
+          type: array
+    ClickstreamSinkUpdate:
+      allOf:
+        - $ref: '#/components/schemas/ClickstreamSinkNew'
+        - type: object
+          properties:
+            deactivated:
+              type: boolean
+              description: False if sink should be activated
+              example: false
+            schedule:
+              type: string
+              description: Delivery schedule
+              example: 5 4 * * *
+    DeactivateUser:
+      type: object
+      properties:
+        feedback:
+          allOf:
+            - $ref: '#/components/schemas/Feedback'
+        confirm_text:
+          type: string
+    ExpandBitlink:
+      type: object
+      properties:
+        bitlink_id:
+          type: string
+      example:
+        bitlink_id: bit.ly/12a4b6c
+    Organization:
+      required:
+        - guid
+        - name
+        - is_active
+        - tier
+        - tier_family
+        - tier_display_name
+        - role
+        - created
+        - modified
+        - bsds
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            name:
+              type: string
+            bsds:
+              items:
+                type: string
+              type: array
+            created:
+              type: string
+            is_active:
+              type: boolean
+            modified:
+              type: string
+            tier_display_name:
+              type: string
+            tier_family:
+              type: string
+            tier:
+              type: string
+            role:
+              type: string
+            guid:
+              type: string
+    AccessFeatures:
+      required:
+        - access_features
+      type: object
+      properties:
+        access_features:
+          items:
+            $ref: '#/components/schemas/AccessFeature'
+          type: array
+    UserPreferences:
+      type: object
+      properties:
+        preferences:
+          items:
+            $ref: '#/components/schemas/UserPreference'
+          type: array
+    ViewMetric:
+      type: object
+      properties:
+        value:
+          type: string
+        views:
+          type: integer
+    Conflict:
+      description: CONFLICT
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    UserPasswordChange:
+      required:
+        - original_password
+        - new_password
+      type: object
+      properties:
+        original_password:
+          type: string
+        new_password:
+          type: string
+    ClicksForBitlinks:
+      type: string
+      properties:
+        clicks:
+          items:
+            $ref: '#/components/schemas/ClicksCount'
+          type: array
+    ChannelBitlinks:
+      type: object
+      properties:
+        total:
+          type: integer
+        bitlinks:
+          items:
+            $ref: '#/components/schemas/ChannelBitlink'
+          type: array
+    CreateOauthAppReq:
+      type: object
+      properties:
+        redirect_uris:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        organization_guid:
+          type: string
+        link:
+          type: string
+        ip_allowlist:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+    CustomBitlinkHistory:
+      type: object
+      properties:
+        hash:
+          type: string
+        uuid:
+          type: string
+        keyword:
+          type: string
+        created:
+          type: string
+        group_guid:
+          type: string
+        first_created:
+          type: string
+        is_active:
+          type: boolean
+        long_url:
+          type: string
+        deactivated:
+          type: string
+        bsd:
+          type: string
+        login:
+          type: string
+    TwoFactor:
+      required:
+        - country_code
+        - phone_number
+      type: object
+      properties:
+        phone_number:
+          type: string
+        status:
+          type: string
+        country_code:
+          type: string
+    Views:
+      type: object
+      properties:
+        launchpad_views:
+          items:
+            $ref: '#/components/schemas/ViewMetric'
+          type: array
+        units:
+          type: integer
+        facet:
+          enum:
+            - views
+            - countries
+            - referrers
+            - devices
+          type: string
+        unit:
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+          type: string
+        unit_reference:
+          type: string
+    CustomDomain:
+      type: object
+      properties:
+        custom_domain:
+          type: string
+        organization_guid:
+          type: string
+    UserPreferenceBody:
+      type: object
+      properties:
+        is_active:
+          type: boolean
+        preference:
+          type: string
+        value:
+          type: string
+    InvitationsAccept:
+      type: object
+      properties:
+        tokens:
+          items:
+            type: string
+          type: array
+    ActivityLog:
+      type: object
+      properties:
+        action_description:
+          type: string
+        ts:
+          type: string
+          description: ISO timestamp
+        user:
+          type: string
+        action:
+          type: string
+        org_guid:
+          type: string
+        ip_address:
+          type: string
+        id:
+          type: string
+        metadata:
+          type: object
+    OtherMetrics:
+      type: object
+      properties:
+        other_city_clicks:
+          type: integer
+        no_city_clicks:
+          type: integer
+    Webhooks:
+      type: object
+      properties:
+        webhooks:
+          items:
+            $ref: '#/components/schemas/Webhook'
+          type: array
+    BillingSignature:
+      type: object
+      properties:
+        field_account_id:
+          type: string
+        iframe_id:
+          type: string
+        tenant_id:
+          type: string
+        token:
+          type: string
+        key:
+          type: string
+        signature:
+          type: string
+    GroupClicksByFacetRollup:
+      type: object
+      properties:
+        units:
+          type: integer
+        data:
+          items:
+            $ref: '#/components/schemas/FacetCountItem'
+          type: array
+        unit_reference:
+          type: string
+        unit:
+          type: string
+    Organizations:
+      required:
+        - organizations
+      type: object
+      properties:
+        organizations:
+          items:
+            $ref: '#/components/schemas/Organization'
+          type: array
+    ConsumableFeatureFull:
+      type: object
+      properties:
+        count:
+          type: integer
+        name:
+          type: string
+        created:
+          type: string
+          description: ISO_TIMESTAMP
+        is_limited:
+          type: boolean
+        modified:
+          type: string
+          description: ISO_TIMESTAMP
+        limit:
+          type: integer
+        is_tier_default:
+          type: boolean
+        id:
+          type: string
+        is_enforced:
+          type: boolean
+    ClickstreamSink:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the sink
+          example: Sink 1
+        schedule:
+          type: string
+          description: Delivery schedule
+          example: 5 4 * * *
+        deactivated:
+          type: string
+          description: Time of deactivation, if any
+          format: date-time
+        destination:
+          type: string
+          description: Location of the sink
+          example: gs://my-bucket
+        modified:
+          type: string
+          description: Last modified time
+          format: date-time
+        created:
+          type: string
+          description: Sink creation time
+          format: date-time
+        sink_origin_id:
+          type: integer
+          description: Sink origin ID classification
+        client_id:
+          type: string
+          description: Unique short id of client
+        provider:
+          type: string
+          description: Provider of sink
+          example: GCS
+        last_sync:
+          type: string
+          description: Last synced time
+          format: date-time
+        id:
+          type: string
+          description: Unique short id
+        clickstream_id:
+          type: string
+          description: Unique short id of clickstream
+    LinkClicks:
+      type: object
+      properties:
+        date:
+          type: string
+        clicks:
+          type: integer
+    BaseChannel:
+      type: object
+      properties:
+        group_guid:
+          type: string
+        guid:
+          type: string
+        name:
+          type: string
+        modified:
+          type: string
+          description: ISO_TIMESTAMP
+        created:
+          type: string
+          description: ISO TIMESTAMP
+    BillingAccount:
+      type: object
+      properties:
+        last_four_digits:
+          type: string
+        subscription_price:
+          type: number
+        billing_info:
+          $ref: '#/components/schemas/BillingInfo'
+        account_id:
+          type: string
+        end_date:
+          type: string
+          description: ISO timestamp
+        contact_info:
+          $ref: '#/components/schemas/ContactInfo'
+        account_num:
+          type: string
+        card_type:
+          type: string
+        subscription_status:
+          type: string
+        renewal_date:
+          type: string
+          description: ISO timestamp
+    ClickMetric:
+      type: object
+      properties:
+        clicks:
+          type: integer
+        value:
+          type: string
+    UMGroupPreferences:
+      type: object
+      properties:
+        preferences:
+          items:
+            $ref: '#/components/schemas/UMGroupPreference'
+          type: array
+    PurchaseBSDResponse:
+      type: object
+      properties:
+        order_id:
+          type: integer
+        domain:
+          type: string
+        total:
+          type: string
+        organization_guid:
+          type: string
+    PlanLimit:
+      type: object
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+    UserRole:
+      required:
+        - login
+      type: object
+      properties:
+        group_guid:
+          type: string
+        login:
+          type: string
+        role_name:
+          type: string
+        organization_guid:
+          type: string
+    WebhookCreate:
+      required:
+        - organization_guid
+        - name
+        - event
+        - url
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        group_guid:
+          type: string
+        fetch_tags:
+          type: boolean
+        is_active:
+          type: boolean
+        organization_guid:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        oauth_url:
+          type: string
+        event:
+          type: string
+      example:
+        name: My Webhook
+        url: https://bitly.com/webhooks
+        group_guid: Ba1bc23dE4F
+        is_active: true
+        organization_guid: Oa1bcd234eF
+        client_id: fakeclientid123
+        client_secret: itsasecreticanttellyou
+        oauth_url: https://fake.com/oauth
+        event: decodes
+    SortedLinks:
+      type: object
+      properties:
+        sorted_links:
+          items:
+            $ref: '#/components/schemas/ClickLink'
+          type: array
+        links:
+          items:
+            $ref: '#/components/schemas/BitlinkBody'
+          type: array
+    DomainRegister:
+      type: object
+      properties:
+        redirect_url:
+          type: string
+    Campaign:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            name:
+              type: string
+            created:
+              type: string
+              description: ISO timestamp
+            group_guid:
+              type: string
+            modified:
+              type: string
+              description: ISO timestamp
+            created_by:
+              type: string
+            guid:
+              type: string
+            description:
+              type: string
+    HasReferences:
+      type: object
+      properties:
+        references:
+          additionalProperties:
+            type: string
+          type: object
+    Share:
+      type: object
+      properties:
+        numeric_id:
+          type: integer
+        account_type:
+          $ref: '#/components/schemas/SocialAccounts'
+        account_id:
+          type: string
+        text:
+          type: string
+        link:
+          type: string
+        account_name:
+          type: string
+    OAuthApp:
+      type: object
+      properties:
+        link:
+          type: string
+        name:
+          type: string
+        client_id:
+          type: string
+        description:
+          type: string
+    Channels:
+      type: object
+      properties:
+        channels:
+          items:
+            $ref: '#/components/schemas/Channel'
+          type: array
+    DeeplinkApps:
+      type: object
+      properties:
+        apps:
+          items:
+            $ref: '#/components/schemas/DeeplinkApp'
+          type: array
+    LaunchpadButtons:
+      items:
+        $ref: '#/components/schemas/LaunchpadButton'
+      type: array
+    AddCustomBitlink:
+      type: object
+      properties:
+        bitlink_id:
+          type: string
+        custom_bitlink:
+          type: string
+      example:
+        bitlink_id: bit.ly/1234abcd
+        custom_bitlink: chauncey.ly/documentation
+    CustomDomainBody:
+      type: object
+      description: information about given custom domain
+      properties:
+        deeplink_apps:
+          items:
+            $ref: '#/components/schemas/MinimalDeeplinkApp'
+          type: array
+        hsts_enabled:
+          type: boolean
+        upgrade_insecure_requests:
+          type: boolean
+        custom_domain:
+          type: string
+        validation_error:
+          type: string
+        created:
+          type: integer
+        is_active:
+          type: boolean
+        root_redirect:
+          type: string
+        ssl_configuration_error:
+          type: string
+        ssl_autoconfigure_error:
+          type: boolean
+        group_guids:
+          items:
+            type: string
+          type: array
+        ssl_cert:
+          type: object
+          properties:
+            custom_cert:
+              type: boolean
+            valid_end:
+              type: integer
+            issuer:
+              type: string
+        wildcard_redirect:
+          type: string
+        configuration_last_check_ts:
+          type: string
+        https_enabled:
+          type: boolean
+        validation_status:
+          type: string
+        https_bitlinks:
+          type: boolean
+    LaunchpadLinkPerformance:
+      type: object
+      properties:
+        unit_reference:
+          type: string
+        link_clicks:
+          items:
+            $ref: '#/components/schemas/LaunchpadClicks'
+          type: array
+        performance_start:
+          type: string
+        performance_end:
+          type: string
+        units:
+          type: integer
+        unit:
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+          type: string
+    Metrics:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMetrics'
+        - properties:
+            metrics:
+              items:
+                $ref: '#/components/schemas/Metric'
+              type: array
+    CampaignClicks:
+      type: object
+      properties:
+        unit_reference:
+          type: string
+        rollup:
+          type: boolean
+        limit:
+          type: integer
+        units:
+          type: integer
+        data:
+          $ref: '#/components/schemas/CampaignClicksData'
+        unit:
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+          type: string
+    UpdateButtonSortOrder:
+      type: object
+      properties:
+        buttons:
+          items:
+            $ref: '#/components/schemas/LaunchpadButtonSortOrder'
+          type: array
+    PlatformLimits:
+      type: object
+      properties:
+        platform_limits:
+          items:
+            $ref: '#/components/schemas/PlatformLimit'
+          type: array
+    UnitAmount:
+      default: -1
+      type: integer
+      description: the number of units queried for
+    Tiers:
+      items:
+        $ref: '#/components/schemas/Tier'
+      type: array
+    DomainStatus:
+      type: object
+      properties:
+        status:
+          enum:
+            - unavailable
+            - available
+            - complimentary
+          type: string
+        domain:
+          type: string
+        price:
+          type: string
+        zone:
+          type: string
+    BSDsResponse:
+      type: object
+      properties:
+        bsds:
+          items:
+            type: string
+          type: array
+    UpdateCustomBitlink:
+      type: object
+      properties:
+        bitlink_id:
+          type: string
+      example:
+        bitlink_id: bit.ly/1234abcd
+    CreateOverrideRules:
+      required:
+        - rules
+      type: object
+      properties:
+        rules:
+          type: string
+        group_guid:
+          type: string
+    GroupPreferences:
+      type: object
+      properties:
+        group_guid:
+          type: string
+        domain_preference:
+          type: string
+    ClicksSummary:
+      type: object
+      properties:
+        units:
+          type: integer
+        unit:
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+          type: string
+        total_clicks:
+          type: integer
+        unit_reference:
+          type: string
+    BaseMetrics:
+      type: object
+      properties:
+        units:
+          type: integer
+        facet:
+          enum:
+            - countries
+            - cities
+            - devices
+            - referrers
+            - referrers_by_domain
+            - referring_domains
+            - referring_networks
+            - shorten_counts
+          type: string
+        unit_reference:
+          type: string
+        unit:
+          type: string
+    BadGateway:
+      description: BAD_GATEWAY
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    Email:
+      type: object
+      properties:
+        is_primary:
+          type: boolean
+        is_verified:
+          type: boolean
+        email:
+          type: string
+    Channel:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseChannel'
+        - $ref: '#/components/schemas/HasReferences'
+    PublicSSLCert:
+      type: object
+      description: SSL Certification
+      properties:
+        custom_cert:
+          type: boolean
+        valid_end:
+          type: integer
+        issuer:
+          type: string
+    OrgTierHistory:
+      type: object
+      properties:
+        status:
+          type: string
+        created:
+          type: string
+          description: ISO timestamp
+        deactivated:
+          type: string
+          description: ISO timestamp
+        tier_change_date:
+          type: string
+          description: ISO timestamp
+        activated:
+          type: string
+          description: ISO timestamp
+        modified:
+          type: string
+          description: ISO timestamp
+        tier_name:
+          type: string
+        org_guid:
+          type: string
+      nullable: true
+    Unauthorized:
+      description: UNAUTHORIZED
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    CountryCode:
+      type: object
+      properties:
+        CountryName:
+          type: string
+        ISO3:
+          type: string
+        ISO2:
+          type: string
+        CallingCode:
+          type: integer
+    FormConfig:
+      type: object
+      properties:
+        options:
+          items:
+            $ref: '#/components/schemas/FormSelectOptions'
+          type: array
+    InvitationsForLogin:
+      type: object
+      properties:
+        invitations:
+          items:
+            $ref: '#/components/schemas/InvitationForLogin'
+          type: array
+    UserPreference:
+      type: object
+      allOf:
+        - properties:
+            created:
+              type: string
+            is_active:
+              type: boolean
+            modified:
+              type: string
+            value:
+              type: string
+            preference:
+              type: string
+            login:
+              type: string
+            expired:
+              type: boolean
+            last_seen:
+              type: string
+    Clicks:
+      type: object
+      properties:
+        units:
+          type: integer
+        unit_reference:
+          type: string
+        unit:
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+          type: string
+        link_clicks:
+          items:
+            $ref: '#/components/schemas/LinkClicks'
+          type: array
+    Campaigns:
+      type: object
+      properties:
+        campaigns:
+          items:
+            $ref: '#/components/schemas/Campaign'
+          type: array
+    Charges:
+      type: object
+      properties:
+        charge_amount:
+          type: number
+        processing_type:
+          type: string
+        tax_amount:
+          type: number
+        charge_name:
+          type: string
+    ExpandedBitlink:
+      type: object
+      properties:
+        long_url:
+          type: string
+        created_at:
+          type: string
+        link:
+          type: string
+        id:
+          type: string
+    GroupClicksByFacet:
+      type: object
+      properties:
+        units:
+          type: integer
+        data:
+          items:
+            $ref: '#/components/schemas/FacetCountData'
+          type: array
+        unit_reference:
+          type: string
+        unit:
+          type: string
+    CustomBitlink:
+      type: object
+      properties:
+        bitlink:
+          $ref: '#/components/schemas/BitlinkBody'
+        bitlink_history:
+          items:
+            $ref: '#/components/schemas/CustomBitlinkHistory'
+          type: array
+        custom_bitlink:
+          type: string
+    BillingAccountID:
+      type: object
+      properties:
+        billing_account_id:
+          type: string
+    BulkShortenUploads:
+      required:
+        - uploads
+      type: object
+      properties:
+        uploads:
+          items:
+            $ref: '#/components/schemas/BulkShortenUpload'
+          type: array
+    BillingAddress:
+      type: object
+      properties:
+        city:
+          type: string
+        country:
+          type: string
+        state:
+          type: string
+        address_1:
+          type: string
+        address_2:
+          type: string
+        zip_code:
+          type: string
+    ClickLink:
+      type: object
+      properties:
+        clicks:
+          type: integer
+        id:
+          type: string
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+        size:
+          type: integer
+        prev:
+          type: string
+        page:
+          type: integer
+        next:
+          type: string
+    OAuthAppWithOwnerLogin:
+      type: object
+      properties:
+        owner_login:
+          type: string
+        link:
+          type: string
+        name:
+          type: string
+        client_id:
+          type: string
+        description:
+          type: string
+    InvitationsCreate:
+      required:
+        - emails
+        - role_name
+      type: object
+      properties:
+        role_name:
+          type: string
+        emails:
+          items:
+            type: string
+          type: array
+        groups:
+          items:
+            $ref: '#/components/schemas/InvitationGroup'
+          type: array
+        created:
+          type: string
+    BillingInfo:
+      type: object
+      properties:
+        billing_address:
+          type: object
+          $ref: '#/components/schemas/BillingAddress'
+        billing_contact:
+          type: object
+          $ref: '#/components/schemas/BillingContact'
+    OAuthApps:
+      type: object
+      properties:
+        applications:
+          items:
+            $ref: '#/components/schemas/OAuthApp'
+          type: array
+    ShareableReport:
+      type: object
+      properties:
+        bitlink_id:
+          type: string
+        shareable_report:
+          type: string
+    LaunchpadButtonSortOrder:
+      required:
+        - button_id
+        - sort_order
+      type: object
+      properties:
+        sort_order:
+          type: integer
+        button_id:
+          type: string
+          example: L1234567890
+    BSDSearchResults:
+      type: object
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/BSDSearchResult'
+          type: array
+    LaunchpadClicks:
+      type: object
+      properties:
+        domain:
+          type: string
+        bitlink_id:
+          type: string
+        keyword:
+          type: string
+        title:
+          type: string
+        is_active:
+          type: boolean
+        long_url:
+          type: string
+        date:
+          type: string
+        clicks:
+          type: integer
+    FormSelectOptions:
+      type: object
+      properties:
+        display:
+          type: string
+        key:
+          type: string
+    LaunchpadPresetThemes:
+      items:
+        $ref: '#/components/schemas/LaunchpadPresetTheme'
+      type: array
+    EmailBody:
+      type: object
+      properties:
+        status:
+          type: string
+        is_primary:
+          type: boolean
+        email:
+          type: string
+    FacetCountItem:
+      type: object
+      properties:
+        count:
+          type: integer
+        value:
+          type: string
+    BulkShortenValidate:
+      required:
+        - filename
+      type: object
+      properties:
+        group_guid:
+          type: string
+        email:
+          type: string
+        custom_domain:
+          type: string
+        filename:
+          type: string
+    BillingDowngrade:
+      type: object
+      properties:
+        group_guids:
+          items:
+            type: string
+          type: array
+        tier_name:
+          type: string
+    PlatformLimit:
+      type: object
+      properties:
+        endpoint:
+          type: string
+        methods:
+          items:
+            $ref: '#/components/schemas/MethodLimit'
+          type: array
+    UserOnboardingSurvey:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        created:
+          type: string
+        modified:
+          type: string
+        company_size:
+          type: string
+        organization_name:
+          type: string
+        use_cases:
+          items:
+            type: string
+          type: array
+        version:
+          type: number
+        use_cases_other:
+          items:
+            type: string
+          type: array
+        department:
+          type: string
+        login:
+          type: string
+        job_title:
+          type: string
+        department_other:
+          type: string
+        team_type:
+          type: string
+    CityViewMetrics:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMetrics'
+        - properties:
+            launchpad_views:
+              items:
+                $ref: '#/components/schemas/ViewMetric'
+              type: array
+            other_metrics:
+              type: object
+              $ref: '#/components/schemas/OtherViewMetrics'
+    ActivityLogs:
+      type: object
+      properties:
+        next_page:
+          type: string
+        activity:
+          items:
+            $ref: '#/components/schemas/ActivityLog'
+          type: array
+    BulkUpdateRequest:
+      type: object
+      properties:
+        action:
+          enum:
+            - archive
+            - edit_tags
+          type: string
+        remove_tags:
+          items:
+            type: string
+          type: array
+        archive:
+          type: boolean
+        links:
+          items:
+            type: string
+          type: array
+          description: this is limited to 100 bitlink ids
+        add_tags:
+          items:
+            type: string
+          type: array
+    PaymentInvoice:
+      type: object
+      properties:
+        total_tax:
+          type: number
+        description:
+          type: string
+        charges:
+          type: object
+          $ref: '#/components/schemas/Charges'
+        invoice_id:
+          type: string
+        invoice_date:
+          type: string
+        payments:
+          items:
+            $ref: '#/components/schemas/Payments'
+          type: array
+        invoice_number:
+          type: string
+        total:
+          type: number
+        subtotal:
+          type: number
+        invoice_due_date:
+          type: string
+    Metric:
+      type: object
+      properties:
+        value:
+          type: integer
+        key:
+          type: string
+    UpdateOverrideRules:
+      type: object
+      properties:
+        rules:
+          type: string
+    UserUpdate:
+      type: object
+      properties:
+        default_group_guid:
+          type: string
+        name:
+          type: string
+      example:
+        default_group_guid: Ba1bc23dE4F
+        name: Chauncey McPufferson
+    WebhookUpdate:
+      required:
+        - guid
+      type: object
+      properties:
+        name:
+          type: string
+        url:
+          type: string
+        group_guid:
+          type: string
+        fetch_tags:
+          type: boolean
+        is_active:
+          type: boolean
+        organization_guid:
+          type: string
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        oauth_url:
+          type: string
+        guid:
+          type: string
+        event:
+          type: string
+      example:
+        name: My Webhook
+        url: https://bitly.com/webhooks
+        group_guid: Ba1bc23dE4F
+        is_active: true
+        organization_guid: Oa1bcd234eF
+        client_id: fakeclientid123
+        client_secret: itsasecreticanttellyou
+        oauth_url: https://fake.com/oauth
+        guid: Wa1bcDefG23
+        event: decodes
+    Event:
+      required:
+        - action
+        - login
+        - org_guid
+        - ui_action
+        - ui_action_date
+        - initiated_by
+      type: object
+      properties:
+        ui_action:
+          type: string
+        referrer:
+          type: string
+        action:
+          type: string
+        initiated_by:
+          enum:
+            - app
+            - user
+          type: string
+        group_guid:
+          type: string
+        ui_action_date:
+          type: string
+        login:
+          type: string
+        org_guid:
+          type: string
+    CampaignClicksData:
+      type: object
+      properties:
+        created_ts:
+          type: integer
+        description:
+          type: string
+        brand_guid:
+          type: string
+        campaign_channels:
+          items:
+            $ref: '#/components/schemas/CampaignChannelClicks'
+          type: array
+        created_by:
+          type: string
+        modified_ts:
+          type: integer
+        total_clicks:
+          type: integer
+        guid:
+          type: string
+        name:
+          type: string
+    CreatePaymentMethod:
+      type: object
+      properties:
+        stripe_token:
+          type: string
+    UpdateApp:
+      type: object
+      properties:
+        ip_allowlist:
+          items:
+            type: string
+          type: array
+        redirect_uris:
+          items:
+            type: string
+          type: array
+        link:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    ReferrersByDomains:
+      type: object
+      properties:
+        units:
+          type: integer
+        facet:
+          enum:
+            - referrers_by_domains
+          type: string
+        referrers_by_domain:
+          items:
+            $ref: '#/components/schemas/ReferrersByDomain'
+          type: array
+        unit_reference:
+          type: string
+        unit:
+          type: string
+    CityMetric:
+      type: object
+      properties:
+        city:
+          type: string
+        region:
+          type: string
+        subregion:
+          type: string
+        clicks:
+          type: integer
+        country:
+          type: string
+    DomainValidate:
+      type: object
+      description: custom domain in validation queue
+      properties:
+        custom_domain:
+          type: string
+        organization_guid:
+          type: string
+    ConsumableFeature:
+      type: object
+      properties:
+        name:
+          type: string
+        created:
+          type: string
+          description: ISO_TIMESTAMP
+        modified:
+          type: string
+          description: ISO_TIMESTAMP
+        limit:
+          type: integer
+        is_tier_default:
+          type: boolean
+        id:
+          type: string
+    Clickstream:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Descriptive name for the clickstream
+          example: Clickstream 1
+        created:
+          type: string
+          description: Clickstream creation time
+          format: date-time
+        deactivated:
+          type: string
+          description: Time of deactivation, if any
+          format: date-time
+        modified:
+          type: string
+          description: Last modified time
+          format: date-time
+        query:
+          type: string
+          description: Clickstream query
+          example: '*'
+        id:
+          type: string
+          description: Unique short id
+    Group:
+      required:
+        - guid
+        - organization_guid
+        - name
+        - created
+        - modified
+        - is_active
+        - role
+        - bsds
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            name:
+              type: string
+            bsds:
+              items:
+                type: string
+              type: array
+            created:
+              type: string
+            is_active:
+              type: boolean
+            modified:
+              type: string
+            organization_guid:
+              type: string
+            role:
+              type: string
+            guid:
+              type: string
+    TooManyRequests:
+      description: TOO_MANY_REQUESTS
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    SSOVerifySlug:
+      type: object
+      properties:
+        available:
+          type: boolean
+        url_slug:
+          type: string
+    BitlinkUpdate:
+      type: object
+      properties:
+        archived:
+          type: boolean
+        tags:
+          items:
+            type: string
+          type: array
+        created_at:
+          type: string
+        title:
+          type: string
+        deeplinks:
+          items:
+            $ref: '#/components/schemas/DeeplinkRule'
+          type: array
+        created_by:
+          type: string
+        long_url:
+          type: string
+        client_id:
+          type: string
+        custom_bitlinks:
+          items:
+            type: string
+          type: array
+        link:
+          type: string
+        launchpad_ids:
+          items:
+            type: string
+          type: array
+        id:
+          type: string
+    LaunchpadAppearance:
+      required:
+        - hide_bitly_logo
+      type: object
+      properties:
+        launchpad_id:
+          type: string
+          example: M1234567890
+        avatar_preference:
+          type: string
+          example: image
+        hide_bitly_logo:
+          type: boolean
+        display_name:
+          type: string
+          example: Bitly
+        avatar_background_color:
+          type: string
+          example: '#FFFFFF'
+        launchpad_text_color:
+          type: string
+          example: '#000000'
+        description:
+          type: string
+          example: >-
+            A URL shortener built with powerful tools to help you grow and
+            protect your brand.
+        button_appearance:
+          type: object
+          $ref: '#/components/schemas/LaunchpadButtonAppearance'
+        avatar_image_url:
+          type: string
+          example: https://placeimg.com/300/300/people
+        style_preference:
+          type: string
+          example: custom
+        background:
+          type: string
+          example: '#FFFFFF'
+        theme_id:
+          type: integer
+          example: 123
+        avatar_text_color:
+          type: string
+          example: '#000000'
+        layout:
+          type: string
+          example: classic
+    ShortenBitlinkBody:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            archived:
+              type: boolean
+            tags:
+              items:
+                type: string
+              type: array
+            created_at:
+              type: string
+            deeplinks:
+              items:
+                $ref: '#/components/schemas/DeeplinkRule'
+              type: array
+            long_url:
+              type: string
+            custom_bitlinks:
+              items:
+                type: string
+              type: array
+            link:
+              type: string
+            id:
+              type: string
+    NSQProducer:
+      type: object
+      properties:
+        http_port:
+          type: integer
+        broadcast_address:
+          type: string
+        tcp_port:
+          type: integer
+        hostname:
+          type: string
+        remote_address:
+          type: string
+        version:
+          type: string
+    ClickstreamSinkFiles:
+      type: object
+      properties:
+        date_from:
+          type: string
+          description: start of period
+        objects:
+          items:
+            $ref: '#/components/schemas/ClickstreamSinkFile'
+          type: array
+        id:
+          type: string
+          description: Unique short id of sink file
+        clickstream_id:
+          type: string
+          description: Unique short id of clickstream
+        date_to:
+          type: string
+          description: end of period
+    InstallPreference:
+      enum:
+        - no_install
+        - auto_install
+        - promote_install
+      type: string
+    Bitlinks:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        links:
+          items:
+            $ref: '#/components/schemas/BitlinkBody'
+          type: array
+    ShareAccount:
+      type: object
+      properties:
+        numeric_id:
+          type: integer
+        account_login:
+          type: string
+        account_type:
+          $ref: '#/components/schemas/SocialAccounts'
+        account_id:
+          type: string
+        oauth_error:
+          type: string
+        primary:
+          type: boolean
+        visible:
+          type: boolean
+        connected:
+          type: string
+          description: ISO timestamp
+        account_name:
+          type: string
+    TwoFactorVerify:
+      required:
+        - is_valid
+        - is_expired
+      type: object
+      properties:
+        is_valid:
+          type: boolean
+        is_expired:
+          type: boolean
+    DefaultConsumableFeature:
+      type: object
+      description: the tier default values for a single consumable feature
+      properties:
+        limit:
+          type: integer
+        name:
+          type: string
+    GroupUpdate:
+      type: object
+      properties:
+        bsds:
+          items:
+            type: string
+          type: array
+        name:
+          type: string
+        organization_guid:
+          type: string
+      example:
+        bsds:
+          - chauncey.ly
+        name: My New Group
+        organization_guid: Oa1bcd234eF
+    Authorization:
+      type: object
+      properties:
+        app:
+          $ref: '#/components/schemas/OAuthAppWithOwnerLogin'
+        id:
+          type: string
+        client_id:
+          type: string
+        created:
+          type: string
+          description: ISO timestamp
+    ExpectationFailed:
+      description: EXPECTATION_FAILED
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    ClickstreamBody:
+      type: object
+      properties:
+        brand_guid:
+          type: string
+          description: Clickstream brand identifier
+          example: Ba1bc23dE4F
+    InvitationsError:
+      type: object
+      allOf:
+        - properties:
+            message:
+              type: string
+            emails:
+              items:
+                type: string
+              type: array
+    OrgEmailBody:
+      type: object
+      properties:
+        login:
+          type: string
+        org_guid:
+          type: string
+        email:
+          type: string
+    FormPage:
+      type: object
+      properties:
+        fields:
+          items:
+            $ref: '#/components/schemas/FormField'
+          type: array
+    LaunchpadPresetTheme:
+      type: object
+      properties:
+        button_text_color:
+          type: string
+          example: '#FFFFFF'
+        display_name:
+          type: string
+          example: Sky
+        avatar_text_color:
+          type: string
+          example: '#FFFFFF'
+        launchpad_text_color:
+          type: string
+          example: '#000000'
+        is_active:
+          type: boolean
+        background:
+          type: string
+          example: '#FFFFFF'
+        avatar_background:
+          type: string
+          example: '#FFFFFF'
+        theme_id:
+          type: integer
+          example: 123
+        button_background:
+          type: string
+          example: '#000000'
+    SocialAccounts:
+      enum:
+        - twitter
+        - facebook
+      type: string
+    Webhook:
+      required:
+        - guid
+        - created
+        - modified
+        - modified_by
+        - deactivated
+        - is_active
+        - organization_guid
+        - name
+        - event
+        - url
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            status:
+              type: string
+            modified_by:
+              type: string
+            name:
+              type: string
+            created:
+              type: string
+            url:
+              type: string
+            deactivated:
+              type: string
+            fetch_tags:
+              type: boolean
+            is_active:
+              type: boolean
+            modified:
+              type: string
+            organization_guid:
+              type: string
+            client_id:
+              type: string
+            group_guid:
+              type: string
+            client_secret:
+              type: string
+            oauth_url:
+              type: string
+            guid:
+              type: string
+            event:
+              type: string
+    GroupClicks:
+      type: object
+      properties:
+        units:
+          type: integer
+        data:
+          items:
+            $ref: '#/components/schemas/CountItem'
+          type: array
+        unit_reference:
+          type: string
+        unit:
+          type: string
+    Invitations:
+      type: object
+      properties:
+        invitations:
+          items:
+            $ref: '#/components/schemas/Invitation'
+          type: array
+    UnitReferenceTimeStamp:
+      type: string
+      description: data returned up to this reference timestamp
+    Groups:
+      required:
+        - groups
+      type: object
+      properties:
+        groups:
+          items:
+            $ref: '#/components/schemas/Group'
+          type: array
+    BillingPaymentMethodID:
+      type: string
+    Tier:
+      type: object
+      description: a single tier
+      properties:
+        display_name:
+          type: string
+        name:
+          type: string
+        family:
+          type: string
+        price:
+          type: integer
+        billing_period_type:
+          type: string
+        consumable_features:
+          items:
+            $ref: '#/components/schemas/DefaultConsumableFeature'
+          type: array
+        sort_order:
+          type: integer
+        is_self_service:
+          type: boolean
+        access_features:
+          items:
+            $ref: '#/components/schemas/DefaultAccessFeature'
+          type: array
+        display_icon:
+          type: string
+        is_paid:
+          type: boolean
+        description:
+          type: string
+    LaunchpadButton:
+      required:
+        - is_active
+      type: object
+      properties:
+        launchpad_id:
+          type: string
+          example: M1234567890
+        bitlink:
+          type: string
+          example: https://bit.ly/GzmMT6
+        button_id:
+          type: string
+          example: L1234567890
+        keyword:
+          type: string
+          example: L1234567890
+        title:
+          type: string
+          example: Short links, big results
+        is_pinned:
+          type: boolean
+        is_active:
+          type: boolean
+        domain:
+          type: string
+          example: bit.ly
+        schedule_end:
+          type: string
+          format: date-time
+        sort_order:
+          type: integer
+        long_url:
+          x-faker: internet.url
+          type: string
+          example: https://www.google.com
+        scheme:
+          type: string
+          example: https
+        schedule_start:
+          type: string
+          format: date-time
+    DeleteShare:
+      type: object
+      properties:
+        account_login:
+          type: string
+        account_type:
+          $ref: '#/components/schemas/SocialAccounts'
+    User:
+      required:
+        - login
+        - is_active
+        - created
+        - modified
+        - is_2fa_enabled
+        - name
+        - emails
+        - is_sso_user
+      type: object
+      properties:
+        default_group_guid:
+          type: string
+        name:
+          type: string
+        created:
+          type: string
+        is_active:
+          type: boolean
+        modified:
+          type: string
+        is_sso_user:
+          type: boolean
+        is_2fa_enabled:
+          type: boolean
+        login:
+          type: string
+        emails:
+          items:
+            $ref: '#/components/schemas/Email'
+          type: array
+    OrgEmails:
+      type: object
+      description: an array of org emails
+      properties:
+        emails:
+          items:
+            $ref: '#/components/schemas/OrgEmail'
+          type: array
+    Tags:
+      type: object
+      properties:
+        tags:
+          items:
+            type: string
+          type: array
+    ClicksCount:
+      type: object
+      properties:
+        error:
+          type: string
+        clicks:
+          type: integer
+        bitlink_id:
+          type: string
+    ChannelBitlink:
+      required:
+        - bitlink_id
+        - campaign_guid
+        - channel_guid
+        - created_ts
+      type: object
+      properties:
+        keyword_link:
+          type: string
+        created_ts:
+          type: integer
+        bitlink_id:
+          type: string
+        channel_guid:
+          type: string
+        title:
+          type: string
+        campaign_ids:
+          items:
+            type: string
+          type: array
+        total_clicks:
+          type: integer
+        aggregate_link:
+          type: string
+        campaign_guid:
+          type: string
+        link:
+          type: string
+        client_id:
+          type: string
+        long_url:
+          type: string
+        clicks:
+          items:
+            $ref: '#/components/schemas/CampaignClickData'
+          type: array
+    OrgEmail:
+      type: object
+      properties:
+        org_guid:
+          type: string
+        created_ts:
+          type: integer
+        login:
+          type: string
+        email:
+          type: string
+    NotFound:
+      description: NOT_FOUND
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    DeeplinkMetric:
+      type: object
+      properties:
+        app_installs:
+          type: integer
+        store_visits:
+          type: integer
+        interstital_views:
+          type: integer
+        app_opens:
+          type: integer
+        web_opens:
+          type: integer
+    Shorten:
+      required:
+        - long_url
+      type: object
+      properties:
+        group_guid:
+          type: string
+        domain:
+          default: bit.ly
+          type: string
+        long_url:
+          type: string
+      example:
+        group_guid: Ba1bc23dE4F
+        domain: bit.ly
+        long_url: https://dev.bitly.com
+    DomainAgreement:
+      type: object
+      properties:
+        content:
+          type: string
+        url:
+          type: string
+        agreement_key:
+          type: string
+        title:
+          type: string
+    UpgradeOrgBody:
+      type: object
+      properties:
+        billing_info:
+          type: object
+          $ref: '#/components/schemas/BillingInfo'
+        payment_provider:
+          default: zuora
+          enum:
+            - zuora
+            - stripe
+          type: string
+        stripe_token:
+          type: string
+        rate_plan_name:
+          type: string
+        org_guid:
+          type: string
+        payment_method_id:
+          type: string
+    SubscriptionCancelledDate:
+      type: object
+      properties:
+        subscription_cancelled_date:
+          type: string
+          description: ISO timestamp
+    CountryCodes:
+      items:
+        $ref: '#/components/schemas/CountryCode'
+      type: array
+    Timeout:
+      description: TIMEOUT
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    Invitation:
+      required:
+        - email
+        - role_name
+      type: object
+      properties:
+        role_name:
+          type: string
+        email:
+          type: string
+        groups:
+          items:
+            $ref: '#/components/schemas/InvitationGroup'
+          type: array
+        created:
+          type: string
+    UpgradeRequired:
+      description: UPGRADE_REQUIRED
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    Launchpads:
+      type: object
+      properties:
+        launchpads:
+          items:
+            $ref: '#/components/schemas/Launchpad'
+          type: array
+    BitlinkQR:
+      type: object
+      properties:
+        qr_code:
+          type: string
+          description: Data URI of QR Code image
+        link:
+          type: string
+        id:
+          type: string
+    BaseChannelBitlink:
+      type: object
+      properties:
+        campaign_guid:
+          type: string
+        bitlink_id:
+          type: string
+    DeeplinkApp:
+      required:
+        - third_party_app_id
+        - name
+        - install_url
+        - os
+      type: object
+      properties:
+        third_party_app_id:
+          type: string
+        created_ts:
+          type: integer
+        scheme:
+          type: string
+        install_url:
+          type: string
+        name:
+          type: string
+        legacy_app_id:
+          type: string
+        icon_url:
+          type: string
+        organization_guid:
+          type: string
+        modified_ts:
+          type: integer
+        guid:
+          type: string
+        apple_app_entitlement_id:
+          type: string
+        android_sha256:
+          items:
+            type: string
+          type: array
+        os:
+          enum:
+            - ios
+            - android
+          type: string
+    Feedback:
+      type: object
+      properties:
+        selection:
+          type: string
+        optional_text:
+          type: string
+    DataExportQuery:
+      type: object
+      properties:
+        archived:
+          type: string
+        unit_reference:
+          type: integer
+        link_deeplinks:
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        campaign_ids:
+          items:
+            type: string
+          type: array
+        modified_after:
+          type: integer
+        keyword:
+          type: string
+        created_after:
+          type: integer
+        custom_bitlink:
+          type: string
+        units:
+          type: integer
+        query:
+          type: string
+        report_type:
+          type: string
+        created_before:
+          type: integer
+        emails:
+          items:
+            type: string
+          type: array
+        unit:
+          type: string
+    CityMetrics:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMetrics'
+        - properties:
+            metrics:
+              items:
+                $ref: '#/components/schemas/CityMetric'
+              type: array
+            other_metrics:
+              type: object
+              $ref: '#/components/schemas/OtherMetrics'
+    TemporarilyUnavailable:
+      description: TEMPORARILY_UNAVAILABLE
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    BulkUpdate:
+      type: object
+      properties:
+        links:
+          items:
+            type: string
+          type: array
+    ConsumableFeatures:
+      type: object
+      properties:
+        consumable_features:
+          items:
+            $ref: '#/components/schemas/ConsumableFeature'
+          type: array
+    FullShorten:
+      required:
+        - long_url
+      type: object
+      properties:
+        domain:
+          default: bit.ly
+          type: string
+        title:
+          type: string
+        group_guid:
+          type: string
+          description: >-
+            Always include a specific group and custom domain in your shorten
+            calls.
+        tags:
+          items:
+            type: string
+          type: array
+        deeplinks:
+          items:
+            $ref: '#/components/schemas/Deeplink'
+          type: array
+        long_url:
+          type: string
+      example:
+        domain: bit.ly
+        title: Bitly API Documentation
+        group_guid: Ba1bc23dE4F
+        tags:
+          - bitly
+          - api
+        deeplinks:
+          - app_uri_path: /store?id=123456
+            install_type: promote_install
+            install_url: >-
+              https://play.google.com/store/apps/details?id=com.bitly.app&hl=en_US
+            app_id: com.bitly.app
+        long_url: https://dev.bitly.com
+    TimeUnit:
+      default: day
+      enum:
+        - minute
+        - hour
+        - day
+        - week
+        - month
+      type: string
+      description: the unit of time queried for (minute, hour, day, week, month)
+    Deeplink:
+      type: object
+      properties:
+        app_uri_path:
+          type: string
+        install_type:
+          type: string
+        install_url:
+          type: string
+        app_id:
+          type: string
+    MethodLimit:
+      type: object
+      properties:
+        count:
+          type: integer
+        limit:
+          type: integer
+        name:
+          type: string
+    FacetCountData:
+      type: object
+      properties:
+        total_count:
+          type: integer
+        ts:
+          type: integer
+        items:
+          items:
+            $ref: '#/components/schemas/FacetCountItem'
+          type: array
+    Forbidden:
+      description: FORBIDDEN
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    BitlinkHistory:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            hash:
+              type: string
+              description: The backhalf of the underlying hash link
+            group_guid:
+              type: string
+            created_at:
+              type: string
+            is_active:
+              type: boolean
+            long_url:
+              type: string
+            deactivated_at:
+              type: string
+            login:
+              type: string
+            target_bitlink_id:
+              type: string
+              description: The domain and backhalf of the underlying hash link
+            id:
+              type: string
+              description: The domain and backhalf of the parent override
+    ClickstreamSinkNew:
+      type: object
+      properties:
+        destination:
+          type: string
+          description: Location of the sink
+          example: gs://my-bucket
+        name:
+          type: string
+          description: Descriptive name for the sink
+          example: Sink 1
+        auth_key:
+          type: string
+          description: Auth key for syncing to destination
+        provider:
+          type: string
+          description: Provider of sink
+          example: GCS
+    Authorizations:
+      type: object
+      properties:
+        authorizations:
+          items:
+            $ref: '#/components/schemas/Authorization'
+          type: array
+    BitlinkOverrideHistory:
+      type: object
+      properties:
+        total_count:
+          type: integer
+        bitlinks:
+          items:
+            $ref: '#/components/schemas/BitlinkHistory'
+          type: array
+    AppAssociationDetail:
+      type: object
+      properties:
+        priority:
+          type: integer
+        fallback:
+          type: boolean
+        app_guid:
+          type: string
+        os:
+          type: string
+    UserInternal:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/User'
+        - properties:
+            role_name:
+              type: string
+    InternalError:
+      description: INTERNAL_ERROR
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    LaunchpadButtonRequest:
+      type: object
+      properties:
+        bitlink:
+          type: string
+          example: https://bit.ly/GzmMT6
+        title:
+          type: string
+          example: Short links, big results
+        is_active:
+          type: boolean
+        is_pinned:
+          type: boolean
+        schedule_end:
+          type: string
+          format: date-time
+        long_url:
+          type: string
+          example: https://www.google.com
+        domain:
+          type: string
+          example: bit.ly
+        schedule_start:
+          type: string
+          format: date-time
+    CreateShare:
+      type: object
+      properties:
+        text:
+          type: string
+        bitlink:
+          type: string
+        account_type:
+          $ref: '#/components/schemas/SocialAccounts'
+        account_id:
+          type: string
+        group_guid:
+          type: string
+    LaunchpadQRCode:
+      type: object
+      properties:
+        launchpad_id:
+          type: string
+        qr_code:
+          type: string
+        link:
+          type: string
+    GroupBitlinksCount:
+      type: object
+      properties:
+        units:
+          type: integer
+        data:
+          items:
+            $ref: '#/components/schemas/CountItem'
+          type: array
+        unit_reference:
+          type: string
+        unit:
+          type: string
+    OtherViewMetrics:
+      type: object
+      properties:
+        other_city_views:
+          type: integer
+        no_city_views:
+          type: integer
+    InvitationGroup:
+      type: object
+      allOf:
+        - properties:
+            group_guid:
+              type: string
+            role_name:
+              type: string
+            created:
+              type: string
+    UpdateLaunchpad:
+      required:
+        - is_active
+      type: object
+      properties:
+        launchpad_id:
+          type: string
+          example: M1234567890
+        domain:
+          type: string
+          example: bit.ly
+        is_active:
+          type: boolean
+        launchpad_appearance:
+          type: object
+          $ref: '#/components/schemas/LaunchpadAppearance'
+        keyword:
+          type: string
+          example: bitlySocial
+    DefaultAccessFeature:
+      type: object
+      description: the tier default values for a single access feature
+      properties:
+        has_access:
+          type: boolean
+        name:
+          type: string
+    LaunchpadButtonAppearance:
+      type: object
+      properties:
+        launchpad_id:
+          type: string
+          example: M1234567890
+        button_background:
+          type: string
+          example: '#FFFFFF'
+        text_color:
+          type: string
+          example: '#000000'
+    InvitationForLogin:
+      required:
+        - invited_by_email
+        - invited_by
+        - token
+        - invited_org_guid
+        - invited_org_name
+      type: object
+      properties:
+        invited_org_name:
+          type: string
+        invited_org_guid:
+          type: string
+        token:
+          type: string
+        invited_by_email:
+          type: string
+        invited_by:
+          type: string
+    DeviceMetrics:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMetrics'
+        - properties:
+            metrics:
+              items:
+                $ref: '#/components/schemas/DeviceMetric'
+              type: array
+    CampaignChannelClicks:
+      type: object
+      properties:
+        created_ts:
+          type: integer
+        channel_guid:
+          type: string
+        total_clicks:
+          type: integer
+        channel_name:
+          type: string
+        campaign_guid:
+          type: string
+        channel_bitlinks:
+          $ref: '#/components/schemas/ChannelBitlinks'
+        clicks:
+          items:
+            $ref: '#/components/schemas/CampaignClickData'
+          type: array
+    AppAssociations:
+      type: object
+      properties:
+        android_install_preference:
+          $ref: '#/components/schemas/InstallPreference'
+        ios_install_preference:
+          $ref: '#/components/schemas/InstallPreference'
+        android_apps:
+          items:
+            $ref: '#/components/schemas/AppAssociationDetail'
+          type: array
+        custom_domain:
+          type: string
+        ios_apps:
+          items:
+            $ref: '#/components/schemas/AppAssociationDetail'
+          type: array
+    ThirdPartyAppData:
+      type: object
+      properties:
+        third_party_app_id:
+          type: string
+        install_url:
+          type: string
+        os:
+          enum:
+            - ios
+            - android
+          type: string
+        name:
+          type: string
+        icon_url:
+          type: string
+    Users:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        users:
+          items:
+            $ref: '#/components/schemas/UserInternal'
+          type: array
+    SSOSettings:
+      type: object
+      properties:
+        slo_endpoint:
+          type: string
+        default_group_guid:
+          type: string
+        idp_url:
+          type: string
+        certificate:
+          type: string
+        organization_guid:
+          type: string
+        saml_endpoint:
+          type: string
+        identity_provider:
+          type: string
+        domains:
+          items:
+            type: string
+          type: array
+        issuer_url:
+          type: string
+        url_slug:
+          type: string
+    MinimalDeeplinkApp:
+      type: object
+      description: Deep Linking object
+      properties:
+        guid:
+          type: string
+        os:
+          type: string
+    DeeplinkRules:
+      type: object
+      properties:
+        rules:
+          items:
+            $ref: '#/components/schemas/DeeplinkRule'
+          type: array
+    CreateLaunchpad:
+      required:
+        - group_guid
+        - domain
+        - keyword
+      type: object
+      properties:
+        group_guid:
+          type: string
+        domain:
+          type: string
+        keyword:
+          type: string
+    ShareAccounts:
+      type: object
+      properties:
+        share_accounts:
+          items:
+            $ref: '#/components/schemas/ShareAccount'
+          type: array
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        errors:
+          items:
+            $ref: '#/components/schemas/FieldError'
+          type: array
+        resource:
+          type: string
+        description:
+          type: string
+    ClickMetrics:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseMetrics'
+        - properties:
+            metrics:
+              items:
+                $ref: '#/components/schemas/ClickMetric'
+              type: array
+    BadRequest:
+      description: BAD_REQUEST
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    NSQLookup:
+      type: object
+      properties:
+        producers:
+          items:
+            $ref: '#/components/schemas/NSQProducer'
+          type: array
+    FormCapturePayload:
+      type: object
+      properties:
+        submit_text:
+          type: string
+        name:
+          type: string
+        response_status:
+          type: string
+        pages:
+          items:
+            $ref: '#/components/schemas/FormPage'
+          type: array
+        version:
+          type: string
+        group_guid:
+          type: string
+        login:
+          type: string
+        skip_text:
+          type: string
+        org_guid:
+          type: string
+    FeatureUsage:
+      required:
+        - consumable_features
+        - access_features
+      type: object
+      properties:
+        consumable_features:
+          items:
+            $ref: '#/components/schemas/ConsumableFeatureFull'
+          type: array
+          description: an array of all of the organizations consumable features
+        access_features:
+          items:
+            $ref: '#/components/schemas/AccessFeature'
+          type: array
+          description: an array of all of the organizations access features
+    ContactInfo:
+      required:
+        - first_name
+        - last_name
+        - address
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        address:
+          type: object
+          $ref: '#/components/schemas/BillingAddress'
+    BitlinkBody:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - $ref: '#/components/schemas/BitlinkUpdate'
+    CampaignModify:
+      type: object
+      properties:
+        group_guid:
+          type: string
+        channel_guids:
+          items:
+            type: string
+          type: array
+        description:
+          type: string
+        name:
+          type: string
+      example:
+        group_guid: Ba1bc23dE4F
+        channel_guids:
+          - Ha1bc2DefGj
+          - Ha1bc2DefGk
+        description: my new campaign
+        name: My Campaign
+    AccessFeature:
+      required:
+        - id
+        - name
+        - created
+        - modified
+        - has_access
+        - is_tier_default
+      type: object
+      properties:
+        has_access:
+          type: boolean
+        name:
+          type: string
+        created:
+          type: string
+          description: ISO_TIMESTAMP
+        modified:
+          type: string
+          description: ISO_TIMESTAMP
+        is_tier_default:
+          type: boolean
+        id:
+          type: string
+    BillingContact:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        description:
+          type: string
+        phone:
+          type: string
+        billing_contact_id:
+          type: string
+        email:
+          type: string
+    DeviceMetric:
+      type: object
+      properties:
+        clicks:
+          type: integer
+        device_type:
+          type: string
+    OrganizationUpdate:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+    DomainAgreements:
+      type: object
+      properties:
+        domain_agreements:
+          items:
+            $ref: '#/components/schemas/DomainAgreement'
+          type: array
+    GroupBitlinksCountRollup:
+      type: object
+      properties:
+        units:
+          type: integer
+        total_clicks:
+          type: integer
+        unit_reference:
+          type: string
+        unit:
+          type: string
+    FormField:
+      type: object
+      properties:
+        field_type:
+          type: string
+        name:
+          type: string
+        required:
+          type: boolean
+        label:
+          type: string
+        config:
+          type: object
+          $ref: '#/components/schemas/FormConfig'
+        response:
+          type: string
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+        error_code:
+          type: string
+    CustomDomains:
+      type: object
+      properties:
+        upgrade_required:
+          type: boolean
+        custom_domains:
+          items:
+            $ref: '#/components/schemas/CustomDomainBody'
+          type: array
+    EncodingLogin:
+      type: object
+      properties:
+        encoding_login:
+          items:
+            type: string
+          type: array
+    Payments:
+      type: object
+      properties:
+        payment_number:
+          type: string
+        payment_date:
+          type: string
+        payment_amount:
+          type: number
+    BulkShortenUploadData:
+      required:
+        - headers
+        - filename
+        - bucket
+        - upload_url
+      type: object
+      properties:
+        headers:
+          type: object
+        upload_url:
+          type: string
+        bucket:
+          type: string
+        filename:
+          type: string
+    ViewsSummary:
+      type: object
+      properties:
+        units:
+          type: integer
+        total_views:
+          type: integer
+        unit_reference:
+          type: string
+        unit:
+          enum:
+            - minute
+            - hour
+            - day
+            - week
+            - month
+          type: string
+    PublicValidate:
+      type: object
+      description: Info needed for domain validation
+      properties:
+        custom_domain:
+          type: string
+        organization_guid:
+          type: string
+    BitlinkOverrides:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            created:
+              type: string
+            rules:
+              type: string
+            group_guid:
+              type: string
+            modified:
+              type: string
+            version:
+              type: integer
+            link:
+              type: string
+              description: >-
+                The fully qualified URL to the Override which is the Bitly link
+                to use. Ex: https://foo.com/bar
+            id:
+              type: string
+    CampaignClickData:
+      type: object
+      properties:
+        ts:
+          type: integer
+        clicks:
+          type: integer
+    CountItem:
+      type: object
+      properties:
+        count:
+          type: integer
+        ts:
+          type: string
+    ReferrersByDomain:
+      type: object
+      properties:
+        referrers:
+          items:
+            $ref: '#/components/schemas/Metric'
+          type: array
+        network:
+          type: string
+    BulkShortenUpload:
+      required:
+        - group_guid
+        - org_guid
+        - report_url
+        - name
+        - uploaded_by
+        - status
+        - created
+      type: object
+      properties:
+        status:
+          type: string
+        name:
+          type: string
+        created:
+          type: string
+        group_guid:
+          type: string
+        report_url:
+          type: string
+        uploaded_by:
+          type: string
+        org_guid:
+          type: string
+    TwoFactorCode:
+      required:
+        - code
+      type: object
+      properties:
+        code:
+          type: string
+    UnprocessableEntity:
+      description: UNPROCESSABLE_ENTITY
+      allOf:
+        - $ref: '#/components/schemas/Error'
+    BSDSearchResult:
+      type: object
+      properties:
+        type:
+          enum:
+            - affiliate
+            - reseller
+          type: string
+        domain:
+          type: string
+        subdomain:
+          type: string
+        link:
+          type: string
+        zone:
+          type: string
+    OrganizationGUID:
+      type: object
+      properties:
+        organization_guid:
+          type: string
+    SSOSlug:
+      type: object
+      properties:
+        url_slug:
+          type: string
+    ClickstreamSinkFile:
+      type: object
+      properties:
+        date_from:
+          type: string
+          description: start of period
+          format: date-time
+        date_to:
+          type: string
+          description: end of period
+          format: date-time
+        file_id:
+          type: string
+          description: Unique id of the file
+        download_url:
+          type: string
+          description: use this url with follow redirects to download the file
+        created:
+          type: string
+          description: time of creation
+          format: date-time
+    ChannelModify:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BaseChannel'
+        - properties:
+            bitlinks:
+              items:
+                $ref: '#/components/schemas/BaseChannelBitlink'
+              type: array
+    PlanLimits:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/HasReferences'
+        - properties:
+            organization_guid:
+              type: string
+            plan_limits:
+              items:
+                $ref: '#/components/schemas/PlanLimit'
+              type: array
+    PaymentInvoiceDetail:
+      type: object
+      properties:
+        invoice_summary:
+          type: object
+          $ref: '#/components/schemas/PaymentInvoice'
+        billing_account:
+          type: object
+          $ref: '#/components/schemas/BillingAccount'
+    DeeplinkMetricsRollup:
+      type: object
+      properties:
+        unit_reference:
+          $ref: '#/components/schemas/UnitReferenceTimeStamp'
+        ios:
+          $ref: '#/components/schemas/DeeplinkMetric'
+        other:
+          $ref: '#/components/schemas/DeeplinkMetric'
+        units:
+          $ref: '#/components/schemas/UnitAmount'
+        android:
+          $ref: '#/components/schemas/DeeplinkMetric'
+        unit:
+          $ref: '#/components/schemas/TimeUnit'
+    DeeplinkRule:
+      type: object
+      properties:
+        bitlink:
+          type: string
+        install_url:
+          type: string
+        created:
+          type: string
+          description: ISO timestamp
+        app_uri_path:
+          type: string
+        modified:
+          type: string
+          description: ISO timestamp
+        install_type:
+          type: string
+        app_guid:
+          type: string
+        guid:
+          type: string
+        os:
+          type: string
+        brand_guid:
+          type: string
+security:
+  - bearerAuth: []
+servers:
+  - url: https://api-ssl.bitly.com/v4

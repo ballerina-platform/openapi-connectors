@@ -1,0 +1,2936 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: eDOCS REST API
+  description: > 
+    This is a generated connector from [eDocs](https://www.opentext.com/products-and-solutions/industries/legal/legal-content-management-edocs) OpenAPI Specification.
+
+    An API that allows interaction with the resources stored on an eDOCS DM Server.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: eDOCS Support Team
+    url: https://knowledge.opentext.com
+  license:
+    name: OpenText License
+    url: https://www.opentext.com/file_source/OpenText/en_US/PDF/opentext-legal-license-model-schedule-en.pdf
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials. 
+    
+    Create an [OpenText account](https://login.opentext.com/register) and obtain an API key.
+  x-ballerina-display:
+    label: eDocs
+    iconPath: "icon.png"
+tags:
+  - name: libraries
+    description: Information about the available libraries
+  - name: connection
+    description: Connect to an eDOCS Server
+  - name: folders
+    description: Access to folders and their content
+  - name: documents
+    description: Access to documents
+  - name: searches
+    description: Access to saved searches and search results
+  - name: flexfolders
+    description: Access to FlexFolders and their content
+  - name: workspaces
+    description: Access to workspaces and their content
+  - name: forms
+    description: Access to form defenitions
+  - name: lookups
+    description: Access to lookup definitions and content
+  - name: urls
+    description: Access to URLs and content
+  - name: fileplans
+    description: Records management
+  - name: requests
+    description: Records management
+  - name: boxes
+    description: Records management
+  - name: settings
+    description: Access to user settings
+paths:
+  /libraries:
+    get:
+      tags:
+        - libraries
+      operationId: getLibraries
+      summary: Get a collection of available libraries
+      description: '**Optional:** Additional DM Server configuration information can be retrieved by including any value for the ***configuration*** parameter'
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - name: configuration
+          description: Retrieve DM Server configuration information (if available)
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /connect:
+    post:
+      tags:
+        - connection
+      summary: Connect to the DM Server and get key information in the response
+      operationId: connect
+      description: Connect to one of the libriaries found in the response to the **libraries** request.
+      security:
+        - eDOCS_Authorization: []
+      requestBody:
+        description: Credentials to connect to library
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    userid:
+                      type: string
+                    password:
+                      type: string
+                    library:
+                      type: string
+                  example:
+                    userid: DemoUserId
+                    password: DemoPassword
+                    library: DemoLibrary
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders:
+    get:
+      operationId: getFolders
+      summary: Retrieve a collection of available folders
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of available folders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Add a new folder
+      operationId: addNewFolder
+      description: |-
+        Request body MUST contain at least all the required profile fields.
+
+        Additional create information can be found under **_restapi**
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Profile data needed to create a folder
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileData'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/public:
+    get:
+      summary: Retrieve a collection of public folders
+      operationId: getPublicFolders
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/SearchLibraries'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of public folders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/recentedits:
+    get:
+      summary: Retrieve a collection of recently edited items
+      operationId: getRecentEdits
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/SearchLibraries'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of recently edited items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/checkedout:
+    get:
+      summary: Retrieve a collection of checked out items
+      operationId: getCheckedOutItems
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/SearchLibraries'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of checked out items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/deleted:
+    get:
+      summary: Retrieve a collection of deleted items
+      operationId: getDeletedItems
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/SearchLibraries'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of deleted items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/templates:
+    get:
+      operationId: getTemplates
+      summary: Retrieve a collection of system defined templates
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/SearchLibraries'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of system defined templates
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/{id}:
+    get:
+      summary: Retrieve a collection of content from this folder
+      operationId: getFolder
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of folder content
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request this folder be deleted
+      operationId: deleteFolder
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/{id}/profile:
+    get:
+      summary: Retrieve the profile data for this folder
+      operationId: getProfileForTheFolder
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Replace the profile data for this folder
+      operationId: updateProfileData
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Profile data that needs to be replaced.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileData'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/{id}/security:
+    get:
+      operationId: getSecurityInfo
+      summary: Retrieve the security data for this folder
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Replace the security data for this folder
+      operationId: updateSecurityInfo
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Security data that needs to replaced for this folder
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityData'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/{id}/security/rights:
+    get:
+      operationId: getSecurityRights
+      summary: Retrieve the user's security rights for this folder
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/{id}/references:
+    get:
+      summary: Retrieve a collection of references to this folder
+      operationId: getFolderReferences
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of references
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Add a reference to this folder into folders and workspaces
+      operationId: addReferenceToFolder
+      description: Request body contains a list of individual target folders and workspaces
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Reference information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties: {}
+                  example:
+                    - id: '123'
+                      type: folders
+                      lib: DemoLibrary
+                      docname: Target One
+                    - id: '456'
+                      type: workspaces
+                      lib: DemoLibrary
+                      docname: Target Two
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request the reference to this folder be deleted from a folder or workspace
+      operationId: deleteReferenceFromFolder
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/{id}/facets:
+    get:
+      summary: Retrieve the facet data for this folder
+      operationId: getFacetData
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folders/{id}/history:
+    get:
+      summary: Retrieve the history data for this folder
+      operationId: getHistoryData
+      tags:
+        - folders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /documents:
+    get:
+      summary: Retrieve a collection of available documents
+      operationId: getAvailableDocuments
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # post:
+    #   summary: Add a new document
+    #   operationId: addNewDocument
+    #   description: |-
+    #     Request body MUST contain at least all the required profile fields.
+
+    #     Additional create information can be found under **_restapi**
+    #   tags:
+    #     - documents
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/Library'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/UploadData'
+    #   responses:
+    #     '200':
+    #       description: Expected response to a valid request
+    #       headers:
+    #         Set-Cookie:
+    #           schema:
+    #             type: string
+    #       content:
+    #         application/json: {}
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+  /documents/{id}:
+    delete:
+      summary: Request this document be deleted
+      operationId: deleteDocumentById
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # post:
+    #   summary: Add a new version to this document
+    #   operationId: addNewVersion
+    #   description: |-
+    #     Request body MUST contain at least all the required profile fields.
+
+    #     Additional create information can be found under **_restapi**
+    #   tags:
+    #     - documents
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/ResourceId'
+    #     - $ref: '#/components/parameters/Library'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/UploadData'
+    #   responses:
+    #     '200':
+    #       description: Expected response to a valid request
+    #       headers:
+    #         Set-Cookie:
+    #           schema:
+    #             type: string
+    #       content:
+    #         application/json: {}
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+  /documents/{id}/profile:
+    get:
+      summary: Retrieve the profile data for this document
+      operationId: getProfileDataOfDocument
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Replace the profile data for this document
+      operationId: updateProfileDataOfDocument
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileData'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /documents/{id}/security:
+    get:
+      summary: Retrieve the security data for this document
+      operationId: getSecurityDataOfDocument
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Replace the security data for this document
+      operationId: updateSecurityData
+      description: Request body MUST contain valid security schema
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Security data that needs to be replaced for this document.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityData'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /documents/{id}/versions:
+    get:
+      summary: Retrieve a collection of versions for this document
+      operationId: getVersionsOfDocument
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of versions for this document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # post:
+    #   summary: Add a new sub-version to this version of the document
+    #   operationId: addSubVersionToDocument
+    #   description: |-
+    #     Request body MUST contain at least all the required profile fields.
+
+    #     Additional create information can be found under **_restapi**
+    #   tags:
+    #     - documents
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/ResourceId'
+    #     - $ref: '#/components/parameters/Library'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/UploadData'
+    #   responses:
+    #     '200':
+    #       description: Expected response to a valid request
+    #       headers:
+    #         Set-Cookie:
+    #           schema:
+    #             type: string
+    #       content:
+    #         application/json: {}
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+  /documents/{id}/versions/{version}:
+    # get:
+    #   summary: Retrieve the contents of this version of the document
+    #   operationId: getContentOfSpecificVersion
+    #   tags:
+    #     - documents
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/ResourceId'
+    #     - $ref: '#/components/parameters/VersionId'
+    #     - $ref: '#/components/parameters/Library'
+    #   responses:
+    #     '200':
+    #       description: File content
+    #       content:
+    #         multipart/form-data:
+    #           schema:
+    #             $ref: '#/components/schemas/DownloadResponse'
+    #     '201':
+    #       description: Null response
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request this version of the document be deleted
+      operationId: deleteSpecificVersionofSpecificDocument
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/VersionId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # post:
+    #   summary: Add a new sub-version to this document
+    #   operationId: addNewSubVersion
+    #   description: |-
+    #     Request body MUST contain at least all the required profile fields.
+
+    #     Additional create information can be found under **_restapi**
+    #   tags:
+    #     - documents
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/ResourceId'
+    #     - $ref: '#/components/parameters/VersionId'
+    #     - $ref: '#/components/parameters/Library'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/UploadData'
+    #   responses:
+    #     '200':
+    #       description: Expected response to a valid request
+    #       headers:
+    #         Set-Cookie:
+    #           schema:
+    #             type: string
+    #       content:
+    #         application/json: {}
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+  /documents/{id}/references:
+    get:
+      summary: Retrieve a collection of references to this document
+      operationId: getCollectionOfReferences
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of references to this document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Add a reference to this document into folders and workspaces
+      operationId: addReferencesToFoldersAndWorkspaces
+      description: Request body contains a list of individual target folders and workspaces
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Reference information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties: {}
+                  example:
+                    - id: '123'
+                      type: folders
+                      lib: DemoLibrary
+                      docname: Target One
+                    - id: '456'
+                      type: workspaces
+                      lib: DemoLibrary
+                      docname: Target Two
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request the reference to this document be deleted from a folder or workspace
+      operationId: deleteReference
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /documents/{id}/attachments/:
+    get:
+      summary: Retrieve a collection of attachments for this document
+      operationId: getAttachments
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of attachments for this document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # post:
+    #   summary: Add a new attachment to this document
+    #   operationId: addNewAttachments
+    #   description: |-
+    #     Request body MUST contain at least all the required profile fields.
+
+    #     Additional create information can be found under **_restapi**
+    #   tags:
+    #     - documents
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/ResourceId'
+    #     - $ref: '#/components/parameters/VersionId'
+    #     - $ref: '#/components/parameters/Library'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/AttachmentData'
+    #   responses:
+    #     '200':
+    #       description: Expected response to a valid request
+    #       headers:
+    #         Set-Cookie:
+    #           schema:
+    #             type: string
+    #       content:
+    #         application/json: {}
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+  /documents/{id}/attachments/{attachment}:
+    get:
+      summary: Retrieve the contents of this attachment
+      operationId: getContentOfAttachment
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/AttachmentId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request this attachment be deleted
+      operationId: deleteAttachment
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/AttachmentId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /documents/{id}/history:
+    get:
+      summary: Retrieve the history data for this document
+      operationId: getHistoryDataForDocument
+      tags:
+        - documents
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /searches:
+    get:
+      summary: Get a collection of available saved searches
+      operationId: getSavedSearches
+      tags:
+        - searches
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of saved searches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # post:
+    #   summary: Add a new saved search
+    #   operationId: addNewSearch
+    #   tags:
+    #     - searches
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/Library'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/SearchData'
+    #   responses:
+    #     '200':
+    #       description: Expected response to a valid request
+    #       headers:
+    #         Set-Cookie:
+    #           schema:
+    #             type: string
+    #       content:
+    #         application/json: {}
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+  # /searches/evaluation:
+  #   post:
+  #     summary: Get a collection of results based on the specified search criteria
+  #     operationId: getSearchEvaluations
+  #     tags:
+  #       - searches
+  #     security:
+  #       - eDOCS_Authorization: []
+  #     parameters:
+  #       - $ref: '#/components/parameters/Library'
+  #     requestBody:
+  #       required: true
+  #       content:
+  #         multipart/form-data:
+  #           schema:
+  #             $ref: '#/components/schemas/SearchData'
+  #     responses:
+  #       '200':
+  #         description: Expected response to a valid request
+  #         headers:
+  #           Set-Cookie:
+  #             schema:
+  #               type: string
+  #         content:
+  #           application/json: {}
+  #       default:
+  #         description: unexpected error
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Error'
+  /searches/{id}:
+    get:
+      summary: Retrieve a collection of results that satisfy the saved search criteria
+      operationId: getSearches
+      tags:
+        - searches
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request this saved search be deleted
+      operationId: deleteSearch
+      tags:
+        - searches
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /searches/{id}/profile:
+    get:
+      summary: Retrieve the profile data for this saved search
+      operationId: getProfileForSavedSearch
+      tags:
+        - searches
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    # put:
+    #   summary: Replace the profie data for this saved search
+    #   operationId: updateProfileDataForSavedSearch
+    #   tags:
+    #     - searches
+    #   security:
+    #     - eDOCS_Authorization: []
+    #   parameters:
+    #     - $ref: '#/components/parameters/ResourceId'
+    #     - $ref: '#/components/parameters/Library'
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       multipart/form-data:
+    #         schema:
+    #           $ref: '#/components/schemas/SearchData'
+    #   responses:
+    #     '201':
+    #       description: Null response
+    #     default:
+    #       description: unexpected error
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/Error'
+  /searches/{id}/references:
+    get:
+      summary: Retrieve a collection of references to this saved search
+      operationId: getReferencesForSavedSearch
+      tags:
+        - searches
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of references to this saved search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Add a reference to this saved search into workspaces
+      operationId: addReferenceToSavedSearch
+      description: Request body contains a list of individual target workspaces
+      tags:
+        - searches
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Reference information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties: {}
+                  example:
+                    - id: '123'
+                      type: workspaces
+                      lib: DemoLibrary
+                      docname: Target One
+                    - id: '456'
+                      type: workspaces
+                      lib: DemoLibrary
+                      docname: Target Two
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request the reference to this saved search be deleted from a workspace
+      operationId: deleteReferenceFromSavedSearch
+      tags:
+        - searches
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /workspaces:
+    get:
+      summary: Get a collection of available workspaces
+      operationId: getWorkspaces
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of workspaces
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Add a new workspace
+      operationId: addNewWorkspace
+      description: |-
+        Request body MUST contain at least all the required profile fields.
+
+        Additional create information can be found under **_restapi**
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Profile data for new workspace.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileData'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /workspaces/{id}:
+    get:
+      summary: Retrieve a collection of content from this workspace
+      operationId: getWorkspaceById
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of content from this workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request this workspace be deleted
+      operationId: deleteWorkspaces
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /workspaces/{id}/profile:
+    get:
+      summary: Retrieve the profile data for this workspace
+      operationId: getProfileDataForWorkspace
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Replace the profile data for this workspace
+      operationId: repalceProfileDataForWorkspace
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Profile data that needs to be replaced in workspace
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileData'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /workspaces/{id}/security:
+    get:
+      summary: Retrieve the security data for this workspace
+      operationId: getSecurityDataForWorkspace
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Replace the security data for this workspace
+      operationId: updateSecurityDataForWorkspace
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Security data that needs to replaced in workspace.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SecurityData'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /workspaces/{id}/security/rights:
+    get:
+      summary: Retrieve the user's security rights for this workspace
+      operationId: getUserSecurityRightsForWorkspace
+      tags:
+        - workspaces
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /flexfolders:
+    get:
+      summary: Get a collection of available FlexFolders
+      operationId: getCollectionOfFlexFolders
+      tags:
+        - flexfolders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of FlexFolders
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /flexfolders/{id}:
+    get:
+      summary: Retrieve a collection of content from this FlexFolder
+      operationId: getFlexFolder
+      tags:
+        - flexfolders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of content from this FlexFolder
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request this FlexFolder (subscription) be deleted
+      operationId: deleteFlexFolder
+      tags:
+        - flexfolders
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans:
+    get:
+      summary: Retrieve a collection of available first level terms
+      operationId: getFilePlans
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of fileplans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans/recentused:
+    get:
+      summary: Retrieve a collection of recently used fileplans
+      operationId: getCollectionOfFilePlans
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of recently used fileplans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans/groupfavorites:
+    get:
+      summary: Retrieve a collection of group favourite fileplans
+      operationId: getFavoriteGroupFilePlans
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of group favourite fileplans
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans/{id}:
+    get:
+      summary: Retrieve a collection of available items of this fileplan level
+      operationId: getFilePlansById
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of fileplan items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans/{id}/history:
+    get:
+      summary: Retrieve the history data for this fileplan level
+      operationId: getHistoryDataForFilePlan
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans/{id}/profile:
+    get:
+      summary: Retrieve the profile data for this fileplan level
+      operationId: getFilePlansData
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans/{id}/references:
+    get:
+      summary: Retrieve a collection of reference for this fileplan
+      operationId: getCollectionOfReferecenForFilePlan
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of references to this fileplan
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Add a reference to this fileplan into folders and workspaces
+      operationId: addReferenceToFilePlan
+      description: Request body contains a list of individual target folders and workspaces
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Reference information for fileplan
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties: {}
+                  example:
+                    - id: '123'
+                      type: folders
+                      lib: DemoLibrary
+                      docname: Target One
+                    - id: '456'
+                      type: workspaces
+                      lib: DemoLibrary
+                      docname: Target Two
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request the reference to this fileplan be deleted from a folder or workspace
+      operationId: deleteReferencesToFilePlan
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /fileplans/{id}/requests:
+    post:
+      summary: Add a request to this fileplan item
+      operationId: addRequestToFilePlan
+      tags:
+        - fileplans
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: Request information
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties: {}
+                  example:
+                    - id: '123'
+                      type: folders
+                      lib: DemoLibrary
+                      docname: Target One
+                    - id: '456'
+                      type: workspaces
+                      lib: DemoLibrary
+                      docname: Target Two
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /boxes/{id}:
+    get:
+      summary: Retrieve a collection of content from this box
+      operationId: getBoxes
+      tags:
+        - boxes
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of boxes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /boxes/{id}/history:
+    get:
+      summary: Retrieve the history data for this box
+      operationId: getHistoryDataForBox
+      tags:
+        - boxes
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /boxes/{id}/profile:
+    get:
+      summary: Retrieve the profile data for this box
+      operationId: getProfileDataForBox
+      tags:
+        - boxes
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /requests:
+    get:
+      summary: Retrieve a collection of requests
+      operationId: getRequests
+      tags:
+        - requests
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /requests/{id}:
+    put:
+      summary: Add a request to this fileplan item
+      operationId: addRequestToFilePlanItem
+      tags:
+        - requests
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request the request to this fileplan item be deleted
+      operationId: deleteRequestToFilePlanItem
+      tags:
+        - requests
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /settings:
+    get:
+      summary: Access to user settings
+      operationId: getUserSettings
+      tags:
+        - settings
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of user settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /settings/{id}:
+    get:
+      summary: Retrieve a collection of this setting
+      operationId: getSettingsById
+      tags:
+        - settings
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of this setting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /settings/{id}/{setting}:
+    get:
+      summary: Retrieve the configurable attributes of this setting
+      operationId: getConfigurableAttributes
+      tags:
+        - settings
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/SettingId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of attributes of this setting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Replace the configurable attributes of this setting
+      operationId: replaceConfigurables
+      description: Request body contains a list of individual target folders and workspaces
+      tags:
+        - settings
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/SettingId'
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties: {}
+                  example:
+                    - id: '123'
+                      type: folders
+                      lib: DemoLibrary
+                      docname: Target One
+                    - id: '456'
+                      type: workspaces
+                      lib: DemoLibrary
+                      docname: Target Two
+      responses:
+        '200':
+          description: Expected response to a valid request
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+          content:
+            application/json: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Request this setting be deleted
+      operationId: deleteSettting
+      tags:
+        - settings
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/SettingId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /forms:
+    get:
+      summary: Access to form defenitions
+      operationId: getForms
+      tags:
+        - forms
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of forms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /forms/app_ids:
+    get:
+      summary: Retrieve a collection of applications and their associated form data
+      operationId: getApplications
+      tags:
+        - forms
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /forms/{id}/profile:
+    get:
+      summary: Retrieve the definition data for this form
+      operationId: getDefinitionDataForForm
+      tags:
+        - forms
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /forms/{id}/columns:
+    get:
+      summary: Retrieve the column definition data for this form
+      operationId: getColumnDefinitionDataForForm
+      tags:
+        - forms
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /lookups:
+    get:
+      summary: Get a collection of available tables
+      operationId: getLookups
+      tags:
+        - lookups
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of tables
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /lookups/{table}:
+    get:
+      summary: Retrieve a collection of entries from this table
+      operationId: getEntriesFromTable
+      tags:
+        - lookups
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/TableId'
+        - $ref: '#/components/parameters/KeyId'
+        - $ref: '#/components/parameters/ProfileId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of entries from this table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /lookups/{table}/profile:
+    get:
+      summary: Retrieve the definition for this table
+      operationId: getDefenitionForThisTable
+      tags:
+        - lookups
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/TableId'
+        - $ref: '#/components/parameters/KeyId'
+        - $ref: '#/components/parameters/ProfileId'
+        - $ref: '#/components/parameters/Library'
+        - $ref: '#/components/parameters/Start'
+        - $ref: '#/components/parameters/Max'
+        - $ref: '#/components/parameters/Ascending'
+        - $ref: '#/components/parameters/Descending'
+        - $ref: '#/components/parameters/Filter'
+      responses:
+        '200':
+          description: Collection of definition for this table
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /urls:
+    post:
+      summary: Create a URL
+      operationId: createURL
+      description: Create a URL in the specified location
+      tags:
+        - urls
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/Library'
+      requestBody:
+        description: URL information to create a URL
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    DISPLAYNAME:
+                      type: string
+                    URL_ADDRESS:
+                      type: string
+                    _restapi:
+                      type: object
+                      properties:
+                        ref:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                            id:
+                              type: string
+                            lib:
+                              type: string
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /urls/{id}:
+    delete:
+      summary: Request this url be deleted
+      operationId: deleteURL
+      tags:
+        - urls
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /urls/{id}/profile:
+    get:
+      summary: Retrieve the column definition data for this form
+      operationId: getProfileDataForURL
+      tags:
+        - urls
+      security:
+        - eDOCS_Authorization: []
+      parameters:
+        - $ref: '#/components/parameters/ResourceId'
+        - $ref: '#/components/parameters/Library'
+      responses:
+        '201':
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    eDOCS_Authorization:
+      type: apiKey
+      in: header
+      name: X-DM-DST
+      description: |+
+        You can obtain a **X-DM-DST** by connecting to a DM Server.
+
+        It can be found under "HEADERS" in the response body.
+
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    CollectionResponse:
+      description: Collection of items based on the provided criteria
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            set:
+              description: Information defining the items in the collection
+              type: object
+              properties:
+                start:
+                  type: integer
+                max:
+                  type: integer
+                ascending:
+                  type: string
+                descending:
+                  type: string
+                filter:
+                  type: string
+                total:
+                  type: integer
+            list:
+              description: Individual items items in the collection
+              type: array
+              items: {}
+    DownloadResponse:
+      type: object
+      properties:
+        file:
+          type: string
+          format: base64
+    UploadData:
+      type: object
+      properties:
+        file:
+          type: string
+          format: base64
+        data:
+          type: object
+          properties: {}
+          example:
+            DOCNAME: Name Of document
+            AUTHOR_ID: DemoUserId
+            TYPIST_ID: DemoUserId
+            APP_ID: DEFAULT
+            FORM: '1839'
+            _restapi:
+              form_name: LEGALPROF
+    AttachmentData:
+      type: object
+      properties:
+        file:
+          type: string
+          format: base64
+        data:
+          type: object
+          properties: {}
+          example:
+            DOCNAME: Name Of document
+            AUTHOR_ID: DemoUserId
+            TYPIST_ID: DemoUserId
+            APP_ID: DEFAULT
+            FORM: '1839'
+            _restapi:
+              form_name: LEGALPROF
+    ProfileData:
+      type: object
+      properties:
+        data:
+          type: object
+          properties: {}
+          example:
+            DOCNAME: Name
+            AUTHOR_ID: DemoUserId
+            TYPIST_ID: DemoUserId
+            APP_ID: Application
+    SecurityData:
+      type: object
+      properties:
+        data:
+          type: object
+          properties: {}
+          example:
+            - flag: 2
+              USER_ID: DemoUserIdOne
+              rights: 32255
+            - flag: 2
+              USER_ID: DemoUserIdTwo
+              rights: 32255
+            - flag: 2
+              USER_ID: DemoUserIdThree
+              rights: 255
+    SearchData:
+      type: object
+      properties:
+        data:
+          type: object
+          properties: {}
+          example:
+            DESCRIPTION: Name of saved search
+            FORM_NAME: LAWQBE
+            criteria:
+              AUTHOR_ID: DemoUserIdOne,DemoUserIdTwo
+              TYPE_ID: DEFAULT
+  parameters:
+    ResourceId:
+      name: id
+      description: Resource identification
+      in: path
+      required: true
+      schema:
+        type: string
+    VersionId:
+      name: version
+      description: Version identification
+      in: path
+      required: true
+      schema:
+        type: string
+    AttachmentId:
+      name: attachment
+      description: Attachment identification
+      in: path
+      required: true
+      schema:
+        type: string
+    SettingId:
+      name: setting
+      description: Setting identification
+      in: path
+      required: true
+      schema:
+        type: string
+    TableId:
+      name: table
+      description: Table identification
+      in: path
+      required: true
+      schema:
+        type: string
+    KeyId:
+      name: key
+      description: Key identification
+      in: query
+      required: true
+      schema:
+        type: string
+    ProfileId:
+      name: profile
+      description: Profile identification
+      in: query
+      required: true
+      schema:
+        type: string
+    Library:
+      name: library
+      description: Name of library (lib)
+      in: query
+      required: true
+      schema:
+        type: string
+    SearchLibraries:
+      name: libs
+      description: Comma delimited list of multiple libraries
+      in: query
+      schema:
+        type: string
+    Start:
+      name: start
+      description: (zero-based) Index of first item to retrieve
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    Max:
+      name: max
+      description: Maximum number of items to retrieve
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        default: 10
+    Ascending:
+      name: ascending
+      description: Retrieve items in ascending order by this field
+      in: query
+      schema:
+        type: string
+    Descending:
+      name: descending
+      description: Retrieve items in descending order by this field
+      in: query
+      schema:
+        type: string
+    Filter:
+      name: filter
+      description: Restrict items to retrieve based on this criteria
+      in: query
+      schema:
+        type: string

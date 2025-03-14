@@ -1,0 +1,857 @@
+openapi: 3.0.0
+info:
+  x-ballerina-display:
+    label: BIS Stats
+    iconPath: "icon.png"
+  version: '1.4.0'
+  title: 'SDMX RESTful API'
+  description: >
+    This is a generated connector for [BIS SDMX RESTful API v1](https://stats.bis.org/api-doc/v1/) OpenAPI specification.
+
+    The BIS SDMX RESTful API is a subset of the official SDMX RESTful API v1.4.0, released in June 2019.
+    
+    This service offers programmatic access to the BIS statistical data and metadata published on the [BIS statistics pages](https://www.bis.org/statistics/index.htm) released to the public.
+
+    For additional information about the SDMX RESTful API, check the [official sdmx-rest specification](https://github.com/sdmx-twg/sdmx-rest/tree/master/v2_1/ws/rest/docs) or the [dedicated Wiki](https://github.com/sdmx-twg/sdmx-rest/wiki), including [**useful tips for consumers**](https://github.com/sdmx-twg/sdmx-rest/wiki/Tips-for-consumers).
+  x-ballerina-init-description: >
+    The connector initialization doesn't require setting the API credentials. 
+    
+    Please refer the [API documentation](https://stats.bis.org/api-doc/v1/) for more information.
+servers:
+  - description: BIS Stats API
+    url: https://stats.bis.org/api/v1
+  
+paths:
+  /data/{flow}/{key}/all:
+    get:
+      operationId: getData
+      summary: 'Get data'
+      tags: 
+        - Data queries
+      parameters:
+        - $ref: '#/components/parameters/flow'
+        - $ref: '#/components/parameters/key'
+        - $ref: '#/components/parameters/startPeriod'
+        - $ref: '#/components/parameters/endPeriod'
+        - $ref: '#/components/parameters/firstNObservations'
+        - $ref: '#/components/parameters/lastNObservations'
+        - $ref: '#/components/parameters/detail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+
+  /availableconstraint/{flow}/{key}/all/{componentID}:
+    get:
+      operationId: getDataAvailabilityInformation
+      summary: 'Get information about data availability'
+      tags: 
+        - Data availability queries
+      parameters:
+        - $ref: '#/components/parameters/flow'
+        - $ref: '#/components/parameters/key'
+        - $ref: '#/components/parameters/componentID'
+        - $ref: '#/components/parameters/mode'
+        - $ref: '#/components/parameters/acreferences'
+        - $ref: '#/components/parameters/startPeriod'
+        - $ref: '#/components/parameters/endPeriod'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+  
+  /datastructure/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getDataStructures
+      summary: 'Get data structures'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+   
+  /dataflow/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getDataFlows
+      summary: 'Get dataflows'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+            
+  /categorisation/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getCategorisations
+      summary: 'Get categorisations'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /contentconstraint/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getContentConstraints
+      summary: 'Get content constraints'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /actualconstraint/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getActualConstraints
+      summary: 'Get actual constraints'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /allowedconstraint/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getAllowedConstraints
+      summary: 'Get allowed constraints'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /structure/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getStructures
+      summary: 'Get structures'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /conceptscheme/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getConceptSchemes
+      summary: 'Get concept schemes'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+  
+  /codelist/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getCodelists
+      summary: 'Get codelists'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /categoryscheme/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getCategorySchemes
+      summary: 'Get category schemes'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /hierarchicalcodelist/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getHierarchicalCodelists
+      summary: 'Get hierarchical codelists'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /agencyscheme/{agencyID}/{resourceID}/{version}:
+    get:
+      operationId: getAgencySchemes
+      summary: 'Get agency schemes'
+      tags: 
+        - Structure queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+          
+  /conceptscheme/{agencyID}/{resourceID}/{version}/{itemID}:
+    get:
+      operationId: getConcepts
+      summary: 'Get concepts'
+      tags: 
+        - Item queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/items'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+  
+  /codelist/{agencyID}/{resourceID}/{version}/{itemID}:
+    get:
+      operationId: getCodes
+      summary: 'Get codes'
+      tags: 
+        - Item queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/items'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+
+  /categoryscheme/{agencyID}/{resourceID}/{version}/{itemID}:
+    get:
+      operationId: getCategories
+      summary: 'Get categories'
+      tags: 
+        - Item queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/items'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+
+  /hierarchicalcodelist/{agencyID}/{resourceID}/{version}/{itemID}:
+    get:
+      operationId: getHierarchies
+      summary: 'Get hierarchies'
+      tags: 
+        - Item queries
+      parameters:
+        - $ref: '#/components/parameters/agencies'
+        - $ref: '#/components/parameters/resourceIDs'
+        - $ref: '#/components/parameters/versions'
+        - $ref: '#/components/parameters/items'
+        - $ref: '#/components/parameters/references'
+        - $ref: '#/components/parameters/structDetail'
+        - $ref: '#/components/parameters/accept-encoding'
+      responses:
+        '200':
+          $ref: '#/components/responses/200-struct'
+        '400': 
+          $ref: '#/components/responses/400'
+        '404': 
+          $ref: '#/components/responses/404'
+        '406':
+          $ref: '#/components/responses/406'
+        '500': 
+          $ref: '#/components/responses/500'
+        '501': 
+          $ref: '#/components/responses/501'
+        '503': 
+          $ref: '#/components/responses/503'
+  
+components:
+  parameters:
+    flow:
+      in: path
+      name: flow
+      description: |
+        The **statistical domain** (aka dataflow) of the data to be returned.
+        
+        Examples:
+        
+        * `BISWEB_EERDATAFLOW`: The ID of the domain
+        * `BIS,BISWEB_EERDATAFLOW`: The BISWEB_EERDATAFLOW domain, maintained by the BIS
+        * `BIS,BISWEB_EERDATAFLOW,1.0`: Version 1.0 of the BISWEB_EERDATAFLOW domain, maintained by the BIS
+      required: true
+      schema:
+        type: string
+        pattern: '^([a-zA-Z][a-zA-Z\d_-]*(\.[a-zA-Z][a-zA-Z\d_-]*)*,)?[a-zA-Z\d_@$-]+(,(latest|(\d+(\.\d+)*)))?$'
+    key:
+      in: path
+      name: key
+      description: |
+        The (possibly partial) **key identifying the data to be returned**. 
+        
+        The keyword `all` can be used to indicate that all data belonging to the specified dataflow and provided by the specified provider must be returned.
+        
+        The examples below are based on the following key: Frequency, Type, Basket, Country.
+         * `M.N.B.CH`: Full key, matching exactly one series, i.e. the monthly (`M`) nominal rate (`N`) in the broad basket (`B`) for Switzerland (`CH`).
+         * `M.N+R.B.CH`: Retrieves both nominal and real rates (`N+R`), matching exactly two series.
+         * `M.N.B.`: The last dimension is wildcarded, and it will therefore match all countries.
+      required: true
+      schema:
+        type: string
+        pattern: '^([\.A-Za-z\d_@$-]+(\+[A-Za-z\d_@$-]+)*)*$'
+    agencyID:
+      in: path
+      name: agencyID
+      description: The agency maintaining the artefact used to generate the schema to be returned.
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Za-z][A-Za-z\d_-]*(\.[A-Za-z][A-Za-z\d_-]*)*$'
+    resourceID:
+      in: path
+      name: resourceID
+      description: The id of the artefact used to generate the schema to be returned.
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Za-z\d_@$-]+$'
+    version:
+      in: path
+      name: version
+      description: |
+        The version of the artefact used to generate the schema to be returned.
+        
+        The keyword `latest` can be used to return the latest production version of the matching resource.
+      required: true
+      schema:
+        type: string
+        pattern: '^(latest|[\d]+(\.[\d]+)*)$'
+    agencies:
+      in: path
+      name: agencyID
+      description: |
+        The agency maintaining the artefact to be returned. 
+        
+        It is possible to set more than one agency, using `+` as separator (e.g. BIS+ECB).
+        
+        The keyword `all` can be used to indicate that artefacts maintained by any maintenance agency should be returned.
+      required: true
+      schema:
+        type: string
+        pattern: '^(([A-Za-z][A-Za-z\d_-]*)(\.[A-Za-z][A-Za-z\d_-]*)*,)?[A-Za-z\d_@$-]+(\+([A-Za-z][A-Za-z\d_-]*(\.[A-Za-z][A-Za-z\d_-]*)*,)?[A-Za-z\d_@$-]+)*$'
+    resourceIDs:
+      in: path
+      name: resourceID
+      description: |
+        The id of the artefact to be returned.
+        
+        It is possible to set more than one id, using `+` as separator (e.g. CL_FREQ+CL_CONF_STATUS).
+        
+        The keyword `all` can be used to indicate that any artefact of the specified resource type, {agencyID} and {version} should be returned. 
+      required: true
+      schema:
+        type: string
+        pattern: '^([A-Za-z\d_@$-]+(\+[A-Za-z\d_@$-]+)*)*$'
+    versions:
+      in: path
+      name: version
+      description: | 
+        The version of the artefact to be returned. 
+        
+        It is possible to set more than one version, using `+` as separator (e.g. 1.0+2.1).
+        
+        The keyword `all` can be used to return all versions of the matching resource.
+        
+        The keyword `latest` can be used to return the latest production version of the matching resource.
+      required: true
+      schema:
+        type: string
+        pattern: '^(all|latest|[\d]+(\.[\d]+)*(\+[\d]+(\.[\d]+)*)*)$'
+    items:
+      in: path
+      name: itemID
+      description: |
+        The id of the item to be returned. 
+        
+        It is possible to set more than one id, using `+` as separator (e.g. A+Q+M).
+        
+        The keyword `all` can be used to return all items of the matching resource.
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Za-z\d_@$-]+(\.[A-Za-z\d_@$-]+)*(\+[A-Za-z\d_@$-]+(\.[A-Za-z\d_@$-]+)*)*$'
+    componentID:
+      in: path
+      name: componentID
+      description: |
+        The id of the Dimension for which to obtain availability information about. Use all to indicate that data availability should be provided for all dimensions.
+      required: true
+      schema:
+        type: string
+        pattern: '^[A-Za-z][A-Za-z\d_-]*$'
+    startPeriod:
+      in: query
+      name: startPeriod
+      description: |
+        The start of the period for which results should be supplied (inclusive).
+        
+        Can be expressed using 8601 dates or SDMX reporting periods. 
+        
+        Examples:
+        * `2000`: Year (ISO 8601)
+        * `2000-01`: Month (ISO 8601)
+        * `2000-01-01`: Date (ISO 8601)
+        * `2000-Q1`: Quarter (SDMX)
+        * `2000-W01`: Week (SDMX)
+        
+      required: false
+      schema:
+        type: string
+        pattern: '^\d{4}-?((\d{2}(-\d{2})?)|A1|S[1|2]|Q[1-4]|T[1-3]|M(0[1-9]|1[0-2])|W(0[1-9]|[1-4][0-9]|5[0-3])|D(0[0-9][1-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?$'
+    endPeriod:
+      in: query
+      name: endPeriod
+      description: |
+        The end of the period for which results should be supplied (inclusive).
+        
+        Can be expressed using 8601 dates or SDMX reporting periods. 
+        
+        Examples:
+        * `2000`: Year (ISO 8601)
+        * `2000-01`: Month (ISO 8601)
+        * `2000-01-01`: Date (ISO 8601)
+        * `2000-S1`: Semester (SDMX)
+        * `2000-D001`: Day (SDMX)
+      required: false
+      schema:
+        type: string
+        pattern: '^\d{4}-?((\d{2}(-\d{2})?)|A1|S[1|2]|Q[1-4]|T[1-3]|M(0[1-9]|1[0-2])|W(0[1-9]|[1-4][0-9]|5[0-3])|D(0[0-9][1-9]|[1-2][0-9][0-9]|3[0-5][0-9]|36[0-6]))?$'
+    firstNObservations:  
+      in: query
+      name: firstNObservations
+      description: |
+        The maximum number of observations to be returned starting from the oldest one
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    lastNObservations:
+      in: query
+      name: lastNObservations
+      description: |
+        The maximum number of observations to be returned starting from the most recent one
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+    detail:
+      in: query
+      name: detail
+      description: |
+        The **amount of information** to be returned. 
+        
+        Possible options are: 
+        
+        * `full`: All data and documentation
+        * `dataonly`: Everything except attributes
+        * `serieskeysonly`: The series keys. This is useful to return the series that match a certain query, without returning the actual data (e.g. overview page)
+        * `nodata`: The series, including attributes and annotations, without observations.
+      required: false
+      schema:
+        type: string
+        enum: [full, dataonly, serieskeysonly, nodata]
+        default: full
+    structDetail:
+      in: query
+      name: detail
+      description: |
+        The amount of information to be returned. 
+        
+        Possible values are: 
+        
+        * `allstubs`: All artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name
+        * `referencestubs`: Referenced artefacts should be returned as stubs, containing only identification information, as well as the artefacts' name
+        * `referencepartial`: Referenced item schemes should only include items used by the artefact to be returned. For example, a concept scheme would only contain the concepts used in a DSD, and its isPartial flag would be set to `true`
+        * `allcompletestubs`: All artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information
+        * `referencecompletestubs`: Referenced artefacts should be returned as complete stubs, containing identification information, the artefacts' name, description, annotations and isFinal information
+        * `full`: All available information for all artefacts should be returned
+      required: false
+      schema:
+        type: string
+        enum: [allstubs, referencestubs, referencepartial, allcompletestubs, referencecompletestubs, full]
+        default: full
+    references:
+      in: query
+      name: references
+      description: |
+        Instructs the web service to return (or not) the artefacts referenced by the artefact to be returned.
+        
+        Possible values are: 
+        
+        * `none`: No references will be returned
+        * `parents`: Returns the artefacts that use the artefact matching the query
+        * `parentsandsiblings`: Returns the artefacts that use the artefact matching the query, as well as the artefacts referenced by these artefacts
+        * `children`: Returns the artefacts referenced by the artefact to be returned
+        * `descendants`: References of references, up to any level, will be returned
+        * `all`: The combination of parentsandsiblings and descendants
+        * In addition, a concrete type of resource may also be used (for example, references=codelist).
+      required: false
+      schema:
+        type: string
+        enum: [none, parents, parentsandsiblings, children, descendants, all, datastructure, categoryscheme, conceptscheme, codelist, hierarchicalcodelist, agencyscheme, dataflow, provisionagreement, categorisation, contentconstraint, actualconstraint, allowedconstraint]
+        default: none
+    mode:
+      in: query
+      name: mode
+      description: |
+        Instructs the web service to return a ContentConstraint which defines a Cube Region containing values which will be returned by executing the query (mode="exact") vs a Cube Region showing what values remain valid selections that could be added to the data query (mode="available"). A valid selection is one which results in one or more series existing for the selected value, based on the current data query selection state defined by the current path parameters.
+      required: false
+      schema:
+        type: string
+        enum: [exact, available]
+        default: exact
+    acreferences:
+      in: query
+      name: references
+      description: |
+        Instructs the web service to return (or not) the artefacts referenced by the ContentConstraint to be returned.
+      required: false
+      schema:
+        type: string
+        enum: [none, all, datastructure, conceptscheme, codelist, dataproviderscheme, dataflow]
+        default: none
+    accept-encoding:
+      in: header
+      name: Accept-Encoding
+      description: |
+        Specifies whether the response should be compressed and how. 
+        
+        `identity` (the default) indicates that no compression will be performed.
+      schema:
+        type: string
+        enum: [br, compress, deflate, exi, gzip, identity, pack200-gzip, zstd]
+        default: identity
+        
+  responses:
+    '200':
+      description: OK
+      content:
+        application/vnd.sdmx.genericdata+xml;version=2.1:
+          schema:
+            type: string
+        application/vnd.sdmx.structurespecificdata+xml;version=2.1:
+          schema:
+            type: string
+        application/vnd.sdmx.data+csv;version=1.0.0:
+          schema:
+            type: string
+        application/vnd.sdmx.data+json;version=1.0.0:
+          schema:
+            type: string
+    '200-struct':
+      description: OK
+      content:
+        application/vnd.sdmx.structure+xml;version=2.1:
+          schema:
+            type: string
+        application/vnd.sdmx.structure+json;version=1.0.0:
+          schema:
+            type: string
+    '400': 
+      description: Bad syntax
+    '404': 
+      description: Not found
+    '406':
+      description: Not acceptable
+    '500': 
+      description: Internal server error
+    '501': 
+      description: Not implemented
+    '503': 
+      description: Service unavailable

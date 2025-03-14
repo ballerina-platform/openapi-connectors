@@ -1,0 +1,106 @@
+openapi: 3.0.1
+info:
+  x-ballerina-display:
+    label: Bing Autosuggest
+    iconPath: "icon.png"
+  title: Autosuggest API - v7
+  description: >
+    This is a generated connector for [Bing Autosuggest API v1](https://www.microsoft.com/en-us/bing/apis/bing-autosuggest-api) OpenAPI specification.
+    
+    "The Autosuggest API lets partners send a partial search query to Bing\
+    \ and get back a list of suggested queries that other users have searched on.\
+    \ In addition to including searches that other users have made, the list may include\
+    \ suggestions based on user intent. For example, if the query string is weather\
+    \ in Lo, the list will include relevant weather suggestions.\r\n<br><br>\r\nTypically,\
+    \ you use this API to support an auto-suggest search box feature. For example,\
+    \ as the user types a query into the search box, you would call this API to populate\
+    \ a drop-down list of suggested query strings. If the user selects a query from\
+    \ the list, you would either send the user to the Bing search results page for\
+    \ the selected query or call the Bing Search API to get the search results and\
+    \ display the results yourself.\r\n"
+  x-ballerina-init-description: >
+    The connector initialization requires setting the API credentials.
+    
+    Create a [Bing Text Analytics account](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) and obtain API key following [this guide](https://docs.microsoft.com/en-us/azure/storage/common/storage-account-keys-manage?tabs=azure-portal).
+  version: "1.0"
+security:
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags: []
+paths:
+  /:
+    get:
+      summary: Suggestions
+      description: "This operation provides suggestions for a given query or partial\
+        \ query.\r\n"
+      operationId: getSuggestions
+      parameters:
+      - name: q
+        in: query
+        description: Query
+        required: true
+        schema:
+          type: string
+          default: bill g
+          enum:
+          - bill g
+      responses:
+        200:
+          description: ""
+          content:
+            application/json:
+              example: "{\r\n    \"_type\": \"Suggestions\",\r\n    \"instrumentation\"\
+                : {\r\n        \"pingUrlBase\": \"https://www.bing.com/api/ping?IG=0AE638F758E041DFA1A2B8B39848C280&CID=070910FF0C0362112C11188E0DD06323&ID=\"\
+                ,\r\n        \"pageLoadPingUrl\": \"https://www.bing.com/api/ping/pageload?IG=0AE638F758E041DFA1A2B8B39848C280&CID=070910FF0C0362112C11188E0DD06323&Type=Event.CPT&DATA=0\"\
+                \r\n    },\r\n    \"queryContext\": {\r\n        \"originalQuery\"\
+                : \"bill gatis\"\r\n    },\r\n    \"suggestionGroups\": [\r\n    \
+                \    {\r\n            \"name\": \"Web\",\r\n            \"searchSuggestions\"\
+                : [\r\n                {\r\n                    \"url\": \"https://www.bing.com/search?q=bill+gates+foundation&FORM=USBAPI\"\
+                ,\r\n                    \"urlPingSuffix\": \"DevEx,5003.1\",\r\n\
+                \                    \"displayText\": \"bill gates foundation\",\r\
+                \n                    \"query\": \"bill gates foundation\",\r\n  \
+                \                  \"searchKind\": \"WebSearch\"\r\n             \
+                \   },\r\n                {\r\n                    \"url\": \"https://www.bing.com/search?q=bill+gates+scholarship&FORM=USBAPI\"\
+                ,\r\n                    \"urlPingSuffix\": \"DevEx,5004.1\",\r\n\
+                \                    \"displayText\": \"bill gates scholarship\",\r\
+                \n                    \"query\": \"bill gates scholarship\",\r\n \
+                \                   \"searchKind\": \"WebSearch\"\r\n            \
+                \    }\r\n            ]\r\n        }\r\n    ]\r\n}\r\n"
+        401:
+          description: ""
+          content:
+            application/json:
+              example: "{\r\n    \"error\":{\r\n        \"statusCode\": 401,\r\n \
+                \       \"message\": \"Access denied due to invalid subscription key.\
+                \ Make sure you are subscribed to an API you are trying to call and\
+                \ provide the right key.\" \r\n    }\r\n}\r\n"
+        403:
+          description: ""
+          content:
+            application/json:
+              example: "{\r\n    \"error\":{\r\n        \"statusCode\": 403,\r\n \
+                \       \"message\": \"Out of call volume quota. Quota will be replenished\
+                \ in 2.12 days.\" \r\n    }\r\n}\r\n"
+        429:
+          description: ""
+          content:
+            application/json:
+              example: "{\r\n    \"error\":{\r\n        \"statusCode\": 429,\r\n \
+                \       \"message\": \"Rate limit is exceeded. Try again in 26 seconds.\"\
+                \ \r\n    }\r\n}\r\n"
+components:
+  securitySchemes:  
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+      description: Represents API Key `Ocp-Apim-Subscription-Key`
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+      description: Represents API Key `subscription-key`
+x-servers:
+- url: https://westus.api.cognitive.microsoft.com
+- url: https://cognitive-wu.cognitiveservices.azure.com
+- url: https://api.ProjectOxford.ai

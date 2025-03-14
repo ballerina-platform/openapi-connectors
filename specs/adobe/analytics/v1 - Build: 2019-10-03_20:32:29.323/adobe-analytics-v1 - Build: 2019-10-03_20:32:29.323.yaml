@@ -1,0 +1,4210 @@
+openapi: 3.0.1
+info:
+  title: Adobe Analytics APIs
+  description: 
+    The Adobe Analytics 2.0 APIs allow you to directly call Adobe's servers to perform almost any action that you can 
+    perform in the user interface. You can create reports to explore, get insights, or answer important questions about your data. 
+    You can also manage components of Adobe Analytics, such as the creation of segments or calculated metrics. 
+  version: 'v1 - Build: 2019-10-03_20:32:29.323'
+  x-ballerina-init-description: 
+    The connector initialization requires setting the API credentials.
+
+    Create an [Adobe Developer account](https://developer.adobe.com) and obtain tokens by following [this guide](https://developer.adobe.com/analytics-apis/docs/2.0/guides/).
+  x-ballerina-display:
+    label: Adobe Analytics
+    iconPath: "icon.png" 
+servers:
+- url: https://analytics.adobe.io/
+tags:
+- name: calculatedmetrics
+- name: collections
+- name: component-metadata - tags
+- name: component-metadata - shares
+- name: dateranges
+- name: dimensions
+- name: metrics
+- name: reports
+- name: segments
+- name: users
+- name: usagelogs
+paths:
+  /calculatedmetrics:
+    get:
+      tags:
+      - calculatedmetrics
+      summary: Retrieve many calculated metrics
+      description: "A calculated metric response will always include these default\
+        \ items: *id, name, description, rsid, owner, polarity, precision, type* \n\
+        \nOther attributes can be optionally requested through the 'expansion' field:\n\
+        \n* *modified*: Date that the metric was last modified (ISO 8601)\n* *definition*:\
+        \ Calculated metric definition as JSON object\n* *compatibility*: Products\
+        \ that the metric is compatible with\n* *reportSuiteName*: Also return the\
+        \ friendly Report Suite name for the RSID\n* *tags*: Gives all existing tags\
+        \ associated with the calculated metric\n\nFor more information about calculated\
+        \ metrics go [here](https://github.com/AdobeDocs/analytics-2.0-apis/blob/master/calculatedmetrics.md)\n\
+        \n"
+      operationId: find Calculated Metrics
+      parameters:
+      - name: rsids
+        in: query
+        description: Filter list to only include calculated metrics tied to specified
+          RSID list (comma-delimited)
+        schema:
+          type: string
+      - name: ownerId
+        in: query
+        description: Filter list to only include calculated metrics owned by the specified
+          loginId
+        schema:
+          type: integer
+          format: int32
+      - name: filterByIds
+        in: query
+        description: Filter list to only include calculated metrics in the specified
+          list (comma-delimited list of IDs) (this is the same as calculatedMetricFilter,
+          and is overwritten by calculatedMetricFilter
+        schema:
+          type: string
+      - name: toBeUsedInRsid
+        in: query
+        description: The report suite where the calculated metric intended to be used.  This
+          report suite will be used to determine things like compatibility and permissions.  If
+          it is not specified then the permissions will be calculated based on the
+          union of all metrics authorized in all groups the user belongs to.  If the
+          compatibility expansion is specified and toBeUsedInRsid is not then the
+          compatibility returned is based off the compatibility from the last time
+          the calculated metric was saved.
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: name
+        in: query
+        description: Filter list to only include calculated metrics that contains
+          the Name
+        schema:
+          type: string
+      - name: tagNames
+        in: query
+        description: Filter list to only include calculated metrics that contains
+          one of the tags
+        schema:
+          type: string
+      - name: favorite
+        in: query
+        description: Filter list to only include calculated metrics that are favorites
+        schema:
+          type: boolean
+      - name: approved
+        in: query
+        description: Filter list to only include calculated metrics that are approved
+        schema:
+          type: boolean
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      - name: sortDirection
+        in: query
+        description: Sort direction (ASC or DESC)
+        schema:
+          type: string
+          default: ASC
+      - name: sortProperty
+        in: query
+        description: Property to sort by (name, modified_date, id is currently allowed)
+        schema:
+          type: string
+          default: id
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional calculated metric metadata
+          fields to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - definition
+            - compatibility
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - definition
+          - compatibility
+          - categories
+      - name: includeType
+        in: query
+        description: Include additional calculated metrics not owned by user. The
+          "all" option takes precedence over "shared"
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - all
+            - shared
+            - templates
+          enum:
+          - all
+          - shared
+          - templates
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        400:
+          description: Unable to retrieve list of calculated metrics shared with user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        401:
+          description: Owner filter error; user specified is not in the same company
+            as the requesting user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        403:
+          description: Requesting non-shared calculated metrics for other users is
+            restricted to admin users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        500:
+          description: External API error; Calculated metric retrieval failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+    post:
+      tags:
+      - calculatedmetrics
+      summary: Create a new Calculated Metric
+      description: "Creates a new calculated metric. The following attributes are\
+        \ available when creating a calculated metric:\n\nIMPORTANT: Required Fields:\
+        \ name, definition, rsid\n\nOptional fields: description\n\nExample definition\
+        \ for use in testing API below (\"Visits per visitor\"):\n\n```json\n\n\"\
+        definition\": {\r\n      \"formula\": {\r\n        \"func\": \"divide\",\r\
+        \n        \"col1\": {\r\n          \"func\": \"metric\",\r\n          \"name\"\
+        : \"metrics/visits\",\r\n          \"description\": \"Visits\"\r\n       \
+        \ },\r\n        \"col2\": {\r\n          \"func\": \"metric\",\r\n       \
+        \   \"name\": \"metrics/visitors\",\r\n          \"description\": \"Unique\
+        \ Visitors\"\r\n        }\r\n      },\r\n      \"func\": \"calc-metric\",\r\
+        \n      \"version\": [\r\n        1,\r\n        0,\r\n        0\r\n      ]\r\
+        \n    }\n```\n\nA calculated metric response will always include these default\
+        \ items:* id, name, description, rsid, owner* \n\nOther attributes can be\
+        \ optionally requested through the 'expansion' field as defined/documented\
+        \ in the GET endpoints (see GET \"/calculatedmetrics\" or GET \"/calculatedmetrics/{id}\"\
+        \ for more documentation)."
+      operationId: create Calculated Metric
+      parameters:
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional calculated metric metadata
+          fields to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - definition
+            - compatibility
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - definition
+          - compatibility
+          - categories
+      requestBody:
+        description: JSON-formatted Object containing key/value pairs for calculated
+          metric creation.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        400:
+          description: Invalid input; name, rsid, and definition are all required.
+            Definition must be formatted as a JSON Object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        500:
+          description: External API error; Calculated metric create or retrieval failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+      x-codegen-request-body-name: body
+  /calculatedmetrics/functions:
+    get:
+      tags:
+      - calculatedmetrics
+      summary: Retrieve calculated metric functions
+      operationId: get Calculated Metric Functions
+      parameters:
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CalcMetricFunction'
+        500:
+          description: External API error; Calculated metric functions retrieval failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+  /calculatedmetrics/functions/{id}:
+    get:
+      tags:
+      - calculatedmetrics
+      summary: Retrieve a calculated metric function by id
+      operationId: get Calculated Metric Function
+      parameters:
+      - name: id
+        in: path
+        description: The function ID to retrieve
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalcMetricFunction'
+        404:
+          description: Calculated metric function not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        500:
+          description: External API error; Calculated metric function retrieval failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+  /calculatedmetrics/validate:
+    post:
+      tags:
+      - calculatedmetrics
+      summary: Validate a calculated metric definition
+      operationId: validate Calculated Metric
+      parameters:
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: migrating
+        in: query
+        description: Include migration functions in validation
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        description: JSON-formatted Object containing key/value pairs for calculated
+          metric validation.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        400:
+          description: Invalid input; name, rsid, and definition are all required.
+            Definition must be formatted as a JSON Object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        500:
+          description: External API error; Calculated metric validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+      x-codegen-request-body-name: body
+  /calculatedmetrics/{id}:
+    get:
+      tags:
+      - calculatedmetrics
+      summary: Retrieve a single calculated metric by id
+      description: "A calculated metric response will always include these default\
+        \ items: *id, name, description, rsid, owner, polarity, precision, type* \n\
+        \nOther attributes can be optionally requested through the 'expansion' field:\n\
+        \n* *modified*: Date that the metric was last modified (ISO 8601)\n* *definition*:\
+        \ Calculated metric definition as JSON object\n* *compatibility*: Products\
+        \ that the metric is compatible with\n* *reportSuiteName*: Also return the\
+        \ friendly Report Suite name for the RSID\n* *tags*: Gives all existing tags\
+        \ associated with the calculated metric\n\nFor more information about calculated\
+        \ metrics go [here](https://github.com/AdobeDocs/analytics-2.0-apis/blob/master/calculatedmetrics.md)\n\
+        \n"
+      operationId: find One Calculated Metric
+      parameters:
+      - name: id
+        in: path
+        description: The calculated metric ID to retrieve
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional calculated metric metadata
+          fields to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - definition
+            - compatibility
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - definition
+          - compatibility
+          - categories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        403:
+          description: Requesting non-shared calculated metrics for other users is
+            restricted to admin users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        500:
+          description: External API error; calculated metric retrieval failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+    put:
+      tags:
+      - calculatedmetrics
+      summary: Update an existing calculated metric
+      description: "The following fields can be modified through this endpoint: <br><b>name,\
+        \ description, definition, owner, rsid</b>\nExample \"defintion\" for use\
+        \ in testing API below (\"Visits per visitor\"):<br>\n\"definition\": {\r\n\
+        \      \"formula\": {\r\n        \"func\": \"divide\",\r\n        \"col1\"\
+        : {\r\n          \"func\": \"metric\",\r\n          \"name\": \"metrics/visits\"\
+        ,\r\n          \"description\": \"Visits\"\r\n        },\r\n        \"col2\"\
+        : {\r\n          \"func\": \"metric\",\r\n          \"name\": \"metrics/visitors\"\
+        ,\r\n          \"description\": \"Unique Visitors\"\r\n        }\r\n     \
+        \ },\r\n      \"func\": \"calc-metric\",\r\n      \"version\": [\r\n     \
+        \   1,\r\n        0,\r\n        0\r\n      ]\r\n    }<br><br>Response will\
+        \ be the newly modified calculated metric object after the update request\
+        \ completes.<br><br><b><span style=\"text-decoration: underline;\">CalculatedMetricResponse</span></b><br>A\
+        \ calculated metric response will always include these default items:* id,\
+        \ name, description, rsid, owner* \n\nOther attributes can be optionally requested\
+        \ through the 'expansion' field as defined/documented in the GET endpoints\
+        \ (see GET \"/calculatedmetrics\" or GET \"/calculatedmetrics/{id}\" for more\
+        \ documentation)."
+      operationId: update Calculated Metric
+      parameters:
+      - name: id
+        in: path
+        description: Calculated Metric ID to be updated
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional calculated metric metadata
+          fields to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - definition
+            - compatibility
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - definition
+          - compatibility
+          - categories
+      requestBody:
+        description: JSON-formatted Object containing key/value pairs to be updated.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsCalculatedMetric'
+        400:
+          description: Definition must be formatted as a JSON Object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        401:
+          description: Company mismatch; calculated metric ownership can only be transferred
+            within the same organization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        403:
+          description: User does not have permission to update this calculated metric
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+        500:
+          description: External API error; Calculated metric update or retrieval failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - calculatedmetrics
+      summary: Deletion of Calculated Metrics by Id
+      operationId: delete Calculated Metric
+      parameters:
+      - name: id
+        in: path
+        description: The calculated metric ID to be deleted
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+        500:
+          description: External API error; Calculated metric delete failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalculatedMetricErrorStatus'
+  /collections/suites:
+    get:
+      tags:
+      - collections
+      summary: Retrieves report suites that match the given filters.
+      description: Returns all report suite types in a single collection.
+      operationId: list report suites
+      parameters:
+      - name: rsids
+        in: query
+        description: Filter list to only include suites in this RSID list (comma-delimited)
+        schema:
+          type: string
+      - name: rsidContains
+        in: query
+        description: Filter list to only include suites whose rsid contains rsidContains.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional metadata fields to include
+          on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - name
+            - parentRsid
+            - currency
+            - calendarType
+            - timezoneZoneinfo
+          enum:
+          - name
+          - parentRsid
+          - currency
+          - calendarType
+          - timezoneZoneinfo
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuiteCollectionItem'
+        500:
+          description: Unexpected error; report suite retrieval failed
+          content: {}
+  /collections/suites/{rsid}:
+    get:
+      tags:
+      - collections
+      summary: Retrieves report suite by id
+      description: Returns all report suite types in a single collection.
+      operationId: get Report Suite
+      parameters:
+      - name: rsid
+        in: path
+        description: The rsid of the suite to return
+        required: true
+        schema:
+          type: string
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional metadata fields to include
+          on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - name
+            - parentRsid
+            - currency
+            - calendarType
+            - timezoneZoneinfo
+          enum:
+          - name
+          - parentRsid
+          - currency
+          - calendarType
+          - timezoneZoneinfo
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuiteCollectionItem'
+        500:
+          description: Unexpected error; report suite retrieval failed
+          content: {}
+  /componentmetadata/tags/component/search:
+    post:
+      tags:
+      - component-metadata - tags
+      summary: search for tags for several components at once
+      operationId: search Component Tags
+      parameters:
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      requestBody:
+        description: items to search for
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentSearch'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaggedComponent'
+      x-codegen-request-body-name: body
+  /componentmetadata/tags:
+    get:
+      tags:
+      - component-metadata - tags
+      summary: Returns a list of tags for the current user's company
+      operationId: find All Tags For Company
+      parameters:
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        500:
+          description: Unable to retrieve list of tags for user.
+          content: {}
+    post:
+      tags:
+      - component-metadata - tags
+      summary: Saves the given tag(s) for the current user's company
+      description: Allows creation of a new tag and applies that new tag to the passed
+        component
+      operationId: save Tag List For Company
+      requestBody:
+        description: JSON-formatted array of Tag objects containing key-value pairs
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        500:
+          description: Unable to save list of tags.
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - component-metadata - tags
+      summary: Disassociates all tags from the given components
+      description: Removes all tags from the passed componentIds. Note that currently
+        this is done in a single DB query, so there is a single combined response
+        for the entire operation.
+      operationId: delete Tag Items From Components
+      parameters:
+      - name: componentIds
+        in: query
+        description: Comma-separated list of componentIds to operate on.
+        required: true
+        schema:
+          type: string
+      - name: componentType
+        in: query
+        description: The component type to operate on.
+        required: true
+        schema:
+          type: string
+          enum:
+          - segment
+          - dashboard
+          - bookmark
+          - calculatedMetric
+          - project
+          - dateRange
+          - metric
+          - dimension
+          - virtualReportSuite
+          - scheduledJob
+          - alert
+          - classificationSet
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: object
+                    properties: {}
+        400:
+          description: Invalid component type.
+          content: {}
+        500:
+          description: Unable to remove tags for given components.
+          content: {}
+  /componentmetadata/tags/search:
+    get:
+      tags:
+      - component-metadata - tags
+      summary: Retrieves a tags for a given component by componentId and componentType
+      description: Given a componentId, return all tags associated with that component
+      operationId: get Tag List By Component Id And Component Type
+      parameters:
+      - name: componentId
+        in: query
+        description: The componentId to operate on. Currently this is just the segmentId.
+        required: true
+        schema:
+          type: string
+      - name: componentType
+        in: query
+        description: The component type to operate on.
+        required: true
+        schema:
+          type: string
+          enum:
+          - segment
+          - dashboard
+          - bookmark
+          - calculatedMetric
+          - project
+          - dateRange
+          - metric
+          - dimension
+          - virtualReportSuite
+          - scheduledJob
+          - alert
+          - classificationSet
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        400:
+          description: Invalid component type.
+          content: {}
+        500:
+          description: Unable to retrieve tags for given component.
+          content: {}
+  /componentmetadata/tags/tagitems:
+    put:
+      tags:
+      - component-metadata - tags
+      summary: 'Tag a component with one or many tags at once. WARNING: Authoritative;
+        deletes/overwrites all pre-existing associations'
+      description: This endpoint allows many tags at once to be created/deleted. Any
+        tags passed to this endpoint will become the *only* tags for that componentId
+        (all other tags will be removed).
+      operationId: save Tag Component List
+      requestBody:
+        description: JSON-formatted object containing key-value pairs that conform
+          to the schema
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TaggedComponent'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TaggedComponent'
+        500:
+          description: Unable to save tag list.
+          content: {}
+      x-codegen-request-body-name: body
+  /componentmetadata/tags/{id}:
+    get:
+      tags:
+      - component-metadata - tags
+      summary: Retrieves an tag by its id
+      operationId: get Tag By Id
+      parameters:
+      - name: id
+        in: path
+        description: Tag ID to be retrieved
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        404:
+          description: Unable to find a tag with the given ID
+          content: {}
+        500:
+          description: Unexpected server error while trying to retrieve tag
+          content: {}
+    delete:
+      tags:
+      - component-metadata - tags
+      summary: Removes the tagId and all associations from that tag to any components
+      description: Delete by tagId. Will un-tag any/all components that were associated
+        with the passed tagId.
+      operationId: delete Tag
+      parameters:
+      - name: id
+        in: path
+        description: The tagId to be deleted
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties:
+                    type: object
+                    properties: {}
+        404:
+          description: The given tagId does not exist
+          content: {}
+        500:
+          description: Unable to delete the given tagId.
+          content: {}
+  /componentmetadata/tags/tagnames:
+    get:
+      tags:
+      - component-metadata - tags
+      summary: Retrieves component ids associated with the given tag names
+      description: Given a comma separated list of tag names, return component ids
+        associated with them.
+      operationId: get Components By Tag Name
+      parameters:
+      - name: tagNames
+        in: query
+        description: Comma separated list of tag names.
+        required: true
+        schema:
+          type: string
+      - name: componentType
+        in: query
+        description: The component type to operate on.
+        required: true
+        schema:
+          type: string
+          enum:
+          - segment
+          - dashboard
+          - bookmark
+          - calculatedMetric
+          - project
+          - dateRange
+          - metric
+          - dimension
+          - virtualReportSuite
+          - scheduledJob
+          - alert
+          - classificationSet
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        400:
+          description: Invalid component type.
+          content: {}
+        500:
+          description: Unable to retrieve tags for given component.
+          content: {}
+  /componentmetadata/shares/component/search:
+    post:
+      tags:
+      - component-metadata - shares
+      summary: search for shares for several components at once
+      operationId: search Component Shares
+      parameters:
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      requestBody:
+        description: items to search for
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentSearch'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharedComponent'
+      x-codegen-request-body-name: body
+  /componentmetadata/shares/sharedto/me:
+    get:
+      tags:
+      - component-metadata - shares
+      summary: get components shared with the current user by type
+      operationId: get Components shared To Me
+      parameters:
+      - name: componentType
+        in: query
+        description: Component type to get shared ids for
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /componentmetadata/shares:
+    get:
+      tags:
+      - component-metadata - shares
+      summary: Returns a list of shares for the current user's company
+      operationId: find All Shares For Company
+      parameters:
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Share'
+        500:
+          description: Unable to retrieve list of shares for user.
+          content: {}
+    put:
+      tags:
+      - component-metadata - shares
+      summary: 'Share components with users. WARNING: Authoritative; deletes/overwrites
+        all pre-existing shares for the given components'
+      operationId: update Shares For Components
+      requestBody:
+        description: JSON-formatted array of Share objects containing key-value pairs
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/SharedComponent'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SharedComponent'
+        500:
+          description: Unexpected server error while trying to update shares
+          content: {}
+      x-codegen-request-body-name: body
+    post:
+      tags:
+      - component-metadata - shares
+      summary: Saves the given share for the current user's company
+      description: Allows creation of a new share with a group/user/all
+      operationId: save Share my Company
+      requestBody:
+        description: JSON-formatted array of Share objects containing key-value pairs
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Share'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Share'
+        500:
+          description: Unable to save list of tags.
+          content: {}
+      x-codegen-request-body-name: body
+  /componentmetadata/shares/{id}:
+    get:
+      tags:
+      - component-metadata - shares
+      summary: Retrieves an share by its id
+      operationId: get Share By Id
+      parameters:
+      - name: id
+        in: path
+        description: Share ID to be retrieved
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Share'
+        404:
+          description: Unable to find a share with the given ID
+          content: {}
+        500:
+          description: Unexpected server error while trying to retrieve share
+          content: {}
+    delete:
+      tags:
+      - component-metadata - shares
+      summary: Removes the shareId and all associations from that share
+      description: Delete by shareId. Will un-share the associated component with
+        the entity shared with.
+      operationId: delete Share
+      parameters:
+      - name: id
+        in: path
+        description: The shareId to be deleted
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shareId:
+                    type: integer
+                  success:
+                    type: object
+                    properties:
+                      success:
+                        type: string
+        404:
+          description: The given shareId does not exist
+          content: {}
+        500:
+          description: Unable to delete the given shareId.
+          content: {}
+  /dateranges:
+    get:
+      tags:
+      - dateranges
+      summary: Returns a list of dateranges for the user
+      description: This API allows users to store commonly used date ranges so that
+        they can be reused throughout the product.
+      operationId: get Date Ranges for User
+      parameters:
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: filterByIds
+        in: query
+        description: Filter list to only include date ranges in the specified list
+          (comma-delimited list of IDs)
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional date range metadata fields
+          to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - definition
+            - ownerFullName
+            - modified
+            - tags
+          enum:
+          - definition
+          - ownerFullName
+          - modified
+          - tags
+      - name: includeType
+        in: query
+        description: Include additional date ranges not owned by user. The "all" option
+          takes precedence over "shared"
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - all
+            - shared
+            - templates
+          enum:
+          - all
+          - shared
+          - templates
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDateRange'
+    post:
+      tags:
+      - dateranges
+      summary: Creates configuration for a DateRange.
+      operationId: create Date Range
+      parameters:
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional date range metadata fields
+          to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - definition
+            - ownerFullName
+            - modified
+            - tags
+          enum:
+          - definition
+          - ownerFullName
+          - modified
+          - tags
+      requestBody:
+        description: JSON-formatted array of Date Range objects containing key-value
+          pairs
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AnalyticsDateRange'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDateRange'
+      x-codegen-request-body-name: body
+  /dateranges/{dateRangeId}:
+    get:
+      tags:
+      - dateranges
+      summary: Retrieves configuration for a DateRange.
+      operationId: get Date Range
+      parameters:
+      - name: dateRangeId
+        in: path
+        description: The DateRange id for which to retrieve information
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional date range metadata fields
+          to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - definition
+            - ownerFullName
+            - modified
+            - tags
+          enum:
+          - definition
+          - ownerFullName
+          - modified
+          - tags
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDateRange'
+    put:
+      tags:
+      - dateranges
+      summary: Updates configuration for a DateRange.
+      operationId: update Date Range
+      parameters:
+      - name: dateRangeId
+        in: path
+        description: The DateRange id for which to retrieve information
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional date range metadata fields
+          to include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - definition
+            - ownerFullName
+            - modified
+            - tags
+          enum:
+          - definition
+          - ownerFullName
+          - modified
+          - tags
+      requestBody:
+        description: JSON-formatted array of Date Range objects containing key-value
+          pairs
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AnalyticsDateRange'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDateRange'
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - dateranges
+      summary: Deletes a DateRange.
+      operationId: delete Date Range
+      parameters:
+      - name: dateRangeId
+        in: path
+        description: The id of the date range to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+  /dimensions:
+    get:
+      tags:
+      - dimensions
+      summary: Returns a list of dimensions for a given report suite.
+      operationId: get Dimensions for Report Suite
+      parameters:
+      - name: rsid
+        in: query
+        description: A Report Suite ID
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: segmentable
+        in: query
+        description: Only include dimensions that are valid within a segment.
+        schema:
+          type: boolean
+          enum:
+          - true
+      - name: reportable
+        in: query
+        description: Only include dimensions that are valid within a report.
+        schema:
+          type: boolean
+          enum:
+          - true
+      - name: classifiable
+        in: query
+        description: Only include classifiable dimensions.
+        schema:
+          type: boolean
+          default: false
+          enum:
+          - true
+      - name: expansion
+        in: query
+        description: Add extra metadata to items (comma-delimited list)
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - tags
+            - shares
+            - allowedForReporting
+            - categories
+          enum:
+          - tags
+          - shares
+          - allowedForReporting
+          - categories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnalyticsDimension'
+        400:
+          description: Invalid JSON input
+          content: {}
+        401:
+          description: User does not have access to this report suite
+          content: {}
+        500:
+          description: Unexpected internal server error
+          content: {}
+  /dimensions/{dimensionId}:
+    get:
+      tags:
+      - dimensions
+      summary: Returns a dimension for the given report suite
+      operationId: get Dimension for Report Suite
+      parameters:
+      - name: dimensionId
+        in: path
+        description: The dimension ID. For example a valid id is a value like 'evar1'
+        required: true
+        schema:
+          type: string
+      - name: rsid
+        in: query
+        description: The report suite ID.
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: The locale to use for returning system named dimensions.
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Add extra metadata to items (comma-delimited list)
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - tags
+            - shares
+            - allowedForReporting
+            - categories
+          enum:
+          - tags
+          - shares
+          - allowedForReporting
+          - categories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsDimension'
+        401:
+          description: User Doesn't have sufficient privileges
+          content: {}
+  /metrics:
+    get:
+      tags:
+      - metrics
+      summary: Returns a list of metrics for the given report suite
+      description: This returns the metrics list primarily for the Analytics product.
+        The platform identity API Returns a list of all possible metrics for the supported
+        systems.
+      operationId: get Metrics for Report Suite
+      parameters:
+      - name: rsid
+        in: query
+        description: ID of desired report suite ie. myrsid
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale that system named metrics should be returned in
+        schema:
+          type: string
+          default: en_US
+      - name: segmentable
+        in: query
+        description: Filter the metrics by if they are valid in a segment.
+        schema:
+          type: boolean
+          default: false
+      - name: expansion
+        in: query
+        description: Add extra metadata to items (comma-delimited list)
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - tags
+            - shares
+            - allowedForReporting
+            - categories
+          enum:
+          - tags
+          - shares
+          - allowedForReporting
+          - categories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsMetric'
+        400:
+          description: Invalid JSON input
+          content: {}
+        403:
+          description: Insufficient access to perform operation
+          content: {}
+        500:
+          description: Unexpected internal server error
+          content: {}
+  /metrics/{id}:
+    get:
+      tags:
+      - metrics
+      summary: Returns a metric for the given report suite
+      operationId: get Metric for Report Suite
+      parameters:
+      - name: id
+        in: path
+        description: The id of the metric for which to retrieve info. Note ids are
+          values like pageviews, not metrics/pageviews
+        required: true
+        schema:
+          type: string
+      - name: rsid
+        in: query
+        description: ID of desired report suite ie. myrsid
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale that system named metrics should be returned in
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Add extra metadata to items (comma-delimited list)
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - tags
+            - shares
+            - allowedForReporting
+            - categories
+          enum:
+          - tags
+          - shares
+          - allowedForReporting
+          - categories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsMetric'
+        400:
+          description: Invalid JSON input
+          content: {}
+        403:
+          description: Insufficient access to perform operation
+          content: {}
+        500:
+          description: Unexpected internal server error
+          content: {}
+  /projects/{projectId}:
+    get:
+      tags:
+      - projects
+      summary: Retrieves configuration for a Project.
+      operationId: get Project Configuration
+      parameters:
+      - name: projectId
+        in: path
+        description: The Project id for which to retrieve information
+        required: true
+        schema:
+          type: string
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional project metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - shares
+            - tags
+            - accessLevel
+            - modified
+            - externalReferences
+            - definition
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsProject'
+    put:
+      tags:
+      - projects
+      summary: Updates configuration for a project.
+      operationId: update Project Configuration
+      parameters:
+      - name: projectId
+        in: path
+        description: The Project id for which to retrieve information
+        required: true
+        schema:
+          type: string
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional project metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - shares
+            - tags
+            - accessLevel
+            - modified
+            - externalReferences
+            - definition
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      requestBody:
+        description: JSON-formatted Object containing project keys/value pairs to
+          be updated.
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AnalyticsProject'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsProject'
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - projects
+      summary: deletes a project.
+      operationId: delete Project
+      parameters:
+      - name: projectId
+        in: path
+        description: The Project id for which to retrieve information
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteResponse'
+  /projects/validate:
+    post:
+      tags:
+      - projects
+      summary: Validates a Project definition
+      operationId: validate Project definition
+      parameters:
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      requestBody:
+        description: JSON-formatted Object containing key/value pairs for Project
+          validation.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project:
+                  type: object
+                  properties: {}
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectCompatibility'
+        400:
+          description: Invalid input; definition is required. Definition must be formatted
+            as a JSON Object.
+          content: {}
+        500:
+          description: External API error; Project validation failed
+          content: {}
+      x-codegen-request-body-name: body
+  /projects:
+    get:
+      tags:
+      - projects
+      summary: Returns a list of projects for the user
+      description: 'This Returns the projects list primarily for the Analytics product. '
+      operationId: get Projects of user
+      parameters:
+      - name: includeType
+        in: query
+        description: Include additional projects not owned by user. The "all" option
+          takes precedence over "shared". If neither guided, or project is included,
+          both types are returned
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - all
+            - shared
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional project metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - shares
+            - tags
+            - accessLevel
+            - modified
+            - externalReferences
+            - definition
+      - name: filterByIds
+        in: query
+        description: Filter list to only include projects in the specified list (comma-delimited
+          list of IDs)
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: pagination
+        in: query
+        description: return paginated results
+        schema:
+          type: string
+          default: "false"
+          enum:
+          - "true"
+          - "false"
+      - name: ownerId
+        in: query
+        description: Filter list to only include projects owned by the specified loginId
+        schema:
+          type: integer
+          format: int32
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnalyticsProject'
+    post:
+      tags:
+      - projects
+      summary: Creates a single project.
+      operationId: create Project
+      parameters:
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional project metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - shares
+            - tags
+            - accessLevel
+            - modified
+            - externalReferences
+            - definition
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      requestBody:
+        description: JSON-formatted Object containing project keys/value pairs to
+          be updated.
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/AnalyticsProject'
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsProject'
+      x-codegen-request-body-name: body
+  /reports:
+    post:
+      tags:
+      - reports
+      summary: Runs a report for the request in the post body
+      description: See the [Reporting User Guide](https://github.com/AdobeDocs/analytics-2.0-apis/blob/master/reporting-guide.md)
+        for details.
+      operationId: run Report
+      requestBody:
+        description: Ranked report request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RankedRequest'
+        required: false
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankedReportData'
+        206:
+          description: Partially successful operation.  Some response columns contain
+            errors.  See the [Partial Responses](https://github.com/AdobeDocs/analytics-2.0-apis/blob/master/reporting-guide.md#partial-responses-206-status-code)
+            for details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RankedReportData'
+        400:
+          description: Invalid input; name, rsid, and definition are all required.
+            Definition must be formatted as a JSON Object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportErrorStatus'
+      x-codegen-request-body-name: body
+  /reports/topItems:
+    get:
+      tags:
+      - reports
+      summary: Runs a top items report for the request in the post body
+      description: Get the top X items (based on paging restriction) for the specified
+        dimension and rsid. Defaults to last 90 days.
+      operationId: run Top Item Report
+      parameters:
+      - name: rsid
+        in: query
+        description: ID of desired report suite ie. myrsid
+        required: true
+        schema:
+          type: string
+      - name: dimension
+        in: query
+        description: 'Dimension to run the report against. Example: ''variables/page'''
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale that system named metrics should be returned in
+        schema:
+          type: string
+          default: en_US
+      - name: dateRange
+        in: query
+        description: 'Format: YYYY-MM-DD/YYYY-MM-DD'
+        schema:
+          type: string
+      - name: search-clause
+        in: query
+        description: 'General search string; wrap with single quotes. Example: ''PageABC'''
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        description: 'Format: YYYY-MM-DD'
+        schema:
+          type: string
+      - name: endDate
+        in: query
+        description: 'Format: YYYY-MM-DD'
+        schema:
+          type: string
+      - name: searchAnd
+        in: query
+        description: Search terms that will be AND-ed together. Space delimited.
+        schema:
+          type: string
+      - name: searchOr
+        in: query
+        description: Search terms that will be OR-ed together. Space delimited.
+        schema:
+          type: string
+      - name: searchNot
+        in: query
+        description: Search terms that will be treated as NOT including. Space delimited.
+        schema:
+          type: string
+      - name: searchPhrase
+        in: query
+        description: A full search phrase that will be searched for.
+        schema:
+          type: string
+
+      - name: lookupNoneValues
+        in: query
+        description: Controls None values to be included
+        schema:
+          type: boolean
+          default: true
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnhashReportData'
+        206:
+          description: Partially successful operation.  Some response columns contain
+            errors.  See the [Partial Responses](https://github.com/AdobeDocs/analytics-2.0-apis/blob/master/reporting-guide.md#partial-responses-206-status-code)
+            for details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnhashReportData'
+        400:
+          description: Invalid input; name, rsid, and definition are all required.
+            Definition must be formatted as a JSON Object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportErrorStatus'
+  /segments:
+    get:
+      tags:
+      - segments
+      summary: Retrieve All Segments
+      operationId: get all Segments
+      parameters:
+      - name: rsids
+        in: query
+        description: Filter list to only include segments tied to specified RSID list
+          (comma-delimited)
+        schema:
+          type: string
+      - name: segmentFilter
+        in: query
+        description: Filter list to only include segments in the specified list (comma-delimited
+          list of IDs)
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: name
+        in: query
+        description: Filter list to only include segments that contains the Name
+        schema:
+          type: string
+      - name: tagNames
+        in: query
+        description: Filter list to only include segments that contains one of the
+          tags
+        schema:
+          type: string
+      - name: filterByPublishedSegments
+        in: query
+        description: Filter list to only include segments where the published field
+          is set to one of the allowable values (all, true, false).
+        schema:
+          type: string
+          default: all
+          enum:
+          - all
+          - "true"
+          - "false"
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      - name: sortDirection
+        in: query
+        description: Sort direction (ASC or DESC
+        schema:
+          type: string
+          default: ASC
+      - name: sortProperty
+        in: query
+        description: Property to sort by (name, modified_date, id is currently allowed)
+        schema:
+          type: string
+          default: id
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional segment metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - compatibility
+            - definition
+            - publishingStatus
+            - definitionLastModified
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - compatibility
+          - definition
+          - publishingStatus
+          - definitionLastModified
+          - categories
+      - name: includeType
+        in: query
+        description: Include additional segments not owned by user. The "all" option
+          takes precedence over "shared"
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - shared
+            - all
+            - templates
+          enum:
+          - shared
+          - all
+          - templates
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsSegmentResponseItem'
+        400:
+          description: Unable to retrieve list of segments shared with user
+          content: {}
+        401:
+          description: Owner filter error; user specified is not in the same company
+            as the requesting user
+          content: {}
+        403:
+          description: Requesting non-shared segments for other users is restricted
+            to admin users
+          content: {}
+        500:
+          description: External API error; Segment retrieval failed
+          content: {}
+    post:
+      tags:
+      - segments
+      summary: Creates Segment
+      operationId: create Segment
+      parameters:
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional segment metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - compatibility
+            - definition
+            - publishingStatus
+            - definitionLastModified
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - compatibility
+          - definition
+          - publishingStatus
+          - definitionLastModified
+          - categories
+      requestBody:
+        description: JSON-formatted Object containing key/value pairs for segment
+          creation.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsSegment'
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsSegmentResponseItem'
+        400:
+          description: Invalid input; name, rsid, and definition are all required.
+            Definition must be formatted as a JSON Object.
+          content: {}
+        500:
+          description: External API error; Segment create or retrieval failed
+          content: {}
+      x-codegen-request-body-name: body
+  /segments/validate:
+    post:
+      tags:
+      - segments
+      summary: Validate a Segment
+      description: Returns a segment validation for the segment contained in the post
+        body of the report.
+      operationId: validate Segment
+      parameters:
+      - name: rsid
+        in: query
+        description: RSID to run the report against
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Segment definition
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SegmentCompatibility'
+        400:
+          description: Bad JSON input; request not formatted correctly
+          content: {}
+        500:
+          description: Unexpected error;
+          content: {}
+      x-codegen-request-body-name: body
+  /segments/{id}:
+    get:
+      tags:
+      - segments
+      summary: Get a Single Segment
+      operationId: get Segment
+      parameters:
+      - name: id
+        in: path
+        description: The segment ID to retrieve
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional segment metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - compatibility
+            - definition
+            - publishingStatus
+            - definitionLastModified
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - compatibility
+          - definition
+          - publishingStatus
+          - definitionLastModified
+          - categories
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsSegmentResponseItem'
+        403:
+          description: Requesting non-shared segments for other users is restricted
+            to admin users
+          content: {}
+        500:
+          description: External API error; segment retrieval failed
+          content: {}
+    put:
+      tags:
+      - segments
+      summary: Update a Segment
+      operationId: update Segment
+      parameters:
+      - name: id
+        in: path
+        description: Segment ID to be updated
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      - name: expansion
+        in: query
+        description: Comma-delimited list of additional segment metadata fields to
+          include on response.
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+            enum:
+            - reportSuiteName
+            - ownerFullName
+            - modified
+            - tags
+            - shares
+            - compatibility
+            - definition
+            - publishingStatus
+            - definitionLastModified
+            - categories
+          enum:
+          - reportSuiteName
+          - ownerFullName
+          - modified
+          - tags
+          - shares
+          - compatibility
+          - definition
+          - publishingStatus
+          - definitionLastModified
+          - categories
+      requestBody:
+        description: JSON-formatted Object containing key/value pairs to be updated.
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: object
+                properties: {}
+        required: false
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsSegmentResponseItem'
+        400:
+          description: Definition must be formatted as a JSON Object
+          content: {}
+        401:
+          description: Company mismatch; segment ownership can only be transferred
+            within the same organization
+          content: {}
+        403:
+          description: User does not have permission to update this segment
+          content: {}
+        500:
+          description: External API error; Segment update or retrieval failed
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+      - segments
+      summary: Delete Segment
+      operationId: delete Segment
+      parameters:
+      - name: id
+        in: path
+        description: The segment ID to be deleted
+        required: true
+        schema:
+          type: string
+      - name: locale
+        in: query
+        description: Locale
+        schema:
+          type: string
+          default: en_US
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        500:
+          description: External API error; Segment delete failed
+          content: {}
+  /users:
+    get:
+      tags:
+      - users
+      summary: Returns a list of users for the current user's login company
+      description: Retrieves a list of all users for the company designated by the
+        auth token.
+      operationId: list All Users for company
+      parameters:
+      - name: limit
+        in: query
+        description: Number of results per page
+        schema:
+          type: integer
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0")
+        schema:
+          type: integer
+          default: 0
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnalyticsUser'
+        500:
+          description: Database error or other unexpected error
+          content: {}
+  /users/me:
+    get:
+      tags:
+      - users
+      summary: Get the current user
+      operationId: get Current User
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsUser'
+  /auditlogs/usage:
+    get:
+      tags:
+      - usagelogs
+      summary: Retrieves usage and access logs for the search criteria provided.
+      description: This API returns the usage and access logs for a given date range
+        within a 3 month period. This API authenticates with an IMS user token.
+      operationId: get Usage Access Logs
+      parameters:
+      - name: startDate
+        in: query
+        description: Start date for the maximum of a 3 month period.
+        required: true
+        schema:
+          type: string
+          default: 2021-01-01T00:00:00-07
+      - name: endDate
+        in: query
+        description: End date for the maximum of a 3 month period.
+        required: true
+        schema:
+          type: string
+          default: 2021-01-02T14:32:33-07
+      - name: login
+        in: query
+        description: The login value of the user you want to filter logs by.
+        schema:
+          type: string
+      - name: ip
+        in: query
+        description: The IP address you want to filter logs by.
+        schema:
+          type: string
+      - name: rsid
+        in: query
+        description: The report suite ID you want to filter logs by.
+        schema:
+          type: string
+      - name: eventType
+        in: query
+        description: The numeric id for the event type you want to filter logs by.
+        schema:
+          type: string
+      - name: event
+        in: query
+        description: The event description you want to filter logs by. No wildcards
+          permitted.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Number of results per page.
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: page
+        in: query
+        description: Page number (base 0 - first page is "0").
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        200:
+          description: Successful
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ResponsePageUsageLogDto'
+        400:
+          description: Invalid Request. Please check parameters.
+          content: {}
+        403:
+          description: User does not have permission to view this data.
+          content: {}
+        500:
+          description: External API Error; Data could not be retrieved.
+          content: {}
+components:
+  schemas:
+    AnalyticsCalculatedMetric:
+      required:
+      - definition
+      type: object
+      properties:
+        id:
+          type: string
+          description: System generated id
+          readOnly: true
+        name:
+          type: string
+        description:
+          type: string
+        rsid:
+          type: string
+          description: The report suite id for which the component was created/updated
+        reportSuiteName:
+          type: string
+          description: The report suite name for which the component was created/updated
+          readOnly: true
+        owner:
+          $ref: '#/components/schemas/Owner'
+        polarity:
+          type: string
+          description: Set metric polarity, which indicates whether it's good or bad
+            if a given metric goes up. Default=positive
+          enum:
+          - positive
+          - negative
+        precision:
+          type: integer
+          description: Number of decimal places to include in calculated metric result
+          format: int32
+        type:
+          type: string
+          enum:
+          - CURRENCY
+          - TIME
+          - DECIMAL
+          - PERCENT
+        definition:
+          $ref: '#/components/schemas/CalculatedMetricDef'
+        categories:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        siteTitle:
+          type: string
+        modified:
+          type: string
+          format: date-time
+        created:
+          type: string
+          description: Calculated metric creation date
+          format: date-time
+          readOnly: true
+    AnalyticsDateRange:
+      type: object
+      properties:
+        id:
+          type: string
+          description: System generated id
+          readOnly: true
+        name:
+          type: string
+          description: Name
+        description:
+          description: Description
+          type: string
+        rsid:
+          type: string
+          description: The report suite id for which the component was created/updated
+        reportSuiteName:
+          type: string
+          description: The report suite name for which the component was created/updated
+          readOnly: true
+        owner:
+          $ref: '#/components/schemas/Owner'
+        definition:
+          type: object
+          description: Definition
+          properties: {}
+        tags:
+          description: Tags
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        siteTitle:
+          type: string
+          description: Site Title
+        modified:
+          type: string
+          description: Modified date time
+          format: date-time
+        created:
+          description: Created date time
+          type: string
+          format: date-time
+    AnalyticsDateRangeDefinition:
+      type: object
+      properties:
+        start:
+          type: array
+          items:
+            $ref: '#/components/schemas/RollingDateFunction'
+        end:
+          type: array
+          items:
+            $ref: '#/components/schemas/RollingDateFunction'
+        calendarType:
+          $ref: '#/components/schemas/CalendarType'
+        version:
+          type: string
+    AnalyticsDimension:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - STRING
+          - INT
+          - DECIMAL
+          - CURRENCY
+          - PERCENT
+          - TIME
+          - ENUM
+          - ORDERED_ENUM
+        category:
+          type: string
+        categories:
+          type: array
+          items:
+            type: string
+        support:
+          type: array
+          items:
+            type: string
+        pathable:
+          type: boolean
+        parent:
+          type: string
+        extraTitleInfo:
+          type: string
+        segmentable:
+          type: boolean
+        reportable:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+        allowedForReporting:
+          type: boolean
+        noneSettings:
+          $ref: '#/components/schemas/NoneSettings'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    AnalyticsMetric:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - STRING
+          - INT
+          - DECIMAL
+          - CURRENCY
+          - PERCENT
+          - TIME
+          - ENUM
+          - ORDERED_ENUM
+        extraTitleInfo:
+          type: string
+        category:
+          type: string
+        categories:
+          type: array
+          items:
+            type: string
+        support:
+          type: array
+          items:
+            type: string
+        allocation:
+          type: boolean
+        precision:
+          type: integer
+          format: int32
+        calculated:
+          type: boolean
+        segmentable:
+          type: boolean
+        description:
+          type: string
+        polarity:
+          type: string
+          enum:
+          - positive
+          - negative
+        helpLink:
+          type: string
+        allowedForReporting:
+          type: boolean
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    AnalyticsProject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: System generated id
+          readOnly: true
+        name:
+          type: string
+          description: Name
+        description:
+          type: string
+          description: Description
+        rsid:
+          type: string
+          description: The report suite id for which the component was created/updated
+        reportSuiteName:
+          type: string
+          description: The report suite name for which the component was created/updated
+          readOnly: true
+        owner:
+          $ref: '#/components/schemas/Owner'
+        type:
+          description: Type
+          type: string
+          enum:
+          - project
+          - mobileScorecard
+        definition:
+          $ref: '#/components/schemas/JsonNode'
+        externalReferences:
+          type: object
+          additionalProperties:
+            uniqueItems: true
+            type: array
+            items:
+              type: string
+        accessLevel:
+          type: string
+          description: Access Level
+        versionNotes:
+          type: string
+        tags:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+              properties: {}
+        shares:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+              properties: {}
+        modified:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+    JsonNode:
+      type: object
+    ProjectCompatibility:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        validatorVersion:
+          type: string
+        message:
+          type: string
+    AnalyticsSegment:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A name for the segment.
+        description:
+          type: string
+          description: A description of the segment.
+        rsid:
+          type: string
+          description: The report suite id.
+        reportSuiteName:
+          type: string
+          description: The friendly name for the report suite id.
+        owner:
+          $ref: '#/components/schemas/Owner'
+        definition:
+          $ref: '#/components/schemas/AnalyticsSegmentDefinition'
+        compatibility:
+          $ref: '#/components/schemas/SegmentCompatibility'
+        definitionLastModified:
+          type: string
+          format: date-time
+        categories:
+          type: array
+          items:
+            type: string
+        siteTitle:
+          type: string
+          description: A name for the report suite.  This is deprecated and should
+            use the report suite name instead.
+        tags:
+          type: array
+          description: All existing tags associated with the segment.
+          items:
+            $ref: '#/components/schemas/Tag'
+        modified:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+    AnalyticsSegmentResponseItem:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the segment.
+        name:
+          type: string
+          description: A name for the segment.
+        description:
+          type: string
+          description: A description of the segment.
+        rsid:
+          type: string
+          description: The report suite id.
+        reportSuiteName:
+          type: string
+          description: The friendly name for the report suite id.
+        owner:
+          description: Owner
+          $ref: '#/components/schemas/Owner'
+        definition:
+          description: Analytics segment definition.
+          $ref: '#/components/schemas/AnalyticsSegmentDefinition'
+        compatibility:
+          description: Segment compatibility.
+          $ref: '#/components/schemas/SegmentCompatibility'
+        definitionLastModified:
+          type: string
+          format: date-time
+        categories:
+          type: array
+          items:
+            type: string
+        siteTitle:
+          type: string
+          description: A name for the report suite.  This is deprecated and should
+            use the report suite name instead.
+        tags:
+          type: array
+          description: All existing tags associated with the segment.
+          items:
+            $ref: '#/components/schemas/Tag'
+        modified:
+          description: Modified date and time.
+          type: string
+          format: date-time
+        created:
+          description: Created date and time
+          type: string
+          format: date-time
+    AnalyticsSegmentDefinition:
+      type: object
+      description: Analytics segment definition
+      properties:
+        container:
+          description: Analytics segment definition container
+          type: object
+          properties:
+            context:
+              description: Context
+              type: string
+            func:
+              description: Func
+              type: string
+            pred:
+              description: Pred
+              type: object
+              properties:
+                val:
+                  description: Val
+                  type: object
+                  properties:
+                    description:
+                      description: Description
+                      type: string
+                    name:
+                      description: Name
+                      type: string
+                    func:
+                      description: Func
+                      type: string
+                str:
+                  description: Str
+                  type: string
+                func:
+                  description: Func
+                  type: string
+        func:
+          description: Func
+          type: string
+        version:
+          description: Version
+          type: array
+          items:
+            type: integer
+            format: int32
+    AnalyticsUser:
+      type: object
+      properties:
+        companyid:
+          type: integer
+          format: int32
+        loginId:
+          type: integer
+          format: int32
+        login:
+          type: string
+        changePassword:
+          type: boolean
+        createDate:
+          type: string
+          format: date-time
+        disabled:
+          type: boolean
+        email:
+          type: string
+        firstName:
+          type: string
+        fullName:
+          type: string
+        imsUserId:
+          type: string
+        lastName:
+          type: string
+        lastAccess:
+          type: string
+          format: date-time
+        phoneNumber:
+          type: string
+        tempLoginEnd:
+          type: string
+          format: date-time
+        title:
+          type: string
+    AnalyticsVirtualReportSuite:
+      type: object
+      properties:
+        id:
+          type: string
+          description: System generated virtual report suite id
+        name:
+          type: string
+        description:
+          type: string
+        rsid:
+          type: string
+          description: The report suite id for which the component was created/updated
+        reportSuiteName:
+          type: string
+          description: The report suite name for which the component was created/updated
+          readOnly: true
+        owner:
+          $ref: '#/components/schemas/Owner'
+        parentRsid:
+          type: string
+          description: Parent report suite id for virtual report suite
+        parentRsidName:
+          type: string
+          description: Parent report suite name
+        timezone:
+          type: integer
+          format: int32
+        segmentList:
+          type: array
+          description: List of segments applied to this virtual report suite
+          items:
+            type: string
+        currency:
+          type: string
+        calendarType:
+          $ref: '#/components/schemas/CalendarType'
+        timezoneZoneInfo:
+          type: string
+          description: Suite friendly timezone name
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        siteTitle:
+          type: string
+        modified:
+          type: string
+          format: date-time
+        created:
+          type: string
+          format: date-time
+    CalcMetricCompatibility:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        message:
+          type: string
+        identityMetrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityMetric'
+        identityDimensions:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        segments:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        functions:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        validator_version:
+          type: string
+        supported_products:
+          type: array
+          items:
+            type: string
+        supported_schema:
+          type: array
+          items:
+            type: string
+    CalcMetricFunction:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Calculated Metric Function ID
+        category:
+          type: string
+          description: Calculated Metric Function category
+        persistable:
+          type: boolean
+          description: If a Calculated Metric Function is persistable
+        name:
+          type: string
+          description: Calculated Metric Function name
+        namespace:
+          type: string
+          description: Calculated Metric Function namespace
+        description:
+          type: string
+          description: Calculated Metric Function description
+        exampleKey:
+          type: string
+          description: Calculated Metric Function example key
+        example:
+          type: string
+          description: Calculated Metric Function example
+        definition:
+          $ref: '#/components/schemas/CalcMetricFunctionDef'
+    CalcMetricFunctionDef:
+      type: object
+      properties:
+        func:
+          type: string
+        parameters:
+          type: array
+          items:
+            $ref: '#/components/schemas/CalcMetricFunctionParameter'
+        formula:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        version:
+          type: array
+          items:
+            type: integer
+            format: int32
+    CalcMetricFunctionParameter:
+      type: object
+      properties:
+        func:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        friendlyNameKey:
+          type: string
+        descKey:
+          type: string
+        friendlyName:
+          type: string
+        description:
+          type: string
+        default-value:
+          type: object
+          properties: {}
+    CalculatedMetricDef:
+      type: object
+    CalculatedMetricErrorStatus:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          enum:
+          - no_feature_access_to_advanced_calculated_metrics
+          - invalid_metric_access
+          - method_not_allowed
+          - resource_conflict
+          - invalid_access
+          - resource_temporarily_unavailable
+          - external_api_failure
+          - aam_failure
+          - resource_already_exists
+          - invalid_state
+          - invalid_json_input
+          - invalid_parameters
+          - invalid_dimension_access
+          - unsupported_data_type
+          - resource_not_found
+          - insufficient_access
+          - health_check_error
+          - invalid_data
+          - unexpected_error
+          - external_api_error
+          - unsupported_resource
+          - io_error
+          - invalid_request
+          - invalid_client_id
+          - unauthorized
+          - authorization_error
+          - invalid_token
+          - insufficient_scope
+          - bluecoat_unauthorized
+        errorDescription:
+          type: string
+        errorId:
+          type: string
+        errorDetails:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        rootCauseService:
+          type: string
+    CalendarType:
+      type: object
+      properties:
+        rsid:
+          type: string
+        type:
+          type: string
+          enum:
+          - gregorian
+          - nrf
+          - qrs
+          - custom_454
+          - custom_445
+          - modified_gregorian
+        anchorDate:
+          type: string
+          format: date-time
+    Column:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - DIMENSION
+          - METRIC
+        id:
+          type: string
+        title:
+          type: string
+        segmentIds:
+          type: array
+          items:
+            type: string
+    DeleteResponse:
+      type: object
+      properties:
+        result:
+          type: string
+        message:
+          type: string
+    IdentityMetric:
+      type: object
+      properties:
+        identity:
+          type: string
+        dimensionView:
+          type: string
+          enum:
+          - LINEAR_ALLOCATION
+          - PARTICIPATION_ALLOCATION
+          - LAST_TOUCH_ALLOCATION
+          - MC_FIRST_TOUCH_ALLOCATION
+          - MC_LAST_TOUCH_ALLOCATION
+        allocationModel:
+          type: string
+          enum:
+          - ALLOCATION_FIRST_TOUCH
+          - ALLOCATION_LAST_TOUCH
+          - ALLOCATION_INSTANCE
+          - ALLOCATION_DEDUPED_INSTANCE
+          - ALLOCATION_LAST_KNOWN
+          - ALLOCATION_LEGACY
+          - ALLOCATION_LINEAR
+          - ALLOCATION_PARTICIPATION
+          - ALLOCATION_POSITION_BASED
+          - ALLOCATION_TIME_DECAY
+          - ALLOCATION_U_SHAPED
+          - ALLOCATION_J_SHAPED
+          - ALLOCATION_REVERSE_J_SHAPED
+    Locale:
+      type: object
+      properties:
+        language:
+          type: string
+        script:
+          type: string
+        country:
+          type: string
+        variant:
+          type: string
+        extensionKeys:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        unicodeLocaleAttributes:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        unicodeLocaleKeys:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        iso3Language:
+          type: string
+        iso3Country:
+          type: string
+        displayLanguage:
+          type: string
+        displayScript:
+          type: string
+        displayCountry:
+          type: string
+        displayVariant:
+          type: string
+        displayName:
+          type: string
+    NoneSettings:
+      type: object
+      properties:
+        includeNoneByDefault:
+          type: boolean
+        noneChangeable:
+          type: boolean
+    Owner:
+      required:
+      - id
+      type: object
+      description: Owner
+      properties:
+        id:
+          type: integer
+          description: the login id of the owner
+          format: int32
+        name:
+          type: string
+          description: the friendly full login name of the owner, included when the
+            expansion parameter ownerFullName is true
+        login:
+          type: string
+          description: the friendly full login name of the owner, included when the
+            expansion parameter ownerFullName is true
+    Pageable:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+    PredictiveSettings:
+      type: object
+      properties:
+        trainingPeriods:
+          type: integer
+          format: int32
+        highAnomalies:
+          type: boolean
+        lowAnomalies:
+          type: boolean
+    PublishingStatus:
+      type: object
+      properties:
+        published:
+          type: boolean
+        publishedDate:
+          type: string
+          format: date-time
+        lookbackPeriod:
+          type: integer
+          format: int32
+        lookbackGranularity:
+          type: string
+    RankedColumnError:
+      type: object
+      properties:
+        columnId:
+          type: string
+        errorCode:
+          type: string
+          enum:
+          - unauthorized_metric
+          - unauthorized_dimension
+          - unauthorized_dimension_global
+          - anomaly_detection_failure_unexpected_item_count
+          - anomaly_detection_failure_tsa_service
+          - not_enabled_metric
+          - not_enabled_dimension
+          - not_enabled_dimension_global
+        errorId:
+          type: string
+        errorDescription:
+          type: string
+    RankedColumnMetaData:
+      type: object
+      properties:
+        dimension:
+          $ref: '#/components/schemas/ReportDimension'
+        columnIds:
+          type: array
+          items:
+            type: string
+        columnErrors:
+          type: array
+          items:
+            $ref: '#/components/schemas/RankedColumnError'
+    RankedReportData:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        firstPage:
+          type: boolean
+        lastPage:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        message:
+          type: string
+        request:
+          $ref: '#/components/schemas/RankedRequest'
+        reportId:
+          type: string
+        columns:
+          $ref: '#/components/schemas/RankedColumnMetaData'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/Row'
+        # summaryData:
+        #   $ref: '#/components/schemas/RankedSummaryData'
+    RankedRequest:
+      type: object
+      properties:
+        rsid:
+          type: string
+        dimension:
+          type: string
+        locale:
+          $ref: '#/components/schemas/Locale'
+        globalFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportFilter'
+        search:
+          $ref: '#/components/schemas/ReportSearch'
+        settings:
+          $ref: '#/components/schemas/RankedSettings'
+        statistics:
+          $ref: '#/components/schemas/RankedStatistics'
+        metricContainer:
+          $ref: '#/components/schemas/ReportMetrics'
+        rowContainer:
+          $ref: '#/components/schemas/ReportRows'
+        anchorDate:
+          type: string
+    RankedSettings:
+      type: object
+      properties:
+        limit:
+          type: integer
+          format: int32
+        page:
+          type: integer
+          format: int32
+        dimensionSort:
+          type: string
+        countRepeatInstances:
+          type: boolean
+        reflectRequest:
+          type: boolean
+        includeAnomalyDetection:
+          type: boolean
+        includePercentChange:
+          type: boolean
+        includeLatLong:
+          type: boolean
+        nonesBehavior:
+          type: string
+    RankedStatistics:
+      type: object
+      properties:
+        functions:
+          type: array
+          items:
+            type: string
+        ignoreZeroes:
+          type: boolean
+    # RankedSummaryData:
+    #   type: object
+    ReportDimension:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - STRING
+          - INT
+          - DECIMAL
+          - CURRENCY
+          - PERCENT
+          - TIME
+          - ENUM
+          - ORDERED_ENUM
+    ReportErrorStatus:
+      type: object
+      properties:
+        errorCode:
+          type: string
+          enum:
+          - invalid_segment_ids_found
+          - invalid_metric_access
+          - method_not_allowed
+          - resource_conflict
+          - invalid_access
+          - resource_temporarily_unavailable
+          - external_api_failure
+          - aam_failure
+          - resource_already_exists
+          - invalid_state
+          - invalid_json_input
+          - invalid_parameters
+          - invalid_dimension_access
+          - unsupported_data_type
+          - resource_not_found
+          - insufficient_access
+          - health_check_error
+          - invalid_data
+          - unexpected_error
+          - external_api_error
+          - unsupported_resource
+          - io_error
+          - invalid_request
+          - invalid_client_id
+          - unauthorized
+          - authorization_error
+          - invalid_token
+          - insufficient_scope
+          - bluecoat_unauthorized
+        errorDescription:
+          type: string
+        errorId:
+          type: string
+        errorDetails:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        rootCauseService:
+          type: string
+    ReportFilter:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+          - dateRange
+          - breakdown
+          - segment
+          - excludeItemIds
+        dimension:
+          type: string
+        itemId:
+          type: string
+        itemIds:
+          type: array
+          items:
+            type: string
+        segmentId:
+          type: string
+        segmentDefinition:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        dateRange:
+          type: string
+        excludeItemIds:
+          type: array
+          items:
+            type: string
+    ReportMetric:
+      type: object
+      properties:
+        id:
+          type: string
+        columnId:
+          type: string
+        filters:
+          type: array
+          items:
+            type: string
+        sort:
+          type: string
+        metricDefinition:
+          type: object
+          additionalProperties:
+            type: object
+            properties: {}
+        predictive:
+          $ref: '#/components/schemas/ReportMetricPredictiveSettings'
+    ReportMetricPredictiveSettings:
+      type: object
+      properties:
+        anomalyConfidence:
+          type: number
+          format: double
+    ReportMetrics:
+      type: object
+      properties:
+        metricFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportFilter'
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportMetric'
+    ReportRow:
+      type: object
+      properties:
+        rowId:
+          type: string
+        filters:
+          type: array
+          items:
+            type: string
+    ReportRows:
+      type: object
+      properties:
+        rowFilters:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportFilter'
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportRow'
+    ReportSearch:
+      type: object
+      properties:
+        clause:
+          type: string
+        excludeItemIds:
+          type: array
+          items:
+            type: string
+        itemIds:
+          type: array
+          items:
+            type: string
+        includeSearchTotal:
+          type: boolean
+        empty:
+          type: boolean
+    RollingDateFunction:
+      type: object
+      properties:
+        function:
+          type: string
+        granularity:
+          type: string
+          enum:
+          - year
+          - quarter
+          - month
+          - week
+          - day
+          - hour
+          - minute
+        offset:
+          type: integer
+          format: int32
+        dow:
+          type: string
+          enum:
+          - monday
+          - tuesday
+          - wednesday
+          - thursday
+          - friday
+          - saturday
+          - sunday
+        date:
+          type: string
+    Row:
+      type: object
+      properties:
+        itemId:
+          type: string
+        value:
+          type: string
+        rowId:
+          type: string
+        data:
+          type: array
+          items:
+            type: number
+            format: double
+        dataExpected:
+          type: array
+          items:
+            type: number
+            format: double
+        dataUpperBound:
+          type: array
+          items:
+            type: number
+            format: double
+        dataLowerBound:
+          type: array
+          items:
+            type: number
+            format: double
+        dataAnomalyDetected:
+          type: array
+          items:
+            type: boolean
+        percentChange:
+          type: array
+          items:
+            type: number
+            format: double
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    RowItem:
+      type: object
+      properties:
+        itemId:
+          type: string
+        value:
+          type: string
+    SegmentCompatibility:
+      type: object
+      description: Segment compatibility.
+      properties:
+        valid:
+          description: Validity
+          type: boolean
+        message:
+          description: Message
+          type: string
+        validator_version:
+          description: Validator version
+          type: string
+        supported_products:
+          description: Suported products
+          type: array
+          items:
+            type: string
+        supported_schema:
+          description: Supported schema
+          type: array
+          items:
+            type: string
+        supported_features:
+          description: Supported features
+          type: array
+          items:
+            type: string
+    Sort:
+      type: object
+    SuiteCollectionItem:
+      type: object
+      properties:
+        name:
+          type: string
+        timezoneZoneInfo:
+          type: string
+          description: Suite friendly timezone name
+        parentRsid:
+          type: string
+          description: Parent report suite id for virtual report suite
+        collectionItemType:
+          type: string
+          description: Suite type
+          enum:
+          - reportsuite
+          - virtualreportsuite
+        currency:
+          type: string
+        calendarType:
+          $ref: '#/components/schemas/CalendarType'
+        rsid:
+          type: string
+          readOnly: true
+    Share:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: the share id
+          format: int32
+        shareToId:
+          type: integer
+          description: the id of the user/group the component is shared with
+          format: int32
+        shareToType:
+          type: string
+          description: the type of entity shared with (user/group/all)
+        shareToDisplayName:
+          type: string
+          description: full name of the entity shared with
+        componentType:
+          type: string
+          description: the type of component being shared
+        componentId:
+          type: string
+          description: the id of the component being shared
+        accessLevel:
+          type: string
+          description: Level of rights shared with entity. (for projects only)
+      description: Share Model
+    SharedComponent:
+      type: object
+      properties:
+        componentType:
+          type: string
+        componentId:
+          type: string
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/Share'
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: the tag id
+          format: int32
+        name:
+          type: string
+          description: 'the tag name '
+        description:
+          type: string
+          description: the tag description
+        components:
+          uniqueItems: true
+          type: array
+          description: the list of components that have been tagged with this tag
+          items:
+            $ref: '#/components/schemas/TaggedComponent'
+      description: Tag Model
+    TaggedComponent:
+      type: object
+      properties:
+        componentType:
+          type: string
+        componentId:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    UnhashReportData:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        firstPage:
+          type: boolean
+        lastPage:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int32
+        message:
+          type: string
+        reportId:
+          type: string
+        searchAnd:
+          type: string
+        searchOr:
+          type: string
+        searchNot:
+          type: string
+        searchPhrase:
+          type: string
+        oberonRequestXML:
+          type: string
+        oberonResponseXML:
+          type: string
+        rows:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowItem'
+    ComponentSearch:
+      type: object
+      properties:
+        componentType:
+          type: string
+        componentIds:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    ResponsePageUsageLogDto:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/UsageLogDto'
+        totalElements:
+          type: integer
+          format: int64
+        lastPage:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        firstPage:
+          type: boolean
+        sort:
+          type: string
+        size:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+    UsageLogDto:
+      type: object
+      properties:
+        dateCreated:
+          type: string
+          format: date-time
+        eventDescription:
+          type: string
+        ipAddress:
+          type: string
+        rsid:
+          type: string
+        eventType:
+          type: string
+        login:
+          type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    oAuth2Auth:
+      type: oauth2
+      description: Use your own account to authenticate with the API. See [OAuth connection](https://developer.adobe.com/developer-console/docs/guides/authentication/OAuthIntegration/) in the Adobe I/O Authentication user guide.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account-d.docusign.com/oauth/auth
+          tokenUrl: https://account-d.docusign.com/oauth/token
+          scopes: 
+            {}

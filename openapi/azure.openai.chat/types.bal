@@ -144,7 +144,7 @@ public type ChatCompletionRequestMessageUser record {
 };
 
 # Controls which (if any) function is called by the model. `none` means the model will not call a function and instead generates a message. `auto` means the model can pick between generating a message or calling a function. Specifying a particular function via `{"type": "function", "function": {"name": "my_function"}}` forces the model to call that function.
-public type ChatCompletionToolChoiceOption "none"|"auto"|ChatCompletionNamedToolChoice;
+public type ChatCompletionToolChoiceOption "none"|"auto"|"required"|ChatCompletionNamedToolChoice;
 
 public type Enhancement record {
     # The grounding enhancement that returns the bounding box of the objects detected in the image.

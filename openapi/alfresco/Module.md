@@ -7,8 +7,8 @@ This Alfresco Content Services REST APIs enable you to access to the core featur
 
 Before using this connector in your Ballerina application, complete the following:
 
-* Create a [Alfresco Account](https://www.alfresco.com/try-alfresco-acs).
-* Obtain tokens by following [this guide](https://docs.alfresco.com/content-services/latest/develop/repo-ext-points/authentication/).
+* Create an [Alfresco Account](https://www.alfresco.com/try-alfresco-acs).
+* Once registered, you will receive an email with instructions to set up your Alfresco environment, including the default username and password. Use these Basic Authentication credentials to access the Alfresco Content Services API.
 
 ## Quickstart
 
@@ -21,11 +21,12 @@ import ballerinax/alfresco;
 ```
 
 ### Step 2: Create a new connector instance
-Create a `alfresco:ClientConfig` with the `Bearer_Token` obtained, and initialize the connector with it.
+Create a `alfresco:ConnectionConfig` using the Basic Authentication credentials (i.e: username and password), and initialize the connector with it.
 ```ballerina
-alfresco:ClientConfig clientConfig = {
+alfresco:ConnectionConfig clientConfig = {
     auth: {
-        token: <Bearer_Token>
+        username: <username>,
+        password: <password>
     }
 };
 alfresco:Client baseClient = check new (clientConfig, serviceURL);

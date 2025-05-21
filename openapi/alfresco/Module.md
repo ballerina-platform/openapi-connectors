@@ -14,7 +14,7 @@ Before using this connector in your Ballerina application, complete the followin
 
 To use the Alfresco connector in your Ballerina application, update the .bal file as follows:
 
-### Step 1: Import connector
+### Step 1: Import the connector
 First, import the `ballerinax/alfresco` module into the Ballerina project.
 ```ballerina
 import ballerinax/alfresco;
@@ -23,10 +23,13 @@ import ballerinax/alfresco;
 ### Step 2: Create a new connector instance
 Create a `alfresco:ConnectionConfig` using the Basic Authentication credentials (i.e: username and password), and initialize the connector with it.
 ```ballerina
+configurable string username = ?;
+configurable string password = ?;
+
 alfresco:ConnectionConfig clientConfig = {
     auth: {
-        username: <username>,
-        password: <password>
+        username,
+        password
     }
 };
 alfresco:Client baseClient = check new (clientConfig, serviceURL);
@@ -36,9 +39,6 @@ alfresco:Client baseClient = check new (clientConfig, serviceURL);
 1. Now you can use the operations available within the connector. Note that they are in the form of remote operations.
 
     Following is an example on how to get list of comments in a particular node.
-
-    Retrieve list of comments in a particular node.
-
     ```ballerina
     public function main() returns error? {
         alfresco:CommentPaging response = check baseClient->listComments(nodeId);
@@ -46,4 +46,8 @@ alfresco:Client baseClient = check new (clientConfig, serviceURL);
     }
     ``` 
 
-2. Use `bal run` command to compile and run the Ballerina program.
+### Step 4: Run the Ballerina application
+Execute the command below to execute the Ballerina application
+```bash
+bal run
+```

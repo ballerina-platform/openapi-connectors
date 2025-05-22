@@ -47,7 +47,7 @@ alfresco:Client baseClient = check new (clientConfig, serviceURL);
     ``` 
 
 ### Step 4: Run the Ballerina application
-Execute the command below to execute the Ballerina application
+Use the command below to run the Ballerina application
 ```bash
 bal run
 ```

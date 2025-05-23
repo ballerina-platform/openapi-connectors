@@ -27,13 +27,13 @@ Create a `alfresco:ConnectionConfig` using the Basic Authentication credentials 
 configurable string username = ?;
 configurable string password = ?;
 
-alfresco:ConnectionConfig clientConfig = {
+alfresco:ConnectionConfig alfrescoConfig = {
     auth: {
         username,
         password
     }
 };
-alfresco:Client baseClient = check new (clientConfig, serviceURL);
+alfresco:Client alfresco = check new (alfrescoConfig, serviceURL);
 ```
 
 ### Step 3: Invoke connector operation
@@ -42,7 +42,7 @@ alfresco:Client baseClient = check new (clientConfig, serviceURL);
     Following is an example on how to get list of comments in a particular node.
     ```ballerina
     public function main() returns error? {
-        alfresco:CommentPaging response = check baseClient->listComments(nodeId);
+        alfresco:CommentPaging response = check alfresco->listComments(nodeId);
         log:printInfo(response.toString());
     }
     ``` 

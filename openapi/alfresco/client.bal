@@ -376,13 +376,13 @@ public isolated client class Client {
     # + ifModifiedSince - Only returns the content if it has been modified since the date provided. Use the date format defined by HTTP. For example, `Wed, 09 Mar 2016 16:56:34 GMT`. 
     # + range - The Range header indicates the part of a document that the server should return. Single part request supported, for example: bytes=1-10. 
     # + return - Successful response 
-    remote isolated function getNodeContent(string nodeId, boolean attachment = true, string? ifModifiedSince = (), string? range = ()) returns string|error? {
+    remote isolated function getNodeContent(string nodeId, boolean attachment = true, string? ifModifiedSince = (), string? range = ()) returns byte[]|error? {
         string resourcePath = string `/nodes/${getEncodedUri(nodeId)}/content`;
         map<anydata> queryParam = {"attachment": attachment};
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        string? response = check self.clientEp->get(resourcePath, httpHeaders);
+        byte[]? response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update node content

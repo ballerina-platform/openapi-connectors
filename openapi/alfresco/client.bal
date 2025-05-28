@@ -382,7 +382,7 @@ public isolated client class Client {
         resourcePath = resourcePath + check getPathForQueryParam(queryParam);
         map<any> headerValues = {"If-Modified-Since": ifModifiedSince, "Range": range};
         map<string|string[]> httpHeaders = getMapForHeaders(headerValues);
-        byte[]? response = check self.clientEp->get(resourcePath, httpHeaders);
+        byte[] response = check self.clientEp->get(resourcePath, httpHeaders);
         return response;
     }
     # Update node content

@@ -4,9 +4,9 @@ keywords = ["Content & Files/Documents", "Cost/Paid"]
 org = "ballerinax"
 name = "alfresco"
 icon = "icon.png"
-distribution = "2201.4.1"
+distribution = "2201.8.0"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/alfresco"
-version = "1.4.1"
+version = "1.4.0"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

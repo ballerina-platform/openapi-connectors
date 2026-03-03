@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Blogs", "Cost/Freemium"]
+keywords = ["Content & Files/Blogs", "Cost/Freemium", "Vendor/Medium", "Area/File Management", "Type/Connector"]
 org = "ballerinax"
 name = "medium"
 icon = "icon.png"

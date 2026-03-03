@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Video & Audio", "Cost/Freemium"]
+keywords = ["Content & Files/Video & Audio", "Cost/Freemium", "Vendor/Vimeo", "Area/File Management", "Type/Other"]
 org = "ballerinax"
 name = "vimeo"
 icon = "icon.png"

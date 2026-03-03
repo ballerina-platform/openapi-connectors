@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Accounting", "Cost/Paid"]
+keywords = ["Finance/Accounting", "Cost/Paid", "Vendor/Workday", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "workday.customeraccounts"
 icon = "icon.png"

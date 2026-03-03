@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Reporting", "Cost/Paid"]
+keywords = ["Business Intelligence/Reporting", "Cost/Paid", "Vendor/GoDaddy", "Area/Analytics", "Type/Connector"]
 org = "ballerinax"
 name = "godaddy.abuse"
 icon = "icon.png"

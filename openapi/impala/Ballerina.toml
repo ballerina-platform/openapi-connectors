@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Sales & CRM/Scheduling & Booking", "Cost/Freemium"]
+keywords = ["Sales & CRM/Scheduling & Booking", "Cost/Freemium", "Vendor/Impala", "Area/CRM", "Type/Connector"]
 org = "ballerinax"
 name = "impala"
 icon = "icon.png"

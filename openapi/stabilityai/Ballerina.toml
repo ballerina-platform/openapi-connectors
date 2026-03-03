@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Images", "Vendor/Stability AI", "Cost/Paid", "Stable Diffusion"]
+keywords = ["AI/Images", "Cost/Paid", "Stable Diffusion", "Vendor/Stability AI", "Area/AI", "Type/Connector"]
 org = "ballerinax"
 name = "stabilityai"
 icon = "icon.png"

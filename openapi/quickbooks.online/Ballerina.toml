@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Accounting", "Cost/Paid"]
+keywords = ["Finance/Accounting", "Cost/Paid", "Vendor/Other", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "quickbooks.online"
 icon = "icon.png"

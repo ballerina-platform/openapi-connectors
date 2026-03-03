@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Education/Translator", "Cost/Free", "Vendor/Google"]
+keywords = ["Education/Translator", "Cost/Free", "Vendor/Google", "Area/Education", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.cloudtranslation"
 icon = "icon.png"

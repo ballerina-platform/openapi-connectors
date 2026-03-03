@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Communication/Video Conferencing", "Cost/Paid"]
+keywords = ["Communication/Video Conferencing", "Cost/Paid", "Vendor/Other", "Area/Communication", "Type/Connector"]
 org = "ballerinax"
 name = "gotomeeting"
 icon = "icon.png"

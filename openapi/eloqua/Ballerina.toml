@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Marketing/Marketing Automation", "Cost/Paid"]
+keywords = ["Marketing/Marketing Automation", "Cost/Paid", "Vendor/Oracle", "Area/Social Media and Marketing", "Type/Connector"]
 org = "ballerinax"
 name = "eloqua"
 icon = "icon.png"

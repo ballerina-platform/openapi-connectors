@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Asset Management", "Cost/Paid"]
+keywords = ["Finance/Asset Management", "Cost/Paid", "Vendor/YNAB", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "ynab"
 icon = "icon.png"

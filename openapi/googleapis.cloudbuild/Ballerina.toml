@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Billing", "Cost/Paid", "Vendor/Google"]
+keywords = ["Finance/Billing", "Cost/Paid", "Vendor/Google", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.cloudbuild"
 icon = "icon.png"

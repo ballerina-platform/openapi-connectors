@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Education/eLearning", "Cost/Freemium"]
+keywords = ["Education/eLearning", "Cost/Freemium", "Vendor/Other", "Area/Education", "Type/Other"]
 org = "ballerinax"
 name = "mathtools.numbers"
 icon = "icon.png"

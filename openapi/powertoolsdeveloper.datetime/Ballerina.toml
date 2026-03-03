@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/App Builders", "Cost/Freemium"]
+keywords = ["Website & App Building/App Builders", "Cost/Freemium", "Vendor/Other", "Area/Web Services", "Type/Other"]
 org = "ballerinax"
 name = "powertoolsdeveloper.datetime"
 icon = "icon.png"

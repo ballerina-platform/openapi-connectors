@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Security & Identity Tools", "Cost/Freemium"]
+keywords = ["IT Operations/Security & Identity Tools", "Cost/Freemium", "Vendor/Siemens", "Area/DevOps", "Type/Connector"]
 org = "ballerinax"
 name = "siemens.platformcore.identitymanagement"
 icon = "icon.png"

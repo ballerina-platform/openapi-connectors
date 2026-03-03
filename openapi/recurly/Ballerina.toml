@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Billing", "Cost/Paid"]
+keywords = ["Finance/Billing", "Cost/Paid", "Vendor/Other", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "recurly"
 icon = "icon.png"

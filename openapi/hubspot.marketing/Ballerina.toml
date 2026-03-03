@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Marketing/Marketing Automation", "Cost/Freemium"]
+keywords = ["Marketing/Marketing Automation", "Cost/Freemium", "Vendor/HubSpot", "Area/Social Media and Marketing", "Type/Connector"]
 org = "ballerinax"
 name = "hubspot.marketing"
 icon = "icon.png"

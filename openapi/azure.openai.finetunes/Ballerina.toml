@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Fine-tunes", "Vendor/Microsoft", "Cost/Paid", "Fine-tunes", "Files", "Models", "Azure OpenAI"]
+keywords = ["AI/Fine-tunes", "Cost/Paid", "Fine-tunes", "Files", "Models", "Azure OpenAI", "Vendor/Microsoft", "Area/AI", "Type/Connector"]
 org = "ballerinax"
 name = "azure.openai.finetunes"
 icon = "icon.png"

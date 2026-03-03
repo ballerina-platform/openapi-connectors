@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Freemium"]
+keywords = ["IT Operations/Cloud Services", "Cost/Freemium", "Vendor/Interzoid", "Area/DevOps", "Type/Connector"]
 org = "ballerinax"
 name = "interzoid.statedata"
 icon = "icon.png"

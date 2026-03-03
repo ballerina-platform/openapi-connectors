@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Testing Tools", "Cost/Paid"]
+keywords = ["IT Operations/Testing Tools", "Cost/Paid", "Vendor/Optimizely", "Area/DevOps", "Type/Connector"]
 org = "ballerinax"
 name = "optimizely"
 icon = "icon.png"

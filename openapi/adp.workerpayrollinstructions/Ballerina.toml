@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Human Resources/HRMS", "Cost/Paid"]
+keywords = ["Human Resources/HRMS", "Cost/Paid", "Vendor/ADP", "Area/Human Resources Management", "Type/Connector"]
 org = "ballerinax"
 name = "adp.workerpayrollinstructions"
 icon = "icon.png"

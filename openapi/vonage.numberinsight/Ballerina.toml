@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Communication/Call Tracking", "Cost/Paid"]
+keywords = ["Communication/Call Tracking", "Cost/Paid", "Vendor/Vonage", "Area/Communication", "Type/Connector"]
 org = "ballerinax"
 name = "vonage.numberinsight"
 icon = "icon.png"

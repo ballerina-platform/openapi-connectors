@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Security & Identity Tools", "Cost/Freemium", "Vendor/Google"]
+keywords = ["IT Operations/Security & Identity Tools", "Cost/Freemium", "Vendor/Google", "Area/DevOps", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.oauth2"
 icon = "icon.png"

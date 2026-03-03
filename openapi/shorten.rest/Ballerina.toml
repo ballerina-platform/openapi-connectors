@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Marketing/Url Shortener", "Cost/Freemium"]
+keywords = ["Marketing/Url Shortener", "Cost/Freemium", "Vendor/Other", "Area/Social Media and Marketing", "Type/Connector"]
 org = "ballerinax"
 name = "shorten.rest"
 icon = "icon.png"

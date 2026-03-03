@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Asset Management", "Cost/Freemium"]
+keywords = ["Finance/Asset Management", "Cost/Freemium", "Vendor/PocketSmith", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "pocketsmith"
 icon = "icon.png"

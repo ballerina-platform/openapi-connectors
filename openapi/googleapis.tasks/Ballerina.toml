@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Productivity/Task Management", "Cost/Free", "Vendor/Google"]
+keywords = ["Productivity/Task Management", "Cost/Free", "Vendor/Google", "Area/Productivity", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.tasks"
 icon = "icon.png"

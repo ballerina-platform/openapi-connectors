@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Free"]
+keywords = ["IT Operations/Cloud Services", "Cost/Free", "Vendor/Other", "Area/DevOps", "Type/Other"]
 org = "ballerinax"
 name = "techport"
 icon = "icon.png"

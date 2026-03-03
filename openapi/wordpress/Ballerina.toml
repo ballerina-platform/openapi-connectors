@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/Website Builders", "Cost/Freemium"]
+keywords = ["Website & App Building/Website Builders", "Cost/Freemium", "Vendor/WordPress", "Area/Web Services", "Type/Connector"]
 org = "ballerinax"
 name = "wordpress"
 icon = "icon.png"

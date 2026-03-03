@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/File Management & Storage", "Cost/Freemium"]
+keywords = ["Content & Files/File Management & Storage", "Cost/Freemium", "Vendor/HubSpot", "Area/File Management", "Type/Connector"]
 org = "ballerinax"
 name = "hubspot.files"
 icon = "icon.png"

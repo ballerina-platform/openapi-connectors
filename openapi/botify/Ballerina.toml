@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/Search Engine Optimization", "Cost/Paid"]
+keywords = ["Website & App Building/Search Engine Optimization", "Cost/Paid", "Vendor/Botify", "Area/Web Services", "Type/Connector"]
 org = "ballerinax"
 name = "botify"
 icon = "icon.png"

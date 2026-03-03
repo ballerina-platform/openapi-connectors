@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Lifestyle & Entertainment/Books", "Cost/Freemium", "Vendor/Google"]
+keywords = ["Lifestyle & Entertainment/Books", "Cost/Freemium", "Vendor/Google", "Area/Entertainment", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.books"
 icon = "icon.png"

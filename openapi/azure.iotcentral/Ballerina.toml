@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Internet of Things/Device Management", "Cost/Paid", "Vendor/Microsoft"]
+keywords = ["Internet of Things/Device Management", "Cost/Paid", "Vendor/Microsoft", "Area/Internet of Things", "Type/Connector"]
 org = "ballerinax"
 name = "azure.iotcentral"
 icon = "icon.png"

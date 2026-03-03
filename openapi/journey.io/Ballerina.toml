@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Analytics", "Cost/Freemium"]
+keywords = ["Business Intelligence/Analytics", "Cost/Freemium", "Vendor/Other", "Area/Analytics", "Type/Connector"]
 org = "ballerinax"
 name = "journey.io"
 icon = "icon.png"

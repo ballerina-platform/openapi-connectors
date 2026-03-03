@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/File Management & Storage", "Cost/Freemium"]
+keywords = ["Content & Files/File Management & Storage", "Cost/Freemium", "Vendor/Box", "Area/File Management", "Type/Connector"]
 org = "ballerinax"
 name = "box"
 icon = "icon.png"

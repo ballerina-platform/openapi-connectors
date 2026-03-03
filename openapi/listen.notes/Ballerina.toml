@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Video & Audio", "Cost/Freemium"]
+keywords = ["Content & Files/Video & Audio", "Cost/Freemium", "Vendor/ListenNotes", "Area/File Management", "Type/Connector"]
 org = "ballerinax"
 name = "listen.notes"
 icon = "icon.png"

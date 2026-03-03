@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Analytics", "Cost/Paid"]
+keywords = ["Business Intelligence/Analytics", "Cost/Paid", "Vendor/Other", "Area/Analytics", "Type/Connector"]
 org = "ballerinax"
 name = "automata"
 icon = "icon.png"

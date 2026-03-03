@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Support/Customer Support", "Cost/Paid"]
+keywords = ["Support/Customer Support", "Cost/Paid", "Vendor/Atspoke", "Area/Support", "Type/Connector"]
 org = "ballerinax"
 name = "atspoke"
 icon = "icon.png"

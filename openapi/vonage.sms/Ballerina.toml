@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Communication/Call & SMS", "Cost/Paid"]
+keywords = ["Communication/Call & SMS", "Cost/Paid", "Vendor/Vonage", "Area/Communication", "Type/Connector"]
 org = "ballerinax"
 name = "vonage.sms"
 icon = "icon.png"

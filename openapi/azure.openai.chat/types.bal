@@ -596,11 +596,11 @@ public type AzureContentFilterResultForPrompt_content_filter_results record {
     # A detection result that describes user prompt injection attacks, where malicious users deliberately exploit
     # system vulnerabilities to elicit unauthorized behavior from the LLM. This could lead to inappropriate content
     # generation or violations of system-imposed restrictions.
-    AzureContentFilterDetectionResult jailbreak;
+    AzureContentFilterDetectionResult jailbreak?;
     # A detection result that describes attacks on systems powered by Generative AI models that can happen every time
     # an application processes information that wasn't directly authored by either the developer of the application or
     # the user.
-    AzureContentFilterDetectionResult indirect_attack;
+    AzureContentFilterDetectionResult indirect_attack?;
 };
 
 # A content filter result for a single response item produced by a generative AI system.

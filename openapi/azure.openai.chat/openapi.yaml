@@ -9822,9 +9822,6 @@ components:
                 or
 
                 the user.'
-          required:
-          - jailbreak
-          - indirect_attack
           description: The content filter category details for the result.
       description: A content filter result associated with a single input prompt item into a generative AI system.
     AzureContentFilterResultOffsets:
@@ -9845,9 +9842,6 @@ components:
           format: int32
     AzureContentFilterResultsForResponsesAPI:
       type: object
-      required:
-      - jailbreak
-      - task_adherence
       properties:
         sexual:
           allOf:

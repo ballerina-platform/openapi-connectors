@@ -17,163 +17,44 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/data.jsondata;
 import ballerina/http;
-import ballerina/mime;
 
-# Azure OpenAI APIs for completions and search
 public isolated client class Client {
     final http:Client clientEp;
     final readonly & ApiKeysConfig? apiKeyConfig;
     # Gets invoked to initialize the `connector`.
     #
-    # + config - The configurations to be used when initializing the `connector` 
-    # + serviceUrl - URL of the target service 
-    # + return - An error if connector initialization failed 
-    public isolated function init(ConnectionConfig config, string serviceUrl = "https://your-resource-name.openai.azure.com/openai") returns error? {
-        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, timeout: config.timeout, forwarded: config.forwarded, poolConfig: config.poolConfig, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, validation: config.validation};
-        do {
-            if config.http1Settings is ClientHttp1Settings {
-                ClientHttp1Settings settings = check config.http1Settings.ensureType(ClientHttp1Settings);
-                httpClientConfig.http1Settings = {...settings};
-            }
-            if config.http2Settings is http:ClientHttp2Settings {
-                httpClientConfig.http2Settings = check config.http2Settings.ensureType(http:ClientHttp2Settings);
-            }
-            if config.cache is http:CacheConfig {
-                httpClientConfig.cache = check config.cache.ensureType(http:CacheConfig);
-            }
-            if config.responseLimits is http:ResponseLimitConfigs {
-                httpClientConfig.responseLimits = check config.responseLimits.ensureType(http:ResponseLimitConfigs);
-            }
-            if config.secureSocket is http:ClientSecureSocket {
-                httpClientConfig.secureSocket = check config.secureSocket.ensureType(http:ClientSecureSocket);
-            }
-            if config.proxy is http:ProxyConfig {
-                httpClientConfig.proxy = check config.proxy.ensureType(http:ProxyConfig);
-            }
-        }
+    # + config - The configurations to be used when initializing the `connector`
+    # + serviceUrl - URL of the target service
+    # + return - An error if connector initialization failed
+    public isolated function init(ConnectionConfig config, string serviceUrl) returns error? {
+        http:ClientConfiguration httpClientConfig = {httpVersion: config.httpVersion, http1Settings: config.http1Settings, http2Settings: config.http2Settings, timeout: config.timeout, forwarded: config.forwarded, followRedirects: config.followRedirects, poolConfig: config.poolConfig, cache: config.cache, compression: config.compression, circuitBreaker: config.circuitBreaker, retryConfig: config.retryConfig, cookieConfig: config.cookieConfig, responseLimits: config.responseLimits, secureSocket: config.secureSocket, proxy: config.proxy, socketConfig: config.socketConfig, validation: config.validation, laxDataBinding: config.laxDataBinding};
         if config.auth is ApiKeysConfig {
             self.apiKeyConfig = (<ApiKeysConfig>config.auth).cloneReadOnly();
         } else {
             httpClientConfig.auth = <http:BearerTokenConfig>config.auth;
             self.apiKeyConfig = ();
         }
-        http:Client httpEp = check new (serviceUrl, httpClientConfig);
-        self.clientEp = httpEp;
-        return;
+        self.clientEp = check new (serviceUrl, httpClientConfig);
     }
 
-    # Transcribes audio into the input language.
+    # Creates a chat completion.
     #
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - OK 
-    resource isolated function post deployments/[string deployment\-id]/audio/transcriptions(createTranscriptionRequest payload, map<string|string[]> headers = {}, *TranscriptionsCreateQueries queries) returns inline_response_200_2|error {
-        string resourcePath = string `/deployments/${getEncodedUri(deployment\-id)}/audio/transcriptions`;
+    # + headers - Headers to be sent with the request
+    # + queries - Queries to be sent with the request
+    # + return - The request has succeeded.
+    resource isolated function post chat/completions(chat_completions_body payload, map<string|string[]> headers = {}, *CreateChatCompletionQueries queries) returns inline_response_200|error {
+        string resourcePath = string `/chat/completions`;
         map<anydata> headerValues = {...headers};
         if self.apiKeyConfig is ApiKeysConfig {
             headerValues["api-key"] = self.apiKeyConfig?.api\-key;
+            headerValues["authorization"] = self.apiKeyConfig?.authorization;
         }
         resourcePath = resourcePath + check getPathForQueryParam(queries);
         map<string|string[]> httpHeaders = http:getHeaderMap(headerValues);
         http:Request request = new;
-        mime:Entity[] bodyParts = check createBodyParts(payload);
-        request.setBodyParts(bodyParts);
-        return self.clientEp->post(resourcePath, request, httpHeaders);
-    }
-
-    # Transcribes and translates input audio into English text.
-    #
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - OK 
-    resource isolated function post deployments/[string deployment\-id]/audio/translations(createTranslationRequest payload, map<string|string[]> headers = {}, *TranslationsCreateQueries queries) returns inline_response_200_2|error {
-        string resourcePath = string `/deployments/${getEncodedUri(deployment\-id)}/audio/translations`;
-        map<anydata> headerValues = {...headers};
-        if self.apiKeyConfig is ApiKeysConfig {
-            headerValues["api-key"] = self.apiKeyConfig?.api\-key;
-        }
-        resourcePath = resourcePath + check getPathForQueryParam(queries);
-        map<string|string[]> httpHeaders = http:getHeaderMap(headerValues);
-        http:Request request = new;
-        mime:Entity[] bodyParts = check createBodyParts(payload);
-        request.setBodyParts(bodyParts);
-        return self.clientEp->post(resourcePath, request, httpHeaders);
-    }
-
-    # Creates a completion for the chat message
-    #
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - OK 
-    resource isolated function post deployments/[string deployment\-id]/chat/completions(CreateChatCompletionRequest payload, map<string|string[]> headers = {}, *ChatCompletionsCreateQueries queries) returns inline_response_200_1|error {
-        string resourcePath = string `/deployments/${getEncodedUri(deployment\-id)}/chat/completions`;
-        map<anydata> headerValues = {...headers};
-        if self.apiKeyConfig is ApiKeysConfig {
-            headerValues["api-key"] = self.apiKeyConfig?.api\-key;
-        }
-        resourcePath = resourcePath + check getPathForQueryParam(queries);
-        map<string|string[]> httpHeaders = http:getHeaderMap(headerValues);
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, httpHeaders);
-    }
-
-    # Creates a completion for the provided prompt, parameters and chosen model.
-    #
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - OK 
-    resource isolated function post deployments/[string deployment\-id]/completions(CreateCompletionRequest payload, map<string|string[]> headers = {}, *CompletionsCreateQueries queries) returns CreateCompletionResponse|error {
-        string resourcePath = string `/deployments/${getEncodedUri(deployment\-id)}/completions`;
-        map<anydata> headerValues = {...headers};
-        if self.apiKeyConfig is ApiKeysConfig {
-            headerValues["api-key"] = self.apiKeyConfig?.api\-key;
-        }
-        resourcePath = resourcePath + check getPathForQueryParam(queries);
-        map<string|string[]> httpHeaders = http:getHeaderMap(headerValues);
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, httpHeaders);
-    }
-
-    # Get a vector representation of a given input that can be easily consumed by machine learning models and algorithms.
-    #
-    # + deployment\-id - The deployment id of the model which was deployed.
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - OK 
-    resource isolated function post deployments/[string deployment\-id]/embeddings(deploymentid_embeddings_body payload, map<string|string[]> headers = {}, *EmbeddingsCreateQueries queries) returns inline_response_200|error {
-        string resourcePath = string `/deployments/${getEncodedUri(deployment\-id)}/embeddings`;
-        map<anydata> headerValues = {...headers};
-        if self.apiKeyConfig is ApiKeysConfig {
-            headerValues["api-key"] = self.apiKeyConfig?.api\-key;
-        }
-        resourcePath = resourcePath + check getPathForQueryParam(queries);
-        map<string|string[]> httpHeaders = http:getHeaderMap(headerValues);
-        http:Request request = new;
-        json jsonBody = payload.toJson();
-        request.setPayload(jsonBody, "application/json");
-        return self.clientEp->post(resourcePath, request, httpHeaders);
-    }
-
-    # Generates a batch of images from a text caption on a given DALLE model deployment
-    #
-    # + headers - Headers to be sent with the request 
-    # + queries - Queries to be sent with the request 
-    # + return - Ok 
-    resource isolated function post deployments/[string deployment\-id]/images/generations(imageGenerationsRequest payload, map<string|string[]> headers = {}, *ImageGenerationsCreateQueries queries) returns generateImagesResponse|error {
-        string resourcePath = string `/deployments/${getEncodedUri(deployment\-id)}/images/generations`;
-        map<anydata> headerValues = {...headers};
-        if self.apiKeyConfig is ApiKeysConfig {
-            headerValues["api-key"] = self.apiKeyConfig?.api\-key;
-        }
-        resourcePath = resourcePath + check getPathForQueryParam(queries);
-        map<string|string[]> httpHeaders = http:getHeaderMap(headerValues);
-        http:Request request = new;
-        json jsonBody = payload.toJson();
+        json jsonBody = jsondata:toJson(payload);
         request.setPayload(jsonBody, "application/json");
         return self.clientEp->post(resourcePath, request, httpHeaders);
     }

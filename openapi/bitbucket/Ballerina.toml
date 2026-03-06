@@ -1,12 +1,13 @@
 [package]
-license = ["Apache-2.0"]
-keywords = ["IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "bitbucket"
-icon = "icon.png"
-distribution = "2201.4.1"
-repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/bitbucket"
 version = "1.5.1"
+distribution = "2201.4.1"
+keywords = ["Source Control", "Cost/Freemium", "Area/DevOps", "Type/Connector", "Vendor/Atlassian"]
+repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/bitbucket"
+icon = "icon.png"
 authors = ["Ballerina"]
+license = ["Apache-2.0"]
+
 [build-options]
 observabilityIncluded = true

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Commerce/eCommerce", "Cost/Paid", "Vendor/BeezUP", "Area/eCommerce", "Type/Connector"]
+keywords = ["Commerce/eCommerce", "Cost/Paid", "Vendor/BeezUP", "Area/E-commerce", "Type/Connector"]
 org = "ballerinax"
 name = "beezup.merchant"
 icon = "icon.png"

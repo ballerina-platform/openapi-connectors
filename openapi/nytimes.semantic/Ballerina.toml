@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free", "Vendor/New York Times", "Area/Entertainment", "Type/Connector"]
+keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free", "Vendor/New York Times", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "nytimes.semantic"
 icon = "icon.png"

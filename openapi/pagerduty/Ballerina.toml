@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Support/Customer Support", "Cost/Freemium"]
+keywords = ["Support/Customer Support", "Cost/Freemium", "Area/Observability", "Type/Connector"]
 org = "ballerinax"
 name = "pagerduty"
 icon = "icon.png"

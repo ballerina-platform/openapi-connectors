@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Commerce/eCommerce", "Cost/Paid", "Vendor/Selz", "Area/eCommerce", "Type/Connector"]
+keywords = ["Commerce/eCommerce", "Cost/Paid", "Vendor/Selz", "Area/E-commerce", "Type/Connector"]
 org = "ballerinax"
 name = "selz"
 icon = "icon.png"

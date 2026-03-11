@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/App Builders", "Cost/Freemium", "Vendor/Neutrino", "Area/Productivity", "Type/Connector"]
+keywords = ["Website & App Building/App Builders", "Cost/Freemium", "Vendor/Neutrino", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "neutrino"
 icon = "icon.png"

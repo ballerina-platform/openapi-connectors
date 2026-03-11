@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Analytics", "Cost/Paid"]
+keywords = ["Business Intelligence/Analytics", "Cost/Paid", "Area/Database", "Type/Connector"]
 org = "ballerinax"
 name = "elasticsearch"
 icon = "icon.png"

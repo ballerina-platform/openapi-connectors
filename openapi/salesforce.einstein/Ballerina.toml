@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Analytics", "Cost/Freemium", "Vendor/Salesforce", "Area/Analytics", "Type/Connector"]
+keywords = ["Business Intelligence/Analytics", "Cost/Freemium", "Vendor/Salesforce", "Area/AI", "Type/Connector"]
 org = "ballerinax"
 name = "salesforce.einstein"
 icon = "icon.png"

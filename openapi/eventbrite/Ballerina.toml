@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Marketing/Event Management", "Cost/Freemium", "Vendor/Eventbrite", "Area/Communication", "Type/Connector"]
+keywords = ["Marketing/Event Management", "Cost/Freemium", "Vendor/Eventbrite", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "eventbrite"
 icon = "icon.png"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Images & Design", "Cost/Freemium", "Vendor/Other", "Area/File Management", "Type/Connector"]
+keywords = ["Content & Files/Images & Design", "Cost/Freemium", "Vendor/Other", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "opendesign"
 icon = "icon.png"

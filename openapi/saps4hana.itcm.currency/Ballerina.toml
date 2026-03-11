@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Management/ERP", "Cost/Paid", "Vendor/SAP", "Area/ERP", "Type/Other"]
+keywords = ["Business Management/ERP", "Cost/Paid", "Vendor/SAP", "Area/ERP", "Type/Connector"]
 org = "ballerinax"
 name = "saps4hana.itcm.currency"
 icon = "icon.png"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Documents", "Cost/Freemium", "Vendor/PandaDoc", "Area/File Management", "Type/Connector"]
+keywords = ["Content & Files/Documents", "Cost/Freemium", "Vendor/PandaDoc", "Area/Productivity", "Type/Connector"]
 org = "ballerinax"
 name = "pandadoc"
 icon = "icon.png"

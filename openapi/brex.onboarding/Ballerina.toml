@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Sales & CRM/Contact Management", "Cost/Freemium", "Vendor/Brex", "Area/CRM", "Type/Connector"]
+keywords = ["Sales & CRM/Contact Management", "Cost/Freemium", "Vendor/Brex", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "brex.onboarding"
 icon = "icon.png"

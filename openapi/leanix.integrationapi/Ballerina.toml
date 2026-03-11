@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Enterprise Architecture Tools", "Cost/Paid", "Vendor/LeanIX", "Area/DevOps", "Type/Connector"]
+keywords = ["IT Operations/Enterprise Architecture Tools", "Cost/Paid", "Vendor/LeanIX", "Area/Integration", "Type/Connector"]
 org = "ballerinax"
 name = "leanix.integrationapi"
 icon = "icon.png"

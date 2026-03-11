@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Accounting", "Cost/Freemium", "Vendor/Cloudmersive", "Area/Finance", "Type/Connector"]
+keywords = ["Finance/Accounting", "Cost/Freemium", "Vendor/Cloudmersive", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "cloudmersive.currency"
 icon = "icon.png"

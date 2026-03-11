@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/File Management & Storage", "Cost/Paid", "Vendor/Google", "Area/File Management", "Type/Connector"]
+keywords = ["Content & Files/File Management & Storage", "Cost/Paid", "Vendor/Google", "Area/Security & Identity", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.vault"
 icon = "icon.png"

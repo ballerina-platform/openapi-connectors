@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Education/Elearning", "Cost/Free", "Vendor/Google", "Area/Education", "Type/Connector"]
+keywords = ["Education/Elearning", "Cost/Free", "Vendor/Google", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.classroom"
 icon = "icon.png"

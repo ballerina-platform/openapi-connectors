@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Audio", "OpenAI", "Cost/Paid", "speech-to-text", "Whisper", "Vendor/OpenAI"]
+keywords = ["AI/Audio", "OpenAI", "Cost/Paid", "speech-to-text", "Whisper", "Vendor/OpenAI", "Area/AI", "Type/Connector"]
 org = "ballerinax"
 name = "openai.audio"
 icon = "icon.png"

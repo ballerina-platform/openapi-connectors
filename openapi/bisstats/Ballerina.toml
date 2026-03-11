@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Analytics", "Cost/Free", "Vendor/Other", "Area/Analytics", "Type/Other"]
+keywords = ["Business Intelligence/Analytics", "Cost/Free", "Vendor/BIS", "Area/Finance", "Type/Other"]
 org = "ballerinax"
 name = "bisstats"
 icon = "icon.png"

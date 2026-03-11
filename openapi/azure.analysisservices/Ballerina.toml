@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Paid", "Vendor/Microsoft", "Area/Cloud & Infrastructure", "Type/Connector"]
+keywords = ["IT Operations/Cloud Services", "Cost/Paid", "Vendor/Microsoft", "Area/Analytics", "Type/Connector"]
 org = "ballerinax"
 name = "azure.analysisservices"
 icon = "icon.png"

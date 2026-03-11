@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free", "Vendor/Other", "Area/Entertainment", "Type/Other"]
+keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free", "Vendor/Other", "Area/Other", "Type/Other"]
 org = "ballerinax"
 name = "covid19"
 icon = "icon.png"

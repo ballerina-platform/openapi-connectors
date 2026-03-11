@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Education/Dictionary", "Cost/Freemium", "Vendor/Wordnik", "Area/Education", "Type/Connector"]
+keywords = ["Education/Dictionary", "Cost/Freemium", "Vendor/Wordnik", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "wordnik"
 icon = "icon.png"

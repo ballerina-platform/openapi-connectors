@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Sales & CRM/Customer Relationship Management", "Cost/Paid", "Vendor/Other", "Area/CRM", "Type/Connector"]
+keywords = ["Sales & CRM/Customer Relationship Management", "Cost/Paid", "Vendor/Other", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "iris.residuals"
 icon = "icon.png"

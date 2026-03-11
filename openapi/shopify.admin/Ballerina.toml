@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Commerce/eCommerce", "Cost/Paid"]
+keywords = ["Commerce/eCommerce", "Cost/Paid", "Area/E-commerce", "Type/Connector"]
 org = "ballerinax"
 name = "shopify.admin"
 icon = "icon.png"

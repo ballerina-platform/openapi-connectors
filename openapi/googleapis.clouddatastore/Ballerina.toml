@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Databases", "Cost/Freemium", "Vendor/Google", "Area/Databases", "Type/Connector"]
+keywords = ["IT Operations/Databases", "Cost/Freemium", "Vendor/Google", "Area/Database", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.clouddatastore"
 icon = "icon.png"

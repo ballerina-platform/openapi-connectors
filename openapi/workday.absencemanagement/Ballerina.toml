@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Human Resources/HRMS", "Cost/Paid", "Vendor/Workday", "Area/Human Resources Management", "Type/Connector"]
+keywords = ["Human Resources/HRMS", "Cost/Paid", "Vendor/Workday", "Area/HRMS", "Type/Connector"]
 org = "ballerinax"
 name = "workday.absencemanagement"
 icon = "icon.png"

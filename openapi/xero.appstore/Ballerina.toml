@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Support/Customer Support", "Cost/Paid", "Vendor/Xero", "Area/Support", "Type/Connector"]
+keywords = ["Support/Customer Support", "Cost/Paid", "Vendor/Xero", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "xero.appstore"
 distribution = "2201.4.1"

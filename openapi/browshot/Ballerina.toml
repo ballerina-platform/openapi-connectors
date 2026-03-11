@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Browser Tools", "Cost/Freemium", "Vendor/Other", "Area/DevOps", "Type/Connector"]
+keywords = ["IT Operations/Browser Tools", "Cost/Freemium", "Vendor/Other", "Area/Other", "Type/Connector"]
 org = "ballerinax"
 name = "browshot"
 icon = "icon.png"

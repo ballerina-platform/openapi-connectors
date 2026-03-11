@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Video & Audio", "Cost/Freemium"]
+keywords = ["Content & Files/Video & Audio", "Cost/Freemium", "Area/Social Media", "Type/Connector"]
 org = "ballerinax"
 name = "spotify"
 icon = "icon.png"

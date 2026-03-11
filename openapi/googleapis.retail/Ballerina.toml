@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Commerce/eCommerce", "Cost/Paid", "Vendor/Google", "Area/eCommerce", "Type/Connector"]
+keywords = ["Commerce/eCommerce", "Cost/Paid", "Vendor/Google", "Area/E-commerce", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.retail"
 icon = "icon.png"

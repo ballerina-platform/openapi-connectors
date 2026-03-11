@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Chat", "OpenAI", "Cost/Paid", "GPT-3.5", "ChatGPT", "Vendor/OpenAI"]
+keywords = ["AI/Chat", "OpenAI", "Cost/Paid", "GPT-3.5", "ChatGPT", "Vendor/OpenAI", "Area/AI", "Type/Connector"]
 org = "ballerinax"
 name = "openai.chat"
 icon = "icon.png"

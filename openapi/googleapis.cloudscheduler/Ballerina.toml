@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Freemium", "Vendor/Google", "Area/DevOps", "Type/Connector"]
+keywords = ["IT Operations/Cloud Services", "Cost/Freemium", "Vendor/Google", "Area/Cloud & Infrastructure", "Type/Connector"]
 org = "ballerinax"
 name = "googleapis.cloudscheduler"
 icon = "icon.png"

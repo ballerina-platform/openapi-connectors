@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Analytics", "Cost/Free", "Vendor/World Bank", "Area/Analytics", "Type/Other"]
+keywords = ["Business Intelligence/Analytics", "Cost/Free", "Vendor/World Bank", "Area/Finance", "Type/Connector"]
 org = "ballerinax"
 name = "worldbank"
 icon = "icon.png"

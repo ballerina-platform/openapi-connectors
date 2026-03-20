@@ -1,5 +1,5 @@
 ## Overview
-    The Zuora Collections API V1 connector(https://www.zuora.com/developer/collect-api/#) OpenAPI specification.
+The Zuora Collections API V1 connector(https://www.zuora.com/developer/collect-api/#) OpenAPI specification.
   
     This Zuora Collections API provides detailed descriptions about functions, requests, and responses of
     the APIs for the following four component apps. 

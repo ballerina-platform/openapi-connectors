@@ -1,7 +1,13 @@
 ## Overview
 
-This is a generated connector for [LaunchDarkly API v2.0](https://apidocs.launchdarkly.com/) OpenAPI specification.  
+The LaunchDarkly API v2.0 connector(https://apidocs.launchdarkly.com/) OpenAPI specification.  
 LaunchDarkly is a feature management platform enables teams to deploy code at any time, even if a feature isn't ready to be released to all users.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

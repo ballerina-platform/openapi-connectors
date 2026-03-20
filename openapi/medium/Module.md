@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [Medium API v1](https://github.com/Medium/medium-api-docs) OpenAPI Specification.
+The Medium API v1 connector(https://github.com/Medium/medium-api-docs) OpenAPI Specification.
 
 Medium’s Publishing API provides capability to access the Medium network, create your content on Medium from 
 anywhere you write, and expand your audience and your influence.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
  

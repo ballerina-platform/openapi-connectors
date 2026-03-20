@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [IRIS Leads API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+The IRIS Leads API v1.6.4 connector(https://www.iriscrm.com/api) OpenAPI specification.
 Connect with the Leads API to interact with your lead data.  
 Includes management of fields, user assignments, status changes, tasks, appointments, email, text messaging, and document attachments.
 Create custom reports without limits using the data already housed within your CRM.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

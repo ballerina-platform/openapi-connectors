@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [Azure OpenAI Deployments API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/) OpenAPI specification.
+The Azure OpenAI Deployments API connector(https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/deployments/) OpenAPI specification.
 
 The Azure OpenAI Deployments REST API endpoints will deploy OpenAI models in Azure OpenAI resource. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account.

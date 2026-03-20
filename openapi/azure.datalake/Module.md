@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [Azure DataLake Storage (Gen2) API version 2019-10-31](https://azure.microsoft.com/en-us/solutions/data-lake/) OpenAPI specification.
+The Azure DataLake Storage (Gen2) API version 2019-10-31 connector(https://azure.microsoft.com/en-us/solutions/data-lake/) OpenAPI specification.
 
 Azure Data Lake Storage provides storage for Hadoop and other big data workloads.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account
 - Create an [Azure Data Lake Storage(Gen2)](https://azure.microsoft.com/en-us/solutions/data-lake/) account

@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [FreshBooks API v1](https://www.freshbooks.com/api/start) OpenAPI specification.
+The FreshBooks API v1 connector(https://www.freshbooks.com/api/start) OpenAPI specification.
 
 FreshBooks lets you create professional looking invoices in seconds, automatically record expenses with ease and track your time quickly and efficiently so you can focus on what matters most - serving the needs of your clients.
 The FreshBooks API is an interface for accessing your FreshBooks data using JSON. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

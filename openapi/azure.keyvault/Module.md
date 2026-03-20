@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [Azure Key Vault API v7.0](https://azure.microsoft.com/en-us/services/key-vault/) OpenAPI specification.
+The Azure Key Vault API v7.0 connector(https://azure.microsoft.com/en-us/services/key-vault/) OpenAPI specification.
 
 The Key Vault client performs cryptographic key operations and vault operations against the Key Vault service.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

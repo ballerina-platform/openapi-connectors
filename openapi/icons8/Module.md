@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Icons8 API v3.0](https://developers.icons8.com/docs/getting-started) OpenAPI specification.  
+The Icons8 API v3.0 connector(https://developers.icons8.com/docs/getting-started) OpenAPI specification.  
 The Icons8 API provides the capability to search and obtain icons.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

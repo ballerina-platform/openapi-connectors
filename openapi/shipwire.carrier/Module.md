@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Shipwire Carrier API v3.0](https://www.shipwire.com/developers/carrier/) OpenAPI specification.
+The Shipwire Carrier API v3.0 connector(https://www.shipwire.com/developers/carrier/) OpenAPI specification.
 The Carriers API is used to manage supported carriers and their respective capabilities. 
 Use it to view, add or remove carriers enabled to function with Shipwire and Shipwire Anywhere warehouses.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

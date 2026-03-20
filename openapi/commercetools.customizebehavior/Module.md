@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.
+The Commercetools API v1 connector(https://docs.commercetools.com/api/) OpenAPI specification.
 
 The commercetools Platform HTTP API(Pricing & Discount) offers an interface for programmatic access to to information on customize behavior.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 

@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [Shortcut API v3.0](https://shortcut.com/api/rest/v3) OpenAPI specification.
+The Shortcut API v3.0 connector(https://shortcut.com/api/rest/v3) OpenAPI specification.
 The Shortcut API bring the flow to your software team's workflow. Plan, collaborate, build, and measure success with Shortcut.
 The Shortcut API provides a greater amount of control over your organization’s Shortcut data than what is possible using the Shortcut web app. 
 You can use this API to build custom integrations or automate even more of your organization’s workflow.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

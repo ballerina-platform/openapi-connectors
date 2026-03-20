@@ -1,6 +1,12 @@
 ## Overview
 This is a generated connector for the `Index Operations` under [Pinecone Vector Database API](https://docs.pinecone.io/reference) OpenAPI specification. Pinecone is a fully managed vector database, which allows storing data objects and vector embeddings from the ML models, including the LLMs offered by [OpenAI](https://openai.com/), [Hugging Face](https://huggingface.co/), and [Cohere](https://cohere.ai/). The Pinecone vector database makes it easy to build developer-friendly, easily scalable, and high-performance vector search applications without infrastructure hassles.
 
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 

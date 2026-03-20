@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [DocuSign Admin API](https://developers.docusign.com/docs/admin-api/) OpenAPI specification. 
+The DocuSign Admin API connector(https://developers.docusign.com/docs/admin-api/) OpenAPI specification. 
 
 DocuSign Admin API is for an organization administrator to manage organizations, accounts and users which enables you to automate user management with your existing systems while ensuring governance and compliance.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

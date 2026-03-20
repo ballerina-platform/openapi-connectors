@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [PocketSmith API v2.0](https://www.pocketsmith.com/) OpenAPI specification.
+The PocketSmith API v2.0 connector(https://www.pocketsmith.com/) OpenAPI specification.
 
 The public PocketSmith API. It's a powerful interface for online money management with cash flow forecasts as well as superb historical tracking.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 * Create a [PocketSmith](https://www.pocketsmith.com/) account
 * Obtain tokens

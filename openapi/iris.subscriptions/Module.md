@@ -1,10 +1,17 @@
 ## Overview
-This is a generated connector for [IRIS Subscriptions API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+The IRIS Subscriptions API v1.6.4 connector(https://www.iriscrm.com/api) OpenAPI specification.
 Connect with the Subscriptions API to create, view, and manage your event notification subscriptions.  
 A webhook listener URL is required from you to be able to create the subscription and receive notifications.
 Learn about API updates and new endpoints by subscribing to the [api.updated](https://iriscrm.com/api/#/paths/~1subscriptions~1sample~1api.updated/get) event.
 Receive alerts in real-time including lead status changes, e-signature document actions, and helpdesk ticket changes.
 Subscription API responses provide you with detailed information on a silver platter to avoid sorting through data unnecessarily.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

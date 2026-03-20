@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
+The HubSpot connector(https://www.hubspot.com/) OpenAPI specification. 
 
 These APIs allow accessing CRM object events.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 * Create a [HubSpot developer](https://developers.hubspot.com/) account

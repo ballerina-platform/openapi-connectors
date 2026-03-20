@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [eBay Analytics API v1.2.0](https://developer.ebay.com/api-docs/sell/analytics/overview.html) OpenAPI Specification.
+The eBay Analytics API v1.2.0 connector(https://developer.ebay.com/api-docs/sell/analytics/overview.html) OpenAPI Specification.
 
 The Analytics API provides data and information to review information on their listing performance, metrics on their customer service performance, and details on their eBay seller performance rating. 
 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

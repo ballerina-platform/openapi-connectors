@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.
+The Commercetools API v1 connector(https://docs.commercetools.com/api/) OpenAPI specification.
 
 The commercetools Platform HTTP API(Customer) offers an interface for programmatic access to retrieve certain information on customers.
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

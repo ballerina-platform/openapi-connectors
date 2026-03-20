@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [WorkDay Connect REST API v2](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+The WorkDay Connect REST API v2 connector(https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 
 The WorkDay connect service enables applications to access REST service for for Multichannel Collaboration (MCC) services.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 

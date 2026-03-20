@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector from [NOWPayments API v1](https://nowpayments.io/) OpenAPI Specification. 
+The NOWPayments API v1 connector(https://nowpayments.io/) OpenAPI Specification. 
 
 NOWPayments is a non-custodial cryptocurrency payment processing platform. Accept payments in a wide range of cryptos and get them instantly converted into a coin of your choice and sent to your wallet. Keeping it simple – no excess. More about the NOWPayments API can be find at [NOWPayments](https://nowpayments.io/)
  
 This module supports NOWPayments API version v1.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

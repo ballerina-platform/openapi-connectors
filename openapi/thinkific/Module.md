@@ -3,6 +3,12 @@ This is the generated connector for [Thinkific API v1](https://developers.thinki
 
 The Thinkific APIs allow developers to extend Thinkific's functionality in a variety of different ways by accessing site data.
 
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 

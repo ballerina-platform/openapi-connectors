@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Salesforce Pardot API v5](https://developer.salesforce.com/docs/marketing/pardot/guide/version5overview.html) OpenAPI specification.
+The Salesforce Pardot API v5 connector(https://developer.salesforce.com/docs/marketing/pardot/guide/version5overview.html) OpenAPI specification.
 
 The version 5 of the Pardot API to read and update a variety of assets and objects, like File and Layout Template objects.
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

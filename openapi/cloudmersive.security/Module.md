@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
+The Cloudmersive connector(https://account.cloudmersive.com) OpenAPI specification.
 
 The Cloudmersive Security APIs help you detect and block security threats.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 * Create a [Cloudmersive](https://account.cloudmersive.com) account

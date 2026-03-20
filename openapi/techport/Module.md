@@ -1,9 +1,15 @@
 ## Overview
-This is a generated connector from [Techport REST API v3.4.0](https://techport.nasa.gov/home) OpenAPI Specification. 
+The Techport REST API v3.4.0 connector(https://techport.nasa.gov/home) OpenAPI Specification. 
 
 This is the public REST API for TechPort. All of the integrations communicates with TechPort through this API.<br/><br/>For additional help getting started with the API, visit the following help articles:<br/><ul><li>[Using the REST API](https://data.nasa.gov/developer/external/techport/techport-api.pdf)</li></ul>
  
 This module supports Techport API version v3.4.0.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Seamless integration with REST API endpoints
+- Support for standard HTTP methods and JSON responses
 
 ## Quickstart
 To use the Techport connector in your Ballerina application, update the .bal file as follows:

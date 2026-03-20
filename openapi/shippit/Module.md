@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [Shippit API v3.0.20201008](https://developer.shippit.com) OpenAPI specification.
+The Shippit API v3.0.20201008 connector(https://developer.shippit.com) OpenAPI specification.
 Shippit powers simpler delivery for e-commerce retailers of all shapes and sizes.
 It fulfil orders and track shipments anywhere you are, anytime you like. 
 It’s cloud-based multi-carrier shipping software for retailers that takes the guesswork out of shipping decisions.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

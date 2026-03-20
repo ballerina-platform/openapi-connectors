@@ -1,5 +1,5 @@
 ## Overview
-This is a generated connector from [New York Times Most Popular API v2.0.0](https://developer.nytimes.com/docs/most-popular-product/1/overview) OpenAPI specification. 
+The New York Times Most Popular API v2.0.0 connector(https://developer.nytimes.com/docs/most-popular-product/1/overview) OpenAPI specification. 
 With the New York Times Most Popular API you can get popular articles on NYTimes.com. 
 The Most Popular API provides services for getting the most popular articles on NYTimes.com based on emails, shares, or views.
 
@@ -12,6 +12,12 @@ Before using this connector in your Ballerina application, complete the followin
     1. Log into NYTimes Developer Portal by visiting https://developer.nytimes.com/accounts/login
     2. Register an app and obtain the API Key following the process summarized [here](https://developer.nytimes.com/get-started).
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Quickstart
 
 To use the New York Times Most Popular connector in your Ballerina application, update the .bal file as follows:

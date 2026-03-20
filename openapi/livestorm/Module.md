@@ -1,8 +1,15 @@
 ## Overview
 
-This is a generated connector for [Livestorm API v1](https://developers.livestorm.co/docs) OpenAPI specification. 
+The Livestorm API v1 connector(https://developers.livestorm.co/docs) OpenAPI specification. 
 
 Livestorm is a browser based online web conferencing software used to share real-time live streams. It can be used to power remote live meetings, product demos, sales webinars, online lessons, onboarding sessions, more.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Paypal Orders API v2](https://developer.paypal.com/docs/api/orders/v2/) OpenAPI specification.
+The Paypal Orders API v2 connector(https://developer.paypal.com/docs/api/orders/v2/) OpenAPI specification.
 An order represents a payment between two or more parties. 
 Use the Orders API to create, update, retrieve, authorize, and capture orders.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

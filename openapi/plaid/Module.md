@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Plaid API 2020-09-14 version](https://plaid.com/docs/api/) OpenAPI specification. 
+The Plaid API 2020-09-14 version connector(https://plaid.com/docs/api/) OpenAPI specification. 
 
 The Plaid REST API. Plaid provides a way for you to seamlessly link your bank accounts for over 3,000 different financial services.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

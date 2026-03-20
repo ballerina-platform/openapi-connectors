@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Manufacturer Center API v1](https://developers.google.com/manufacturers/) OpenAPI specification.
+The Google Manufacturer Center API v1 connector(https://developers.google.com/manufacturers/) OpenAPI specification.
 Public API for managing Manufacturer Center related data.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

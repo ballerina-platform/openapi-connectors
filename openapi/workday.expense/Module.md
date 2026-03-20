@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [WorkDay Expense REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+The WorkDay Expense REST API v1 connector(https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 
 This API enables applications to access operations to extend the functionality of Workday Expenses.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 

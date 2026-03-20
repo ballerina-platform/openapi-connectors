@@ -1,5 +1,11 @@
 ## Overview
-This is a generated connector for [Google Slides API v1](https://developers.google.com/slides/api) OpenAPI specification. Reads and writes Google Slides presentations.
+The Google Slides API v1 connector(https://developers.google.com/slides/api) OpenAPI specification. Reads and writes Google Slides presentations.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

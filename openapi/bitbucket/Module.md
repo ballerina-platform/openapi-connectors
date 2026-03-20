@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector for [Bitbucket API v2.0](https://developer.atlassian.com/bitbucket/api/2/reference/) OpenAPI Specification.
+The Bitbucket API v2.0 connector(https://developer.atlassian.com/bitbucket/api/2/reference/) OpenAPI Specification.
 
 Code against the Bitbucket API to automate simple tasks, embed Bitbucket data into your own site, build mobile or desktop apps, 
 or even add custom UI add-ons into Bitbucket itself using the Connect framework.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
  
 Before using this connector in your Ballerina application, complete the following:

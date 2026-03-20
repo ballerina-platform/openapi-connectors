@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Freshdesk API v2.0](https://developers.freshdesk.com/api/#intro) OpenAPI specification.
+The Freshdesk API v2.0 connector(https://developers.freshdesk.com/api/#intro) OpenAPI specification.
 Freshdesk is a cloud-based customer service software that enables businesses of all sizes to deliver stellar customer support for requests coming in via email, web, phone, chat, and social into tickets, and unifies ticket resolution across channels.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

@@ -1,10 +1,16 @@
 ## Overview
-This is a generated connector from [Sakari](https://sakari.io/) OpenAPI Specification. 
+The Sakari connector(https://sakari.io/) OpenAPI Specification. 
 
 Sakari provides an advanced platform to drive large scale customized SMS communication. To find out more about our product offering, please visit [https://sakari.io](https://sakari.io).
 
 This module supports Sakari REST API v1.0.1.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 - Create [Sakari developer account](https://hub.sakari.io/)

@@ -1,10 +1,16 @@
 ## Overview
-This is a generated connector for [atSpoke API v0.1.0](https://askspoke.com/api/reference) OpenAPI specification.
+The atSpoke API v0.1.0 connector(https://askspoke.com/api/reference) OpenAPI specification.
 The atSpoke REST API provides a broad set of operations including:
 - Creation, manipulation, and deletion of requests in atSpoke
 - Management of users in atSpoke
 - Creation, manipulation, and deletion of knowledge resources in atSpoke
 The public API is served from https://api.askspoke.com/api/v1 – note `api` in the host name, not your usual organization id.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

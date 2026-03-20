@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Ronin API v2](https://www.roninapp.com/api) OpenAPI specification.
+The Ronin API v2 connector(https://www.roninapp.com/api) OpenAPI specification.
 Ronin is a full featured time tracking and invoicing application. It allows you to easily manage almost all aspects of your online projects, though it has a focus on the billing side. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

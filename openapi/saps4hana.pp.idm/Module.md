@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [SAP S/4HANA Procurement Planning System for Cross-domain Identity Management API v1.0.0](https://api.sap.com/api/SCIMService/overview) OpenAPI specification. 
+The SAP S/4HANA Procurement Planning System for Cross-domain Identity Management API v1.0.0 connector(https://api.sap.com/api/SCIMService/overview) OpenAPI specification. 
 
 This service allows to read and write user data. It will be used by the Identity Provisioning Service. The SCIM Service is protected by the Identity Authentication Service, so the customer must configure the authentication in the Identity Provisioning Service.
 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

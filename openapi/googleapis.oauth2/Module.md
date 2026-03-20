@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google OAuth2 API v2.0](https://developers.google.com/identity/protocols/oauth2/) OpenAPI specification.
+The Google OAuth2 API v2.0 connector(https://developers.google.com/identity/protocols/oauth2/) OpenAPI specification.
 The OAuth2 API provides end-user authorization grants for use with other Google APIs.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

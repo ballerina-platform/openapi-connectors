@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [Ably REST API v1.1.0](https://ably.com/documentation/rest-api) OpenAPI specification. 
+The Ably REST API v1.1.0 connector(https://ably.com/documentation/rest-api) OpenAPI specification. 
 The [Ably REST API](https://www.ably.io/documentation/rest-api) provides a way for a wide range of server and client devices to communicate with the Ably service over REST. 
 The REST API does not provide a realtime long-lived connection to Ably, but in all other respects is a simple subset of the full [realtime messaging API](https://ably.com/documentation/realtime).
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

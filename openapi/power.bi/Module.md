@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Power BI API v1.0](https://powerbi.microsoft.com/en-us/) OpenAPI specification.
+The Power BI API v1.0 connector(https://powerbi.microsoft.com/en-us/) OpenAPI specification.
 
 Power BI REST API provides service endpoints for embedding, administration, and user resources.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

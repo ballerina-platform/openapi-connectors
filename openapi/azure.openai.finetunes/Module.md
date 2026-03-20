@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector from [Azure OpenAI Files API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/files/),
+The Azure OpenAI Files API connector(https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/files/),
 [Azure OpenAI Fine Tunes API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/fine-tunes/), and
 [Azure OpenAI Models API](https://learn.microsoft.com/en-us/rest/api/cognitiveservices/azureopenaistable/models/) OpenAPI specification.
 
 The Azure OpenAI Files API gives access to data files related operations such as delete, get, get content, import, list, and upload. The Azure OpenAI Fine Tunes API gives access to fine-tuning of base models and related operations such as create, cancel, delete, get, get event, and list. The Azure OpenAI  Models API gives access to details about the existing models.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account.

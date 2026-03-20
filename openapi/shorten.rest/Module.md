@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Shorten.REST API v1.0](https://docs.shorten.rest/) OpenAPI specification.  
+The Shorten.REST API v1.0 connector(https://docs.shorten.rest/) OpenAPI specification.  
 The Shorten.REST API provides the capability to programmatically create short URLs for longer URL.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

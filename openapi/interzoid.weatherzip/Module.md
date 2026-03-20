@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Interzoid Weather Zip API v1.0.0](https://interzoid.com/services/getweatherzip) OpenAPI specification.
+The Interzoid Weather Zip API v1.0.0 connector(https://interzoid.com/services/getweatherzip) OpenAPI specification.
 
 This API provides current weather information, including temperature and various conditions, for US Cities.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

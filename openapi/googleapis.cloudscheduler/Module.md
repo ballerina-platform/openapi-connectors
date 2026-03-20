@@ -1,6 +1,12 @@
 # Overview
-This is a generated connector for [Google Cloud Scheduler REST API v1](https://cloud.google.com/scheduler/docs/reference/rest) OpenAPI specification.
+The Google Cloud Scheduler REST API v1 connector(https://cloud.google.com/scheduler/docs/reference/rest) OpenAPI specification.
 The Google Cloud Scheduler API provides the capability to manage jobs run on a regular recurring schedule.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

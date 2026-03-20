@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [WorldTimeAPI v0.6.1](http://worldtimeapi.org/) OpenAPI Specification.
+The WorldTimeAPI v0.6.1 connector(http://worldtimeapi.org/) OpenAPI Specification.
 
 [WorldTime API](http://worldtimeapi.org/pages/faqs#what-is-it) is a simple "microservice" which returns the local-time for a given timezone in both unixtime and ISO8601 format. The worldTimeAPI connector supports to get the current time based on a request with a timezone and additional information including whether that timezone is currently in Daylight Savings Time, when DST starts and ends, the UTC offset, etc.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Seamless integration with REST API endpoints
+- Support for standard HTTP methods and JSON responses
 
 ## Quickstart
 * Listing all time zone as json

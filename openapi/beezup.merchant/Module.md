@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [BeezUP Merchant API v2.0](https://api-docs.beezup.com/swagger-ui/) OpenAPI specification.
+The BeezUP Merchant API v2.0 connector(https://api-docs.beezup.com/swagger-ui/) OpenAPI specification.
 
 BeezUP Merchant API provides capability to read and write BeezUP data such as accounts, stores, product catalog, channel search etc.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

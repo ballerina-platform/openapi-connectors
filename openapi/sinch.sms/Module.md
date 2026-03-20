@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Sinch SMS API v1](https://www.sinch.com/) OpenAPI specification. 
+The Sinch SMS API v1 connector(https://www.sinch.com/) OpenAPI specification. 
 
 Sinch SMS API is the one of the easiest APIs we offer and enables you to add fast and reliable global SMS to your applications. It allows for sending single messages, scheduled batch sending, message templates and more.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

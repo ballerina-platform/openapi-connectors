@@ -1,10 +1,17 @@
 ## Overview
-This is a generated connector for [Open Charge Point Interface(OCPI) v2.2](https://evroaming.org/app/uploads/2020/06/OCPI-2.2-d2.pdf#transport_and_format_pagination) OpenAPI specification.
+The Open Charge Point Interface(OCPI) v2.2 connector(https://evroaming.org/app/uploads/2020/06/OCPI-2.2-d2.pdf#transport_and_format_pagination) OpenAPI specification.
 
 The Open Charge Point Interface (OCPI) enables a scalable, automated EV roaming setup between Charge Point Operators 
 and e-Mobility Service Providers. It supports authorization, charge point information exchange (including live status
 updates and transaction events), charge detail record exchange, remote charge point commands and the exchange of 
 smart-charging related information between parties.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

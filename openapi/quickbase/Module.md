@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector from [Quickbase API v1](https://developer.quickbase.com/) OpenAPI Specification. 
+The Quickbase API v1 connector(https://developer.quickbase.com/) OpenAPI Specification. 
 
 The Quickbase JSON RESTful API provides secure access to Quickbase apps and allow users to manage access using Quickbase roles. Users can automate the app lifecycle using the Quickbase API. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

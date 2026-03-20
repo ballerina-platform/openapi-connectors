@@ -1,5 +1,12 @@
 ## Overview
-This is a generated connector from [Stability.ai REST API (v1)](https://platform.stability.ai/rest-api) OpenAPI specification. 
+The Stability.ai REST API (v1) connector(https://platform.stability.ai/rest-api) OpenAPI specification. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Stability AI](https://beta.dreamstudio.ai/generate/) account.

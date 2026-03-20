@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [Chaingateway API v1.0](https://chaingateway.io/docs-ethereum) OpenAPI specification. 
+The Chaingateway API v1.0 connector(https://chaingateway.io/docs-ethereum) OpenAPI specification. 
 
 This is the REST API to build the bridge between Ethereum and the real world. All of the integrations communicates with chaingateway.io through this API.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

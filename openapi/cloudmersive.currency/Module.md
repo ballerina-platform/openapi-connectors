@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
+The Cloudmersive connector(https://account.cloudmersive.com) OpenAPI specification.
 
 The Cloudmersive Currency APIs help you retrieve exchange rates and convert prices between currencies.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 * Create a [Cloudmersive](https://account.cloudmersive.com) account
 * Obtain tokens

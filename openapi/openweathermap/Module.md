@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector from [Open Weather Map API v2.5](https://openweathermap.org/) OpenAPI Specification. 
+The Open Weather Map API v2.5 connector(https://openweathermap.org/) OpenAPI Specification. 
 
 The Open Weather Map API provides access to current weather data and weather forecast of any location worldwide including 200,000 cities by consuming the [`Current Weather Data`](https://openweathermap.org/current) and [`One Call`](https://openweathermap.org/api/one-call-api) API endpoints.  
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

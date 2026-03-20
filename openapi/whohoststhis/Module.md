@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Who Hosts This API v0.0.1](https://www.who-hosts-this.com/Documentation) OpenAPI specification.
+The Who Hosts This API v0.0.1 connector(https://www.who-hosts-this.com/Documentation) OpenAPI specification.
 The Who Hosts This API provides services to get discover the hosting provider for any web site.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

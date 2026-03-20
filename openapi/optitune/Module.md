@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [OptiTune API v1](https://manage.opti-tune.com/help/site/articles/api/default.html) OpenAPI specification.
+The OptiTune API v1 connector(https://manage.opti-tune.com/help/site/articles/api/default.html) OpenAPI specification.
 A complete API for interacting with all objects on an OptiTune Management Server
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

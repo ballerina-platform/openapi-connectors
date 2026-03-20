@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [ServiceNow REST API Quebec version](https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest) OpenAPI Specification.
+The ServiceNow REST API Quebec version connector(https://developer.servicenow.com/dev.do#!/reference/api/quebec/rest) OpenAPI Specification.
 
 ServiceNow provides extensive access to instances through a set of RESTful APIs.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

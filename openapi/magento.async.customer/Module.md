@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Magento REST Asynchronous API v2.2](https://devdocs.magento.com/redoc/2.3/async-admin-rest-api.html) OpenAPI specification.
+The Magento REST Asynchronous API v2.2 connector(https://devdocs.magento.com/redoc/2.3/async-admin-rest-api.html) OpenAPI specification.
 
 The Magento Asynchronous Customer REST API service enables applications to build and manage the Magento e-commerce platform.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
  

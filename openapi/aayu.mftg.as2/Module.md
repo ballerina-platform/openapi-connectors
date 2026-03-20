@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [MFT Gateway (by Aayu Technologies) REST API v1.0 ](https://aayutechnologies.com/docs/product/mft-gateway/) OpenAPI specification. 
+The MFT Gateway (by Aayu Technologies) REST API v1.0  connector(https://aayutechnologies.com/docs/product/mft-gateway/) OpenAPI specification. 
 The [MFT Gateway REST API](https://aayutechnologies.com/docs/product/mft-gateway/) provides a secure AS2 secured channel for B2B communications, multiple ways to upload/download files and automate the exchange through integration mechanisms.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 

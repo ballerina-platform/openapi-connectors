@@ -1,5 +1,5 @@
 ## Overview
-This is a generated connector for [Pipedrive API v1](https://developers.pipedrive.com/docs/api/v1) OpenAPI specification.
+The Pipedrive API v1 connector(https://developers.pipedrive.com/docs/api/v1) OpenAPI specification.
 Pipedrive is a sales CRM and pipeline management solution that enables businesses to plan their sales activities and monitor deals. 
 Built using activity-based selling methodology, Pipedrive streamlines every action involved in converting a potential deal into a successful sale.
 
@@ -10,6 +10,12 @@ Before using this connector in your Ballerina application, complete the followin
 * Create a [Pipedrive](https://www.pipedrive.com) developer account
 * Obtain tokens by following [this guide](https://pipedrive.readme.io/docs/core-api-concepts-authentication)
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Quickstart
 
 To use the Pipedrive connector in your Ballerina application, update the .bal file as follows:

@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [Vonage Number Insight API v1.0.10](https://nexmo-api-specification.herokuapp.com/number-insight) OpenAPI specification. 
+The Vonage Number Insight API v1.0.10 connector(https://nexmo-api-specification.herokuapp.com/number-insight) OpenAPI specification. 
 The Number Insight API delivers real-time intelligence about the validity, reachability and roaming status of a phone number and tells you how to format the number correctly in your application. 
 There are three levels of Number Insight API available: [Basic, Standard and Advanced](https://developer.nexmo.com/number-insight/overview#basic-standard-and-advanced-apis). The advanced API is available asynchronously as well as synchronously. 
 More Number Insight API documentation is at https://developer.nexmo.com/number-insight/overview#number-insight-api-overview.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector from [Extpose API v1](https://extpose.com/) OpenAPI Specification. 
+The Extpose API v1 connector(https://extpose.com/) OpenAPI Specification. 
 
 Extpose provides analytics and actionable insights that help you optimize your chrome extension listing and eventually get more installs. More about the Extpose API can be find at [Extpose](https://docs.extpose.com/getting-started)
  
 This module supports Extpose API version v1.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

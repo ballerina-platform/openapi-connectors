@@ -1,9 +1,15 @@
 ## Overview
-This is a generated connector for [IRIS Helpdesk API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+The IRIS Helpdesk API v1.6.4 connector(https://www.iriscrm.com/api) OpenAPI specification.
 Connect with the Helpdesk API to work with your ticket data.  
 Helpdesk tickets are organized by ticket types.
 Ticket types have properties such as assigned users, expected time to completion (SLA), and visibility to help you segment tickets based on job descriptions.
 Get detailed helpdesk ticket information, perform updates, and manage attached files with ease by using the Helpdesk API.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

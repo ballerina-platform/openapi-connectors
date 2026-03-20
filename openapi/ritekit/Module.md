@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [RiteKit API v1.0](https://documenter.getpostman.com/view/2010712/SzS7Qku5?version=latest) OpenAPI specification.  
+The RiteKit API v1.0 connector(https://documenter.getpostman.com/view/2010712/SzS7Qku5?version=latest) OpenAPI specification.  
 The RiteKit API provides the capability to perform social media marketing through hashtag suggestions, auto hashtagging, emoji suggestions, etc.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

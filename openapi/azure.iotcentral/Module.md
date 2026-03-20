@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [Azure IoT Central API v1.0](https://azure.microsoft.com/en-us/services/iot-central/) OpenAPI specification.
+The Azure IoT Central API v1.0 connector(https://azure.microsoft.com/en-us/services/iot-central/) OpenAPI specification.
 
 Azure IoT Central is a service that makes it easy to connect, monitor, and manage your IoT devices at scale.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

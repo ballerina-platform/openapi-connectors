@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [Azure Time Series Insights API 2020-07-31 version](https://azure.microsoft.com/en-us/services/time-series-insights/) OpenAPI specification.
+The Azure Time Series Insights API 2020-07-31 version connector(https://azure.microsoft.com/en-us/services/time-series-insights/) OpenAPI specification.
 
 Time Series Insights environment data plane client for Gen2 (GA L1 SKU) environments.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

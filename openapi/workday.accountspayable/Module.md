@@ -1,9 +1,15 @@
 ## Overview
-This is a generated connector for [WorkDay Accounts Payable REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+The WorkDay Accounts Payable REST API v1 connector(https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 
 The WorkDay accounts payable service enables applications to access information related to accounts payable.
   
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
  
 Before using this connector in your Ballerina application, complete the following:

@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Vonage SMS API v1.0.10](https://nexmo-api-specification.herokuapp.com/sms) OpenAPI specification. 
+The Vonage SMS API v1.0.10 connector(https://nexmo-api-specification.herokuapp.com/sms) OpenAPI specification. 
 With the SMS API you can send SMS from your account and lookup messages both messages that you've sent as well as messages sent to your virtual numbers. 
 Numbers are specified in E.164 format. More SMS API documentation is at https://developer.nexmo.com/messaging/sms/overview.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
 
 ## Prerequisites
 

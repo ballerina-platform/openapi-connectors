@@ -1,5 +1,5 @@
 ## Overview
-This is a generated connector for [Google Discovery REST API v1](https://developers.google.com/discovery/v1/reference) OpenAPI specification.
+The Google Discovery REST API v1 connector(https://developers.google.com/discovery/v1/reference) OpenAPI specification.
 The Google Discovery API provides information about other Google APIs, such as what APIs are available, the resource, and method details for each API.
 
 # Quickstart

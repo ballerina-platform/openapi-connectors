@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [QuickBooks API v3](https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification.
+The QuickBooks API v3 connector(https://developer.intuit.com/app/developer/qbo/docs/get-started) OpenAPI specification.
 
 The QuickBooks Online Accounting API utilizes the REST architecture. It lets you seamlessly integrate your app with QuickBooks Online and the Intuit Financial Ecosystem 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

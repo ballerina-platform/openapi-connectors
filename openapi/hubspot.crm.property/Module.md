@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
+The HubSpot connector(https://www.hubspot.com/) OpenAPI specification. 
 
 All HubSpot objects store data in default and custom properties. These endpoints provide access to read and modify object properties in HubSpot.
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 * Create a [HubSpot developer](https://developers.hubspot.com/) account

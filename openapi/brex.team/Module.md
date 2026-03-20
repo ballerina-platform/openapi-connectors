@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Brex Team API v0.1](https://developer.brex.com/openapi/team_api/) OpenAPI specification. 
+The Brex Team API v0.1 connector(https://developer.brex.com/openapi/team_api/) OpenAPI specification. 
 
 Team API lets you manage users, departments, locations and cards.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

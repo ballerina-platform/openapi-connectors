@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Elasticsearch](https://cloud.elastic.co/api/v1/api-docs/spec.json) OpenAPI specification. 
+The Elasticsearch connector(https://cloud.elastic.co/api/v1/api-docs/spec.json) OpenAPI specification. 
 
 Elasticsearch API allows you to store, search, and analyze data with ease at scale.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

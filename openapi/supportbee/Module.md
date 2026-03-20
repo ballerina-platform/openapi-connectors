@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [SupportBee API v1](https://supportbee.com/api) OpenAPI specification.
+The SupportBee API v1 connector(https://supportbee.com/api) OpenAPI specification.
 SupportBee’s support ticket system enables teams to organize, prioritize and collaborate on customer support emails. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google My Business API v4.9](https://developers.google.com/my-business/) OpenAPI specification.
+The Google My Business API v4.9 connector(https://developers.google.com/my-business/) OpenAPI specification.
 The Google My Business API provides an interface for managing business location information on Google.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

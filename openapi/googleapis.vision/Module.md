@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Cloud Vision API v1](https://cloud.google.com/vision/docs/reference/rest) OpenAPI specification.
+The Google Cloud Vision API v1 connector(https://cloud.google.com/vision/docs/reference/rest) OpenAPI specification.
 The Google Cloud Vision API provides an interface for integrates Google Vision features, including image labeling, face, logo, and landmark detection, optical character recognition (OCR), and detection of explicit content, into applications.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

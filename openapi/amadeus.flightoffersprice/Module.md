@@ -1,9 +1,15 @@
 ## Overview
 
-This is a generated connector for [Amadeus Flight Offers Price API](https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-price) OpenAPI specification. 
+The Amadeus Flight Offers Price API connector(https://developers.amadeus.com/self-service/category/air/api-doc/flight-offers-price) OpenAPI specification. 
 
 This [Amadeus Flight Offers Price API](https://developers.amadeus.com/) provides the capability to confirm the availability and final price (including taxes and fees) of flights returned by the Flight Offers Search API.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Seamless integration with REST API endpoints
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

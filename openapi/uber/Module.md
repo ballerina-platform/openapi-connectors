@@ -3,6 +3,12 @@ Ballerina connector for Uber, connects the Uber [REST API](https://developer.ube
 
 This module supports REST API version v1.2 of Uber.
  
+### Key Features
+
+- Programmatic access to retrieve and query data via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Configuring Connector
 
 ### Prerequisites

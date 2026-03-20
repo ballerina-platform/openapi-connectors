@@ -1,7 +1,14 @@
 ## Overview
 
-This is a generated connector for [Browshot API v1.17.0](https://browshot.com/api/documentation) OpenAPI specification.
+The Browshot API v1.17.0 connector(https://browshot.com/api/documentation) OpenAPI specification.
 Browshot API allows to get screenshots of any website in real time.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

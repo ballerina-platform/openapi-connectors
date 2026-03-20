@@ -1,12 +1,18 @@
 ## Overview
 
-This is a generated connector for [Notion API v1](https://developers.notion.com/reference/intro) OpenAPI Specification. 
+The Notion API v1 connector(https://developers.notion.com/reference/intro) OpenAPI Specification. 
 
 Notion API provide capability to access all-in-one workspace where you can write, plan, collaborate and get organized.
 it has components such as notes, databases, kanban boards, wikis, calendars, and reminders. You can connect these 
 components to take notes, add tasks, manage projects & more. Notion provides the building blocks and you can 
 create your own layouts and toolkit to get work done. This ballerina connector allows you to connect Notion through its
 [REST API](https://developers.notion.com/docs).
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

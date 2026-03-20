@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Shipwire Receivings API v3.0](https://www.shipwire.com/developers/receiving) OpenAPI specification.
+The Shipwire Receivings API v3.0 connector(https://www.shipwire.com/developers/receiving) OpenAPI specification.
 Allows managing inventory at Shipwire and Shipwire Anywhere warehouses using receiving orders.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

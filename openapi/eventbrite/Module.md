@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Eventbrite API v3](https://www.eventbrite.com/platform/api) OpenAPI specification.
+The Eventbrite API v3 connector(https://www.eventbrite.com/platform/api) OpenAPI specification.
 Eventbrite is an Event Management System with an API which allows creating and managing events including venue management, marketing, selling tickets, and financial management.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

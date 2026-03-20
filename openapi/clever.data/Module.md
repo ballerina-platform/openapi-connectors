@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Clever Data API v1.2](https://dev.clever.com/v1.2/docs/secure-sync) OpenAPI specification. 
+The Clever Data API v1.2 connector(https://dev.clever.com/v1.2/docs/secure-sync) OpenAPI specification. 
 
 Clever Data API provides the capability to retrieve information from Clever.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

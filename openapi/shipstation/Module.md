@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [ShipStation API v1.0](https://www.shipstation.com/docs/api/) OpenAPI specification.
+The ShipStation API v1.0 connector(https://www.shipstation.com/docs/api/) OpenAPI specification.
 
 ShipStation strives to streamline shipping for online sellers, no matter where they sell their products online.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

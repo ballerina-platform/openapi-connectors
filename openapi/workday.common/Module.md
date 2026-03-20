@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [WorkDay Common REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+The WorkDay Common REST API v1 connector(https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 
 The WorkDay common service enables applications to access REST service for common resources shared by multiple product areas.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 

@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Docs API v1.0](https://developers.google.com/docs/api) OpenAPI specification.
+The Google Docs API v1.0 connector(https://developers.google.com/docs/api) OpenAPI specification.
 The Docs API provides access to read and write documents programmatically so that you can integrate data from various sources.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

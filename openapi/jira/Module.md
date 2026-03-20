@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [Jira Cloud platform API v2](https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. 
+The Jira Cloud platform API v2 connector(https://developer.atlassian.com/cloud/jira/platform/) OpenAPI specification. 
 
 Jira Cloud platform API provide capability to access Jira operations related to projects, issues and user related operations.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

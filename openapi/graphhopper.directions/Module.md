@@ -1,6 +1,6 @@
 ## Overview
 
-This is a generated connector for [GraphHopper Directions API v1.0.0](https://docs.graphhopper.com/) OpenAPI Specification.
+The GraphHopper Directions API v1.0.0 connector(https://docs.graphhopper.com/) OpenAPI Specification.
  
 With the [GraphHopper Directions API](https://www.graphhopper.com/products/) you can integrate A-to-B route planning, turn-by-turn navigation,route optimization, isochrone calculations and other tools in your application.
 The GraphHopper Directions API consists of the following RESTful web services:
@@ -13,6 +13,12 @@ The GraphHopper Directions API consists of the following RESTful web services:
      * [Geocoding API](#tag/Geocoding-API) and
      * [Cluster API](#tag/Cluster-API).
 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

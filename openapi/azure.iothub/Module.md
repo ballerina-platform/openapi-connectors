@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector from [Azure IoT Hub API v1.0](https://docs.microsoft.com/en-us/rest/api/iothub/) OpenAPI specification.
+The Azure IoT Hub API v1.0 connector(https://docs.microsoft.com/en-us/rest/api/iothub/) OpenAPI specification.
 
 Azure IoT Hub is a service that offers programmatic access to the device, messaging, and job services, as well as the resource provider, in IoT Hub.
 You can access messaging services from within an IoT service running in Azure, or directly over the Internet from any application that can send an HTTPS request and receive an HTTPS response.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

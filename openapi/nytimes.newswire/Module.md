@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [New York Times Newswire API v3.0.0](https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification. 
+The New York Times Newswire API v3.0.0 connector(https://developer.nytimes.com/docs/timeswire-product/1/overview) OpenAPI specification. 
 With the Times Newswire API, you can get links and metadata for Times' articles as soon as they are published on NYTimes.com. 
 The Times Newswire API provides an up-to-the-minute stream of published articles. You can filter results by source (all, nyt, inyt) and section (arts, business, ...).
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

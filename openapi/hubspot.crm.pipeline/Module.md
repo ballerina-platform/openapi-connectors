@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
+The HubSpot connector(https://www.hubspot.com/) OpenAPI specification. 
 
 This API provides access to pipelines. Pipelines represent distinct stages in a workflow, like closing a deal or servicing a support ticket. These endpoints provide access to read and modify pipelines in HubSpot. They support `deals` and `tickets` object types.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 * Create a [HubSpot developer](https://developers.hubspot.com/) account

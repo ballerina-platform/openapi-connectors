@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Interzoid Global Page Load Performance API](https://interzoid.com/services/globalpageload) OpenAPI specification.
+The Interzoid Global Page Load Performance API connector(https://interzoid.com/services/globalpageload) OpenAPI specification.
 
 This API provides a timed, browser-simulated page load function (or other Web function such as an API call) from the specified geography using a server from that geography. A round-trip performance measurement is returned from the location specified in the input parameter.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

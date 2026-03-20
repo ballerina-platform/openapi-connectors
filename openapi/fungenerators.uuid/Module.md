@@ -1,5 +1,5 @@
 ## Overview
-This is a generated connector for [fungenerators UUID API v1.5](https://fungenerators.com/api/uuid/#apidoc) OpenAPI specification.
+The fungenerators UUID API v1.5 connector(https://fungenerators.com/api/uuid/#apidoc) OpenAPI specification.
 
 The fungenerators.barcode API provides capability to generate random UUIDs. it supports the following features.
 * Generate random UUIDs
@@ -10,6 +10,12 @@ The fungenerators.barcode API provides capability to generate random UUIDs. it s
 * Support for RFC 4122 version 4 (random)
 * Support for non standard version 6 (Ordered Time UUID)
 * Parse UUID strings, check for validity and get version details
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Listen Notes API v2.0](https://www.listennotes.com/) OpenAPI specification. 
+The Listen Notes API v2.0 connector(https://www.listennotes.com/) OpenAPI specification. 
 
 Simple & no-nonsense podcast search & directory API. Search all podcasts and episodes by people, places, or topics.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

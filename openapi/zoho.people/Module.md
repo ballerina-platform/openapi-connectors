@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Zoho People](https://www.zoho.com/people/overview.html) OpenAPI specification. 
+The Zoho People connector(https://www.zoho.com/people/overview.html) OpenAPI specification. 
 
 Zoho People API provides the capability to integrate HR modules with third-party applications. With Zoho People API, you can extract employees' data and form data in XML or JSON format to develop new applications or integrate with your existing business applications.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

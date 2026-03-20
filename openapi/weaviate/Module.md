@@ -2,6 +2,12 @@
 
 This is a generated connector for the [Weaviate Vector Search Engine API](https://weaviate.io/developers/weaviate/api) OpenAPI specification. Weaviate is an open-source vector search engine, which allows storing data objects and vector embeddings from the ML models, including the LLMs offered by [OpenAI](https://openai.com/), [Hugging Face](https://huggingface.co/), and [Cohere](https://cohere.ai/). Weaviate provides a powerful GraphQL API for querying the embeddings while looking at the similarity and can scale seamlessly into billions of data objects.
 
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

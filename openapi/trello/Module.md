@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Trello API v1](https://trello.com) OpenAPI specification.
+The Trello API v1 connector(https://trello.com) OpenAPI specification.
  
 Client endpoint of Trello API provides capability to perform CRUD (Create, Read, Update, and Delete) operations on resources in a Trello account.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create a [Trello](https://trello.com) account

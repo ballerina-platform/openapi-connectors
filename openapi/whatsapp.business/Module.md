@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [WhatsApp Business v2.21.4](https://developers.facebook.com/docs/whatsapp/) OpenAPI Specification. 
+The WhatsApp Business v2.21.4 connector(https://developers.facebook.com/docs/whatsapp/) OpenAPI Specification. 
 
 WhatsApp Business API provides the capability to communicate with customers all over the world, so you can connect with them on WhatsApp in a simple, secure, and reliable way.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

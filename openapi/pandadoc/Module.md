@@ -1,8 +1,15 @@
 ## Overview
 
-This is a generated connector from [PandaDoc API version 4.3.0](https://developers.pandadoc.com/reference/about) OpenAPI Specification. 
+The PandaDoc API version 4.3.0 connector(https://developers.pandadoc.com/reference/about) OpenAPI Specification. 
 
 PandaDoc API spans a broad range of functionality to help you build incredible documents automation experiences inside your product. PandaDoc API is organized around REST. Our API has predictable resource-oriented URLs and uses standard HTTP response codes, authentication, and verbs.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

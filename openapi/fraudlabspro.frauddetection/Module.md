@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [FraudLabsPro Fraud Detection API v1.1](https://www.fraudlabspro.com/developer/api/screen-order) OpenAPI specification. 
+The FraudLabsPro Fraud Detection API v1.1 connector(https://www.fraudlabspro.com/developer/api/screen-order) OpenAPI specification. 
 Online payment fraud detection service. It helps merchants to minimize chargebacks and therefore maximize the revenue. 
 It can be used to detect fraud for various kinds of payment method, such as credit card, paypal, cod and so on. 
 Please visit https://www.fraudlabspro.com to learn more.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

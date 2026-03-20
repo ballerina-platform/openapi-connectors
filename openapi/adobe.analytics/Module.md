@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector for [Adobe Analytics API](https://developer.adobe.com/analytics-apis/docs/2.0/) OpenAPI specification. 
+The Adobe Analytics API connector(https://developer.adobe.com/analytics-apis/docs/2.0/) OpenAPI specification. 
 
 The Adobe Analytics 2.0 APIs allow you to directly call Adobe's servers to perform almost any action that you can 
 perform in the user interface. You can create reports to explore, get insights, or answer important questions about your data. 
 You can also manage components of Adobe Analytics, such as the creation of segments or calculated metrics. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

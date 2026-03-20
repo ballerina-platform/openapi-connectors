@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [DocuSign Click API](https://developers.docusign.com/docs/click-api/) OpenAPI specification. 
+The DocuSign Click API connector(https://developers.docusign.com/docs/click-api/) OpenAPI specification. 
 
 DocuSign Click lets you capture consent to standard agreement terms with a single click terms and conditions, terms of service, terms of use, privacy policies, and more. The Click API lets you include this customizable clickwrap solution in your DocuSign integrations.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

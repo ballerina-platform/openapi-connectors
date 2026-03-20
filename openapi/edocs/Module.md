@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [eDocs API v1.0.0](https://www.opentext.com/products-and-solutions/industries/legal/legal-content-management-edocs) OpenAPI Specification.
+The eDocs API v1.0.0 connector(https://www.opentext.com/products-and-solutions/industries/legal/legal-content-management-edocs) OpenAPI Specification.
 
 The eDocs API allows interaction with the resources stored on an eDOCS DM Server. Refer to [API documentation](https://developer.opentext.com/apis/9ca24bb2-a89a-446a-96dc-3138b8a5622f/eDOCS%20REST%20API)
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

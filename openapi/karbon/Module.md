@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Karbon API v3.0](https://developers.karbonhq.com/api) OpenAPI specification.
+The Karbon API v3.0 connector(https://developers.karbonhq.com/api) OpenAPI specification.
 Leverage the Karbon API to integrate your apps with Karbon, build custom solutions, optimize workflows and power your business.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

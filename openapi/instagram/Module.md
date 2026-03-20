@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Instagram Basic Display API v12.0](https://developers.facebook.com/docs/instagram-basic-display-api) OpenAPI specification. 
+The Instagram Basic Display API v12.0 connector(https://developers.facebook.com/docs/instagram-basic-display-api) OpenAPI specification. 
 
 Instagram is a free photo-sharing application that enables its users to take photos, apply filters, and share them on social networks. The Instagram Basic Display API allows users of your app to get basic profile information, photos, and videos in their Instagram accounts.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

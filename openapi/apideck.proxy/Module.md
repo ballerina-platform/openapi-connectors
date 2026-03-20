@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [Apideck Proxy API v5.3.0](https://developers.apideck.com/apis/proxy/reference) OpenAPI specification.
+The Apideck Proxy API v5.3.0 connector(https://developers.apideck.com/apis/proxy/reference) OpenAPI specification.
 
 You can use this API to access all Proxy API endpoints.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

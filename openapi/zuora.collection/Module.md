@@ -1,5 +1,5 @@
 ## Overview
-    This is a generated connector for [Zuora Collections API V1](https://www.zuora.com/developer/collect-api/#) OpenAPI specification.
+The Zuora Collections API V1 connector(https://www.zuora.com/developer/collect-api/#) OpenAPI specification.
   
     This Zuora Collections API provides detailed descriptions about functions, requests, and responses of
     the APIs for the following four component apps. 
@@ -8,6 +8,13 @@
     - Collections Window
     - Configurable Payment Retry
     - Statement Generator
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

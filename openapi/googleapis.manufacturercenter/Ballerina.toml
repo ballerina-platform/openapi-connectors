@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Commerce/eCommerce", "Cost/Free", "Vendor/Google"]
+keywords = ["Type/Connector", "Commerce/eCommerce", "Cost/Free", "Vendor/Google", "Area/E-Commerce"]
 org = "ballerinax"
 name = "googleapis.manufacturercenter"
 icon = "icon.png"

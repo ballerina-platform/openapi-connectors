@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [New York Times Top Stories API v2.0.0](https://developer.nytimes.com/docs/top-stories-product/1/overview) OpenAPI specification. 
+The New York Times Top Stories API v2.0.0 connector(https://developer.nytimes.com/docs/top-stories-product/1/overview) OpenAPI specification. 
 With the New York Times Top Stories API you can get articles currently on a section front or home page. The Top Stories API returns an array of articles currently on the specified section (arts, business, ...). 
 The possible section value are: arts, automobiles, books, business, fashion, food, health, home, insider, magazine, movies, nyregion, obituaries, opinion, politics, realestate, science, sports, sundayreview, technology, theater, t-magazine, travel, upshot, us, and world.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

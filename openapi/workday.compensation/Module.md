@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [WorkDay Compensation REST API v1](https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
+The WorkDay Compensation REST API v1 connector(https://community.workday.com/sites/default/files/file-hosting/restapi/index.html) OpenAPI specification.
 
 The Workday compensation service enables applications to extend Workday's HCM compensation features.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 

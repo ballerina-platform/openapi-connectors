@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [1Password Connect API v1.3.0](https://1password.com/) OpenAPI specification.
+The 1Password Connect API v1.3.0 connector(https://1password.com/) OpenAPI specification.
 
 1Password is the easiest way to store and use strong passwords. Log in to sites and fill forms securely with a single click.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

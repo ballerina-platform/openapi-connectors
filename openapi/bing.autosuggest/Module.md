@@ -1,11 +1,18 @@
 ## Overview
 
-This is a generated connector for [Bing Autosuggest API v1](https://www.microsoft.com/en-us/bing/apis/bing-autosuggest-api) OpenAPI specification.
+The Bing Autosuggest API v1 connector(https://www.microsoft.com/en-us/bing/apis/bing-autosuggest-api) OpenAPI specification.
 The Autosuggest API lets partners send a partial search query to Bing and get back a list of suggested queries that other users have searched on. 
 In addition to including searches that other users have made, the list may include suggestions based on user intent. 
 For example, if the query string is weather in Lo, the list will include relevant weather suggestions.
 
 This module supports [Bing Autosuggest API v1](https://www.microsoft.com/en-us/bing/apis/bing-autosuggest-api).
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

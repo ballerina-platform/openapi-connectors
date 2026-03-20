@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Oracle Eloqua](https://docs.oracle.com/en/cloud/saas/marketing/eloqua-user/index.htm) OpenAPI specification. 
+The Oracle Eloqua connector(https://docs.oracle.com/en/cloud/saas/marketing/eloqua-user/index.htm) OpenAPI specification. 
 
 The Oracle Eloqua Marketing Cloud Service REST APIs enable you to extend the functionality of the product, build Apps, and perform high volume data transfers.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

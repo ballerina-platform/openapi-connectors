@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Open Design REST API v0.3.4](https://opendesign.dev/docs/api-reference/introduction) OpenAPI specification. 
+The Open Design REST API v0.3.4 connector(https://opendesign.dev/docs/api-reference/introduction) OpenAPI specification. 
 
 Open Design read and display data from designs using code. Unlock the power of programmatic design.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

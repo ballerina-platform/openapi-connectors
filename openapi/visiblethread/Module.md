@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [VisibleThread API v1.0](https://api.visiblethread.com/example/index.html) OpenAPI specification.
+The VisibleThread API v1.0 connector(https://api.visiblethread.com/example/index.html) OpenAPI specification.
 
 The VisibleThread API provides services for analyzing or searching documents and web pages.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

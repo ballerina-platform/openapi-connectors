@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Commercetools API v1](https://docs.commercetools.com/api/) OpenAPI specification.
+The Commercetools API v1 connector(https://docs.commercetools.com/api/) OpenAPI specification.
 
 The commercetools Platform HTTP API(Customize Data) offers an interface for programmatic access to operations related to product types,types, custom fields and custom objects.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 

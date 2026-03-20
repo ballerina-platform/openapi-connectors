@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Documents", "Cost/Freemium", "Vendor/Google"]
+keywords = ["Type/Connector", "Content & Files/Documents", "Cost/Freemium", "Vendor/Google", "Area/Storage & File Management"]
 org = "ballerinax"
 name = "googleapis.slides"
 icon = "icon.png"

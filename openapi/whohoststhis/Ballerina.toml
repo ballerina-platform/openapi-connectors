@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/WhoHostsThis", "Area/Cloud & Infrastructure", "IT Operations/Cloud Services", "Cost/Freemium"]
 org = "ballerinax"
 name = "whohoststhis"
 icon = "icon.png"

@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [Jira Service Management Cloud REST API](https://developer.atlassian.com/cloud/jira/service-desk/) OpenAPI specification. 
+The Jira Service Management Cloud REST API connector(https://developer.atlassian.com/cloud/jira/service-desk/) OpenAPI specification. 
 
 The Jira Service Management Cloud REST APIs are for developers who want to integrate Jira Service Management with other applications or administrators that want to automate their workflows and processes.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

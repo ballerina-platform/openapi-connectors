@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Reckon One API v2](https://developer.reckon.com/api-details#api=reckon-one-api-v2) OpenAPI specification.
+The Reckon One API v2 connector(https://developer.reckon.com/api-details#api=reckon-one-api-v2) OpenAPI specification.
 Reckon One is a new generation, modular cloud accounting solution that scales with your business – perfect for startups. This is version 2 of the Reckon One API.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

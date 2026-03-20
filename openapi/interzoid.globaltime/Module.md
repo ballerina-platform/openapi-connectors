@@ -1,9 +1,15 @@
 ## Overview
 
-This is a generated connector for [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime) OpenAPI specification.
+The Interzoid Get Global Time API connector(https://www.interzoid.com/services/getglobaltime) OpenAPI specification.
 
 The Interzoid Get Global Time connector module provides retrieves the current time for a city or geographic location around the globe.
 For additional help getting started with the API, visit [Interzoid Get Global Time API](https://www.interzoid.com/services/getglobaltime).
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Google Cloud Pub/Sub REST API v1](https://cloud.google.com/pubsub/docs/reference/rest) OpenAPI specification.
+The Google Cloud Pub/Sub REST API v1 connector(https://cloud.google.com/pubsub/docs/reference/rest) OpenAPI specification.
 The Google Cloud Pub/Sub API provides the capability to do the messaging and ingestion for event-driven systems and streaming analytics.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

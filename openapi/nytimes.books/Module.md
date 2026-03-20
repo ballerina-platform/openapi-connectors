@@ -1,8 +1,15 @@
 ## Overview
 
-This is a generated connector for [New York Times Books API v3.0.0](https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
+The New York Times Books API v3.0.0 connector(https://developer.nytimes.com/docs/books-product/1/overview) OpenAPI specification.
 
 The Books API provides information about book reviews and The New York Times bestsellers lists. For additional help getting started with the API, visit [New York Times Books API](https://developer.nytimes.com/docs/books-product/1/overview).
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

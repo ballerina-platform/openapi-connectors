@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/App Builders", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Quickbase", "Area/Developer Tools", "Website & App Building/App Builders", "Cost/Paid"]
 org = "ballerinax"
 name = "quickbase"
 icon = "icon.png"

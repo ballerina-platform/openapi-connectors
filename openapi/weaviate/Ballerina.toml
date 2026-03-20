@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Vector Databases", "Cost/Freemium", "Vendor/Weaviate", "Embedding Search"]
+keywords = ["Type/Connector", "AI/Vector Database", "Cost/Freemium", "Vendor/Weaviate", "Area/AI & Machine Learning", "Embedding Search"]
 org = "ballerinax"
 name = "weaviate"
 icon = "icon.png"

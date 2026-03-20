@@ -1,9 +1,15 @@
 ## Overview
 
-This is a generated connector for [Interzoid Zip Code Detailed Information API](https://www.interzoid.com/services/getzipcodeinfo) OpenAPI specification.
+The Interzoid Zip Code Detailed Information API connector(https://www.interzoid.com/services/getzipcodeinfo) OpenAPI specification.
 
 The Interzoid zip code detailed information connector module provides detailed information for a given zip code, including city, state, latitude, longitude, area size, and various population demographics. 
 For additional help getting started with the API, visit [Interzoid Zip Code Detailed Information API](https://www.interzoid.com/services/getzipcodeinfo).
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

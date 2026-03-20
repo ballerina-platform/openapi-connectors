@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/App Builders", "Cost/Free"]
+keywords = ["Type/Connector", "Vendor/Kinto", "Area/Developer Tools", "Website & App Building/App Builders", "Cost/Free"]
 org = "ballerinax"
 name = "kinto"
 icon = "icon.png"

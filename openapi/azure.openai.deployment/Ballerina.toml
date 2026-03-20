@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Deployment", "Vendor/Microsoft", "Cost/Paid", "Model Deployment", "Azure OpenAI"]
+keywords = ["Type/Connector", "AI/Deployment", "Vendor/Microsoft", "Area/AI & Machine Learning", "Cost/Paid", "Model Deployment", "Azure OpenAI"]
 org = "ballerinax"
 name = "azure.openai.deployment"
 icon = "icon.png"

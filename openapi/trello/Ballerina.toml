@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Productivity/Task Management", "Cost/Freeemium"]
+keywords = ["Type/Connector", "Vendor/Trello", "Area/Productivity & Collaboration", "Productivity/Task Management", "Cost/Freeemium"]
 org = "ballerinax"
 name = "trello"
 icon = "icon.png"

@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Paypal Payments API v2](https://developer.paypal.com/docs/api/payments/v2/) OpenAPI specification.
+The Paypal Payments API v2 connector(https://developer.paypal.com/docs/api/payments/v2/) OpenAPI specification.
 Call the Payments API to authorize payments, capture authorized payments, refund payments that have already been captured, and show payment information. 
 Use the Payments API in conjunction with the Orders API.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

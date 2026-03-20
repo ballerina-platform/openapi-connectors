@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Keap API v1.70.0.453309-hf-202203291431](https://developer.infusionsoft.com/docs/rest/) OpenAPI specification.
+The Keap API v1.70.0.453309-hf-202203291431 connector(https://developer.infusionsoft.com/docs/rest/) OpenAPI specification.
 Keap is an all-in-one CRM, sales and marketing automation software that helps organize leads, land the job, get paid, and keep growing.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

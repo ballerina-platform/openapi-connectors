@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Interzoid Email Info API v1.0.0](https://interzoid.com/services/getemailinfo) OpenAPI specification.
+The Interzoid Email Info API v1.0.0 connector(https://interzoid.com/services/getemailinfo) OpenAPI specification.
 
 This API provides validation information for an email address in the input parameter to aid in deliverability. It will also provides additional demographic and descriptive data about the email address.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

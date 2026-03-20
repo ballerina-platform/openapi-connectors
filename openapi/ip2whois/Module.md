@@ -1,9 +1,15 @@
 ## Overview
-This is a generated connector from [IP2WHOIS API v2](https://www.ip2whois.com/developers-api) OpenAPI Specification. 
+The IP2WHOIS API v2 connector(https://www.ip2whois.com/developers-api) OpenAPI Specification. 
 
 IP2WHOIS information lookup REST API helps users to obtain domain information, WHOIS record, by using a domain name. The API returns a comprehensive WHOIS data such as creation date, updated date, expiration date, domain age, the contact information of the registrant, mailing address, phone number, email address, nameservers the domain is using and much more. More about the IP2WHOIS API can be find at [IP2WHOIS](https://www.ip2whois.com/?lang=en_US)
  
 This module supports IP2WHOIS API version v2.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

@@ -1,9 +1,15 @@
 ## Overview
-This is a generated connector from [BINTable API v1](https://bintable.com/get-api) OpenAPI Specification. 
+The BINTable API v1 connector(https://bintable.com/get-api) OpenAPI Specification. 
 
 The BINTable database has a large dataset of card Issuer identification number (IIN) sometimes referred to as the Bank Identification Number (BIN) information. More about the BINTable API can be find at [BINTable](https://bintable.com/get-api)
  
 This module supports BINTable API version v1.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

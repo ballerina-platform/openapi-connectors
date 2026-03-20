@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Devtools", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Bitly", "Area/Developer Tools", "Devtools", "Cost/Freemium"]
 org = "ballerinax"
 name = "bitly"
 icon = "icon.png"

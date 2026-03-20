@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Documents", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Alfresco", "Area/Storage & File Management", "Content & Files/Documents", "Cost/Paid"]
 org = "ballerinax"
 name = "alfresco"
 icon = "icon.png"

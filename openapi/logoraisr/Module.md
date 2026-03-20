@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector from [Logoraisr API v1](https://docs.logoraisr.com/) OpenAPI Specification.
+The Logoraisr API v1 connector(https://docs.logoraisr.com/) OpenAPI Specification.
 Logoraisr API provides capability to access operations related to your graphic design tasks automatically using best-in-class algorithms and artificial intelligence.
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 * Create a [Logoraisr](https://logoraisr.com/) account.

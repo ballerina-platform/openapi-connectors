@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [Azure Analysis Services API v2017-08-01](https://azure.microsoft.com/en-us/services/analysis-services/) OpenAPI specification.
+The Azure Analysis Services API v2017-08-01 connector(https://azure.microsoft.com/en-us/services/analysis-services/) OpenAPI specification.
 
 The Azure Analysis Services Web API provides a RESTful set of web services that enables users to create, retrieve, update, and delete Analysis Services servers.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

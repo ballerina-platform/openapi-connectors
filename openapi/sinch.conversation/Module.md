@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Sinch Conversation API v1.0](https://www.sinch.com/) OpenAPI specification. 
+The Sinch Conversation API v1.0 connector(https://www.sinch.com/) OpenAPI specification. 
 
 Send and receive messages globally over SMS, RCS, WhatsApp, Viber Business, Facebook messenger and other popular channels using the Sinch Conversation API. The Conversation API endpoint uses built-in transcoding to give you the power of conversation across all supported channels and, if required, full control over channel specific features.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

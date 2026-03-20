@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Apps Script API v1](https://developers.google.com/apps-script/api/) OpenAPI specification.
+The Google Apps Script API v1 connector(https://developers.google.com/apps-script/api/) OpenAPI specification.
 Manages and executes Google Apps Script projects.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

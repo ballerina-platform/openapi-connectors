@@ -1,10 +1,17 @@
 ## Overview
-This is a generated connector for [DocuSign Monitor API](https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification. 
+The DocuSign Monitor API connector(https://developers.docusign.com/docs/monitor-api/monitor101/) OpenAPI specification. 
 
 DocuSign Monitor helps organizations protect their agreements with round-the-clock activity tracking. 
 The Monitor API delivers this activity tracking information directly to existing security stacks or data visualization 
 tools—enabling teams to detect unauthorized activity, investigate incidents, and quickly respond to verified threats. 
 It also provides the flexibility security teams need to customize dashboards and alerts to meet specific business needs.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

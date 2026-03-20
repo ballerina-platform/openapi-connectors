@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Interzoid Currency Rate API v1.0.0](https://interzoid.com/services/getcurrencyrate) OpenAPI specification.
+The Interzoid Currency Rate API v1.0.0 connector(https://interzoid.com/services/getcurrencyrate) OpenAPI specification.
 
 This API retrieves the latest currency exchange rate, provided in US Dollars, for the given three-letter international currency code. These currency rates are compiled from many global sources and are updated several times per day.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [GoToWebinar API v2.0](https://developer.goto.com/GoToWebinarV2) OpenAPI specification.  
+The GoToWebinar API v2.0 connector(https://developer.goto.com/GoToWebinarV2) OpenAPI specification.  
 The GoToWebinar API provides the capability to schedule webinars and customize webinars with panelists, polls, questions and surveys.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

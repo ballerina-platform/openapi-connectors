@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Interzoid State Data API v1.0.0](https://www.interzoid.com/services/getstateabbreviation) OpenAPI specification.
+The Interzoid State Data API v1.0.0 connector(https://www.interzoid.com/services/getstateabbreviation) OpenAPI specification.
 
 This API provides the two-letter state abbreviation (or the province abbreviation for Canada) for state names, including many variations of a given state name.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

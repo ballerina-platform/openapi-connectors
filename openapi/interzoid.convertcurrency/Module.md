@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [Interzoid Convert Currency API v1.0.0](https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
+The Interzoid Convert Currency API v1.0.0 connector(https://www.interzoid.com/services/convertcurrency) OpenAPI specification.
 
 This API enables you to convert an amount of one currency into another currency using current foreign exchange rates.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

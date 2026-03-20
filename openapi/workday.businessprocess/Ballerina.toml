@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Human Resources/HRMS", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Workday", "Area/HRMS", "Human Resources/HRMS", "Cost/Paid"]
 org = "ballerinax"
 name = "workday.businessprocess"
 icon = "icon.png"

@@ -1,8 +1,15 @@
 ## Overview
 
-This is a generated connector from [Spotify API v1](https://developer.spotify.com/documentation/web-api/) OpenAPI Specification. 
+The Spotify API v1 connector(https://developer.spotify.com/documentation/web-api/) OpenAPI Specification. 
 
 Through the Spotify Web API, external applications retrieve Spotify content such as album data and playlists.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Configuring connector
 

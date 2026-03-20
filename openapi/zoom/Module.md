@@ -1,8 +1,15 @@
 ## Overview
 
-This is a generated connector for [Zoom API v2.0.0](https://marketplace.zoom.us/docs/api-reference/zoom-api) OpenAPI Specification. 
+The Zoom API v2.0.0 connector(https://marketplace.zoom.us/docs/api-reference/zoom-api) OpenAPI Specification. 
 
 The Zoom API allows developers to access information from Zoom. You can use this API to build private services or public applications on the [Zoom App Marketplace](http://marketplace.zoom.us). To learn how to get your credentials and create private/public applications, read our [Authorization Guide](https://marketplace.zoom.us/docs/guides/authorization/credentials). All endpoints are available via `https` and are located at `api.zoom.us/v2/`. For instance you can list all users on an account via `https://api.zoom.us/v2/users/`.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Configuring connector
 

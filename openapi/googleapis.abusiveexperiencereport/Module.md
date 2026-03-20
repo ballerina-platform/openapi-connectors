@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Google Abusive Experience Report API v1](https://developers.google.com/abusive-experience-report/) OpenAPI specification.
+The Google Abusive Experience Report API v1 connector(https://developers.google.com/abusive-experience-report/) OpenAPI specification.
 Views Abusive Experience Report data, and gets a list of sites that have a significant number of abusive experiences.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Vimeo API v3.4](https://developer.vimeo.com/) OpenAPI specification.
+The Vimeo API v3.4 connector(https://developer.vimeo.com/) OpenAPI specification.
 The Vimeo API provides access to manage Vimeo platform. This includes management of videos, channels, albums, users etc.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

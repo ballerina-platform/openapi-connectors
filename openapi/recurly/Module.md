@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [Recurly API V3](https://developers.recurly.com/api/v2021-02-25/index.html) OpenAPI specification.
+The Recurly API V3 connector(https://developers.recurly.com/api/v2021-02-25/index.html) OpenAPI specification.
 Recurly is a subscription management platform delivering a competitive advantage for leading brands worldwide. 
 Trusted by Sling TV, BarkBox, Asana, and thousands more to drive recurring revenue.
 Onboard and manage customers through Recurly API.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Flat", "Area/Productivity & Collaboration", "Lifestyle & Entertainment/News & Lifestyle", "Cost/Freemium"]
 org = "ballerinax"
 name = "flatapi"
 icon = "icon.png"

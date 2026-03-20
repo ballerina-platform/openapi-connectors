@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [Orbit API v1](https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
+The Orbit API v1 connector(https://docs.orbit.love/reference/about-the-orbit-api) OpenAPI specification. 
 
 Orbit API used to track activities of users and manage users.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [IRIS Residuals API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+The IRIS Residuals API v1.6.4 connector(https://www.iriscrm.com/api) OpenAPI specification.
 Populate your data warehouse programmatically through this Residuals API and interact with your monthly residuals income calculations, line items, and user compensation data.
 Line items give you control with the ability to add income or expense calculations that are outside of any residual reports.
 Receive instant notifications when new residual reports are published or when line items are added.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
 
 ## Prerequisites
 

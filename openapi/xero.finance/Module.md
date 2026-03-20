@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Xero Finance API v2.16.0](https://developer.xero.com/documentation/api/finance/overview) OpenAPI specification.
+The Xero Finance API v2.16.0 connector(https://developer.xero.com/documentation/api/finance/overview) OpenAPI specification.
 The Finance API is a collection of endpoints which customers can use in the course of a loan application, which may assist lenders to gain the confidence they need to provide capital.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,10 +1,17 @@
 ## Overview
-This is a generated connector for [Spotto API v1.0.0](https://api-reference.spotto.io) OpenAPI specification.
+The Spotto API v1.0.0 connector(https://api-reference.spotto.io) OpenAPI specification.
 The Spotto API provides a broad set of operations and resources that allow you to:
 - Access and manage the Spotto registry of assets, locations and readers
 - Control levels of access to Spotto applications and APIs across your account
 - Query the Spotto event log to gain valuable insights into your historical data
 - Setup event based hooks when something significant changes in Spotto.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 

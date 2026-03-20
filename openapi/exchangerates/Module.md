@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector from [ExchangeRates-API v6](https://exchangeratesapi.io/documentation/) OpenAPI Specification. 
+The ExchangeRates-API v6 connector(https://exchangeratesapi.io/documentation/) OpenAPI Specification. 
 
 With over 15 exchange rate data sources, the Exchangerates API is delivering exchanging rates data for more than 170 world currencies. The endpoints include functionalities like receiving the latest exchange rates information for a specific currency; conversion from one to another currency; receiving data Time-series for multiple or for one currency, and preserving the API daily for the fluctuation data.. More about the ExchangeRate-API can be find at [ExchangeRates-API](https://exchangeratesapi.io/documentation/)
  
 This module supports ExchangeRates API version v6.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
  

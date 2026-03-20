@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [HubSpot](https://www.hubspot.com/) OpenAPI specification. 
+The HubSpot connector(https://www.hubspot.com/) OpenAPI specification. 
 
 These APIs allow triggering instances of custom behavioral events.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
 
 ## Prerequisites
 * Create a [HubSpot developer](https://developers.hubspot.com/) account

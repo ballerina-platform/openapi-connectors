@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [ODWeather API v1.0](https://api.oceandrivers.com/) OpenAPI specification.
+The ODWeather API v1.0 connector(https://api.oceandrivers.com/) OpenAPI specification.
 The ODWeather API provides the capability to access the real time and forecast ocean information.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Seamless integration with REST API endpoints
+- Support for standard HTTP methods and JSON responses
 
 ## Quickstart
 To use the ODWeather connector in your Ballerina application, update the .bal file as follows:

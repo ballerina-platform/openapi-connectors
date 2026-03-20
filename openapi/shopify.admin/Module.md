@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [Shopify Admin API v2021-10](https://shopify.dev/api/admin-rest) OpenAPI specification.
+The Shopify Admin API v2021-10 connector(https://shopify.dev/api/admin-rest) OpenAPI specification.
 The Admin API lets you build apps and integrations that extend and enhance the Shopify admin.
 As the primary way that apps and services interact with Shopify, the Admin API allows you to add your own features to the Shopify user experience. 
 Read and write Shopify store information, including products, inventory, orders, shipping, and more.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

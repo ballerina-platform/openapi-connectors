@@ -3,6 +3,13 @@
  
 This module supports <version> version.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Obtaining tokens
 ### Prerequisites
 * If you don't have a Mailchimp account already, you’ll need to [create one](https://login.mailchimp.com/signup/) in order to use the API.

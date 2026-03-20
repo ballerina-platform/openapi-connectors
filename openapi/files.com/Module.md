@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [Files.com API v1.0](https://www.files.com/) OpenAPI specification.
+The Files.com API v1.0 connector(https://www.files.com/) OpenAPI specification.
 
 Welcome to the Files.com API. Our REST API are designed for people who require the highest level of integration between Files.com and their own application, website, or database.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

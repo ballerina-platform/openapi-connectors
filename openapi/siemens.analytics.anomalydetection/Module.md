@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector from [Siemens Analytics Anomaly Detection API v3.4.0](https://developer.mindsphere.io/apis/analytics-anomalydetection/api-anomalydetection-overview.html) OpenAPI Specification.
+The Siemens Analytics Anomaly Detection API v3.4.0 connector(https://developer.mindsphere.io/apis/analytics-anomalydetection/api-anomalydetection-overview.html) OpenAPI Specification.
 
 The anomaly detection service aims to automatically detect unexpected behaviour of processes and assets using time series data and provides API to train model and use it for anomaly detection. In the Interactive mode Analytic Model Management service is used as model storage. Model expiration date is set to 14 days.
   
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

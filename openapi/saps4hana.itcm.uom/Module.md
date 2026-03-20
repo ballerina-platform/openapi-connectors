@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [SAPS4HANA Intelligent Trade Claims Management API v1.0.0](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
+The SAPS4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
 The unit of measure service allows you to load units of measure for various purposes in SAPS4HANA Intelligent Trade Claims Management.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Secure authentication with API key or OAuth support
+- Seamless integration with REST API endpoints
 
 ## Prerequisites
 

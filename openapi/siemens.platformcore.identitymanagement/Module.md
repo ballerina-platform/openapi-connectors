@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [Siemens Identity Management API v3.3.0](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI specification. 
+The Siemens Identity Management API v3.3.0 connector(https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI specification. 
 
 The Identity Management API provides a means form managing users, groups and OAuth clients.<br> The user and group management is based on SCIM (System for Cross-domain Identity Management).<br><br> <i>Note:</i> Unless stated otherwise the Identity Management APIs allow each caller only to act within the context of the tenant to which the caller belong's to.</br><i>Note2:</i> UIAM stands for User Identity Access Management, since users and providers are separated in system. Therefore this API documentation is related to users generally.
   
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

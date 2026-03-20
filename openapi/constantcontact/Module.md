@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Constant Contact API v3](https://v3.developer.constantcontact.com/api_guide/index.html) OpenAPI specification.
+The Constant Contact API v3 connector(https://v3.developer.constantcontact.com/api_guide/index.html) OpenAPI specification.
 The Constant Contact, Inc. V3 public API, for building integrations with Constant Contact, the leading small-business email marketing platform.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector from [Cloudmersive](https://account.cloudmersive.com) OpenAPI specification.
+The Cloudmersive connector(https://account.cloudmersive.com) OpenAPI specification.
 
 The Cloudmersive Validation APIs help you validate data. Check if an E-mail address is real. Check if a domain is real. 
 Check up on an IP address, and even where it is located. All this and much more is available in the validation API.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 * Create a [Cloudmersive](https://account.cloudmersive.com) account
 * Obtain tokens

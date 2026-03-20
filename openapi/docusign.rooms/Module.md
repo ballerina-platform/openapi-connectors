@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [DocuSign Rooms API](https://developers.docusign.com/docs/rooms-api/) OpenAPI specification. 
+The DocuSign Rooms API connector(https://developers.docusign.com/docs/rooms-api/) OpenAPI specification. 
 
 DocuSign Rooms streamlines real estate and mortgage workflows by connecting all parties in a digital, secure, and central workspace. With the DocuSign Rooms API, it’s easy to integrate Rooms functionality into your own solutions. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

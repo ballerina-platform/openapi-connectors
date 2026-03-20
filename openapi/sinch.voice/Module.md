@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Sinch Voice API v1.0.0](https://www.sinch.com/) OpenAPI specification. 
+The Sinch Voice API v1.0.0 connector(https://www.sinch.com/) OpenAPI specification. 
 
 The Calling API exposes calling- and conference-related functionality in the Sinch Voice Platform.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

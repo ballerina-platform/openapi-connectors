@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Fun Generators", "Area/Cloud & Infrastructure", "IT Operations/Cloud Services", "Cost/Paid"]
 org = "ballerinax"
 name = "fungenerators.uuid"
 icon = "icon.png"

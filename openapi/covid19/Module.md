@@ -1,9 +1,15 @@
 ## Overview
 
-This is a generated connector from [Novel COVID-19 API v3.0.0](https://disease.sh/docs/) OpenAPI Specification.
+The Novel COVID-19 API v3.0.0 connector(https://disease.sh/docs/) OpenAPI Specification.
 
 Ballerina connector for COVID-19 provides easy access to latest COVID-19 related data across the world. Please refer to [API documentation](https://disease.sh) for more detail.
   
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Seamless integration with REST API endpoints
+- Support for standard HTTP methods and JSON responses
+
 ## Quickstart
 
 To use the COVID-19 connector in your Ballerina application, update the .bal file as follows:

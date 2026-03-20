@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [New York Times Movie Review API v2.0.0](https://developer.nytimes.com/docs/movie-reviews-api/1/overview) OpenAPI specification. 
+The New York Times Movie Review API v2.0.0 connector(https://developer.nytimes.com/docs/movie-reviews-api/1/overview) OpenAPI specification. 
 With the New York Times Movie Reviews API you can search for movie reviews. 
 The Movie Reviews API provides services for searching New York Times movie reviews by keyword and opening date and filter by Critics' Picks.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

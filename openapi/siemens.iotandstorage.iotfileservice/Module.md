@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector from [Siemens IoT File Service API v3.2.4](https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification. 
+The Siemens IoT File Service API v3.2.4 connector(https://developer.mindsphere.io/apis/core-identitymanagement/api-identitymanagement-overview.html) OpenAPI Specification. 
 
 The IoT File API enables storing and retrieving files for asset (entity) instances.
   
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

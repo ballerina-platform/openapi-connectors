@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector for [IRIS Merchants API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+The IRIS Merchants API v1.6.4 connector(https://www.iriscrm.com/api) OpenAPI specification.
 Populate your data warehouse programmatically through this Merchants API and interact with your merchant services portfolio.  
 Data points include merchant demographics, deposits, transactions, retrievals, chargebacks, and statements across supported processors.
 Each merchant account is accessible by users through a set of permissions controlled on the User Class level.
 Segment your portfolio of merchants by filters such as processor, data source, and processing status.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

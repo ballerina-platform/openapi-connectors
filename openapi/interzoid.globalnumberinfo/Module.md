@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Interzoid Global Phone Number Information API v1.0.0](https://interzoid.com/services/getglobalnumberinfo) OpenAPI specification.
+The Interzoid Global Phone Number Information API v1.0.0 connector(https://interzoid.com/services/getglobalnumberinfo) OpenAPI specification.
 
 This API provides geographic information for a global telephone number provided in the input parameter, including city and country information, primary languages spoken, and mobile device identification.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [OpenAir API v1.0](https://www.openair.com/download/OpenAirRESTAPIGuide.pdf) OpenAPI specification.
+The OpenAir API v1.0 connector(https://www.openair.com/download/OpenAirRESTAPIGuide.pdf) OpenAPI specification.
 The OpenAir REST API provides an interface for integration applications to exchange information with [OpenAir](https://docs.oracle.com/cloud/openair/index.html). OpenAir REST API currently supports the following resources: Expense reports, Receipts, Attachments, Job codes, Contacts  
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

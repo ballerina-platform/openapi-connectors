@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Xero Files API v2.16.1](https://developer.xero.com/documentation/api/files/overview) OpenAPI specification.
+The Xero Files API v2.16.1 connector(https://developer.xero.com/documentation/api/files/overview) OpenAPI specification.
 The Files API provides access to the files, folders, and the association of files within a Xero organisation. It can be used to upload/download files, manage folders and associate files to invoices, contacts, payments etc.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

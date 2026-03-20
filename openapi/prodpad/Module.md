@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [ProdPad API v1.0](https://www.prodpad.com/) OpenAPI specification. 
+The ProdPad API v1.0 connector(https://www.prodpad.com/) OpenAPI specification. 
 
 ProdPad is product management software that helps product managers develop product strategy. Easily manage teams, customers and roadmaps.  
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

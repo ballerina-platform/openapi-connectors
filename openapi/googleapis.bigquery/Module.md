@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google BigQuery API v2.0](https://cloud.google.com/bigquery/docs/reference/rest) OpenAPI specification.
+The Google BigQuery API v2.0 connector(https://cloud.google.com/bigquery/docs/reference/rest) OpenAPI specification.
 The BigQuery API provides access to create, manage, share and query data.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

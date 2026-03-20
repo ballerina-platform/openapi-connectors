@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [NamSor API v2](https://v2.namsor.com/NamSorAPIv2/index.html) OpenAPI specification. 
+The NamSor API v2 connector(https://v2.namsor.com/NamSorAPIv2/index.html) OpenAPI specification. 
 
 The NamSor API provides the capability to process personal names (gender, cultural origin or ethnicity) in all alphabets or languages.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

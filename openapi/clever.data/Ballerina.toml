@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Education/Elearning", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Clever", "Area/Productivity & Collaboration", "Education/Elearning", "Cost/Paid"]
 org = "ballerinax"
 name = "clever.data"
 icon = "icon.png"

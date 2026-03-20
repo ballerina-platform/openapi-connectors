@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Communication/Call & SMS", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Sinch", "Area/Communication", "Communication/Call & SMS", "Cost/Paid"]
 org = "ballerinax"
 name = "sinch.conversation"
 icon = "icon.png"

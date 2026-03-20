@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Mitto SMS and Bulk SMS APIs v1](https://docs.mitto.ch/sms-api-reference/) OpenAPI specification.
+The Mitto SMS and Bulk SMS APIs v1 connector(https://docs.mitto.ch/sms-api-reference/) OpenAPI specification.
 Send individual SMS reliably and securely, or send them in bulk. 
 You can choose from different servers to test with based on where you want to send a message to.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

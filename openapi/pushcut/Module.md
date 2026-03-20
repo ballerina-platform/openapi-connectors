@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Pushcut API v1](https://www.pushcut.io/webapi.html) OpenAPI specification.
+The Pushcut API v1 connector(https://www.pushcut.io/webapi.html) OpenAPI specification.
 API to send Pushcut notifications, execute Automation Server actions, and register custom webhooks as online actions.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 

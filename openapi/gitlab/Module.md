@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [GitLab GitLab REST API v4](https://about.gitlab.com/) OpenAPI specification.
+The GitLab GitLab REST API v4 connector(https://about.gitlab.com/) OpenAPI specification.
 
 Client endpoint for GitLab API currently supports operations related to access requests and access tokens in GitLab.
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 - Create a [GitLab](https://about.gitlab.com/) account
 - Obtain tokens

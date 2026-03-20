@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [Azure OpenAI Chat Completions API](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#chat-completions/) OpenAPI specification.
+The Azure OpenAI Chat Completions API connector(https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#chat-completions/) OpenAPI specification.
 
 The Azure Azure OpenAI Service REST API Chat Completions Endpoint will create completions for chat messages with the GPT3.5 (preview), GPT-4 (preview) models and GPT-4 Vision models.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Instagram Graph API v12.0](https://developers.facebook.com/docs/instagram-api) OpenAPI specification. 
+The Instagram Graph API v12.0 connector(https://developers.facebook.com/docs/instagram-api) OpenAPI specification. 
 
 Instagram is a free photo-sharing application that enables its users to take photos, apply filters, and share them on social networks.  
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

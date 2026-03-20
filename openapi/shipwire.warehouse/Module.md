@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Shipwire Warehouses API v3.0](https://www.shipwire.com/developers/warehouse/) OpenAPI specification.
+The Shipwire Warehouses API v3.0 connector(https://www.shipwire.com/developers/warehouse/) OpenAPI specification.
 The Warehouse API is used to manage Shipwire Anywhere warehouses and dropship locations. 
 Use it to create a new warehouse, to update an existing warehouse, or to get information about already created warehouses.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Video & Audio", "Cost/Free"]
+keywords = ["Type/Connector", "Vendor/The Movie Database", "Area/Storage & File Management", "Content & Files/Video & Audio", "Cost/Free"]
 org = "ballerinax"
 name = "themoviedb"
 icon = "icon.png"

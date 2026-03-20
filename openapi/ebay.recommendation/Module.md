@@ -1,11 +1,17 @@
 ## Overview
-This is a generated connector for [Ebay Recommendation API v1.1.0](https://developer.ebay.com) OpenAPI specification.
+The Ebay Recommendation API v1.1.0 connector(https://developer.ebay.com) OpenAPI specification.
 The Ebay Recommendation API returns information that sellers can use to configure Promoted Listings ad campaigns.
 The Recommendation API currently has a single recommendation type, AD, that returns information pertaining to Promoted Listings ad campaigns. 
 Seller can use the recommendations returned as guidelines for setting up campaigns.
 In the eBay marketplace, where an increased visibility directly correlates to the buyer conversion rate, 
 information returned with the AD recommendation type can help you know which listings to promote and how to configure ad campaigns.
 [API documentation](https://developer.ebay.com/api-docs/sell/recommendation/overview.html)
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

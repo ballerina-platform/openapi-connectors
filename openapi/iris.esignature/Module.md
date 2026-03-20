@@ -1,8 +1,15 @@
 ## Overview
-This is a generated connector for [IRIS E-Signature API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+The IRIS E-Signature API v1.6.4 connector(https://www.iriscrm.com/api) OpenAPI specification.
 Connect with the E-Signature API to create workflows that send specific documents for e-signature documents.
 Create field mappings between Lead fields to populate their respective PDF documents.
 Receive notifications when documents are generated, opened, and signed by recipients.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 

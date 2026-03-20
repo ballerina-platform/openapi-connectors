@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [WebScraping.AI API v2.0.4](https://webscraping.ai/docs) OpenAPI specification. 
+The WebScraping.AI API v2.0.4 connector(https://webscraping.ai/docs) OpenAPI specification. 
 It provides a web scaping automation API with Chrome JS rendering, rotating proxies and builtin HTML parsing. 
 More information about the WebScraping.AI API can be found at https://webscraping.ai.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

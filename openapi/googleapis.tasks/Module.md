@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Tasks API v1](https://developers.google.com/tasks/get_started) OpenAPI specification.
+The Google Tasks API v1 connector(https://developers.google.com/tasks/get_started) OpenAPI specification.
 The Google Tasks API lets you manage your tasks and task lists.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

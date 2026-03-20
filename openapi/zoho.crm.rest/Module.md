@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Zoho CRM REST](https://www.zoho.com/crm/) OpenAPI specification. 
+The Zoho CRM REST connector(https://www.zoho.com/crm/) OpenAPI specification. 
 
 Zoho CRM REST API provides the capability to unify customer data from across different applications and databases.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

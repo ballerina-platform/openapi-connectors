@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Dataflow Kit API v1.3](https://dataflowkit.com/doc-api) OpenAPI specification.  
+The Dataflow Kit API v1.3 connector(https://dataflowkit.com/doc-api) OpenAPI specification.  
 The Dataflow Kit API provides the capability to automate web scraping tasks, extract, process, and transform data from multiple pages at any scale.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

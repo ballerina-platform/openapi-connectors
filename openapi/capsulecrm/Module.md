@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Capsule CRM API v2](https://developer.capsulecrm.com/v2/overview/getting-started) OpenAPI specification.
+The Capsule CRM API v2 connector(https://developer.capsulecrm.com/v2/overview/getting-started) OpenAPI specification.
 Capsule CRM keeps track of the people and companies you do business with, opportunities in the pipeline and what needs to be done.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

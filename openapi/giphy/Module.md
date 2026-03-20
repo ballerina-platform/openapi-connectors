@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Giphy API v1](https://developers.giphy.com/docs/api/) OpenAPI Specification.
+The Giphy API v1 connector(https://developers.giphy.com/docs/api/) OpenAPI Specification.
 
 Giphy API provides the capability to access GIFs and stickers.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

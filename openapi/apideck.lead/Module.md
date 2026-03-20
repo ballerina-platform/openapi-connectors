@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [Apideck Lead API v5.3.0](https://www.apideck.com/lead-api) OpenAPI specification.
+The Apideck Lead API v5.3.0 connector(https://www.apideck.com/lead-api) OpenAPI specification.
 
 You can use this API to access all Lead API endpoints.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

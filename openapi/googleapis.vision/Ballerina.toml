@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Images", "Cost/Freemium", "Vendor/Google"]
+keywords = ["Type/Connector", "AI/Images", "Cost/Freemium", "Vendor/Google", "Area/AI & Machine Learning"]
 org = "ballerinax"
 name = "googleapis.vision"
 icon = "icon.png"

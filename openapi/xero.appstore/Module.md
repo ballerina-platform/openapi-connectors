@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Xero AppStore API v2.18.0](https://developer.xero.com/documentation/api/xero-app-store/overview) OpenAPI specification.
+The Xero AppStore API v2.18.0 connector(https://developer.xero.com/documentation/api/xero-app-store/overview) OpenAPI specification.
 The Xero AppStore API is a collection of endpoints for Xero Partners to interact with the App Store Billing platform.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

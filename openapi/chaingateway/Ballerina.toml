@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Cryptocurrency", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Chaingateway", "Area/Finance & Accounting", "Finance/Cryptocurrency", "Cost/Freemium"]
 org = "ballerinax"
 name = "chaingateway"
 icon = "icon.png"

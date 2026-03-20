@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [IRIS Dispute responder API v1.6.4](https://www.iriscrm.com/api) OpenAPI specification.
+The IRIS Dispute responder API v1.6.4 connector(https://www.iriscrm.com/api) OpenAPI specification.
 IRIS CRM's revolutionary new Dispute Responder offers complete, end-to-end dispute management, including instant online notification of new disputes, electronic response submission, and complete record management for Fiserv merchants, all from right within IRIS CRM.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Support for webhooks and event-driven workflows
 
 ## Prerequisites
 

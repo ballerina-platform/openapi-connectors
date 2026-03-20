@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Reporting", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Avalara", "Area/Developer Tools", "Business Intelligence/Reporting", "Cost/Freemium"]
 org = "ballerinax"
 name = "avatax"
 icon = "icon.png"

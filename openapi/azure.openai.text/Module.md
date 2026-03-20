@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [Azure OpenAI Completions API](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#completions/) OpenAPI specification.
+The Azure OpenAI Completions API connector(https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#completions/) OpenAPI specification.
 
 The Azure  OpenAI Service REST API Completions Endpoint will generate one or more predicted completions based on a provided prompt. The service can also return the probabilities of alternative tokens at each position.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 - Create an [Azure](https://azure.microsoft.com/en-us/features/azure-portal/) account

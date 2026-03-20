@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Kinto API v1.22](https://docs.kinto-storage.org/en/stable/api/index.html) OpenAPI specification. 
+The Kinto API v1.22 connector(https://docs.kinto-storage.org/en/stable/api/index.html) OpenAPI specification. 
 
 The Kinto API provides the capability to store and retrieve JSON data.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Seamless integration with REST API endpoints
+- Support for standard HTTP methods and JSON responses
 
 ## Quickstart
 To use the Kinto connector in your Ballerina application, update the .bal file as follows:

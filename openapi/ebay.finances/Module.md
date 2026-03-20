@@ -1,6 +1,6 @@
 
 ## Overview
-This is a generated connector for [eBay finances API v1.9.0](https://developer.ebay.com/api-docs/sell/finances/overview.html) OpenAPI Specification. 
+The eBay finances API v1.9.0 connector(https://developer.ebay.com/api-docs/sell/finances/overview.html) OpenAPI Specification. 
 
 The eBay Developers Program is hosted on the eBay Developer Site. The program provides information and services for 
 the eBay developer community. This API is used to retrieve seller payouts and monetary transaction details
@@ -10,6 +10,13 @@ Seller Hub in My eBay. With eBay's managed payments program, eBay manages the en
 available payment methods, and shortly after a buyer's payment clears, eBay distributes payouts directly to the 
 seller's preferred bank account.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
  
 Before using this connector in your Ballerina application, complete the following:

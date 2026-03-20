@@ -1,5 +1,11 @@
 ## Overview
-This is a generated connector for [Figshare API v2.0.0](https://docs.figshare.com/) OpenAPI specification. Figshare is a repository where users can make all of their research outputs available in a citable, shareable and discoverable manner.
+The Figshare API v2.0.0 connector(https://docs.figshare.com/) OpenAPI specification. Figshare is a repository where users can make all of their research outputs available in a citable, shareable and discoverable manner.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Classroom API v1](https://developers.google.com/classroom/guides/get-started) OpenAPI specification.
+The Google Classroom API v1 connector(https://developers.google.com/classroom/guides/get-started) OpenAPI specification.
 Manages classes, rosters, and invitations in Google Classroom.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [Xero Bank Feeds API v2.16.0](https://developer.xero.com/documentation/api/bankfeeds/overview) OpenAPI specification.
+The Xero Bank Feeds API v2.16.0 connector(https://developer.xero.com/documentation/api/bankfeeds/overview) OpenAPI specification.
 The Bank Feeds API is a closed API that is only available to financial institutions that have an established financial services partnership with Xero.
 If you're an existing financial services partner that wants access, contact your local Partner Manager.
 If you're a financial institution who wants to provide bank feeds to your business customers, contact xero to become a financial services partner.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

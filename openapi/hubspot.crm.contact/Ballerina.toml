@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Sales & CRM/Contact Management", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/HubSpot", "Area/CRM & Sales", "Sales & CRM/Contact Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "hubspot.crm.contact"
 icon = "icon.png"

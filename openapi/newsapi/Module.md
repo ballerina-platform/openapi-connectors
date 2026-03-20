@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [News API v2.0.0](https://newsapi.org/docs) OpenAPI specification. 
+The News API v2.0.0 connector(https://newsapi.org/docs) OpenAPI specification. 
 
 News API used to fetch news(articles, headlines and sources) from news sources and blogs across the web.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

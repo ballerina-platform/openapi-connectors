@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Google Cloud Billing Account API](https://cloud.google.com/billing/docs/apis) OpenAPI specification.
+The Google Cloud Billing Account API connector(https://cloud.google.com/billing/docs/apis) OpenAPI specification.
 The Google Cloud Billing Account API allows developers to manage billing for their Google Cloud Platform projects programmatically.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

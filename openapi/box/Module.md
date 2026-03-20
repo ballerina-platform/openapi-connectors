@@ -1,8 +1,14 @@
 ## Overview
 
-This is a generated connector for [Box Platform API v2.0.0](https://developer.box.com/guides/) OpenAPI specification. 
+The Box Platform API v2.0.0 connector(https://developer.box.com/guides/) OpenAPI specification. 
 
 [Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google BigQuery Data Transfer API v1](https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest) OpenAPI specification.
+The Google BigQuery Data Transfer API v1 connector(https://cloud.google.com/bigquery-transfer/docs/reference/datatransfer/rest) OpenAPI specification.
 The BigQuery Data Transfer API provides access schedule queries or transfer external data from SaaS applications to Google BigQuery on a regular basis..
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

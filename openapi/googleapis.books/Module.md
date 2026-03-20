@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Books API v1](https://developers.google.com/books) OpenAPI specification.
+The Google Books API v1 connector(https://developers.google.com/books) OpenAPI specification.
 The Google Books API allows clients to access the Google Books repository.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

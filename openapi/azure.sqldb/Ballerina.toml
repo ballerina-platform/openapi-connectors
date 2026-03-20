@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Databases", "Cost/Paid", "Vendor/Microsoft"]
+keywords = ["Type/Connector", "IT Operations/Database", "Cost/Paid", "Vendor/Microsoft", "Area/Database"]
 org = "ballerinax"
 name = "azure.sqldb"
 icon = "icon.png"

@@ -1,8 +1,14 @@
 ## Overview
-This is a generated connector for [YNAB API v1.0.0](https://api.youneedabudget.com) OpenAPI specification. 
+The YNAB API v1.0.0 connector(https://api.youneedabudget.com) OpenAPI specification. 
 YNAB API uses a REST based design, leverages the JSON data format, and relies upon HTTPS for transport. 
 We respond with meaningful HTTP response codes and if an error occurs, we include error details in the response body. 
 API Documentation is at https://api.youneedabudget.com
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

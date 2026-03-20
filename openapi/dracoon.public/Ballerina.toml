@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/File Management & Storage", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/DRACOON", "Area/Storage & File Management", "Content & Files/File Management & Storage", "Cost/Paid"]
 org = "ballerinax"
 name = "dracoon.public"
 icon = "icon.png"

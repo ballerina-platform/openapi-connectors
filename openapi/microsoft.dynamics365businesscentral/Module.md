@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [Microsoft Dynamics 365 Business Central API v1.0](https://dynamics.microsoft.com/en-us/business-central/overview/) OpenAPI specification.
+The Microsoft Dynamics 365 Business Central API v1.0 connector(https://dynamics.microsoft.com/en-us/business-central/overview/) OpenAPI specification.
 
 (v1.0) Business Central Standard APIs
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

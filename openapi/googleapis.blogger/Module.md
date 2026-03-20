@@ -1,6 +1,13 @@
 ## Overview
-This is a generated connector for [Google Blogger API v3.0](https://developers.google.com/blogger/docs/3.0/getting_started) OpenAPI specification.
+The Google Blogger API v3.0 connector(https://developers.google.com/blogger/docs/3.0/getting_started) OpenAPI specification.
 The Blogger API provides access to posts, comments and pages of a Blogger blog.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

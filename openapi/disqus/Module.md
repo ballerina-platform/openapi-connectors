@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Disqus API v3](https://disqus.com/api/docs) OpenAPI specification.
+The Disqus API v3 connector(https://disqus.com/api/docs) OpenAPI specification.
 Disqus is a service for web comments and discussions. 
 Disqus makes commenting easier and more interactive, helping publishers power online discussions.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

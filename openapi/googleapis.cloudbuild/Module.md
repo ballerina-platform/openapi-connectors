@@ -1,6 +1,12 @@
 ## Overview
-This is a generated connector for [Google Cloud Build REST API v1](https://cloud.google.com/build/docs/api/reference/rest) OpenAPI specification.
+The Google Cloud Build REST API v1 connector(https://cloud.google.com/build/docs/api/reference/rest) OpenAPI specification.
 The Google Cloud Build API provides the capability to manage builds on Google Cloud Platform.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

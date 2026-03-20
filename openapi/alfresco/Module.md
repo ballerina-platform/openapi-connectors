@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Alfresco](https://api-explorer.alfresco.com/api-explorer/) OpenAPI specification. 
+The Alfresco connector(https://api-explorer.alfresco.com/api-explorer/) OpenAPI specification. 
 
 This Alfresco Content Services REST APIs enable you to access to the core features of Alfresco Content Services.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

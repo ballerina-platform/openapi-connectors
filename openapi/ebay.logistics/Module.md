@@ -1,5 +1,5 @@
 ## Overview
-This is a generated connector for [eBay logistics API v1_beta.0.0](https://developer.ebay.com/api-docs/sell/logistics/static/overview.html) OpenAPI Specification.
+The eBay logistics API v1_beta.0.0 connector(https://developer.ebay.com/api-docs/sell/logistics/static/overview.html) OpenAPI Specification.
 
 This is an API available only to select developers
 approved by business units.The Logistics API
@@ -19,6 +19,13 @@ the shipment is incurred when the package is shipped using the supplied
 shipping label. Sellers must set up a payment method via their eBay account before they can use the methods in
 this API to create a shipment and the associated shipping label.
  
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:
 

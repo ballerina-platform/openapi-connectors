@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector from [Vonage Verify API v1.1.7](https://nexmo-api-specification.herokuapp.com/verify) OpenAPI specification. 
+The Vonage Verify API v1.1.7 connector(https://nexmo-api-specification.herokuapp.com/verify) OpenAPI specification. 
 The Verify API helps you to implement 2FA (two-factor authentication) in your applications. 
 More information is available at https://developer.nexmo.com/verify/overview
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Access analytics, reports, and performance metrics
+- Manage user accounts and profiles
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

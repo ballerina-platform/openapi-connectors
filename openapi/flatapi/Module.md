@@ -1,7 +1,13 @@
 ## Overview
 
-This is a generated connector for [Flat API v2.13.0](https://flat.io/developers/docs/api/) OpenAPI specification.
+The Flat API v2.13.0 connector(https://flat.io/developers/docs/api/) OpenAPI specification.
 The Flat API allows you to easily extend the abilities of the [Flat Platform](https://flat.io). Flat is a powerful cloud-based notation software that let you to create music scores and guitar tabs. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

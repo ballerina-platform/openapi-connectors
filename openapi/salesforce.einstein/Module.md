@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [Einstein Vision and Einstein Language API](https://metamind.readme.io/reference#predictive-vision-service-api) OpenAPI specification. 
+The Einstein Vision and Einstein Language API connector(https://metamind.readme.io/reference#predictive-vision-service-api) OpenAPI specification. 
 
 Allows you to access the Einstein Vision and Einstein Language services via the standard REST API calls. Use the APIs to programmatically work with datasets, labels, examples, models, and predictions.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Intelligence/Reporting", "Cost/Free", "Vendor/Google"]
+keywords = ["Type/Connector", "Business Intelligence/Reporting", "Cost/Free", "Vendor/Google", "Area/Developer Tools"]
 org = "ballerinax"
 name = "googleapis.abusiveexperiencereport"
 icon = "icon.png"

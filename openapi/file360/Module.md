@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector from [file360 API v1.0](https://developer.opentext.com/apis/ebc5860f-3e04-4d1b-a8be-b2683738c701/File360) OpenAPI Specification.
+The file360 API v1.0 connector(https://developer.opentext.com/apis/ebc5860f-3e04-4d1b-a8be-b2683738c701/File360) OpenAPI Specification.
 
 The File360 Web client is a world class user experience powered by Angular/CSS that is built upon a set of RESTful APIs. The power of the web application is available to our customers and partners with the RESTful APIs which power every bit of the web application. Refer to [API documentation](https://developer.opentext.com/apis/ebc5860f-3e04-4d1b-a8be-b2683738c701/File360)
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

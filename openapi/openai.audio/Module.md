@@ -2,6 +2,13 @@
 
 This is a generated connector for the [OpenAI Audio API](https://beta.openai.com/docs/api-reference/audio) OpenAPI Specification. OpenAI is an American artificial intelligence research laboratory consisting of a non-profit corporation and a for-profit subsidiary. OpenAI conducts AI research with the declared intention of promoting and developing friendly AI. The OpenAI Audio API provides a way to access new speech-to-text AI models developed by OpenAI for a variety of tasks.
 
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
+
 ## Prerequisites
 
 Before using this connector in your Ballerina application, complete the following:

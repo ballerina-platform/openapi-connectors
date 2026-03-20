@@ -1,5 +1,11 @@
 ## Overview
-This is a generated connector for [Wordnik API v4.0](https://developer.wordnik.com/docs) OpenAPI specification. Wordnik is the worlds biggest online English dictionary, by number of words.
+The Wordnik API v4.0 connector(https://developer.wordnik.com/docs) OpenAPI specification. Wordnik is the worlds biggest online English dictionary, by number of words.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

@@ -1,9 +1,16 @@
 ## Overview
-This is a generated connector for [Stripe API v1](https://stripe.com/docs/api) OpenAPI specification.
+The Stripe API v1 connector(https://stripe.com/docs/api) OpenAPI specification.
 
 Stripe offers payment processing software and application programming interfaces for e-commerce websites and mobile applications. 
 
 The Stripe API is organized around REST. Our API has predictable resource-oriented URLs, accepts form-encoded request bodies, returns JSON-encoded responses, and uses standard HTTP response codes, authentication, and verbs.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Send and publish data through the API
+- Access analytics, reports, and performance metrics
+- Handle payments, billing, and financial transactions
 
 ## Prerequisites
 

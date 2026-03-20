@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Management/ERP", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/SAP", "Area/ERP & Business Operations", "Business Management/ERP", "Cost/Paid"]
 org = "ballerinax"
 name = "saps4hana.itcm.accountreceivable"
 icon = "icon.png"

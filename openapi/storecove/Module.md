@@ -1,7 +1,14 @@
 ## Overview
-This is a generated connector for [Storecove API v2](https://app.storecove.com/docs) OpenAPI specification. 
+The Storecove API v2 connector(https://app.storecove.com/docs) OpenAPI specification. 
 
 Storecove API provides the capability to perform e-invoice management operations.
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Handle payments, billing, and financial transactions
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 Before using this connector in your Ballerina application, complete the following:

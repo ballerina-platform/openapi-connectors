@@ -1,7 +1,13 @@
 ## Overview
-This is a generated connector for [New York Times Article Search API v1.0.0](https://developer.nytimes.com/docs/articlesearch-product/1/overview) OpenAPI specification. 
+The New York Times Article Search API v1.0.0 connector(https://developer.nytimes.com/docs/articlesearch-product/1/overview) OpenAPI specification. 
 With the Article Search API, you can search New York Times articles from Sept. 18, 1851 to today, retrieving headlines, abstracts, lead paragraphs, links to associated multimedia and other article metadata. 
 Use the Article Search API to look up articles by keyword. You can refine your search using filters and facets. 
+
+### Key Features
+
+- Programmatic access to create and manage resources via REST API
+- Manage user accounts and profiles
+- Secure authentication with API key or OAuth support
 
 ## Prerequisites
 

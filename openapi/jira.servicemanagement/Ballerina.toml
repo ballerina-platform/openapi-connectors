@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Vendor/Atlassian", "Support//Customer Support", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Atlassian", "Area/CRM & Sales", "Support//Customer Support", "Cost/Freemium"]
 org = "ballerinax"
 name = "jira.servicemanagement"
 distribution = "2201.4.1"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Security & Identity", "IT Operations/Security & Identity Tools", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/FraudLabs Pro", "Area/Security & Identity", "IT Operations/Security & Identity Tools", "Cost/Freemium"]
 org = "ballerinax"
 name = "fraudlabspro.smsverification"
 icon = "icon.png"

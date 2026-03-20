@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Marketing & Social Media", "Marketing/Social Media Accounts", "Cost/Free"]
+keywords = ["Type/Connector", "Vendor/Meta", "Area/Marketing & Social Media", "Marketing/Social Media Accounts", "Cost/Free"]
 org = "ballerinax"
 name = "instagram.bussiness"
 icon = "icon.png"

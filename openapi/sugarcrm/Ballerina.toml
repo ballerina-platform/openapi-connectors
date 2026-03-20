@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Sales & CRM", "Customer Relationship Management"]
+keywords = ["Type/Connector", "Vendor/SugarCRM", "Area/CRM & Sales", "Sales & CRM", "Customer Relationship Management"]
 org = "ballerinax"
 name = "sugarcrm"
 icon = "icon.png"

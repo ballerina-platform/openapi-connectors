@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Cloud & Infrastructure", "IT Operations/Server Monitoring", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/BMC", "Area/Cloud & Infrastructure", "IT Operations/Server Monitoring", "Cost/Freemium"]
 org = "ballerinax"
 name = "bmc.truesightpresentationserver"
 icon = "icon.png"

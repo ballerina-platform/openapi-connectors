@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Storage & File Management", "Content & Files/Documents", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/File360", "Area/Storage & File Management", "Content & Files/Documents", "Cost/Freemium"]
 org = "ballerinax"
 name = "file360"
 icon = "icon.png"

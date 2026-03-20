@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Finance & Accounting", "Finance/Accounting", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Interzoid", "Area/Finance & Accounting", "Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "interzoid.currencyrate"
 icon = "icon.png"

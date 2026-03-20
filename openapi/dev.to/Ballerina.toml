@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Marketing & Social Media", "Marketing/Social Media Accounts", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/DEV", "Area/Marketing & Social Media", "Marketing/Social Media Accounts", "Cost/Freemium"]
 org = "ballerinax"
 name = "dev.to"
 icon = "icon.png"

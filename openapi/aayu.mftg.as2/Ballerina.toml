@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "IT Operations/Gateway", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Aayu", "Area/Cloud & Infrastructure", "IT Operations/Gateway", "Cost/Paid"]
 org = "ballerinax"
 name = "aayu.mftg.as2"
 icon = "icon.png"

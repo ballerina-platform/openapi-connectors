@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Marketing & Social Media", "Marketing/Marketing Automation", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Constant Contact", "Area/Marketing & Social Media", "Marketing/Marketing Automation", "Cost/Paid"]
 org = "ballerinax"
 name = "constantcontact"
 icon = "icon.png"

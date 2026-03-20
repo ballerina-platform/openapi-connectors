@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Developer Tools", "Business Intelligence/Analytics", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Text2Data", "Area/Developer Tools", "Business Intelligence/Analytics", "Cost/Freemium"]
 org = "ballerinax"
 name = "text2data"
 icon = "icon.png"

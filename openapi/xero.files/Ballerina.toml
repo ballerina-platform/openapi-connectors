@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Storage & File Management", "Content & Files/Documents", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Xero", "Area/Storage & File Management", "Content & Files/Documents", "Cost/Paid"]
 org = "ballerinax"
 name = "xero.files"
 icon = "icon.png"

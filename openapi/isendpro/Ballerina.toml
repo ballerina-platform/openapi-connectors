@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Communication", "Communication/Call & SMS", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/iSendPro", "Area/Communication", "Communication/Call & SMS", "Cost/Paid"]
 org = "ballerinax"
 name = "isendpro"
 icon = "icon.png"

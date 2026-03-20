@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Storage & File Management", "Content & Files/Documents", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Figshare", "Area/Storage & File Management", "Content & Files/Documents", "Cost/Freemium"]
 org = "ballerinax"
 name = "figshare"
 icon = "icon.png"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Productivity & Collaboration", "Productivity/Project Management", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Shortcut", "Area/Productivity & Collaboration", "Productivity/Project Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "shortcut"
 icon = "icon.png"

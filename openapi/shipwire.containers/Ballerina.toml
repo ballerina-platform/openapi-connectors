@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/E-Commerce", "Commerce/eCommerce", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Shipwire", "Area/E-Commerce", "Commerce/eCommerce", "Cost/Freemium"]
 org = "ballerinax"
 name = "shipwire.containers"
 icon = "icon.png"

@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Developer Tools", "Website & App Building/Website Builders", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/GoDaddy", "Area/Developer Tools", "Website & App Building/Website Builders", "Cost/Paid"]
 org = "ballerinax"
 name = "godaddy.countries"
 icon = "icon.png"

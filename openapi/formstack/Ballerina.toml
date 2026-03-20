@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Finance/Task Management", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Formstack", "Area/Productivity & Collaboration", "Finance/Task Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "formstack"
 icon = "icon.png"

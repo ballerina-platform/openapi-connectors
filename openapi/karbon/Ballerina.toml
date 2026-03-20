@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Productivity & Collaboration", "Productivity/Product Management", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Karbon", "Area/Productivity & Collaboration", "Productivity/Product Management", "Cost/Paid"]
 org = "ballerinax"
 name = "karbon"
 icon = "icon.png"

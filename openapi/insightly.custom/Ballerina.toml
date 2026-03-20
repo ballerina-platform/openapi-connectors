@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/CRM & Sales", "Sales & CRM/Customer Relationship Management", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Insightly", "Area/CRM & Sales", "Sales & CRM/Customer Relationship Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "insightly.custom"
 icon = "icon.png"

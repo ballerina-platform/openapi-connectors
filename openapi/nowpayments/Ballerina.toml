@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Finance & Accounting", "Finance/Payment", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/NOWPayments", "Area/Finance & Accounting", "Finance/Payment", "Cost/Paid"]
 org = "ballerinax"
 name = "nowpayments"
 icon = "icon.png"

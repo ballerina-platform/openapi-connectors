@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Finance & Accounting", "Finance/Asset Management", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Xero", "Area/Finance & Accounting", "Finance/Asset Management", "Cost/Paid"]
 org = "ballerinax"
 name = "xero.assets"
 icon = "icon.png"

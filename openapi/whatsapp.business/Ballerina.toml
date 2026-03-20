@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Communication", "Communication/Call & SMS", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Meta", "Area/Communication", "Communication/Call & SMS", "Cost/Freemium"]
 org = "ballerinax"
 name = "whatsapp.business"
 icon = "icon.png"

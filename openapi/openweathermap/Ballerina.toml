@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Productivity & Collaboration", "Lifestyle & Entertainment/News & Lifestyle", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/OpenWeatherMap", "Area/Productivity & Collaboration", "Lifestyle & Entertainment/News & Lifestyle", "Cost/Freemium"]
 org = "ballerinax"
 name = "openweathermap"
 icon = "icon.png"

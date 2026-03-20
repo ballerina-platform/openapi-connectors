@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Communication", "Communication/Video Conferencing", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Livestorm", "Area/Communication", "Communication/Video Conferencing", "Cost/Freemium"]
 org = "ballerinax"
 name = "livestorm"
 icon = "icon.png"

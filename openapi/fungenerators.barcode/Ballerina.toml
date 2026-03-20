@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Area/Security & Identity", "IT Operations/Security & Identity Tools", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Fun Generators", "Area/Security & Identity", "IT Operations/Security & Identity Tools", "Cost/Paid"]
 org = "ballerinax"
 name = "fungenerators.barcode"
 icon = "icon.png"

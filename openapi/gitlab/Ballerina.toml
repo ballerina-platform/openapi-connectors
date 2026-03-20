@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Source Control", "Cost/Freemium"]
+keywords = ["Type/Connector", "IT Operations/Source Control", "Cost/Freemium"]
 org = "ballerinax"
 name = "gitlab"
 icon = "icon.png"

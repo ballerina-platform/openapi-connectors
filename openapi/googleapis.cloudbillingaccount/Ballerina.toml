@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Billing", "Cost/Freemium", "Vendor/Google"]
+keywords = ["Type/Connector", "Finance/Billing", "Cost/Freemium", "Vendor/Google", "Area/Finance & Accounting"]
 org = "ballerinax"
 name = "googleapis.cloudbillingaccount"
 icon = "icon.png"

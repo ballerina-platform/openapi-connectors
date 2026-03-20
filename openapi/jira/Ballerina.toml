@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Productivity/Project Management", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Atlassian", "Area/Productivity & Collaboration", "Productivity/Project Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "jira"
 icon = "icon.png"

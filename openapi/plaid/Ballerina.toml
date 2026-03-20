@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Accounting", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Plaid", "Area/Finance & Accounting", "Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "plaid"
 icon = "icon.png"

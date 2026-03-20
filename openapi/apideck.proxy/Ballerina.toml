@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Server Monitoring", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/Apideck", "Area/Cloud & Infrastructure", "IT Operations/Server Monitoring", "Cost/Freemium"]
 org = "ballerinax"
 name = "apideck.proxy"
 icon = "icon.png"

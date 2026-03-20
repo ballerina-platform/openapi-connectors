@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Marketing/Event Management", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/HubSpot", "Area/Marketing & Social Media", "Marketing/Event Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "hubspot.events"
 icon = "icon.png"

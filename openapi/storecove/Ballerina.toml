@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Billing", "Cost/Freemium"]
+keywords = ["Type/Connector", "Area/Finance & Accounting", "Finance/Billing", "Cost/Freemium"]
 org = "ballerinax"
 name = "storecove"
 icon = "icon.png"

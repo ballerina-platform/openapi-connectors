@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Security & Identity Tools", "Cost/Paid", "Vendor/Microsoft"]
+keywords = ["Type/Connector", "IT Operations/Security & Identity Tools", "Cost/Paid", "Vendor/Microsoft", "Area/Security & Identity"]
 org = "ballerinax"
 name = "azure.keyvault"
 icon = "icon.png"

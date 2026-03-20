@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Asset Management", "Cost/Freemium"]
+keywords = ["Type/Connector", "Area/Finance & Accounting", "Finance/Asset Management", "Cost/Freemium"]
 org = "ballerinax"
 name = "yodlee"
 icon = "icon.png"

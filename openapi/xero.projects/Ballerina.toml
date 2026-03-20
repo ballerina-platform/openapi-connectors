@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Productivity/Project Management", "Cost/Paid"]
+keywords = ["Type/Connector", "Area/Productivity & Collaboration", "Productivity/Project Management", "Cost/Paid"]
 org = "ballerinax"
 name = "xero.projects"
 icon = "icon.png"

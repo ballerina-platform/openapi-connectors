@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/Website Builders", "Cost/Freemium"]
+keywords = ["Type/Connector", "Area/Developer Tools", "Website & App Building/Website Builders", "Cost/Freemium"]
 org = "ballerinax"
 name = "thinkific"
 icon = "icon.png"

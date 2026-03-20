@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Finance/Accounting", "Cost/Freemium"]
+keywords = ["Type/Connector", "Area/Finance & Accounting", "Finance/Accounting", "Cost/Freemium"]
 org = "ballerinax"
 name = "interzoid.convertcurrency"
 icon = "icon.png"

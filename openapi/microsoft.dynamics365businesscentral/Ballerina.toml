@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Business Management/ERP", "Cost/Paid", "Vendor/Microsoft"]
+keywords = ["Type/Connector", "Business Management/ERP", "Cost/Paid", "Vendor/Microsoft", "Area/ERP & Business Operations"]
 org = "ballerinax"
 name = "microsoft.dynamics365businesscentral"
 icon = "icon.png"

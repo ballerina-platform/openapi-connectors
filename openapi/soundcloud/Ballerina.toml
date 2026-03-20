@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Content & Files/Video & Audio", "Cost/Freemium"]
+keywords = ["Type/Connector", "Area/Storage & File Management", "Content & Files/Video & Audio", "Cost/Freemium"]
 org = "ballerinax"
 name = "soundcloud"
 icon = "icon.png"

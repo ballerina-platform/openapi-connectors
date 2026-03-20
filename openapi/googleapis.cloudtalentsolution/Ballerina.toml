@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Human Resources/Talent Acquisition", "Cost/Free", "Vendor/Google"]
+keywords = ["Type/Connector", "Human Resources/Talent Acquisition", "Cost/Free", "Vendor/Google"]
 org = "ballerinax"
 name = "googleapis.cloudtalentsolution"
 icon = "icon.png"

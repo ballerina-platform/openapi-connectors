@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Lifestyle & Entertainment/Ride-Hailing", "Cost/Paid"]
+keywords = ["Type/Connector", "Lifestyle & Entertainment/Ride-Hailing", "Cost/Paid"]
 org = "ballerinax"
 name = "uber"
 icon = "icon.png"

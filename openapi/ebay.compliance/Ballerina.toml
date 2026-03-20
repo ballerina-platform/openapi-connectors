@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Commerce/eCommerce", "Cost/Freemium"]
+keywords = ["Type/Connector", "Vendor/eBay", "Area/E-Commerce", "Commerce/eCommerce", "Cost/Freemium"]
 org = "ballerinax"
 name = "ebay.compliance"
 icon = "icon.png"

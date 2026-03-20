@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Internet of Things/Device Management", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/Siemens", "Area/Cloud & Infrastructure", "Internet of Things/Device Management", "Cost/Paid"]
 org = "ballerinax"
 name = "siemens.iotandstorage.iotfileservice"
 icon = "icon.png"

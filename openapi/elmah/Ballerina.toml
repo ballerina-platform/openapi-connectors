@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Debug Tools", "Cost/Paid"]
+keywords = ["Type/Connector", "IT Operations/Debug Tools", "Cost/Paid"]
 org = "ballerinax"
 name = "elmah"
 icon = "icon.png"

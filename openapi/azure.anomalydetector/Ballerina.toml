@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Cloud Services", "Cost/Paid", "Vendor/Microsoft"]
+keywords = ["Type/Connector", "IT Operations/Cloud Services", "Cost/Paid", "Vendor/Microsoft", "Area/Cloud & Infrastructure"]
 org = "ballerinax"
 name = "azure.anomalydetector"
 icon = "icon.png"

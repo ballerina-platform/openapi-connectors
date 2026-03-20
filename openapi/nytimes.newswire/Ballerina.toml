@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Lifestyle & Entertainment/News & Lifestyle", "Cost/Free"]
+keywords = ["Type/Connector", "Area/Productivity & Collaboration", "Lifestyle & Entertainment/News & Lifestyle", "Cost/Free"]
 org = "ballerinax"
 name = "nytimes.newswire"
 icon = "icon.png"

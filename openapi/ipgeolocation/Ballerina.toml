@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["IT Operations/Geographic Information Systems", "Cost/Free"]
+keywords = ["Type/Connector", "Area/Cloud & Infrastructure", "IT Operations/Geographic Information Systems", "Cost/Free"]
 org = "ballerinax"
 name = "ipgeolocation"
 icon = "icon.png"

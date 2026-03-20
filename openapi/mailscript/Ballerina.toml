@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Communication/Mail", "Cost/Paid"]
+keywords = ["Type/Connector", "Communication/Mail", "Cost/Paid"]
 org = "ballerinax"
 name = "mailscript"
 icon = "icon.png"

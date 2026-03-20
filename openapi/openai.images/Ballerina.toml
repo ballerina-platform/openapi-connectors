@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["AI/Images", "OpenAI", "Cost/Paid", "generation", "DALL-E 2", "Vendor/OpenAI"]
+keywords = ["Type/Connector", "AI/Images", "OpenAI", "Cost/Paid", "generation", "DALL-E 2", "Vendor/OpenAI", "Area/AI & Machine Learning"]
 org = "ballerinax"
 name = "openai.images"
 icon = "icon.png"

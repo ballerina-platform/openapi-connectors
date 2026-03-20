@@ -1,6 +1,6 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Website & App Building/Web Scraper", "Cost/Freemium"]
+keywords = ["Type/Connector", "Area/Developer Tools", "Website & App Building/Web Scraper", "Cost/Freemium"]
 org = "ballerinax"
 name = "dataflowkit"
 icon = "icon.png"

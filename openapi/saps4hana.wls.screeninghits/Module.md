@@ -1,5 +1,5 @@
 ## Overview
-The SAPS4HANA SAP Watch List Screening Hits API v1.7 connector(https://api.sap.com/api/ScreeningHits/resource) OpenAPI specification. 
+The SAP S/4HANA SAP Watch List Screening Hits API v1.7 connector(https://api.sap.com/api/ScreeningHits/resource) OpenAPI specification. 
 
 This microservice manages Screening Hits created by the Screening microservice and enables users to decide whether they are true matches or false positives. The Screening Hits are grouped in Screening Hit Collections. The Screening Hit Collection refers to a Business Context e.g. a Sales Order and contains one or more Screened Addresses.
 

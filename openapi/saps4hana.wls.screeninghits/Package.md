@@ -1,4 +1,4 @@
-Connects to [SAPS4HANA SAP Watch List Screening Hits API v1.7](https://api.sap.com/api/ScreeningHits/resource) from Ballerina
+Connects to [SAP S/4HANA SAP Watch List Screening Hits API v1.7](https://api.sap.com/api/ScreeningHits/resource) from Ballerina
 
 ## Package overview
 The `ballerinax/saps4hana.wls.screeninghits` is a [Ballerina](https://ballerina.io/) connector for managing Screening Hits created by the Screening microservice and enabling users to decide whether they are true matches or false positives
@@ -7,7 +7,7 @@ The `ballerinax/saps4hana.wls.screeninghits` is a [Ballerina](https://ballerina.
 |                                   | Version                      |
 |-----------------------------------|------------------------------|
 | Ballerina Language                | Ballerina Swan Lake 2201.4.1 |
-| SAPS4HANA WLS Screening Hits API  | 1.7                          |
+| SAP S/4HANA WLS Screening Hits API  | 1.7                          |
  
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

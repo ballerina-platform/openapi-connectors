@@ -1,6 +1,6 @@
 ## Overview
-The SAPS4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
-SAPS4HANA Intelligent Trade Claims Management uses currency codes and their languages to properly display monetary value and decimal or comma placement.
+The SAP S/4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
+SAP S/4HANA Intelligent Trade Claims Management uses currency codes and their languages to properly display monetary value and decimal or comma placement.
 
 ### Key Features
 

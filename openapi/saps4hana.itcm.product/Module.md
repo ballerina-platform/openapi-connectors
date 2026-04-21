@@ -1,6 +1,6 @@
 ## Overview
-The SAPS4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
-In SAPS4HANA Intelligent Trade Claims Management, the product service allows you to access their product retailer and distributor information.
+The SAP S/4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
+In SAP S/4HANA Intelligent Trade Claims Management, the product service allows you to access their product retailer and distributor information.
 
 ### Key Features
 

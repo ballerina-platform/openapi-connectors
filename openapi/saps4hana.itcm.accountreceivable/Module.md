@@ -1,5 +1,5 @@
 ## Overview
-The SAPS4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
+The SAP S/4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
 A user in SAP Intelligent Trade Claims Management can create and update existing accounts receivable open items within SAP Intelligent Trade Claims Management. Accounts receivable open items contribute to baseline information for claims to be built.
 
 ### Key Features

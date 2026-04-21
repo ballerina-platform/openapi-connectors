@@ -1,5 +1,5 @@
 ## Overview
-The SAPS4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
+The SAP S/4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
 In SAP Intelligent Trade Claims Management, users can group and organize their customers and nodes and assign them to a customer hierarchy.
 
 ### Key Features

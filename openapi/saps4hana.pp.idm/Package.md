@@ -8,7 +8,7 @@ The `ballerinax/saps4hana.pp.idm` is a [Ballerina](https://ballerina.io/) connec
 |                                                | Version                      |
 |------------------------------------------------|------------------------------|
 | Ballerina Language                             | Ballerina Swan Lake 2201.4.1 |
-| SAPS4HANA Cross-domain Identity Management API | 1.0.0                        |
+| SAP S/4HANA Cross-domain Identity Management API | 1.0.0                        |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

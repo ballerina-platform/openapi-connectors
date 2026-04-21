@@ -1,13 +1,13 @@
-Connects to [SAPS4HANA Intelligent Trade Claims Management(ITCM)](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) from Ballerina
+Connects to [SAP S/4HANA Intelligent Trade Claims Management(ITCM)](https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) from Ballerina
 
 ## Package overview
-The `ballerinax/saps4hana.itcm.accountreceivable` is a [Ballerina](https://ballerina.io/) connector for Account receivable open item in SAPS4HANA Intelligent Trade Claims Management.
+The `ballerinax/saps4hana.itcm.accountreceivable` is a [Ballerina](https://ballerina.io/) connector for Account receivable open item in SAP S/4HANA Intelligent Trade Claims Management.
 
 ### Compatibility
 |                    | Version                   |
 |--------------------|---------------------------|
 | Ballerina Language | Ballerina Swan Lake 2201.4.1|
-| SAPS4HANA ITCM API | 1.0.0                     |
+| SAP S/4HANA ITCM API | 1.0.0                     |
 
 ## Report issues
 To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina Extended Library repository](https://github.com/ballerina-platform/ballerina-extended-library)

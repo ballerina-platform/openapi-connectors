@@ -1,12 +1,12 @@
 [package]
 license = ["Apache-2.0"]
-keywords = ["Type/Connector", "Vendor/SAP", "Area/ERP & Business Operations", "Business Management/ERP", "Cost/Paid"]
+keywords = ["Type/Connector", "Vendor/SAP", "Area/ERP & Business Operations", "Business Management/ERP", "Cost/Paid", "Name/SAP S/4HANA ITCM - Product Hierarchy"]
 org = "ballerinax"
 name = "saps4hana.itcm.producthierarchy"
 icon = "icon.png"
 distribution = "2201.4.1"
 repository = "https://github.com/ballerina-platform/openapi-connectors/tree/main/openapi/saps4hana.itcm.producthierarchy"
-version = "1.5.1"
+version = "1.5.2"
 authors = ["Ballerina"]
 [build-options]
 observabilityIncluded = true

@@ -1,6 +1,6 @@
 ## Overview
-The SAPS4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
-In SAPS4HANA Intelligent Trade Claims Management, the promotion service allows you to create, add, and delete information about promotions. Execution of Promotions should be done in an particular order.
+The SAP S/4HANA Intelligent Trade Claims Management API v1.0.0 connector(https://help.sap.com/viewer/902b9d277dfe48fea582d28849d54935/CURRENT/en-US) OpenAPI specification.
+In SAP S/4HANA Intelligent Trade Claims Management, the promotion service allows you to create, add, and delete information about promotions. Execution of Promotions should be done in an particular order.
 
 ### Key Features
 

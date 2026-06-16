@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Use [`ballerinax/hubspot.marketing.events`](https://central.ballerina.io/ballerinax/hubspot.marketing.events/latest) instead.
+
 Connects to [HubSpot Marketing API](https://developers.hubspot.com/docs/api/overview) from Ballerina
 
 ## Package overview

@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Use [`ballerinax/hubspot.crm.obj.tickets`](https://central.ballerina.io/ballerinax/hubspot.crm.obj.tickets/latest) instead. For association operations, use [`ballerinax/hubspot.crm.associations`](https://central.ballerina.io/ballerinax/hubspot.crm.associations/latest).
+
 ## Overview
 The HubSpot connector(https://www.hubspot.com/) OpenAPI specification. 
 

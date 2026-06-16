@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Use [`ballerinax/hubspot.crm.properties`](https://central.ballerina.io/ballerinax/hubspot.crm.properties/latest) instead.
+
 Connects to [HubSpot CRM API](https://developers.hubspot.com/docs/api/overview) from Ballerina
 
 ## Package overview

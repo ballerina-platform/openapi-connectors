@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Use [`ballerinax/hubspot.crm.properties`](https://central.ballerina.io/ballerinax/hubspot.crm.properties/latest) instead.
+
 ## Overview
 The HubSpot connector(https://www.hubspot.com/) OpenAPI specification. 
 

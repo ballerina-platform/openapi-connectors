@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Use [`ballerinax/hubspot.crm.commerce.quotes`](https://central.ballerina.io/ballerinax/hubspot.crm.commerce.quotes/latest) instead. For association operations, use [`ballerinax/hubspot.crm.associations`](https://central.ballerina.io/ballerinax/hubspot.crm.associations/latest).
+
 Connects to [HubSpot CRM API](https://developers.hubspot.com/docs/api/overview) from Ballerina
 
 ## Package overview

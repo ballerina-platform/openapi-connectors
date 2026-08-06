@@ -1,7 +1,6 @@
 ## Overview
-This is a community-maintained [Ballerina](https://ballerina.io) connector for the [OpenAI Completions API](https://platform.openai.com/docs/api-reference/completions). It serves as a powerful bridge, connecting your Ballerina applications to the cutting-edge Text AI models developed by OpenAI. This makes it an invaluable tool for those seeking to incorporate advanced AI functionalities into their projects.
 
-[API Documentation](https://lib.ballerina.io/ballerinax/openai.text/latest)
+The `openai.text` module is a direct, fully-typed REST connector for OpenAI's legacy [Completions API](https://platform.openai.com/docs/api-reference/completions) (`POST /completions` and `/edits`). Use it as a standalone client for single-prompt text completion and editing with older GPT-3-era models — for chat/GPT-4-style conversations use `openai.chat`, and for the `ballerina/ai` agent framework use `ai.openai`.
 
 ## Prerequisites
 * Create an [OpenAI account](https://platform.openai.com/signup).

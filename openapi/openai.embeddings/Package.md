@@ -1,4 +1,4 @@
-Connects to the OpenAI Embeddings API from Ballerina with the `ballerinax/openai.embeddings` package.
+The `openai.embeddings` module is a direct, fully-typed REST connector for OpenAI's [Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) (`POST /embeddings`). Use it as a standalone client to turn text into embedding vectors for semantic search, clustering, and RAG — independent of the `ballerina/ai` agent framework, for which use `ai.openai`'s `EmbeddingProvider`.
 
 ## Package overview
 The `ballerinax/openai.embeddings` package is a [Ballerina](https://ballerina.io/) connector for OpenAI's Embeddings API. The connector provides access to state-of-the-art models for embeddings. By using the `ballerinax/openai.embeddings` package, you can easily integrate OpenAI's advanced AI capabilities into your own Ballerina applications.

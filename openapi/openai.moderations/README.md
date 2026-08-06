@@ -1,7 +1,6 @@
 ## Overview
-This [Ballerina](https://ballerina.io) connector, which is actively maintained by a dedicated community, provides streamlined access to the [OpenAI Moderations API](https://platform.openai.com/docs/api-reference/moderations). The OpenAI Moderations API provides a way to access new moderation models developed by OpenAI for content moderation tasks.
 
-[API Documentation](https://lib.ballerina.io/ballerinax/openai.moderations/latest)
+The `openai.moderations` module is a direct, fully-typed REST connector for OpenAI's [Moderations API](https://platform.openai.com/docs/api-reference/moderations) (`POST /moderations`). Use it as a standalone client to classify whether text is potentially harmful across OpenAI's content-policy categories — for text generation use `openai.chat`, and for the `ballerina/ai` agent framework use `ai.openai`.
 
 ## Prerequisites
 * Create an [OpenAI account](https://platform.openai.com/signup).

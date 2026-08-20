@@ -66,6 +66,11 @@ if (buildAll){
     updatedBallerinaPackages = ballerinaPackages;
 }
 
+// --- hardcoded release set ---
+updatedBallerinaPackages = [
+    "openai.embeddings"
+].collect { openApiPackageDirPath + "/" + it }
+
 task codeBuild {
     if (!testTool && !testConnectorGeneration) {
         println "Task: Building connectors..."

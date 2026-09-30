@@ -1,4 +1,4 @@
-Connects to [Azure OpenAI Embeddings API](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings/) from Ballerina.
+The `azure.openai.embeddings` module is a direct, fully-typed REST connector for the [Azure OpenAI Embeddings API](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#embeddings) (`POST /deployments/{id}/embeddings`). Use it as a standalone client to turn text into embedding vectors on Azure-hosted models for semantic search and RAG — for the `ballerina/ai` agent framework use `ai.azure`'s `EmbeddingProvider`.
 
 ### Package overview
 

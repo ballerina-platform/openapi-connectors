@@ -1,7 +1,6 @@
 ## Overview
-This [Ballerina](https://ballerina.io) connector, which is actively maintained by a dedicated community, provides streamlined access to the [OpenAI Embeddings API](https://platform.openai.com/docs/api-reference/embeddings). It offers an interface to extract embeddings from a diverse range of AI models recently devised by OpenAI. This connector is a crucial tool for developers intending to utilize the cutting-edge artificial intelligence capabilities of these models in various computational tasks.
 
-[API Documentation](https://lib.ballerina.io/ballerinax/openai.embeddings/latest)
+The `openai.embeddings` module is a direct, fully-typed REST connector for OpenAI's [Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) (`POST /embeddings`). Use it as a standalone client to turn text into embedding vectors for semantic search, clustering, and RAG — independent of the `ballerina/ai` agent framework, for which use `ai.openai`'s `EmbeddingProvider`.
 
 ## Prerequisites
 * Create an [OpenAI account](https://platform.openai.com/signup).

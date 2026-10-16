@@ -1,4 +1,4 @@
-Connects to [Azure OpenAI Completions API](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#completions/) from Ballerina.
+The `azure.openai.text` module is a direct, fully-typed REST connector for the [Azure OpenAI Completions API](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#completions) (`POST /deployments/{id}/completions`). Use it as a standalone client for single-prompt text completion on Azure-hosted models — for chat use `azure.openai.chat`, and for the `ballerina/ai` agent framework use `ai.azure`.
 
 ### Package overview
 

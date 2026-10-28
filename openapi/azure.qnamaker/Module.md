@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated, as Azure QnA Maker is a retired product. There is no replacement connector.
+
 ## Overview
 
 The Azure QnA Maker API v4 connector(https://docs.microsoft.com/en-us/rest/api/cognitiveservices-qnamaker/QnAMaker4.0/) OpenAPI specification.

@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated, as the eBay Compliance API has been retired. There is no replacement connector.
+
 ## Overview
 The eBay Compliance API v1.4.1 connector(https://developer.ebay.com) OpenAPI specification.
 The Ebay Compliance API helps sellers keep their listings in compliance with eBay’s policies. 

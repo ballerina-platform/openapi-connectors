@@ -1,3 +1,4 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated, as Azure QnA Maker is a retired product. There is no replacement connector.
 
 Connects to [Azure QnA Maker API](https://docs.microsoft.com/en-us/rest/api/cognitiveservices-qnamaker/QnAMaker4.0/) from Ballerina
 

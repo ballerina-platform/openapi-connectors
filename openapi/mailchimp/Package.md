@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Use [`ballerinax/mailchimp.marketing`](https://central.ballerina.io/ballerinax/mailchimp.marketing/latest) instead. For transactional email, use [`ballerinax/mailchimp.transactional`](https://central.ballerina.io/ballerinax/mailchimp.transactional/latest).
+
 Connects to Mailchimp Marketing API from Ballerina
 
 #### Compatibility

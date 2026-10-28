@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated, as Azure Anomaly Detector is a retired product. There is no replacement connector.
+
 Connects to [Azure Anomaly Detector API](https://azure.microsoft.com/en-us/services/cognitive-services/anomaly-detector/) from Ballerina
 
 ### Package overview

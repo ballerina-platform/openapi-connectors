@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated, as the eBay Compliance API has been retired. There is no replacement connector.
+
 Connects to [eBay Compliance API v1.4.1](https://developer.ebay.com) from Ballerina
 
 ### Package overview

@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Microsoft has retired Azure Time Series Insights, and no replacement connector is available.
+
 ## Overview
 The Azure Time Series Insights API 2020-07-31 version connector(https://azure.microsoft.com/en-us/services/time-series-insights/) OpenAPI specification.
 

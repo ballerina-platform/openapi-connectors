@@ -1,7 +1,6 @@
 ## Overview
-The Azure OpenAI Completions API connector(https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#completions/) OpenAPI specification.
 
-The Azure  OpenAI Service REST API Completions Endpoint will generate one or more predicted completions based on a provided prompt. The service can also return the probabilities of alternative tokens at each position.
+The `azure.openai.text` module is a direct, fully-typed REST connector for the [Azure OpenAI Completions API](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#completions) (`POST /deployments/{id}/completions`). Use it as a standalone client for single-prompt text completion on Azure-hosted models — for chat use `azure.openai.chat`, and for the `ballerina/ai` agent framework use `ai.azure`.
 
 ### Key Features
 

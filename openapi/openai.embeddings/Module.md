@@ -1,6 +1,6 @@
 ## Overview
 
-This is a generated connector for the [OpenAI Embeddings API](https://beta.openai.com/docs/api-reference/embeddings) OpenAPI specification. OpenAI is an American artificial intelligence research laboratory consisting of a non-profit corporation and a for-profit subsidiary. OpenAI conducts AI research with the declared intention of promoting and developing friendly AI. The OpenAI Embeddings API provides a way to access embeddings from new AI models developed by OpenAI for a variety of tasks.
+The `openai.embeddings` module is a direct, fully-typed REST connector for OpenAI's [Embeddings API](https://platform.openai.com/docs/api-reference/embeddings) (`POST /embeddings`). Use it as a standalone client to turn text into embedding vectors for semantic search, clustering, and RAG — independent of the `ballerina/ai` agent framework, for which use `ai.openai`'s `EmbeddingProvider`.
 
 ### Key Features
 

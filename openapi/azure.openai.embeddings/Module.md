@@ -1,7 +1,6 @@
 ## Overview
-The Azure OpenAI Embeddings API connector(https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#embeddings/) OpenAPI specification.
 
-The Azure OpenAI Service REST API Embeddings Endpoint will generate a vector representation of a given input that can be easily consumed by machine learning models and other algorithms.
+The `azure.openai.embeddings` module is a direct, fully-typed REST connector for the [Azure OpenAI Embeddings API](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference#embeddings) (`POST /deployments/{id}/embeddings`). Use it as a standalone client to turn text into embedding vectors on Azure-hosted models for semantic search and RAG — for the `ballerina/ai` agent framework use `ai.azure`'s `EmbeddingProvider`.
 
 ### Key Features
 

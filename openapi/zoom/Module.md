@@ -1,3 +1,5 @@
+> **Deprecation Notice:** This connector is deprecated and will no longer be maintained or updated. Use [`ballerinax/zoom.meetings`](https://central.ballerina.io/ballerinax/zoom.meetings/latest) or [`ballerinax/zoom.scheduler`](https://central.ballerina.io/ballerinax/zoom.scheduler/latest) instead.
+
 ## Overview
 
 The Zoom API v2.0.0 connector(https://marketplace.zoom.us/docs/api-reference/zoom-api) OpenAPI Specification. 

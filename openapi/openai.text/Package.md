@@ -1,4 +1,4 @@
-Connects to the OpenAI Completions API from Ballerina with the `ballerinax/openai.text` package.
+Connects to the OpenAI Completions API.
 
 ## Package Overview
 The `ballerinax/openai.text` package is a [Ballerina](https://ballerina.io/) connector for OpenAI's Completions API. The connector provides access to state-of-the-art models for text generation. By using the `ballerinax/openai.text` package, you can easily integrate OpenAI's advanced AI capabilities into your own Ballerina applications.

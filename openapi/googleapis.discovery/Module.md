@@ -1,9 +1,9 @@
 ## Overview
-The Google Discovery REST API v1 connector(https://developers.google.com/discovery/v1/reference) OpenAPI specification.
+The [Google Discovery REST API v1](https://developers.google.com/discovery/v1/reference) connector, generated from its OpenAPI specification.
 The Google Discovery API provides information about other Google APIs, such as what APIs are available, the resource, and method details for each API.
 
-# Quickstart
-To use the Google Discovery connector in your Ballerina application, update the .bal file as follows:
+## Quickstart
+To use the Google Discovery connector in your application, update your program as follows:
 
 ### Step 1: Import connector
 First, import the `ballerinax/googleapis.discovery` module into the Ballerina project.

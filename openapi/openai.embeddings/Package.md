@@ -1,4 +1,4 @@
-Connects to the OpenAI Embeddings API from Ballerina with the `ballerinax/openai.embeddings` package.
+Connects to the OpenAI Embeddings API.
 
 ## Package overview
 The `ballerinax/openai.embeddings` package is a [Ballerina](https://ballerina.io/) connector for OpenAI's Embeddings API. The connector provides access to state-of-the-art models for embeddings. By using the `ballerinax/openai.embeddings` package, you can easily integrate OpenAI's advanced AI capabilities into your own Ballerina applications.

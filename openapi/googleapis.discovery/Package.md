@@ -1,4 +1,4 @@
-Connects to [Google Discovery API](https://developers.google.com/discovery/v1/reference) from Ballerina
+Connects to [Google Discovery API](https://developers.google.com/discovery/v1/reference).
 
 ## Package overview
 The `ballerinax/googleapis.discovery` is a [Ballerina](https://ballerina.io/) connector for Google Discovery API.

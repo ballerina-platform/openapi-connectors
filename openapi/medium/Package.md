@@ -1,6 +1,5 @@
 ## Package overview
-The `ballerinax\medium` is a [Ballerina](https://ballerina.io/) connector for Medium.
-This package provides capability to access your Medium contents such as posting Medium articles, get user details etc.
+The `medium` connector provides capability to access your Medium contents such as posting Medium articles, get user details etc.
 
 ### Compatibility
 |                      | Version                   |

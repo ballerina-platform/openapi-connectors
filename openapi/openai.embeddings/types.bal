@@ -20,10 +20,8 @@ import ballerina/constraint;
 # Provides a set of configurations for controlling the behaviours when communicating with a remote HTTP endpoint.
 @display {label: "Connection Config"}
 public type ConnectionConfig record {|
-    # Configurations related to client authentication. When not set, the client adds no `Authorization` header,
-    # so pass it in the `headers` of each request instead, for example a short-lived access token that changes
-    # between requests
-    http:BearerTokenConfig auth?;
+    # Configurations related to client authentication
+    http:BearerTokenConfig auth;
     # The HTTP version understood by the client
     http:HttpVersion httpVersion = http:HTTP_2_0;
     # Configurations related to HTTP/1.x protocol

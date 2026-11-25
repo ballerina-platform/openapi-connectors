@@ -298,7 +298,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "openai.embeddings"
-version = "1.0.5"
+version = "1.1.0"
 dependencies = [
 	{org = "ballerina", name = "constraint"},
 	{org = "ballerina", name = "http"},

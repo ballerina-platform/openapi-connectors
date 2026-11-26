@@ -57,12 +57,12 @@ public isolated client class Client {
     #
     # + return - OK 
     @display {label: "Create Embeddings"}
-    resource isolated function post embeddings(CreateEmbeddingRequest payload) returns CreateEmbeddingResponse|error {
+    resource isolated function post embeddings(CreateEmbeddingRequest payload, map<string|string[]> headers = {}) returns CreateEmbeddingResponse|error {
         string resourcePath = string `/embeddings`;
         http:Request request = new;
         json jsonBody = payload.toJson();
         request.setPayload(jsonBody, "application/json");
-        CreateEmbeddingResponse response = check self.clientEp->post(resourcePath, request);
+        CreateEmbeddingResponse response = check self.clientEp->post(resourcePath, request, headers);
         return response;
     }
 }
